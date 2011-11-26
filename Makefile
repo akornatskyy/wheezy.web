@@ -30,6 +30,12 @@ env:
     export VIRTUALENV_USE_SETUPTOOLS; \
 	virtualenv --python=$$PYTHON_EXE \
 		--no-site-packages env
+	if [ "$$(echo $(VERSION) | sed 's/\.//')" -ge 30 ]; then \
+		echo -n 'Upgrading distribute...'; \
+		$(EASY_INSTALL) -i $(PYPI) -U -O2 distribute \
+			> /dev/null 2>/dev/null; \
+		echo 'done.'; \
+	fi
 	$(EASY_INSTALL) -i $(PYPI) -O2 coverage nose pytest \
 		pytest-pep8 pytest-cov
 	# The following packages available for python < 3.0
