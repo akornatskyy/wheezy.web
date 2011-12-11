@@ -1,0 +1,39 @@
+# Messages for ``wheezy.validation``.
+# Copyright (C) 2011 Andriy Kornatskyy
+# Andriy Kornatskyy <andriy.kornatskyy@live.com>, 2011.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: wheezy.validation\n"
+"Report-Msgid-Bugs-To: Andriy Kornatskyy <andriy.kornatskyy@live.com>\n"
+"POT-Creation-Date: 2011-11-02 14:13+0200\n"
+"PO-Revision-Date: 2011-11-02 14:13+0200\n"
+"Last-Translator: Andriy Kornatskyy <andriy.kornatskyy@live.com>\n"
+"Language: Russian\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: src/wheezy/validation/model.py:70
+#, python-format
+msgid "The value '%s' is invalid."
+msgstr "Значение '%s' является неверным."
+
+#: src/wheezy/validation/rules.py:12
+msgid "Required field cannot be left blank."
+msgstr "Обязательное поле не может быть пустым."
+
+#: src/wheezy/validation/rules.py:79
+#, python-format
+msgid "Required to be a minimum of %(min)d characters in length."
+msgstr "Должно содержать, как минимум, %(min)d символов в длинну."
+
+#: src/wheezy/validation/rules.py:84
+#, python-format
+msgid "The length must fall within the range %(min)d - %(max)d characters."
+msgstr "Длина строки должна находиться в пределах диапазона %(min)d - %(max)d символов."
+
+#: src/wheezy/validation/rules.py:87 src/wheezy/validation/rules.py:91
+#, python-format
+msgid "Exceeds maximum length of %(max)d."
+msgstr "Превышена максимально допустимая длина %(max)d."
