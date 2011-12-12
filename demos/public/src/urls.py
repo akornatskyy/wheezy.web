@@ -11,6 +11,8 @@ from wheezy.routing import url
 from wheezy.web.handlers.file import file_handler
 from wheezy.web.handlers.template import template_handler
 
+from error.web.urls import error_urls
+from error.web.urls import test_error_urls
 from public.web.urls import public_urls
 
 
@@ -27,12 +29,14 @@ all_urls = [
             template_handler('public/home.html'),
             {'locale': 'en'},
             name='default'),
+        ('{locale}/', public_urls, {'locale': 'en'}),
+        ('{locale}/error/', error_urls, {'locale': 'en'}),
+        ('{locale}/error/', test_error_urls, {'locale': 'en'}),
         url('static/{path:any}',
             httpcache(
                 file_handler(
                     root='content/static/',
                     age=timedelta(hours=1)),
                 cache_profile_static),
-            name='static'),
-        ('{locale}/', public_urls, {'locale': 'en'})
+            name='static')
 ]

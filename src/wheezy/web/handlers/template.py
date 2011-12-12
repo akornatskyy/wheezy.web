@@ -5,19 +5,21 @@ from wheezy.core.descriptors import attribute
 from wheezy.web.handlers.base import BaseHandler
 
 
-def template_handler(name):
-    return lambda request: TemplateHandler(request, name).response
+def template_handler(template_name, status_code=200):
+    return lambda request: TemplateHandler(
+            request,
+            template_name=template_name,
+            status_code=status_code).response
 
 
 class TemplateHandler(BaseHandler):
 
-    def __init__(self, request, template_name):
+    def __init__(self, request, template_name, status_code=200):
         self.template_name = template_name
+        self.status_code = status_code
         super(TemplateHandler, self).__init__(request)
 
-    @attribute
-    def locale(self):
-        return self.route_locale() or 'en'
-
     def get(self):
-        return self.render_response(self.template_name)
+        response = self.render_response(self.template_name)
+        response.status_code = self.status_code
+        return response

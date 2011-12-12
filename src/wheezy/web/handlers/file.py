@@ -34,9 +34,7 @@ class FileHandler(MethodHandler):
         return self.get(skip_body=True)
 
     def get(self, skip_body=False):
-        route_kwargs = self.request.ROUTE
-        assert route_kwargs
-        path = route_kwargs.get('path', None)
+        path = self.route_args.path
         assert path
         abspath = os.path.abspath(os.path.join(self.root, path))
         if not abspath.startswith(self.root):
@@ -58,7 +56,7 @@ class FileHandler(MethodHandler):
         last_modified = datetime.utcfromtimestamp(last_modified_stamp)
         cache_policy.last_modified(last_modified)
 
-        age = route_kwargs.get('age', None)
+        age = self.route_args.age
         if age:
             cache_policy.max_age(age)
             cache_policy.expires(datetime.utcnow() + age)

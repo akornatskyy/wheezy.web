@@ -13,7 +13,7 @@ class BaseHandler(MethodHandler):
 
     def __init__(self, request):
         self.request = request
-        locale = self.locale
+        locale = self.locale or request.route_args.locale
         config = request.config
         options = dict(config.options)
         options['errors'] = self.errors = {}
@@ -24,12 +24,6 @@ class BaseHandler(MethodHandler):
 
     @attribute
     def locale(self):
-        return 'en'
-
-    def route_locale(self):
-        route_kwargs = self.request.ROUTE
-        if route_kwargs:
-            return route_kwargs.get('locale', None)
         return None
 
     def browser_locale(self):
@@ -57,9 +51,8 @@ class BaseHandler(MethodHandler):
 
     def path_for(self, name, **kwargs):
         script_name = self.request.SCRIPT_NAME + '/'
-        route_kwargs = self.request.ROUTE
-        if route_kwargs:
-            route_kwargs = dict(route_kwargs)
-            route_kwargs.update(kwargs)
-            kwargs = route_kwargs
+        if kwargs:
+            route_args = dict(self.route_args)
+            route_args.update(kwargs)
+            kwargs = route_args
         return script_name + self.config.router.path_for(name, **kwargs)

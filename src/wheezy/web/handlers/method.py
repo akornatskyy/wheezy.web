@@ -1,6 +1,7 @@
 """
 """
 
+from wheezy.core.descriptors import attribute
 from wheezy.http.response import not_found
 from wheezy.http.response import method_not_allowed
 from wheezy.http.response import HttpResponse
@@ -19,6 +20,10 @@ class MethodHandler(object):
         else:
             self.response = method_not_allowed(request.options)
         assert isinstance(self.response, HttpResponse)
+
+    @attribute
+    def route_args(self):
+        return self.request.route_args
 
     def __call__(self, start_response):
         return self.response(start_response)

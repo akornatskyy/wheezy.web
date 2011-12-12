@@ -1,10 +1,11 @@
 """
 """
 
+from wheezy.core.collections import defaultattrdict
 from wheezy.http.request import HttpRequest
-from wheezy.http.response import not_found
 
 from config import options
+from config import handle_errors
 from config import router
 from urls import all_urls
 
@@ -13,13 +14,10 @@ router.add_routes(all_urls)
 
 
 def main(environ, start_response):
-    handler, kwargs = router.match(environ['PATH_INFO'].lstrip('/'))
-    if handler:
-        environ['ROUTE'] = kwargs
-        request = HttpRequest(environ, options=options)
-        response = handler(request)
-    else:
-        response = not_found()
+    handler, route_args = router.match(environ['PATH_INFO'].lstrip('/'))
+    environ['route_args'] = defaultattrdict(str, route_args)
+    request = HttpRequest(environ, options=options)
+    response = handle_errors(request, handler)
     return response(start_response)
 
 
