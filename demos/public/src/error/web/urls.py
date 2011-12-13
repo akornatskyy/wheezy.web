@@ -2,8 +2,11 @@
 """
 
 from wheezy.routing import url
-from wheezy.web.handlers.template import template_handler
 
+from error.web.views import http400
+from error.web.views import http403
+from error.web.views import http404
+from error.web.views import http500
 from error.web.views import test_bad_request
 from error.web.views import test_forbidden
 from error.web.views import test_internal_error
@@ -11,18 +14,10 @@ from error.web.views import test_not_found
 
 
 error_urls = [
-    url('400',
-        template_handler('error/http400.html', status_code=400),
-        name='http400'),
-    url('403',
-        template_handler('error/http403.html', status_code=403),
-        name='http403'),
-    url('404',
-        template_handler('error/http404.html', status_code=404),
-        name='http404'),
-    url('500',
-        template_handler('error/http500.html', status_code=500),
-        name='http500'),
+    url('400', http400, name='http400'),
+    url('403', http403, name='http403'),
+    url('404', http404, name='http404'),
+    url('500', http500, name='http500'),
 ]
 
 test_error_urls = [

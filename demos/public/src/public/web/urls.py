@@ -4,8 +4,11 @@
 from wheezy.routing import url
 from wheezy.web.handlers.template import template_handler
 
+from public.web.views import about
+from public.web.views import home
+
 
 public_urls = [
-    url('home', template_handler('public/home.html'), name='home'),
-    url('about', template_handler('public/about.html'), name='about'),
+    url('home', home, name='home'),
+    url('about', about, name='about'),
 ]
