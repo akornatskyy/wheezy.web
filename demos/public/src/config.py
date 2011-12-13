@@ -61,8 +61,9 @@ def handle_errors(request, handler):
             route_name = request.route_args.route_name
             if error_route != route_name:
                 # TODO: absolute routes
+                route_args = dict(request.route_args)
                 response = redirect('/' +
-                        router.path_for(error_route),
+                        router.path_for(error_route, **route_args),
                         options=request.config)
         except KeyError:
             pass

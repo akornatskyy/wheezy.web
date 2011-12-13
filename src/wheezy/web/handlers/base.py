@@ -34,6 +34,7 @@ class BaseHandler(MethodHandler):
         kwargs = dict((name, widget(value, errors))
                 for name, value in kwargs.iteritems())
         kwargs['path_for'] = self.path_for
+        kwargs['route_args'] = self.route_args
         return self.config.render_template(template_name, **kwargs)
 
     def render_response(self, template_name, **kwargs):
@@ -51,8 +52,6 @@ class BaseHandler(MethodHandler):
 
     def path_for(self, name, **kwargs):
         script_name = self.request.SCRIPT_NAME + '/'
-        if kwargs:
-            route_args = dict(self.route_args)
-            route_args.update(kwargs)
-            kwargs = route_args
-        return script_name + self.config.router.path_for(name, **kwargs)
+        route_args = dict(self.route_args)
+        route_args.update(kwargs)
+        return script_name + self.config.router.path_for(name, **route_args)
