@@ -23,15 +23,17 @@ cache_profile_static = CacheProfile('public',
         vary_headers=['IF_NONE_MATCH', 'IF_MODIFIED_SINCE'],
         enabled=True)
 
+locale_pattern = '{locale:(en|ru)}/'
+locale_defaults = {'locale': 'en'}
 
 all_urls = [
         url('',
             template_handler('public/home.html'),
-            {'locale': 'en'},
+            locale_defaults,
             name='default'),
-        ('{locale}/', public_urls, {'locale': 'en'}),
-        ('{locale}/error/', error_urls, {'locale': 'en'}),
-        ('{locale}/error/', test_error_urls, {'locale': 'en'}),
+        (locale_pattern, public_urls, locale_defaults),
+        (locale_pattern + 'error/', error_urls, locale_defaults),
+        (locale_pattern + 'error/', test_error_urls, locale_defaults),
         url('static/{path:any}',
             httpcache(
                 file_handler(
