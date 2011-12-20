@@ -1,0 +1,41 @@
+<%inherit file="/shared/master.html"/>
+<%block name="title">Sign In</%block>
+<div id="signin">
+    <h2>
+        Sign In</h2>
+    <p>
+    Please enter your username and password.
+    <a href="${path_for('signup')}">Sign up</a>
+    if you don't have an account.
+    </p>
+    <form action="" method="post">
+        <div>
+            <fieldset>
+                <legend>Account Information</legend>
+                <p>
+                <label for="username">
+                    Username:</label>
+                <input id="username" name="username" type="text" value="" />
+                </p>
+                <p>
+                <label for="password">
+                    Password:</label>
+                <input autocomplete="off" id="password" maxlength="12" name="password"
+                type="password" value="" />
+                </p>
+                <p>
+                <input id="remember_me" name="remember_me" type="checkbox"
+                value="true" /><input name="remember_me" type="hidden" value="false" />
+                <label class="inline" for="remember_me">
+                    Remember me?</label>
+                </p>
+                <p>
+                <input name="logon" type="submit" value="Log On" />
+                <input name="__RequestVerificationToken" type="hidden" value="" />
+                </p>
+            </fieldset>
+            <i><b>demo</b> user password is P@ssw0rd. You can press 'Alt'
+                + '1' to auto complete information.</i>
+        </div>
+    </form>
+</div>
