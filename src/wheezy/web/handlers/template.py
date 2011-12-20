@@ -1,7 +1,6 @@
 """
 """
 
-from wheezy.core.descriptors import attribute
 from wheezy.web.handlers.base import BaseHandler
 
 
@@ -9,7 +8,7 @@ def template_handler(template_name, status_code=200):
     return lambda request: TemplateHandler(
             request,
             template_name=template_name,
-            status_code=status_code).response
+            status_code=status_code)
 
 
 class TemplateHandler(BaseHandler):

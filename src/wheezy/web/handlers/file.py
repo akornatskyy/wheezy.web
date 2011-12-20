@@ -20,12 +20,13 @@ def file_handler(root, age=0):
     return lambda request: FileHandler(
             request,
             root=abspath,
-            age=age).response
+            age=age)
 
 
 class FileHandler(MethodHandler):
 
     def __init__(self, request, root, age=0):
+        assert hasattr(request, 'route_args')
         self.root = root
         self.age = age
         super(FileHandler, self).__init__(request)
@@ -34,7 +35,9 @@ class FileHandler(MethodHandler):
         return self.get(skip_body=True)
 
     def get(self, skip_body=False):
-        path = self.route_args.path
+        request = self.request
+        route_args = request.route_args
+        path = route_args['path']
         assert path
         abspath = os.path.abspath(os.path.join(self.root, path))
         if not abspath.startswith(self.root):
@@ -48,7 +51,7 @@ class FileHandler(MethodHandler):
         response = HttpResponse(
                 content_type=mime_type or 'plain/text',
                 encoding=encoding,
-                options=self.request.config)
+                options=request.config)
 
         response.cache = cache_policy = HttpCachePolicy('public')
 
@@ -56,12 +59,12 @@ class FileHandler(MethodHandler):
         last_modified = datetime.utcfromtimestamp(last_modified_stamp)
         cache_policy.last_modified(last_modified)
 
-        age = self.route_args.age
+        age = route_args['age']
         if age:
             cache_policy.max_age(age)
             cache_policy.expires(datetime.utcnow() + age)
 
-        modified_since = self.request.HEADERS.IF_MODIFIED_SINCE
+        modified_since = request.HEADERS.IF_MODIFIED_SINCE
         if modified_since:
             modified_since = parse_http_datetime(modified_since)
             if modified_since >= last_modified:
@@ -70,7 +73,7 @@ class FileHandler(MethodHandler):
 
         etag = '\"' + hex(last_modified_stamp)[2:] + '\"'
         cache_policy.etag(etag)
-        none_match = self.request.HEADERS.IF_NONE_MATCH
+        none_match = request.HEADERS.IF_NONE_MATCH
         if none_match and etag in none_match:
             response.status_code = 304
             skip_body = True
