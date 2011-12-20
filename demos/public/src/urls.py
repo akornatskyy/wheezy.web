@@ -13,6 +13,7 @@ from wheezy.web.handlers.template import template_handler
 
 from error.web.urls import error_urls
 from error.web.urls import test_error_urls
+from membership.web.urls import membership_urls
 from public.web.urls import public_urls
 
 
@@ -32,6 +33,7 @@ all_urls = [
             locale_defaults,
             name='default'),
         (locale_pattern, public_urls, locale_defaults),
+        (locale_pattern, membership_urls, locale_defaults),
         (locale_pattern + 'error/', error_urls, locale_defaults),
         (locale_pattern + 'error/', test_error_urls, locale_defaults),
         url('static/{path:any}',
