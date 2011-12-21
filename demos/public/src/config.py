@@ -14,6 +14,7 @@ from wheezy.http.response import redirect
 from wheezy.routing import Router
 from wheezy.web.handlers.base import RedirectRouteHandler
 
+from membership.repository.mock import MockFactory
 
 router = Router()
 
@@ -69,5 +70,6 @@ options = {
         'cache': cache,
         'translations_manager': translations_manager,
         'router': router,
-        'render_template': mako_render
+        'render_template': mako_render,
+        'membership': MockFactory
 }
