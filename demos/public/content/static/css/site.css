@@ -70,10 +70,20 @@ table tr.row-alternate { background-color: #e8eef4; }
 /* MISC
  * ----------------------------------------------------------*/
 
+.clear { clear: both; }
+input[type="text"], input[type="password"], textarea { border: 1px solid #BBB; border-radius: 3px; }
 code { padding: 10px; text-align: left; display: block; overflow: auto; background: #fafafa; border: 1px solid #f2f2f2; border-left: 3px solid #5c87b2; }
 code { font: 500 1em/1.5em 'Lucida Console' , 'courier new' , monospace; }
-.clear { clear: both; }
-.error { color: Red; }
+
+input.error, textarea.error, select.error { border: 1px solid #FF0000; background-color: #FFEEEE; }
+span.error { color: #FF0000; }
+
+span.error-message, span.warning-message, span.info-message { display: block; padding: 25px 25px 25px 80px; margin: 0 0 15px 0; border: 1px solid #DFDFDF; color: #333333; font-size: 13px; line-height: 17px; float: none; font-weight: normal; width: auto; -moz-border-radius:5px 5px 5px 5px; }
+span.error-message { border:1px solid #C44509; background:url("../img/alert/error.png") no-repeat scroll 20px 50% #fdcea4; }
+span.warning-message { background:url("../img/alert/warning.png") no-repeat scroll 20px 50% #FEFFC8; border:1px solid #f0881a }
+span.info-message { background:url("../img/alert/info.png") no-repeat scroll 20px 50% #D4F684; border:1px solid #739f1d; }
+
+
 #menucontainer { margin-top: 20px; }
 div#title { display: block; float: left; text-align: left; }
 #logindisplay { font-size: 1.1em; display: block; text-align: right; margin: 10px; color: White; }
@@ -81,10 +91,3 @@ div#title { display: block; float: left; text-align: left; }
 #logindisplay a:link { color: white; text-decoration: underline; }
 #logindisplay a:visited { color: white; text-decoration: underline; }
 #logindisplay a:hover { color: white; text-decoration: none; }
-.field-validation-error { color: #ff0000; }
-.input-validation-error { border: 1px solid #ff0000; background-color: #ffeeee; }
-.validation-summary-errors, .error-message { font-weight: bold; color: #ff0000; }
-.error-message, .warning-message, .info-message { padding: 10px 10px 10px 35px; margin: 5px 0; border: 1px solid #DFDFDF; color: #333333; display: block; }
-.error-message { background: #fcf9ce url(../img/error.gif) 5px 6px no-repeat; }
-.warning-message { background: #fcf9ce url(../img/exclamation.gif) 5px 6px no-repeat; }
-.info-message { background: #fcf9ce url(../img/info.gif) 5px 6px no-repeat; }
