@@ -6,11 +6,12 @@ from wheezy.core.url import urlparts
 from wheezy.html.factory import widget
 from wheezy.http.response import HttpResponse
 from wheezy.http.response import redirect
+from wheezy.validation.mixin import ValidationMixin
 from wheezy.validation.model import try_update_model
 from wheezy.web.handlers.method import MethodHandler
 
 
-class BaseHandler(MethodHandler):
+class BaseHandler(MethodHandler, ValidationMixin):
 
     def __init__(self, request):
         self.options = request.config.options
@@ -67,11 +68,6 @@ class BaseHandler(MethodHandler):
         return try_update_model(
                 model, values or self.request.FORM, self.errors,
                 self.translations['validation'])
-
-    def validate(self, model, validator):
-        return validator.validate(model=model,
-                results=self.errors,
-                translations=self.translations['validation'])
 
     def render_template(self, template_name, **kwargs):
         if kwargs:
