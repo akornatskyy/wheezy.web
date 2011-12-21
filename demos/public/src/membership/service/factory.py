@@ -17,6 +17,6 @@ class Factory(object):
     @attribute
     def membership(self):
         return MembershipService(
-                self.repository.membership,
+                self.repository,
                 self.errors,
                 self.translations)
