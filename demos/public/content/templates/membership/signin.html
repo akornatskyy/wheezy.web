@@ -8,29 +8,28 @@
     <a href="${path_for('signup')}">Sign up</a>
     if you don't have an account.
     </p>
-    <form action="" method="post">
+    ${credential.error()}
+    <form action="${path_for('signin')}" method="post">
         <div>
             <fieldset>
-                <legend>Account Information</legend>
+                <legend>Account Credentials</legend>
                 <p>
-                <label for="username">
-                    Username:</label>
-                <input id="username" name="username" type="text" value="" />
+                ${credential.username.label('Username:')}
+                ${credential.username.textbox(autocomplete='off')}
+                ${credential.username.error()}
                 </p>
                 <p>
-                <label for="password">
-                    Password:</label>
-                <input autocomplete="off" id="password" maxlength="12" name="password"
-                type="password" value="" />
+                ${credential.password.label('Password:')}
+                ${credential.password.password(autocomplete='off', maxlength=12)}
+                ${credential.password.error()}
                 </p>
                 <p>
-                <input id="remember_me" name="remember_me" type="checkbox"
-                value="true" /><input name="remember_me" type="hidden" value="false" />
-                <label class="inline" for="remember_me">
-                    Remember me?</label>
+                ${viewdata.remember_me.checkbox()}
+                ${viewdata.remember_me.label('Remember me?', class_='inline')}
+                ${viewdata.remember_me.error()}
                 </p>
                 <p>
-                <input name="logon" type="submit" value="Log On" />
+                <input name="signin" type="submit" value="Sign In" />
                 <input name="__RequestVerificationToken" type="hidden" value="" />
                 </p>
             </fieldset>
