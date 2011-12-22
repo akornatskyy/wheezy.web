@@ -14,29 +14,31 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: src/wheezy/validation/model.py:69 src/wheezy/validation/model.py:70
-#: src/wheezy/validation/model.py:71 src/wheezy/validation/model.py:74
-#: src/wheezy/validation/model.py:75 src/wheezy/validation/model.py:76
-#: src/wheezy/validation/model.py:77 src/wheezy/validation/model.py:78
+#: src/wheezy/validation/model.py:91
 #, python-format
 msgid "The value '%s' is invalid."
 msgstr "The value '%s' is invalid."
 
-#: src/wheezy/validation/rules.py:12
+#: src/wheezy/validation/rules.py:12 src/wheezy/validation/rules.py:15
 msgid "Required field cannot be left blank."
 msgstr "Required field cannot be left blank."
 
-#: src/wheezy/validation/rules.py:79
+#: src/wheezy/validation/rules.py:79 src/wheezy/validation/rules.py:82
 #, python-format
 msgid "Required to be a minimum of %(min)d characters in length."
 msgstr "Required to be a minimum of %(min)d characters in length."
 
-#: src/wheezy/validation/rules.py:84
+#: src/wheezy/validation/rules.py:84 src/wheezy/validation/rules.py:87
 #, python-format
 msgid "The length must fall within the range %(min)d - %(max)d characters."
 msgstr "The length must fall within the range %(min)d - %(max)d characters."
 
-#: src/wheezy/validation/rules.py:91
+#: src/wheezy/validation/rules.py:91 src/wheezy/validation/rules.py:94
 #, python-format
 msgid "Exceeds maximum length of %(max)d."
 msgstr "Exceeds maximum length of %(max)d."
+
+#: src/wheezy/validation/rules.py:214 src/wheezy/validation/rules.py:217
+#, python-format
+msgid "The value failed equality comparison with \"%(comparand)s\"."
+msgstr "Passwords do not match."

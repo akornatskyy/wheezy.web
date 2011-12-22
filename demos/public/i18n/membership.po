@@ -14,6 +14,18 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: src/membership/service/bridge.py:40
+#: src/membership/service/bridge.py:28
+msgid "Favorite number"
+msgstr "Favorite number"
+
+#: src/membership/service/bridge.py:29
+msgid "City of birth"
+msgstr "City of birth"
+
+#: src/membership/service/bridge.py:30
+msgid "Favorite color"
+msgstr "Favorite color"
+
+#: src/membership/service/bridge.py:39 src/membership/service/bridge.py:40
 msgid "The username or password provided is incorrect."
 msgstr "The username or password provided is incorrect."

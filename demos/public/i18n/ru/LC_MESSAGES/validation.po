@@ -37,3 +37,8 @@ msgstr "Длина строки должна находиться в преде�
 #, python-format
 msgid "Exceeds maximum length of %(max)d."
 msgstr "Превышена максимально допустимая длина %(max)d."
+
+#: src/wheezy/validation/rules.py:214 src/wheezy/validation/rules.py:217
+#, python-format
+msgid "The value failed equality comparison with \"%(comparand)s\"."
+msgstr "Пароли не совпадают."

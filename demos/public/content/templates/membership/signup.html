@@ -10,54 +10,44 @@
     Passwords are required to be a minimum of 8 characters
     in length.
     </p>
-    <form action="" method="post">
+    <form action="${path_for('signup')}" method="post">
         <div>
             <fieldset>
                 <legend>Account Information</legend>
                 <p>
-                <label for="username">
-                    Username:</label>
-                <input autocomplete="off" id="username" name="username"
-                type="text" value="" />
+                ${credential.username.label('Username:')}
+                ${credential.username.textbox(autocomplete='off')}
+                ${credential.username.error()}
                 </p>
                 <p>
-                <label for="display_name">
-                    Display name:</label>
-                <input autocomplete="off" id="display_name" name="display_name"
-                type="text" value="" />
+                ${account.display_name.label('Display name:')}
+                ${account.display_name.textbox(autocomplete='off')}
+                ${account.display_name.error()}
                 </p>
                 <p>
-                <label for="email">
-                    Email:</label>
-                <input autocomplete="off" id="email" name="email" type="text"
-                value="" />
+                ${account.email.label('Email:')}
+                ${account.email.textbox(autocomplete='off')}
+                ${account.email.error()}
                 </p>
                 <p>
-                <label for="password">
-                    Password:</label>
-                <input autocomplete="off" id="password" maxlength="12" name="password"
-                type="password" />
+                ${credential.password.label('Password:')}
+                ${credential.password.password(autocomplete='off', maxlength=12)}
+                ${credential.password.error()}
                 </p>
                 <p>
-                <label for="confirm_password">
-                    Confirm password:</label>
-                <input autocomplete="off" id="confirm_password" maxlength="12"
-                name="confirm_password" type="password" />
+                ${viewdata.confirm_password.label('Confirm password:')}
+                ${viewdata.confirm_password.password(autocomplete='off', maxlength=12)}
+                ${viewdata.confirm_password.error()}
                 </p>
                 <p>
-                <label for="questionid">
-                    Security Question:</label>
-                <select id="questionid" name="questionid">
-                    <option value="1">Favorite number</option>
-                    <option value="2">City of birth</option>
-                    <option value="3">Favorite color</option>
-                </select>
+                ${viewdata.questionid.label('Security question:')}
+                ${viewdata.questionid.dropdown(choices=questions.model)}
+                ${viewdata.questionid.error()}
                 </p>
                 <p>
-                <label for="answer">
-                    Answer:</label>
-                <input autocomplete="off" id="answer" name="answer" size="30"
-                type="text" value="" />
+                ${registration.answer.label('Answer:')}
+                ${registration.answer.textbox(autocomplete='off', maxlength=30)}
+                ${registration.answer.error()}
                 </p>
                 <p>
                 <input name="register" type="submit" value="Register" />

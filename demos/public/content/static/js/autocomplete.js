@@ -12,11 +12,10 @@ function signin() {
 function signup() {
     $(this)
     .f("#username[type='text']", nextWord())
-    .f("#display_name[type='text']", nextWord())
+    .f("#display-name[type='text']", nextWord())
     .f("#email[type='text']", nextMail())
     .f("#password", "P@ssw0rd")
-    .f("#confirm_password", "P@ssw0rd")
-    .f("#username[type='text']", nextWord())
+    .f("#confirm-password", "P@ssw0rd")
     .f("#answer", nextInt(1, 9))
     .s("input[name='register']");
 }
