@@ -14,6 +14,7 @@ from membership.service.factory import Factory
 from membership.validation import account_validator
 from membership.validation import credential_validator
 from membership.validation import password_match_validator
+from membership.validation import registration_validator
 
 
 class SignInHandler(BaseHandler):
@@ -78,6 +79,7 @@ class SignUpHandler(BaseHandler):
                 & self.try_update_model(registration.account)
                 & self.try_update_model(registration.credential)
                 or not self.validate(self.viewdata, password_match_validator)
+                & self.validate(registration, registration_validator)
                 & self.validate(registration.account, account_validator)
                 & self.validate(registration.credential, credential_validator)
                 or not self.factory.membership.create_account(registration)):

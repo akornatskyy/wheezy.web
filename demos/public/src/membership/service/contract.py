@@ -4,6 +4,7 @@
 from wheezy.core.descriptors import attribute
 
 from membership.models import Credential
+from membership.models import Registration
 
 
 class IMembershipService(object):

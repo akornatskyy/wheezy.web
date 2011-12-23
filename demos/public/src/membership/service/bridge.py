@@ -6,8 +6,10 @@ from wheezy.core.i18n import ref_gettext
 from wheezy.validation.mixin import ValidationMixin
 
 from membership.models import Credential
+from membership.models import Registration
 from membership.validation import account_validator
 from membership.validation import credential_validator
+from membership.validation import registration_validator
 from membership.service.contract import IMembershipService
 
 
@@ -32,6 +34,7 @@ class MembershipService(IMembershipService, ValidationMixin):
         return questions
 
     def authenticate(self, credential):
+        assert isinstance(credential, Credential)
         if not self.validate(credential, credential_validator):
             return False
         if not self.repository.membership.authenticate(credential):
@@ -41,7 +44,9 @@ class MembershipService(IMembershipService, ValidationMixin):
         return True
 
     def create_account(self, registration):
-        if (not self.validate(registration.credential, credential_validator)
+        assert isinstance(registration, Registration)
+        if (not self.validate(registration, registration_validator)
+                & self.validate(registration.credential, credential_validator)
                 & self.validate(registration.account, account_validator)):
             return False
         return True

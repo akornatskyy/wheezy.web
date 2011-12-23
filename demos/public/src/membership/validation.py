@@ -19,6 +19,10 @@ account_validator = Validator({
     'display_name': [required, length(max=30)]
 })
 
+registration_validator = Validator({
+    'answer': [required, length(min=1, max=20)]
+})
+
 password_match_validator = Validator({
     'password': [compare(equal='confirm_password')]
 })
