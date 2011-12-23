@@ -22,4 +22,13 @@ class MembershipRepository(IMembershipRepository):
 
     def authenticate(self, credential):
         key = keys.authenticate(credential.username)
+        # TODO:
         return self.inner.authenticate(credential)
+
+    def has_account(self, username):
+        # TODO:
+        return self.inner.has_account(username)
+
+    def create_account(self, registration):
+        # TODO:
+        return self.inner.create_account(registration)

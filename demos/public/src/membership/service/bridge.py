@@ -49,4 +49,15 @@ class MembershipService(IMembershipService, ValidationMixin):
                 & self.validate(registration.credential, credential_validator)
                 & self.validate(registration.account, account_validator)):
             return False
+        membership = self.repository.membership
+        if membership.has_account(registration.credential.username):
+            self.error(self.gettext(
+                "The user with such username is already registered. "
+                "Please try another."))
+            return False
+        if not membership.create_account(registration):
+            self.error(self.gettext(
+                "The system was unable to create an account for you. "
+                "Please try again later."))
+            return False
         return True

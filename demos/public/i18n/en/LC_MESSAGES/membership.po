@@ -1,4 +1,4 @@
-# Messages for ``wheezy.validation``.
+# Messages for ``demos.public``.
 # Copyright (C) 2011 Andriy Kornatskyy
 # Andriy Kornatskyy <andriy.kornatskyy@live.com>, 2011.
 #
@@ -14,18 +14,28 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: src/membership/service/bridge.py:28
+#: src/membership/service/bridge.py:30
 msgid "Favorite number"
 msgstr "Favorite number"
 
-#: src/membership/service/bridge.py:29
+#: src/membership/service/bridge.py:31
 msgid "City of birth"
 msgstr "City of birth"
 
-#: src/membership/service/bridge.py:30
+#: src/membership/service/bridge.py:32
 msgid "Favorite color"
 msgstr "Favorite color"
 
-#: src/membership/service/bridge.py:39 src/membership/service/bridge.py:40
+#: src/membership/service/bridge.py:42
 msgid "The username or password provided is incorrect."
 msgstr "The username or password provided is incorrect."
+
+#: src/membership/service/bridge.py:55
+msgid "The user with such username is already registered. Please try another."
+msgstr "The user with such username is already registered. Please try another."
+
+#: src/membership/service/bridge.py:60
+msgid ""
+"The system was unable to create an account for you. Please try again later."
+msgstr ""
+"The system was unable to create an account for you. Please try again later."

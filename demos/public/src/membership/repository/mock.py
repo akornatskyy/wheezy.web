@@ -24,3 +24,11 @@ class MembershipRepository(IMembershipRepository):
     def authenticate(self, credential):
         return credential.password == self.credentials.get(
                 credential.username, None)
+
+    def has_account(self, username):
+        return username in self.credentials
+
+    def create_account(self, registration):
+        credential = registration.credential
+        self.credentials[credential.username] = credential.password
+        return True

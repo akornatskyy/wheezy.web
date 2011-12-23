@@ -1,4 +1,4 @@
-# Messages for ``wheezy.validation``.
+# Messages for ``demos.public``.
 # Copyright (C) 2011 Andriy Kornatskyy
 # Andriy Kornatskyy <andriy.kornatskyy@live.com>, 2011.
 #
@@ -29,3 +29,14 @@ msgstr "Любимый цвет"
 #: src/membership/service/bridge.py:40
 msgid "The username or password provided is incorrect."
 msgstr "Предоставленное имя пользователя или пароль неверные."
+
+#: src/membership/service/bridge.py:55
+msgid "The user with such username is already registered. Please try another."
+msgstr "Пользователь с таким именем уже зарегистрирован. "
+"Пожалуйста, попробуйте другое."
+
+#: src/membership/service/bridge.py:60
+msgid ""
+"The system was unable to create an account for you. Please try again later."
+msgstr "Система не смогла создать учетную запись для Вас. "
+"Пожалуйста, повторите попытку позже."
