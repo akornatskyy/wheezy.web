@@ -6,6 +6,7 @@ from operator import itemgetter
 from wheezy.core.collections import attrdict
 from wheezy.core.comp import u
 from wheezy.core.descriptors import attribute
+from wheezy.security.principal import Principal
 from wheezy.web.handlers.base import BaseHandler
 
 from membership.models import Credential
@@ -30,6 +31,8 @@ class SignInHandler(BaseHandler):
         return Factory(self.context)
 
     def get(self, credential=None):
+        if self.principal:
+            return self.redirect_for('default')
         credential = credential or Credential()
         return self.render_response('membership/signin.html',
                 credential=credential,
@@ -43,6 +46,16 @@ class SignInHandler(BaseHandler):
                 or not self.factory.membership.authenticate(credential)):
             credential.password = u('')
             return self.get(credential)
+        self.principal = Principal(
+                id=credential.username,
+                alias=credential.username)
+        return self.redirect_for('default')
+
+
+class SignOutHandler(BaseHandler):
+
+    def get(self):
+        del self.principal
         return self.redirect_for('default')
 
 
@@ -86,4 +99,7 @@ class SignUpHandler(BaseHandler):
             registration.credential.password = u('')
             self.viewdata.confirm_password = u('')
             return self.get(registration)
+        self.principal = Principal(
+                id=registration.credential.username,
+                alias=registration.credential.username)
         return self.redirect_for('default')

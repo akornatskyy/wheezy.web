@@ -11,6 +11,7 @@ from wheezy.core.i18n import TranslationsManager
 from wheezy.http.response import internal_error
 from wheezy.http.response import not_found
 from wheezy.http.response import redirect
+from wheezy.security.crypto.ticket import Ticket
 from wheezy.routing import Router
 from wheezy.web.handlers.base import RedirectRouteHandler
 
@@ -71,5 +72,11 @@ options = {
         'translations_manager': translations_manager,
         'router': router,
         'render_template': mako_render,
-        'membership': MockFactory
+        'membership': MockFactory,
+
+        'auth_cookie': '_a',
+        'auth_cookie_domain': None,
+        'auth_cookie_path': '/',
+        'auth_cookie_secure': False,
+        'auth_ticket': Ticket()
 }

@@ -1,1 +1,6 @@
-[<a href="${path_for('signin')}">Sign In</a>]
+% if principal:
+Welcome <b>${principal.alias}</b>!
+[<a href="${path_for('signout')}">Sign out</a>]
+% else:
+[<a href="${path_for('signin')}">Sign in</a>]
+% endif

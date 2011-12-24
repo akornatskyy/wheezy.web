@@ -14,7 +14,9 @@ class MethodHandler(object):
         return handler()
 
     def __init__(self, request):
+        self.options = request.config.options
         self.request = request
+        self.cookies = []
 
     def __call__(self):
         method = self.request.METHOD
@@ -27,6 +29,8 @@ class MethodHandler(object):
         else:
             response = method_not_allowed(self.request.config)
         assert isinstance(response, HttpResponse)
+        if self.cookies:
+            response.cookies.extend(self.cookies)
         return response
 
     def head(self):
