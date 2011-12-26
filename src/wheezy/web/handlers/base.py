@@ -5,6 +5,7 @@ from uuid import uuid4
 from wheezy.core.collections import last_item_adapter
 from wheezy.core.descriptors import attribute
 from wheezy.core.url import urlparts
+from wheezy.core.uuid import UUID_EMPTY
 from wheezy.core.uuid import parse_uuid
 from wheezy.core.uuid import shrink_uuid
 from wheezy.html.factory import widget
@@ -141,7 +142,7 @@ class BaseHandler(MethodHandler, ValidationMixin):
     principal = property(getprincipal, setprincipal, delprincipal)
 
     @attribute
-    def xsrf_token(self):
+    def xsrf_token2(self):
         options = self.options
         xsrf_name = options['xsrf_name']
         try:
@@ -152,6 +153,7 @@ class BaseHandler(MethodHandler, ValidationMixin):
                 xsrf_name,
                 value=xsrf_token,
                 max_age=self.ticket.max_age,
+                path=self.request.SCRIPT_NAME + '/',
                 httponly=True,
                 options=options))
         return xsrf_token
@@ -164,12 +166,52 @@ class BaseHandler(MethodHandler, ValidationMixin):
             return True
         else:
             self.cookies.append(HttpCookie.delete(
-                xsrf_name, options=options))
+                xsrf_name,
+                path=self.request.SCRIPT_NAME + '/',
+                options=options))
             return False
 
     def xsrf_widget(self):
         return '<input type="hidden" name="' + self.options['xsrf_name'] \
                 + '" value="' + self.xsrf_token + '" />'
+
+    def getxsrf_token(self):
+        if hasattr(self, '__xsrf_token'):
+            return self.__xsrf_token
+        options = self.options
+        xsrf_name = options['xsrf_name']
+        try:
+            xsrf_token = self.request.COOKIES[xsrf_name]
+        except KeyError:
+            xsrf_token = None
+        if self.request.METHOD in ('GET', 'HEAD'):
+            if xsrf_token is None:
+                xsrf_token = shrink_uuid(uuid4())
+                self.cookies.append(HttpCookie(
+                    xsrf_name,
+                    value=xsrf_token,
+                    max_age=self.ticket.max_age,
+                    path=self.request.SCRIPT_NAME + '/',
+                    httponly=True,
+                    options=options))
+        else:
+            if not xsrf_token or xsrf_token != last_item_adapter(
+                        self.request.FORM)[xsrf_name] or parse_uuid(
+                                xsrf_token) == UUID_EMPTY:
+                self.delxsrf_token()
+                return None
+        self.__xsrf_token = xsrf_token
+        return xsrf_token
+
+    def delxsrf_token(self):
+        options = self.options
+        self.__xsrf_token = None
+        self.cookies.append(HttpCookie.delete(
+            options['xsrf_name'],
+            path=self.request.SCRIPT_NAME + '/',
+            options=options))
+
+    xsrf_token = property(getxsrf_token, None, delxsrf_token)
 
 
 def redirect_handler(route_name):

@@ -39,7 +39,8 @@ class SignInHandler(BaseHandler):
                 viewdata=self.viewdata)
 
     def post(self):
-        if not self.validate_xsrf():
+        #if not self.validate_xsrf():
+        if not self.xsrf_token:
             return self.redirect_for(self.request.route_args.route_name)
         credential = Credential()
         if (not self.try_update_model(credential)
@@ -48,6 +49,7 @@ class SignInHandler(BaseHandler):
                 or not self.factory.membership.authenticate(credential)):
             credential.password = u('')
             return self.get(credential)
+        del self.xsrf_token
         self.principal = Principal(
                 id=credential.username,
                 alias=credential.username)
