@@ -74,9 +74,12 @@ options = {
         'render_template': mako_render,
         'membership': MockFactory,
 
+        'ticket': Ticket(),
+
         'auth_cookie': '_a',
         'auth_cookie_domain': None,
         'auth_cookie_path': '/',
         'auth_cookie_secure': False,
-        'auth_ticket': Ticket()
+
+        'xsrf_name': '_x'
 }

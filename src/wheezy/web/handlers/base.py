@@ -1,13 +1,16 @@
 """
 """
+from uuid import uuid4
 
+from wheezy.core.collections import last_item_adapter
 from wheezy.core.descriptors import attribute
 from wheezy.core.url import urlparts
+from wheezy.core.uuid import parse_uuid
+from wheezy.core.uuid import shrink_uuid
 from wheezy.html.factory import widget
 from wheezy.http.cookie import HttpCookie
 from wheezy.http.response import HttpResponse
 from wheezy.http.response import redirect
-from wheezy.security.principal import ANONYMOUS
 from wheezy.security.principal import Principal
 from wheezy.validation.mixin import ValidationMixin
 from wheezy.validation.model import try_update_model
@@ -62,7 +65,8 @@ class BaseHandler(MethodHandler, ValidationMixin):
             'route_args': self.request.route_args,
             'absolute_url_for': self.absolute_url_for,
             'path_for': self.path_for,
-            'principal': self.principal
+            'principal': self.principal,
+            'xsrf': self.xsrf_widget
         }
 
     def try_update_model(self, model, values=None):
@@ -85,13 +89,17 @@ class BaseHandler(MethodHandler, ValidationMixin):
             **kwargs))
         return response
 
+    @attribute
+    def ticket(self):
+        return self.options['ticket']
+
     def getprincipal(self):
         if hasattr(self, '__principal'):
             return self.__principal
         principal = None
         try:
             options = self.options
-            auth_ticket = options['auth_ticket']
+            auth_ticket = self.ticket
             ticket, time_left = auth_ticket.decode(
                 self.request.COOKIES[options['auth_cookie']]
             )
@@ -109,7 +117,7 @@ class BaseHandler(MethodHandler, ValidationMixin):
     def setprincipal(self, principal):
         assert not hasattr(self, '__principal')
         options = self.options
-        auth_ticket = options['auth_ticket']
+        auth_ticket = self.ticket
         self.cookies.append(HttpCookie(
             options['auth_cookie'],
             value=auth_ticket.encode(principal.dump()),
@@ -131,6 +139,37 @@ class BaseHandler(MethodHandler, ValidationMixin):
         self.__principal = None
 
     principal = property(getprincipal, setprincipal, delprincipal)
+
+    @attribute
+    def xsrf_token(self):
+        options = self.options
+        xsrf_name = options['xsrf_name']
+        try:
+            xsrf_token = self.request.COOKIES[xsrf_name]
+        except KeyError:
+            xsrf_token = shrink_uuid(uuid4())
+            self.cookies.append(HttpCookie(
+                xsrf_name,
+                value=xsrf_token,
+                max_age=self.ticket.max_age,
+                httponly=True,
+                options=options))
+        return xsrf_token
+
+    def validate_xsrf(self):
+        options = self.options
+        xsrf_name = options['xsrf_name']
+        xsrf_token = last_item_adapter(self.request.FORM)[xsrf_name]
+        if xsrf_token and xsrf_token == self.xsrf_token:
+            return True
+        else:
+            self.cookies.append(HttpCookie.delete(
+                xsrf_name, options=options))
+            return False
+
+    def xsrf_widget(self):
+        return '<input type="hidden" name="' + self.options['xsrf_name'] \
+                + '" value="' + self.xsrf_token + '" />'
 
 
 def redirect_handler(route_name):

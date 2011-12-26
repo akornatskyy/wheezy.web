@@ -39,6 +39,8 @@ class SignInHandler(BaseHandler):
                 viewdata=self.viewdata)
 
     def post(self):
+        if not self.validate_xsrf():
+            return self.redirect_for(self.request.route_args.route_name)
         credential = Credential()
         if (not self.try_update_model(credential)
                 & self.try_update_model(self.viewdata)

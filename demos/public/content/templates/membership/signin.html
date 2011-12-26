@@ -10,6 +10,7 @@
     </p>
     ${credential.error()}
     <form action="${path_for('signin')}" method="post">
+        ${xsrf()}
         <div>
             <fieldset>
                 <legend>Account Credentials</legend>
@@ -29,8 +30,7 @@
                 ${viewdata.remember_me.error()}
                 </p>
                 <p>
-                <input name="signin" type="submit" value="Sign In" />
-                <input name="__RequestVerificationToken" type="hidden" value="" />
+                <input type="submit" name="signin" value="Sign In" />
                 </p>
             </fieldset>
             <i><b>demo</b> user password is P@ssw0rd. You can press 'Ctrl'
