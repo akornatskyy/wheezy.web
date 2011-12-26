@@ -6,6 +6,7 @@ from operator import itemgetter
 from wheezy.core.collections import attrdict
 from wheezy.core.comp import u
 from wheezy.core.descriptors import attribute
+from wheezy.http.response import bad_request
 from wheezy.security.principal import Principal
 from wheezy.web.handlers.base import BaseHandler
 
@@ -39,8 +40,7 @@ class SignInHandler(BaseHandler):
                 viewdata=self.viewdata)
 
     def post(self):
-        #if not self.validate_xsrf():
-        if not self.xsrf_token:
+        if not self.validate_xsrf_token():
             return self.redirect_for(self.request.route_args.route_name)
         credential = Credential()
         if (not self.try_update_model(credential)
@@ -49,10 +49,10 @@ class SignInHandler(BaseHandler):
                 or not self.factory.membership.authenticate(credential)):
             credential.password = u('')
             return self.get(credential)
-        del self.xsrf_token
         self.principal = Principal(
                 id=credential.username,
                 alias=credential.username)
+        del self.xsrf_token
         return self.redirect_for('default')
 
 
