@@ -8,6 +8,7 @@ from wheezy.caching.memory import MemoryCache
 from wheezy.http.cache import httpcache
 from wheezy.http.cacheprofile import CacheProfile
 from wheezy.routing import url
+from wheezy.web.handlers.base import redirect_handler
 from wheezy.web.handlers.file import file_handler
 from wheezy.web.handlers.template import template_handler
 
@@ -36,6 +37,8 @@ all_urls = [
         (locale_pattern, membership_urls, locale_defaults),
         (locale_pattern + 'error/', error_urls, locale_defaults),
         (locale_pattern + 'error/', test_error_urls, locale_defaults),
+        url('favicon.ico',
+            redirect_handler('static', path='img/favicon.ico')),
         url('static/{path:any}',
             httpcache(
                 file_handler(

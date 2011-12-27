@@ -256,18 +256,21 @@ class BaseHandler(MethodHandler, ValidationMixin):
                 + '" value="' + self.resubmission + '" />'
 
 
-def redirect_handler(route_name):
-    return lambda request: RedirectRouteHandler(request, route_name)
+def redirect_handler(route_name, **route_args):
+    return lambda request: RedirectRouteHandler(request,
+            route_name,
+            **route_args)
 
 
 class RedirectRouteHandler(BaseHandler):
 
-    def __init__(self, request, route_name):
+    def __init__(self, request, route_name, **route_args):
         self.route_name = route_name
+        self.route_args = route_args
         super(RedirectRouteHandler, self).__init__(request)
 
     def get(self):
-        return self.redirect_for(self.route_name)
+        return self.redirect_for(self.route_name, **self.route_args)
 
     def post(self):
-        return self.redirect_for(self.route_name)
+        return self.redirect_for(self.route_name, **self.route_args)
