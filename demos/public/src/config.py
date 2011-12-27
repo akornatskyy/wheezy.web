@@ -47,7 +47,7 @@ error_map = defaultdict(lambda: 'http500', {
 })
 
 
-def handle_errors(request, handler):
+def dispatch(request, handler):
     if handler:
         try:
             response = handler(request)

@@ -9,6 +9,22 @@ except:
 
 README = open(os.path.join(os.path.dirname(__file__), 'README')).read()
 
+install_requires = [
+    'wheezy.core',
+    'wheezy.caching',
+    'wheezy.html',
+    'wheezy.http',
+    'wheezy.routing',
+    'wheezy.security',
+    'wheezy.validation',
+    'mako'
+]
+
+try:
+    import uuid
+except:
+    install_requires.append('uuid')
+
 setup(
     name='wheezy.web',
     version='0.1',
@@ -45,16 +61,7 @@ setup(
     namespace_packages=['wheezy'],
 
     zip_safe=True,
-    install_requires=[
-        'wheezy.core',
-        'wheezy.caching',
-        'wheezy.html',
-        'wheezy.http',
-        'wheezy.routing',
-        'wheezy.security',
-        'wheezy.validation',
-        'mako'
-    ],
+    install_requires = install_requires,
     extras_require={
         'dev': [
             'coverage',

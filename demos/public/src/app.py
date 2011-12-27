@@ -4,8 +4,8 @@
 from wheezy.core.collections import defaultattrdict
 from wheezy.http.request import HttpRequest
 
+from config import dispatch
 from config import options
-from config import handle_errors
 from config import router
 from urls import all_urls
 
@@ -17,7 +17,7 @@ def main(environ, start_response):
     handler, route_args = router.match(environ['PATH_INFO'].lstrip('/'))
     environ['route_args'] = defaultattrdict(str, route_args)
     request = HttpRequest(environ, options=options)
-    response = handle_errors(request, handler)
+    response = dispatch(request, handler)
     return response(start_response)
 
 
