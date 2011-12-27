@@ -81,5 +81,6 @@ options = {
         'auth_cookie_path': '/',
         'auth_cookie_secure': False,
 
-        'xsrf_name': '_x'
+        'xsrf_name': '_x',
+        'resubmission_name': '_c'
 }

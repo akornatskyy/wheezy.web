@@ -4,6 +4,8 @@ from uuid import uuid4
 
 from wheezy.core.collections import last_item_adapter
 from wheezy.core.descriptors import attribute
+from wheezy.core.i18n import null_translations
+from wheezy.core.i18n import ref_gettext
 from wheezy.core.url import urlparts
 from wheezy.core.uuid import UUID_EMPTY
 from wheezy.core.uuid import parse_uuid
@@ -29,6 +31,8 @@ class BaseHandler(MethodHandler, ValidationMixin):
         c['principal'] = self.principal
         return c
 
+    # region: routing
+
     def path_for(self, name, **kwargs):
         script_name = self.request.SCRIPT_NAME + '/'
         route_args = dict(self.request.route_args)
@@ -48,6 +52,8 @@ class BaseHandler(MethodHandler, ValidationMixin):
                 permanent=False,
                 options=self.options)
 
+    # region: i18n
+
     @attribute
     def locale(self):
         return self.request.route_args['locale']
@@ -57,8 +63,21 @@ class BaseHandler(MethodHandler, ValidationMixin):
         return self.options['translations_manager'][self.locale]
 
     @attribute
+    def translation(self):
+        return null_translations
+
+    # region: model
+
+    @attribute
     def errors(self):
         return {}
+
+    def try_update_model(self, model, values=None):
+        return try_update_model(
+                model, values or self.request.FORM, self.errors,
+                self.translations['validation'])
+
+    # region: templates
 
     @attribute
     def helpers(self):
@@ -67,13 +86,10 @@ class BaseHandler(MethodHandler, ValidationMixin):
             'absolute_url_for': self.absolute_url_for,
             'path_for': self.path_for,
             'principal': self.principal,
-            'xsrf': self.xsrf_widget
+            'xsrf': self.xsrf_widget,
+            'resubmission': self.resubmission_widget,
+            '_': ref_gettext(self.translation)
         }
-
-    def try_update_model(self, model, values=None):
-        return try_update_model(
-                model, values or self.request.FORM, self.errors,
-                self.translations['validation'])
 
     def render_template(self, template_name, **kwargs):
         if kwargs:
@@ -90,12 +106,14 @@ class BaseHandler(MethodHandler, ValidationMixin):
             **kwargs))
         return response
 
+    # region: authentication
+
     @attribute
     def ticket(self):
         return self.options['ticket']
 
     def getprincipal(self):
-        if hasattr(self, '__principal'):
+        if hasattr(self, '_BaseHandler__principal'):
             return self.__principal
         principal = None
         try:
@@ -141,8 +159,10 @@ class BaseHandler(MethodHandler, ValidationMixin):
 
     principal = property(getprincipal, setprincipal, delprincipal)
 
+    # region: xsrf
+
     def getxsrf_token(self):
-        if hasattr(self, '__xsrf_token'):
+        if hasattr(self, '_BaseHandler__xsrf_token'):
             return self.__xsrf_token
         options = self.options
         xsrf_name = options['xsrf_name']
@@ -177,15 +197,63 @@ class BaseHandler(MethodHandler, ValidationMixin):
                 xsrf_token) != UUID_EMPTY:
             return True
         else:
-            self.cookies.append(HttpCookie.delete(
-                xsrf_name,
-                path=self.request.SCRIPT_NAME + '/',
-                options=options))
+            self.delxsrf_token()
             return False
 
     def xsrf_widget(self):
         return '<input type="hidden" name="' + self.options['xsrf_name'] \
                 + '" value="' + self.xsrf_token + '" />'
+
+    # region: resubmission
+
+    def getresubmission(self):
+        if hasattr(self, '_BaseHandler__resubmission'):
+            return self.__resubmission
+        try:
+            counter = self.request.COOKIES[self.options['resubmission_name']]
+            self.__resubmission = counter
+        except (KeyError, TypeError):
+            counter = '0'
+            self.setresubmission(counter)
+        return counter
+
+    def setresubmission(self, value):
+        options = self.options
+        self.cookies.append(HttpCookie(
+            options['resubmission_name'],
+            value=value,
+            max_age=self.ticket.max_age,
+            path=self.request.SCRIPT_NAME + '/',
+            httponly=True,
+            options=options))
+        self.__resubmission = value
+
+    def delresubmission(self):
+        options = self.options
+        self.__resubmission = None
+        name = options['resubmission_name']
+        self.cookies = filter(lambda c: c.name != name, self.cookies)
+        self.cookies.append(HttpCookie.delete(
+            name,
+            path=self.request.SCRIPT_NAME + '/',
+            options=options))
+
+    resubmission = property(getresubmission, setresubmission, delresubmission)
+
+    def validate_resubmission(self):
+        name = self.options['resubmission_name']
+        counter = last_item_adapter(self.request.FORM)[name]
+        if counter and counter == self.resubmission:
+            counter = str(int(counter) + 1)
+            self.setresubmission(counter)
+            return True
+        else:
+            return False
+
+    def resubmission_widget(self):
+        return '<input type="hidden" name="' + \
+                self.options['resubmission_name'] \
+                + '" value="' + self.resubmission + '" />'
 
 
 def redirect_handler(route_name):
@@ -199,4 +267,7 @@ class RedirectRouteHandler(BaseHandler):
         super(RedirectRouteHandler, self).__init__(request)
 
     def get(self):
+        return self.redirect_for(self.route_name)
+
+    def post(self):
         return self.redirect_for(self.route_name)

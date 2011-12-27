@@ -28,6 +28,10 @@ class SignInHandler(BaseHandler):
             })
 
     @attribute
+    def translation(self):
+        return self.translations['membership']
+
+    @attribute
     def factory(self):
         return Factory(self.context)
 
@@ -74,6 +78,10 @@ class SignUpHandler(BaseHandler):
             })
 
     @attribute
+    def translation(self):
+        return self.translations['membership']
+
+    @attribute
     def factory(self):
         return Factory(self.context)
 
@@ -90,6 +98,11 @@ class SignUpHandler(BaseHandler):
                 )
 
     def post(self):
+        if not self.validate_resubmission():
+            self.error('Your registration request has been queued. '
+                    'Please wait while your request will be processed. '
+                    'If your request fails please try again.')
+            return self.get()
         registration = Registration()
         if (not self.try_update_model(self.viewdata)
                 & self.try_update_model(registration)
@@ -106,4 +119,5 @@ class SignUpHandler(BaseHandler):
         self.principal = Principal(
                 id=registration.credential.username,
                 alias=registration.credential.username)
+        del self.resubmission
         return self.redirect_for('default')

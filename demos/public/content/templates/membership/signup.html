@@ -12,6 +12,7 @@
     </p>
     ${registration.error()}
     <form action="${path_for('signup')}" method="post">
+        ${resubmission()}
         <div>
             <fieldset>
                 <legend>Account Information</legend>
@@ -51,8 +52,8 @@
                 ${registration.answer.error()}
                 </p>
                 <p>
-                <input name="register" type="submit" value="Register" />
-                <input name="__RequestVerificationToken" type="hidden" value="" />
+                <input name="register" type="submit" value="Register"
+                onclick="this.disabled=true;" />
                 </p>
             </fieldset>
         </div>
