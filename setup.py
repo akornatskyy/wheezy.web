@@ -40,7 +40,7 @@ setup(
     keywords=[
         'web'
     ],
-    packages=['wheezy', 'wheezy.web'],
+    packages=['wheezy', 'wheezy.web', 'wheezy.web.handlers'],
     package_dir={'': 'src'},
     namespace_packages=['wheezy'],
 
