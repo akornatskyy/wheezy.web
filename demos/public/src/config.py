@@ -74,13 +74,19 @@ options = {
         'render_template': mako_render,
         'membership': MockFactory,
 
-        'ticket': Ticket(),
+        'ticket': Ticket(
+            max_age=1200,
+            salt='JNbCog95cDTo1NRb7inP',
+            options={
+                'CRYPTO_ENCRYPTION_KEY': '4oqiKhW3qzP2EiattMt7',
+                'CRYPTO_VALIDATION_KEY': 'A7GfjxIBCBA3vNqvafWf'
+            }),
 
-        'auth_cookie': '_a',
-        'auth_cookie_domain': None,
-        'auth_cookie_path': '',
-        'auth_cookie_secure': False,
+        'AUTH_COOKIE': '_a',
+        'AUTH_COOKIE_DOMAIN': None,
+        'AUTH_COOKIE_PATH': '',
+        'AUTH_COOKIE_SECURE': False,
 
-        'xsrf_name': '_x',
-        'resubmission_name': '_c'
+        'XSRF_NAME': '_x',
+        'RESUBMISSION_NAME': '_c'
 }
