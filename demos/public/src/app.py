@@ -2,7 +2,7 @@
 """
 
 from wheezy.core.collections import defaultattrdict
-from wheezy.http.request import HttpRequest
+from wheezy.http.request import HTTPRequest
 
 from config import dispatch
 from config import options
@@ -16,7 +16,7 @@ router.add_routes(all_urls)
 def main(environ, start_response):
     handler, route_args = router.match(environ['PATH_INFO'].lstrip('/'))
     environ['route_args'] = defaultattrdict(str, route_args)
-    request = HttpRequest(environ, options=options)
+    request = HTTPRequest(environ, options=options)
     response = dispatch(request, handler)
     return response(start_response)
 

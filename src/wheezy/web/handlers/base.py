@@ -11,8 +11,8 @@ from wheezy.core.uuid import UUID_EMPTY
 from wheezy.core.uuid import parse_uuid
 from wheezy.core.uuid import shrink_uuid
 from wheezy.html.factory import widget
-from wheezy.http.cookie import HttpCookie
-from wheezy.http.response import HttpResponse
+from wheezy.http.cookie import HTTPCookie
+from wheezy.http.response import HTTPResponse
 from wheezy.http.response import redirect
 from wheezy.security.principal import Principal
 from wheezy.validation.mixin import ValidationMixin
@@ -35,10 +35,9 @@ class BaseHandler(MethodHandler, ValidationMixin):
     # region: routing
 
     def path_for(self, name, **kwargs):
-        script_name = self.request.SCRIPT_NAME + '/'
-        route_args = dict(self.request.route_args)
+        route_args = dict(self.route_args)
         route_args.update(kwargs)
-        return script_name + self.options['router'].path_for(
+        return self.request.root_path + self.options['router'].path_for(
                 name, **route_args)
 
     def absolute_url_for(self, name, **kwargs):
@@ -57,7 +56,7 @@ class BaseHandler(MethodHandler, ValidationMixin):
 
     @attribute
     def locale(self):
-        return self.request.route_args['locale']
+        return self.route_args['locale']
 
     @attribute
     def translations(self):
@@ -75,7 +74,7 @@ class BaseHandler(MethodHandler, ValidationMixin):
 
     def try_update_model(self, model, values=None):
         return try_update_model(
-                model, values or self.request.FORM, self.errors,
+                model, values or self.request.form, self.errors,
                 self.translations['validation'])
 
     # region: templates
@@ -83,7 +82,7 @@ class BaseHandler(MethodHandler, ValidationMixin):
     @attribute
     def helpers(self):
         return {
-            'route_args': self.request.route_args,
+            'route_args': self.route_args,
             'absolute_url_for': self.absolute_url_for,
             'path_for': self.path_for,
             'principal': self.principal,
@@ -101,7 +100,7 @@ class BaseHandler(MethodHandler, ValidationMixin):
         return self.options['render_template'](template_name, **kwargs)
 
     def render_response(self, template_name, **kwargs):
-        response = HttpResponse(options=self.options)
+        response = HTTPResponse(options=self.options)
         response.write(self.render_template(
             template_name,
             **kwargs))
@@ -121,7 +120,7 @@ class BaseHandler(MethodHandler, ValidationMixin):
             options = self.options
             auth_ticket = self.ticket
             ticket, time_left = auth_ticket.decode(
-                self.request.COOKIES[options['auth_cookie']]
+                self.request.cookies[options['auth_cookie']]
             )
             if ticket:
                 principal = Principal.load(ticket)
@@ -138,10 +137,10 @@ class BaseHandler(MethodHandler, ValidationMixin):
         assert not hasattr(self, '__principal')
         options = self.options
         auth_ticket = self.ticket
-        self.cookies.append(HttpCookie(
+        self.cookies.append(HTTPCookie(
             options['auth_cookie'],
             value=auth_ticket.encode(principal.dump()),
-            path=self.request.SCRIPT_NAME + options['auth_cookie_path'],
+            path=self.request.root_path + options['auth_cookie_path'],
             domain=options['auth_cookie_domain'],
             secure=options['auth_cookie_secure'],
             httponly=True,
@@ -150,9 +149,9 @@ class BaseHandler(MethodHandler, ValidationMixin):
 
     def delprincipal(self):
         options = self.options
-        self.cookies.append(HttpCookie.delete(
+        self.cookies.append(HTTPCookie.delete(
             options['auth_cookie'],
-            path=self.request.SCRIPT_NAME + options['auth_cookie_path'],
+            path=self.request.root_path + options['auth_cookie_path'],
             domain=options['auth_cookie_domain'],
             options=options))
         self.__principal = None
@@ -167,13 +166,13 @@ class BaseHandler(MethodHandler, ValidationMixin):
         options = self.options
         xsrf_name = options['xsrf_name']
         try:
-            xsrf_token = self.request.COOKIES[xsrf_name]
+            xsrf_token = self.request.cookies[xsrf_name]
         except KeyError:
             xsrf_token = shrink_uuid(uuid4())
-            self.cookies.append(HttpCookie(
+            self.cookies.append(HTTPCookie(
                 xsrf_name,
                 value=xsrf_token,
-                path=self.request.SCRIPT_NAME + '/',
+                path=self.request.root_path,
                 httponly=True,
                 options=options))
         return xsrf_token
@@ -181,9 +180,9 @@ class BaseHandler(MethodHandler, ValidationMixin):
     def delxsrf_token(self):
         options = self.options
         self.__xsrf_token = None
-        self.cookies.append(HttpCookie.delete(
+        self.cookies.append(HTTPCookie.delete(
             options['xsrf_name'],
-            path=self.request.SCRIPT_NAME + '/',
+            path=self.request.root_path,
             options=options))
 
     xsrf_token = property(getxsrf_token, None, delxsrf_token)
@@ -191,7 +190,7 @@ class BaseHandler(MethodHandler, ValidationMixin):
     def validate_xsrf_token(self):
         options = self.options
         xsrf_name = options['xsrf_name']
-        xsrf_token = last_item_adapter(self.request.FORM)[xsrf_name]
+        xsrf_token = last_item_adapter(self.request.form)[xsrf_name]
         if xsrf_token and xsrf_token == self.xsrf_token and parse_uuid(
                 xsrf_token) != UUID_EMPTY:
             return True
@@ -209,7 +208,7 @@ class BaseHandler(MethodHandler, ValidationMixin):
         if hasattr(self, '_BaseHandler__resubmission'):
             return self.__resubmission
         try:
-            counter = self.request.COOKIES[self.options['resubmission_name']]
+            counter = self.request.cookies[self.options['resubmission_name']]
             self.__resubmission = counter
         except (KeyError, TypeError):
             counter = '0'
@@ -218,10 +217,10 @@ class BaseHandler(MethodHandler, ValidationMixin):
 
     def setresubmission(self, value):
         options = self.options
-        self.cookies.append(HttpCookie(
+        self.cookies.append(HTTPCookie(
             options['resubmission_name'],
             value=value,
-            path=self.request.SCRIPT_NAME + '/',
+            path=self.request.root_path,
             httponly=True,
             options=options))
         self.__resubmission = value
@@ -231,16 +230,16 @@ class BaseHandler(MethodHandler, ValidationMixin):
         self.__resubmission = None
         name = options['resubmission_name']
         self.cookies = list(filter(lambda c: c.name != name, self.cookies))
-        self.cookies.append(HttpCookie.delete(
+        self.cookies.append(HTTPCookie.delete(
             name,
-            path=self.request.SCRIPT_NAME + '/',
+            path=self.request.root_path,
             options=options))
 
     resubmission = property(getresubmission, setresubmission, delresubmission)
 
     def validate_resubmission(self):
         name = self.options['resubmission_name']
-        counter = last_item_adapter(self.request.FORM)[name]
+        counter = last_item_adapter(self.request.form)[name]
         if counter and counter == self.resubmission:
             counter = str(int(counter) + 1)
             self.setresubmission(counter)

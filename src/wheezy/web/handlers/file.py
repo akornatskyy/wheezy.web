@@ -8,9 +8,12 @@ import stat
 from datetime import datetime
 
 from wheezy.core.datetime import parse_http_datetime
-from wheezy.http.cachepolicy import HttpCachePolicy
-from wheezy.http.response import HttpResponse
+from wheezy.http.cachepolicy import HTTPCachePolicy
+from wheezy.http.response import HTTPResponse
 from wheezy.web.handlers.method import MethodHandler
+
+
+HTTP_HEADER_ACCEPT_RANGE_NONE = ('Accept-Ranges', 'none')
 
 
 def file_handler(root, age=0):
@@ -26,7 +29,6 @@ def file_handler(root, age=0):
 class FileHandler(MethodHandler):
 
     def __init__(self, request, root, age=0):
-        assert hasattr(request, 'route_args')
         self.root = root
         self.age = age
         super(FileHandler, self).__init__(request)
@@ -35,8 +37,7 @@ class FileHandler(MethodHandler):
         return self.get(skip_body=True)
 
     def get(self, skip_body=False):
-        request = self.request
-        route_args = request.route_args
+        route_args = self.route_args
         path = route_args['path']
         assert path
         abspath = os.path.abspath(os.path.join(self.root, path))
@@ -48,12 +49,13 @@ class FileHandler(MethodHandler):
             return forbidden()
 
         mime_type, encoding = mimetypes.guess_type(abspath)
-        response = HttpResponse(
+        request = self.request
+        response = HTTPResponse(
                 content_type=mime_type or 'plain/text',
                 encoding=encoding,
                 options=request.config)
 
-        response.cache = cache_policy = HttpCachePolicy('public')
+        response.cache = cache_policy = HTTPCachePolicy('public')
 
         last_modified_stamp = os.stat(abspath)[stat.ST_MTIME]
         last_modified = datetime.utcfromtimestamp(last_modified_stamp)
@@ -64,7 +66,8 @@ class FileHandler(MethodHandler):
             cache_policy.max_age(age)
             cache_policy.expires(datetime.utcnow() + age)
 
-        modified_since = request.HEADERS.IF_MODIFIED_SINCE
+        environ = request.environ
+        modified_since = environ.get('HTTP_IF_MODIFIED_SINCE', None)
         if modified_since:
             modified_since = parse_http_datetime(modified_since)
             if modified_since >= last_modified:
@@ -73,14 +76,14 @@ class FileHandler(MethodHandler):
 
         etag = '\"' + hex(last_modified_stamp)[2:] + '\"'
         cache_policy.etag(etag)
-        none_match = request.HEADERS.IF_NONE_MATCH
+        none_match = environ.get('HTTP_IF_NONE_MATCH', None)
         if none_match and etag in none_match:
             response.status_code = 304
             skip_body = True
 
         if not skip_body:
-            response.headers.append(('Accept-Ranges', 'none'))
-            file = open(abspath, "rb")
+            response.headers.append(HTTP_HEADER_ACCEPT_RANGE_NONE)
+            file = open(abspath, 'rb')
             try:
                 response.write(file.read())
             finally:

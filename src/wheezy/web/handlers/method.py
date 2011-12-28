@@ -3,7 +3,7 @@
 
 from wheezy.http.response import not_found
 from wheezy.http.response import method_not_allowed
-from wheezy.http.response import HttpResponse
+from wheezy.http.response import HTTPResponse
 
 
 class MethodHandler(object):
@@ -16,10 +16,11 @@ class MethodHandler(object):
     def __init__(self, request):
         self.options = request.config.options
         self.request = request
+        self.route_args = request.environ['route_args']
         self.cookies = []
 
     def __call__(self):
-        method = self.request.METHOD
+        method = self.request.method
         if method == 'GET':
             response = self.get()
         elif method == 'POST':
@@ -28,7 +29,7 @@ class MethodHandler(object):
             response = self.head()
         else:
             response = method_not_allowed(self.request.config)
-        assert isinstance(response, HttpResponse)
+        assert isinstance(response, HTTPResponse)
         if self.cookies:
             response.cookies.extend(self.cookies)
         return response

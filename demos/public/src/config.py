@@ -61,7 +61,7 @@ def dispatch(request, handler):
     status_code = response.status_code
     if status_code >= 400:
         error_route_name = error_map[status_code]
-        route_name = request.route_args.route_name
+        route_name = request.environ['route_args']['route_name']
         if error_route_name != route_name:
             response = RedirectRouteHandler(request, error_route_name)
     return response
@@ -78,7 +78,7 @@ options = {
 
         'auth_cookie': '_a',
         'auth_cookie_domain': None,
-        'auth_cookie_path': '/',
+        'auth_cookie_path': '',
         'auth_cookie_secure': False,
 
         'xsrf_name': '_x',
