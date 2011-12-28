@@ -10,6 +10,7 @@ clean:
 	find src/ -type d -name __pycache__ | xargs rm -rf
 	find src/ -name '*.py[co]' -delete
 	find src/ -name '*.mo' -delete
+	rm -rf /tmp/mako_modules/
 
 run:
 	$(PYTHON) src/app.py

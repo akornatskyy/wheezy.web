@@ -17,6 +17,7 @@ from wheezy.http.response import redirect
 from wheezy.security.principal import Principal
 from wheezy.validation.mixin import ValidationMixin
 from wheezy.validation.model import try_update_model
+from wheezy.web.comp import iteritems
 from wheezy.web.handlers.method import MethodHandler
 
 
@@ -95,7 +96,7 @@ class BaseHandler(MethodHandler, ValidationMixin):
         if kwargs:
             errors = self.errors
             kwargs = dict((name, widget(value, errors))
-                    for name, value in kwargs.iteritems())
+                    for name, value in iteritems(kwargs))
         kwargs.update(self.helpers)
         return self.options['render_template'](template_name, **kwargs)
 
@@ -140,7 +141,6 @@ class BaseHandler(MethodHandler, ValidationMixin):
         self.cookies.append(HttpCookie(
             options['auth_cookie'],
             value=auth_ticket.encode(principal.dump()),
-            max_age=auth_ticket.max_age,
             path=self.request.SCRIPT_NAME + options['auth_cookie_path'],
             domain=options['auth_cookie_domain'],
             secure=options['auth_cookie_secure'],
@@ -173,7 +173,6 @@ class BaseHandler(MethodHandler, ValidationMixin):
             self.cookies.append(HttpCookie(
                 xsrf_name,
                 value=xsrf_token,
-                max_age=self.ticket.max_age,
                 path=self.request.SCRIPT_NAME + '/',
                 httponly=True,
                 options=options))
@@ -222,7 +221,6 @@ class BaseHandler(MethodHandler, ValidationMixin):
         self.cookies.append(HttpCookie(
             options['resubmission_name'],
             value=value,
-            max_age=self.ticket.max_age,
             path=self.request.SCRIPT_NAME + '/',
             httponly=True,
             options=options))
@@ -232,7 +230,7 @@ class BaseHandler(MethodHandler, ValidationMixin):
         options = self.options
         self.__resubmission = None
         name = options['resubmission_name']
-        self.cookies = filter(lambda c: c.name != name, self.cookies)
+        self.cookies = list(filter(lambda c: c.name != name, self.cookies))
         self.cookies.append(HttpCookie.delete(
             name,
             path=self.request.SCRIPT_NAME + '/',

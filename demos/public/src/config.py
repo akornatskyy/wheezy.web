@@ -53,7 +53,7 @@ def dispatch(request, handler):
             response = handler(request)
         except (KeyboardInterrupt, SystemExit, MemoryError):
             raise
-        except Exception, e:
+        except Exception:
             print_exc()
             response = internal_error()
     else:

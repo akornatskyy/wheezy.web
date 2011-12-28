@@ -1,7 +1,7 @@
 """
 """
 
-from wheezy.http.comp import u
+from wheezy.core.comp import u
 
 from membership.models import Credential
 from membership.repository.contract import IMembershipRepository

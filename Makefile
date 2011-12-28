@@ -37,7 +37,7 @@ env:
 		echo 'done.'; \
 	fi
 	$(EASY_INSTALL) -i $(PYPI) -O2 coverage nose pytest \
-		pytest-pep8 pytest-cov
+		pytest-pep8 pytest-cov wsgiref
 	# The following packages available for python < 3.0
 	#if [ "$$(echo $(VERSION) | sed 's/\.//')" -lt 30 ]; then \
 	#	$(EASY_INSTALL) sphinx; \
