@@ -26,10 +26,10 @@ class BaseHandler(MethodHandler, ValidationMixin):
     @attribute
     def context(self):
         c = dict(self.options)
-        c['locale'] = self.locale
-        c['translations'] = self.translations
         c['errors'] = self.errors
+        c['locale'] = self.locale
         c['principal'] = self.principal
+        c['translations'] = self.translations
         return c
 
     # region: routing
@@ -82,13 +82,13 @@ class BaseHandler(MethodHandler, ValidationMixin):
     @attribute
     def helpers(self):
         return {
-            'route_args': self.route_args,
+            '_': ref_gettext(self.translation),
             'absolute_url_for': self.absolute_url_for,
             'path_for': self.path_for,
             'principal': self.principal,
-            'xsrf': self.xsrf_widget,
             'resubmission': self.resubmission_widget,
-            '_': ref_gettext(self.translation)
+            'route_args': self.route_args,
+            'xsrf': self.xsrf_widget
         }
 
     def render_template(self, template_name, **kwargs):
