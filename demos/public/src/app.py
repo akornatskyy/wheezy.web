@@ -14,7 +14,6 @@ router.add_routes(all_urls)
 
 
 def main(environ, start_response):
-    print(environ['PATH_INFO'])
     handler, route_args = router.match(environ['PATH_INFO'].lstrip('/'))
     environ['route_args'] = defaultattrdict(str, route_args)
     request = HTTPRequest(environ, options=options)
