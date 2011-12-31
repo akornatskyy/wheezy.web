@@ -27,6 +27,11 @@ cache_profile_static = CacheProfile('public',
 
 locale_pattern = '{locale:(en|ru)}/'
 locale_defaults = {'locale': 'en'}
+static_files = httpcache(
+        file_handler(
+            root='content/static/',
+            age=timedelta(hours=1)),
+        cache_profile_static)
 
 all_urls = [
         url('',
@@ -37,13 +42,6 @@ all_urls = [
         (locale_pattern, membership_urls, locale_defaults),
         (locale_pattern + 'error/', error_urls, locale_defaults),
         (locale_pattern + 'error/', test_error_urls, locale_defaults),
-        url('favicon.ico',
-            redirect_handler('static', path='img/favicon.ico')),
-        url('static/{path:any}',
-            httpcache(
-                file_handler(
-                    root='content/static/',
-                    age=timedelta(hours=1)),
-                cache_profile_static),
-            name='static')
+        url('static/{path:any}', static_files, name='static'),
+        url('favicon.ico', static_files, {'path': 'img/favicon.ico'})
 ]
