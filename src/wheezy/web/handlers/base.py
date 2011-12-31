@@ -128,6 +128,8 @@ class BaseHandler(MethodHandler, ValidationMixin):
                     # renew
                     self.setprincipal(principal)
                     return principal
+            else:
+                self.delprincipal()
         except KeyError:  # No auth cookie
             pass
         self.__principal = principal
