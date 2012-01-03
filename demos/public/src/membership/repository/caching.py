@@ -8,10 +8,10 @@ from membership.repository.contract import IMembershipRepository
 class CachingFactory(object):
 
     def __init__(self, context):
-        self.cache = context['cache']
+        self.membership_cache = context['membership_cache']
 
     def membership(self, inner):
-        return MembershipRepository(inner, self.cache)
+        return MembershipRepository(inner, self.membership_cache)
 
 
 class MembershipRepository(IMembershipRepository):

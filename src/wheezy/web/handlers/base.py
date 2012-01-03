@@ -37,7 +37,7 @@ class BaseHandler(MethodHandler, ValidationMixin):
     def path_for(self, name, **kwargs):
         route_args = dict(self.route_args)
         route_args.update(kwargs)
-        return self.request.root_path + self.options['router'].path_for(
+        return self.request.root_path + self.options['path_router'].path_for(
                 name, **route_args)
 
     def absolute_url_for(self, name, **kwargs):
