@@ -1,8 +1,8 @@
 """
 """
 
-from wheezy.core.collections import defaultdict
 from wheezy.caching.memory import MemoryCache
+from wheezy.core.collections import defaultdict
 from wheezy.core.i18n import TranslationsManager
 from wheezy.security.crypto.ticket import Ticket
 from wheezy.web.templates import MakoTemplate
