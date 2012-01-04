@@ -2,7 +2,6 @@
 """
 
 from datetime import timedelta
-from functools import partial
 
 from wheezy.caching.memory import MemoryCache
 from wheezy.http.cache import httpcache
@@ -19,7 +18,6 @@ from public.web.urls import public_urls
 
 
 cache = MemoryCache()
-httpcache = partial(httpcache, cache=cache)
 cache_profile_static = CacheProfile('public',
         duration=timedelta(minutes=15),
         vary_headers=['IF_NONE_MATCH', 'IF_MODIFIED_SINCE'],
@@ -31,7 +29,8 @@ static_files = httpcache(
         file_handler(
             root='content/static/',
             age=timedelta(hours=1)),
-        cache_profile_static)
+        cache_profile=cache_profile_static,
+        cache=cache)
 
 all_urls = [
         url('',
