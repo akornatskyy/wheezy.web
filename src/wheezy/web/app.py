@@ -31,9 +31,7 @@ class WSGIApplication(object):
         if 'render_template' not in options:
             options['render_template'] = MakoTemplate()
         if 'translations_manager' not in options:
-            options['translations_manager'] = TranslationsManager(
-                    directories=['i18n']
-            )
+            options['translations_manager'] = TranslationsManager()
         if 'ticket' not in options:
             options['ticket'] = Ticket()
         self.options = options
