@@ -28,7 +28,8 @@ locale_defaults = {'locale': 'en'}
 static_files = httpcache(
         file_handler(
             root='content/static/',
-            age=timedelta(hours=1)),
+            age=timedelta(hours=1)
+        ),
         cache_profile=cache_profile_static,
         cache=cache)
 

@@ -6,6 +6,7 @@ import os.path
 import stat
 
 from datetime import datetime
+from datetime import timedelta
 
 from wheezy.core.datetime import parse_http_datetime
 from wheezy.http.cachepolicy import HTTPCachePolicy
@@ -16,7 +17,7 @@ from wheezy.web.handlers.method import MethodHandler
 HTTP_HEADER_ACCEPT_RANGE_NONE = ('Accept-Ranges', 'none')
 
 
-def file_handler(root, age=0):
+def file_handler(root, age=None):
     abspath = os.path.abspath(root)
     assert os.path.exists(abspath)
     assert os.path.isdir(abspath)
@@ -28,7 +29,8 @@ def file_handler(root, age=0):
 
 class FileHandler(MethodHandler):
 
-    def __init__(self, request, root, age=0):
+    def __init__(self, request, root, age=None):
+        assert age is None or isinstance(age, timedelta)
         self.root = root
         self.age = age
         super(FileHandler, self).__init__(request)
@@ -61,7 +63,7 @@ class FileHandler(MethodHandler):
         last_modified = datetime.utcfromtimestamp(last_modified_stamp)
         cache_policy.last_modified(last_modified)
 
-        age = route_args['age']
+        age = self.age
         if age:
             cache_policy.max_age(age)
             cache_policy.expires(datetime.utcnow() + age)
