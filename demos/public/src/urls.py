@@ -18,19 +18,17 @@ from public.web.urls import public_urls
 
 
 cache = MemoryCache()
-cache_profile_static = CacheProfile('public',
-        duration=timedelta(minutes=15),
-        vary_headers=['IF_NONE_MATCH', 'IF_MODIFIED_SINCE'],
-        enabled=True)
 
 locale_pattern = '{locale:(en|ru)}/'
 locale_defaults = {'locale': 'en'}
 static_files = httpcache(
         file_handler(
             root='content/static/',
-            age=timedelta(hours=1)
-        ),
-        cache_profile=cache_profile_static,
+            age=timedelta(hours=1)),
+        cache_profile=CacheProfile(
+            'public',
+            duration=timedelta(minutes=15),
+            enabled=True),
         cache=cache)
 
 all_urls = [
