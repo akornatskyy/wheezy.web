@@ -1,29 +1,45 @@
 """
 """
 
+from datetime import datetime
+from datetime import timedelta
+
+from wheezy.caching.memory import MemoryCache
+from wheezy.http.cache import httpcache
+from wheezy.http.cacheprofile import CacheProfile
 from wheezy.http.response import HTTPResponse
+from wheezy.routing import url
 from wheezy.web.app import WSGIApplication
 from wheezy.web.handlers.base import BaseHandler
+
+
+cache = MemoryCache()
+cache_profile = CacheProfile(
+        'public', duration=timedelta(minutes=15), enabled=True)
+no_cache_profile = CacheProfile(
+        'none', no_store=True, enabled=True)
 
 
 class WelcomeHandler(BaseHandler):
 
     def get(self):
         response = HTTPResponse(options=self.request.config)
-        response.write('Hello World!')
+        response.write('Hello World! It is %s.'
+                % datetime.now().time().strftime('%H:%M:%S'))
         return response
 
 
-def hello(request):
+def now(request):
     response = HTTPResponse(options=request.config)
-    response.write('Hello World!')
+    response.write('It is %s.'
+                % datetime.now().time().strftime('%H:%M:%S'))
     return response
 
 
 application = WSGIApplication(
         url_mapping=[
-            ('', WelcomeHandler),
-            ('hello', hello)
+            url('', httpcache(WelcomeHandler, cache_profile, cache), name='welcome'),
+            url('now', httpcache(now, no_cache_profile))
         ]
 )
 
