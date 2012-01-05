@@ -7,7 +7,6 @@ from wheezy.caching.memory import MemoryCache
 from wheezy.http.cache import httpcache
 from wheezy.http.cacheprofile import CacheProfile
 from wheezy.routing import url
-from wheezy.web.handlers.base import redirect_handler
 from wheezy.web.handlers.file import file_handler
 from wheezy.web.handlers.template import template_handler
 

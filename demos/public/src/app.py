@@ -1,7 +1,7 @@
 """
 """
 
-from wheezy.web.app import WSGIApplication
+from wheezy.http.application import WSGIApplication
 from wheezy.web.middleware import bootstrap_defaults
 from wheezy.web.middleware import http_error
 from wheezy.web.middleware import path_routing

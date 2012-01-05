@@ -5,11 +5,11 @@ from datetime import datetime
 from datetime import timedelta
 
 from wheezy.caching.memory import MemoryCache
+from wheezy.http.application import WSGIApplication
 from wheezy.http.cache import httpcache
 from wheezy.http.cacheprofile import CacheProfile
 from wheezy.http.response import HTTPResponse
 from wheezy.routing import url
-from wheezy.web.app import WSGIApplication
 from wheezy.web.handlers.base import BaseHandler
 from wheezy.web.middleware import bootstrap_defaults
 from wheezy.web.middleware import path_routing
