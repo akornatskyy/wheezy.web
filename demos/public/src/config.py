@@ -12,26 +12,32 @@ from membership.repository.mock import MockFactory
 
 cache = MemoryCache()
 
-error_mapping = defaultdict(lambda: 'http500', {
-        400: 'http400',
-        403: 'http403',
-        404: 'http404',
-        500: 'http500',
-})
-
-
+# Custom
 options = {
         'membership': MockFactory,
         'membership_cache': cache,
+}
 
+# HTTPErrorMiddleware
+options.update({
+        'http_errors': defaultdict(lambda: 'http500', {
+            # HTTP status code: route name
+            400: 'http400',
+            403: 'http403',
+            404: 'http404',
+            500: 'http500',
+        }),
+})
+
+# BaseHandler
+options.update({
         'translations_manager': TranslationsManager(
             directories=['i18n'],
-            default_lang='en'
-        ),
+            default_lang='en'),
+
         'render_template': MakoTemplate(
             directories=['content/templates'],
-            filesystem_checks=False
-        ),
+            filesystem_checks=False),
 
         'ticket': Ticket(
             max_age=1200,
@@ -48,4 +54,4 @@ options = {
 
         'XSRF_NAME': '_x',
         'RESUBMISSION_NAME': '_c'
-}
+})

@@ -2,15 +2,20 @@
 """
 
 from wheezy.web.app import WSGIApplication
+from wheezy.web.middleware import bootstrap_defaults
+from wheezy.web.middleware import http_error
+from wheezy.web.middleware import path_routing
 
-from config import error_mapping
 from config import options
 from urls import all_urls
 
 
 main = WSGIApplication(
-        url_mapping=all_urls,
-        error_mapping=error_mapping,
+        middleware=[
+            bootstrap_defaults(url_mapping=all_urls),
+            http_error,
+            path_routing
+        ],
         options=options)
 
 

@@ -11,6 +11,8 @@ from wheezy.http.response import HTTPResponse
 from wheezy.routing import url
 from wheezy.web.app import WSGIApplication
 from wheezy.web.handlers.base import BaseHandler
+from wheezy.web.middleware import bootstrap_defaults
+from wheezy.web.middleware import path_routing
 
 
 cache = MemoryCache()
@@ -36,10 +38,15 @@ def now(request):
     return response
 
 
-application = WSGIApplication(
-        url_mapping=[
-            url('', httpcache(WelcomeHandler, cache_profile, cache), name='welcome'),
-            url('now', httpcache(now, no_cache_profile))
+all_urls=[
+        url('', httpcache(WelcomeHandler, cache_profile, cache), name='welcome'),
+        url('now', httpcache(now, no_cache_profile))
+]
+
+main = WSGIApplication(
+        middleware=[
+            bootstrap_defaults(url_mapping=all_urls),
+            path_routing
         ]
 )
 
@@ -48,7 +55,7 @@ if __name__ == '__main__':
     from wsgiref.simple_server import make_server
     try:
         print('Visit http://localhost:8080/')
-        make_server('', 8080, application).serve_forever()
+        make_server('', 8080, main).serve_forever()
     except KeyboardInterrupt:
         pass
     print('\nThanks!')
