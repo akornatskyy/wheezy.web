@@ -12,7 +12,7 @@ from wheezy.http.response import HTTPResponse
 from wheezy.routing import url
 from wheezy.web.handlers.base import BaseHandler
 from wheezy.web.middleware import bootstrap_defaults
-from wheezy.web.middleware import path_routing
+from wheezy.web.middleware import path_routing_middleware_factory
 
 
 cache = MemoryCache()
@@ -46,7 +46,7 @@ all_urls=[
 main = WSGIApplication(
         middleware=[
             bootstrap_defaults(url_mapping=all_urls),
-            path_routing
+            path_routing_middleware_factory
         ]
 )
 
