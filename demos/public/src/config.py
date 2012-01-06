@@ -4,6 +4,7 @@
 from wheezy.caching.memory import MemoryCache
 from wheezy.core.collections import defaultdict
 from wheezy.core.i18n import TranslationsManager
+from wheezy.http.cacheprofile import RequestVary
 from wheezy.security.crypto.ticket import Ticket
 from wheezy.web.templates import MakoTemplate
 
@@ -17,6 +18,13 @@ options = {
         'membership': MockFactory,
         'membership_cache': cache,
 }
+
+# HTTPCacheMiddleware
+middleware_vary=RequestVary()
+options.update({
+        'http_cache': cache,
+        'http_cache_middleware_vary': middleware_vary
+})
 
 # HTTPErrorMiddleware
 options.update({

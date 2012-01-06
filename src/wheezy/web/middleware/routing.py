@@ -8,8 +8,9 @@ from wheezy.core.collections import defaultdict
 
 class PathRoutingMiddleware(object):
 
-    def __init__(self, options):
-        self.path_router = options['path_router']
+    def __init__(self, path_router):
+        assert path_router
+        self.path_router = path_router
 
     def __call__(self, request, following):
         environ = request.environ

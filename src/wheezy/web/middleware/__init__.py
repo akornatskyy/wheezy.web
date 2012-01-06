@@ -2,12 +2,13 @@
 """ ``middleware`` package.
 """
 
-from wheezy.routing import Router
+from wheezy.core.collections import defaultdict
 from wheezy.core.i18n import TranslationsManager
+from wheezy.routing import Router
 from wheezy.security.crypto.ticket import Ticket
-from wheezy.web.templates import MakoTemplate
 from wheezy.web.middleware.errors import HTTPErrorMiddleware
 from wheezy.web.middleware.routing import PathRoutingMiddleware
+from wheezy.web.templates import MakoTemplate
 
 
 def bootstrap_defaults(url_mapping=None):
@@ -27,5 +28,22 @@ def bootstrap_defaults(url_mapping=None):
         return None
     return load
 
-http_error = HTTPErrorMiddleware
-path_routing = PathRoutingMiddleware
+
+def http_error_middleware_factory(options):
+    path_router = options['path_router']
+    try:
+        error_mapping = options['http_errors']
+        assert isinstance(error_mapping, defaultdict)
+        assert path_router.path_for(error_mapping.default_factory())
+        for route_name in error_mapping.values():
+            assert path_router.path_for(route_name)
+    except KeyError:
+        error_mapping = defaultdict(str)
+    return HTTPErrorMiddleware(
+            error_mapping=error_mapping)
+
+
+def path_routing_middleware_factory(options):
+    path_router = options['path_router']
+    return PathRoutingMiddleware(
+            path_router=path_router)

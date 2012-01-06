@@ -2,9 +2,10 @@
 """
 
 from wheezy.http.application import WSGIApplication
+from wheezy.http.middleware import http_cache_middleware_factory
 from wheezy.web.middleware import bootstrap_defaults
-from wheezy.web.middleware import http_error
-from wheezy.web.middleware import path_routing
+from wheezy.web.middleware import http_error_middleware_factory
+from wheezy.web.middleware import path_routing_middleware_factory
 
 from config import options
 from urls import all_urls
@@ -13,8 +14,9 @@ from urls import all_urls
 main = WSGIApplication(
         middleware=[
             bootstrap_defaults(url_mapping=all_urls),
-            http_error,
-            path_routing
+            http_cache_middleware_factory,
+            http_error_middleware_factory,
+            path_routing_middleware_factory
         ],
         options=options)
 
