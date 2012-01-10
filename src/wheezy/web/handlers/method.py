@@ -28,7 +28,6 @@ class MethodHandler(object):
             response = self.head()
         else:
             response = method_not_allowed(self.request.config)
-        assert isinstance(response, HTTPResponse)
         if self.cookies:
             response.cookies.extend(self.cookies)
         return response
