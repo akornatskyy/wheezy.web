@@ -7,10 +7,13 @@ from wheezy.http.cache import get_or_set2
 
 def handler_cache(profile, cache=None):
     def decorate(factory):
-        strategy = factory
-        if profile.enabled:
+        if not profile.enabled:
+            return factory
 
-            def get_or_set_strategy(handler, *args, **kwargs):
+        if profile.request_vary:
+            assert cache is not None
+
+            def strategy(handler, *args, **kwargs):
                 if args or kwargs:
                     response = factory(*args, **kwargs)
                 else:
@@ -20,18 +23,12 @@ def handler_cache(profile, cache=None):
                             cache_profile=profile,
                             factory=lambda ignore: factory(handler))
                 return response
-
-            def nocache_strategy(handler, *args, **kwargs):
+        else:
+            def strategy(handler, *args, **kwargs):
                 response = factory(handler, *args, **kwargs)
                 if response.status_code == 200:
                     if response.cache is None:
                         response.cache = profile.cache_policy()
                 return response
-
-            if profile.request_vary:
-                assert cache is not None
-                strategy = get_or_set_strategy
-            else:
-                strategy = nocache_strategy
         return strategy
     return decorate
