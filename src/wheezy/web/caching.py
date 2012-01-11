@@ -5,7 +5,7 @@
 from wheezy.http.cache import get_or_set2
 
 
-def handler_cache(profile, cache):
+def handler_cache(profile, cache=None):
     def decorate(factory):
         strategy = factory
         if profile.enabled:
@@ -29,6 +29,7 @@ def handler_cache(profile, cache):
                 return response
 
             if profile.request_vary:
+                assert cache is not None
                 strategy = get_or_set_strategy
             else:
                 strategy = nocache_strategy
