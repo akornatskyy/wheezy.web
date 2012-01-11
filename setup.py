@@ -56,7 +56,12 @@ setup(
     keywords=[
         'web'
     ],
-    packages=['wheezy', 'wheezy.web', 'wheezy.web.handlers'],
+    packages=[
+        'wheezy',
+        'wheezy.web',
+        'wheezy.web.handlers',
+        'wheezy.web.middleware'
+    ],
     package_dir={'': 'src'},
     namespace_packages=['wheezy'],
 
