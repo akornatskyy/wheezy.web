@@ -2,6 +2,9 @@
 """ ``errors`` module.
 """
 
+from traceback import print_exc
+
+from wheezy.http.response import internal_error
 from wheezy.http.response import not_found
 from wheezy.web.handlers.base import RedirectRouteHandler
 
