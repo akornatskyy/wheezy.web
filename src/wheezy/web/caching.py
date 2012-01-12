@@ -15,7 +15,7 @@ def handler_cache(profile, cache=None):
 
             def strategy(handler, *args, **kwargs):
                 if args or kwargs:
-                    response = factory(*args, **kwargs)
+                    response = factory(handler, *args, **kwargs)
                 else:
                     response = get_or_set2(
                             request=handler.request,
