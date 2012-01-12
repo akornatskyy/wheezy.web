@@ -27,3 +27,8 @@ po:
 		msgfmt -v i18n/$$l/LC_MESSAGES/validation.po \
 			-o i18n/$$l/LC_MESSAGES/validation.mo; \
 	done
+
+uwsgi:
+	/usr/bin/uwsgi_python26 -C 777 --logto=/dev/null \
+		-H ../../env/ --pythonpath src -s /tmp/uwsgi-test.sock \
+		-M -w app:main

@@ -1,10 +1,13 @@
+<%page cached="True" cache_key="${route_args.route_name in \
+('home', 'about') and route_args.route_name or ''}" />
+
 <%def name="menu_item(route_name, title)">
 % if route_name == route_args.route_name:
-<li class="active">\
+    <li class="active">\
 % else:
-<li>\
+    <li>\
 % endif
-<a href="${path_for(route_name)}">${title}</a></li>
+<a href="${path_for(route_name)}">${title}</a></li>\
 </%def>
 
 <ul id="menu">

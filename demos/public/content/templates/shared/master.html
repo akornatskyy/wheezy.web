@@ -22,16 +22,11 @@
             <div id="main">
                 <div id="placeholder">${self.body()}</div>
                 <div id="footer">
-                    Version 0.1.0.0
+                    <%include file="snippet/version.html"/>
                 </div>
             </div>
         </div>
-        <script src="${path_for('static', path='js/jquery-1.7.1.min.js')}"
-            type="text/javascript"></script>
-        <script src="${path_for('static', path='js/core.js')}"
-            type="text/javascript"></script>
-        <script src="${path_for('static', path='js/autocomplete.js')}"
-            type="text/javascript"></script>
+        <%include file="snippet/script.html"/>
         <%block name="script"/>
     </body>
 </html>

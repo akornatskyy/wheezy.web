@@ -45,7 +45,8 @@ options.update({
 
         'render_template': MakoTemplate(
             directories=['content/templates'],
-            filesystem_checks=False),
+            filesystem_checks=False,
+            template_cache=cache),
 
         'ticket': Ticket(
             max_age=1200,
