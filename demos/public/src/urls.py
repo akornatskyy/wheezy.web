@@ -4,13 +4,12 @@
 from datetime import timedelta
 
 from wheezy.http.cache import httpcache
-from wheezy.http.cacheprofile import CacheProfile
 from wheezy.routing import url
 from wheezy.web.handlers.file import file_handler
 from wheezy.web.handlers.template import template_handler
 
-from config import cache
-from config import middleware_vary
+from config import http_cache as cache
+from config import static_cache_profile
 from error.web.urls import error_urls
 from error.web.urls import test_error_urls
 from membership.web.urls import membership_urls
@@ -23,11 +22,7 @@ static_files = httpcache(
         file_handler(
             root='content/static/',
             age=timedelta(hours=1)),
-        cache_profile=CacheProfile(
-            'public',
-            duration=timedelta(minutes=15),
-            middleware_vary=middleware_vary,
-            enabled=True),
+        cache_profile=static_cache_profile,
         cache=cache)
 
 all_urls = [

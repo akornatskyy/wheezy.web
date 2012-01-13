@@ -8,8 +8,10 @@ from wheezy.core.comp import u
 from wheezy.core.descriptors import attribute
 from wheezy.http.response import bad_request
 from wheezy.security.principal import Principal
+from wheezy.web.caching import handler_cache
 from wheezy.web.handlers.base import BaseHandler
 
+from config import none_cache_profile
 from membership.models import Credential
 from membership.models import Registration
 from membership.service.factory import Factory
@@ -35,6 +37,7 @@ class SignInHandler(BaseHandler):
     def factory(self):
         return Factory(self.context)
 
+    @handler_cache(profile=none_cache_profile)
     def get(self, credential=None):
         if self.principal:
             return self.redirect_for('default')
@@ -85,7 +88,10 @@ class SignUpHandler(BaseHandler):
     def factory(self):
         return Factory(self.context)
 
+    @handler_cache(profile=none_cache_profile)
     def get(self, registration=None):
+        if self.principal:
+            return self.redirect_for('default')
         registration = registration or Registration()
         return self.render_response('membership/signup.html',
                 registration=registration,

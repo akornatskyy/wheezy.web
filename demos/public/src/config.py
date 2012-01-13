@@ -1,9 +1,12 @@
 """
 """
 
+from datetime import timedelta
+
 from wheezy.caching.memory import MemoryCache
 from wheezy.core.collections import defaultdict
 from wheezy.core.i18n import TranslationsManager
+from wheezy.http.cacheprofile import CacheProfile
 from wheezy.http.cacheprofile import RequestVary
 from wheezy.security.crypto.ticket import Ticket
 from wheezy.web.templates import MakoTemplate
@@ -12,6 +15,8 @@ from membership.repository.mock import MockFactory
 
 
 cache = MemoryCache()
+http_cache = cache
+template_cache = cache
 
 # Custom
 options = {
@@ -22,9 +27,20 @@ options = {
 # HTTPCacheMiddleware
 middleware_vary=RequestVary()
 options.update({
-        'http_cache': cache,
+        'http_cache': http_cache,
         'http_cache_middleware_vary': middleware_vary
 })
+
+# Cache Profiles
+none_cache_profile = CacheProfile(
+        'none',
+        no_store=True,
+        enabled=True)
+static_cache_profile=CacheProfile(
+        'public',
+        duration=timedelta(minutes=15),
+        middleware_vary=middleware_vary,
+        enabled=True)
 
 # HTTPErrorMiddleware
 options.update({
@@ -46,7 +62,7 @@ options.update({
         'render_template': MakoTemplate(
             directories=['content/templates'],
             filesystem_checks=False,
-            template_cache=cache),
+            template_cache=template_cache),
 
         'ticket': Ticket(
             max_age=1200,
