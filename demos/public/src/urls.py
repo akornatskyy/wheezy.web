@@ -21,7 +21,7 @@ from public.web.urls import public_urls
 locale_pattern = '{locale:(en|ru)}/'
 locale_defaults = {'locale': 'en'}
 static_files = httpcache(
-        response_transforms(gzip_transform)(
+        response_transforms(gzip_transform(compress_level=6))(
             file_handler(
                 root='content/static/',
                 age=timedelta(hours=1))),

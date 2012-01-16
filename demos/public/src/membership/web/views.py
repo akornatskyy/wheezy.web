@@ -7,11 +7,9 @@ from wheezy.core.collections import attrdict
 from wheezy.core.comp import u
 from wheezy.core.descriptors import attribute
 from wheezy.http.response import bad_request
-from wheezy.http.transforms import gzip_transform
 from wheezy.security.principal import Principal
 from wheezy.web.caching import handler_cache
 from wheezy.web.handlers.base import BaseHandler
-from wheezy.web.transforms import handler_transforms
 
 from config import none_cache_profile
 from membership.models import Credential
@@ -40,7 +38,6 @@ class SignInHandler(BaseHandler):
         return Factory(self.context)
 
     @handler_cache(profile=none_cache_profile)
-    @handler_transforms(gzip_transform)
     def get(self, credential=None):
         if self.principal:
             return self.redirect_for('default')
@@ -92,7 +89,6 @@ class SignUpHandler(BaseHandler):
         return Factory(self.context)
 
     @handler_cache(profile=none_cache_profile)
-    @handler_transforms(gzip_transform)
     def get(self, registration=None):
         if self.principal:
             return self.redirect_for('default')
