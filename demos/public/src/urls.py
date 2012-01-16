@@ -4,6 +4,8 @@
 from datetime import timedelta
 
 from wheezy.http.cache import httpcache
+from wheezy.http.transforms import gzip_transform
+from wheezy.http.transforms import response_transforms
 from wheezy.routing import url
 from wheezy.web.handlers.file import file_handler
 from wheezy.web.handlers.template import template_handler
@@ -19,9 +21,10 @@ from public.web.urls import public_urls
 locale_pattern = '{locale:(en|ru)}/'
 locale_defaults = {'locale': 'en'}
 static_files = httpcache(
-        file_handler(
-            root='content/static/',
-            age=timedelta(hours=1)),
+        response_transforms(gzip_transform)(
+            file_handler(
+                root='content/static/',
+                age=timedelta(hours=1))),
         cache_profile=static_cache_profile,
         cache=cache)
 
