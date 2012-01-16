@@ -25,7 +25,7 @@ options = {
 }
 
 # HTTPCacheMiddleware
-middleware_vary=RequestVary()
+middleware_vary=RequestVary(environ=['HTTP_ACCEPT_ENCODING'])
 options.update({
         'http_cache': http_cache,
         'http_cache_middleware_vary': middleware_vary
@@ -39,6 +39,7 @@ none_cache_profile = CacheProfile(
 static_cache_profile=CacheProfile(
         'public',
         duration=timedelta(minutes=15),
+        vary_environ=['HTTP_ACCEPT_ENCODING'],
         middleware_vary=middleware_vary,
         enabled=True)
 
