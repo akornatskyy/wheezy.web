@@ -1,5 +1,5 @@
-<%page cached="True" cache_key="${route_args.route_name in \
-('home', 'about') and route_args.route_name or ''}" />
+<%page cached="True" cache_key="${(route_args.route_name in \
+('home', 'about') and route_args.route_name or '') + route_args.locale}" />
 
 <%def name="menu_item(route_name, title)">
 % if route_name == route_args.route_name:
