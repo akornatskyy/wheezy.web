@@ -24,7 +24,7 @@ from membership.validation import registration_validator
 class SignInHandler(BaseHandler):
 
     @attribute
-    def viewdata(self):
+    def model(self):
         return attrdict({
             'remember_me': False
             })
@@ -44,14 +44,14 @@ class SignInHandler(BaseHandler):
         credential = credential or Credential()
         return self.render_response('membership/signin.html',
                 credential=credential,
-                viewdata=self.viewdata)
+                model=self.model)
 
     def post(self):
         if not self.validate_xsrf_token():
             return self.redirect_for(self.route_args.route_name)
         credential = Credential()
         if (not self.try_update_model(credential)
-                & self.try_update_model(self.viewdata)
+                & self.try_update_model(self.model)
                 or not self.validate(credential, credential_validator)
                 or not self.factory.membership.authenticate(credential)):
             credential.password = u('')
@@ -73,7 +73,7 @@ class SignOutHandler(BaseHandler):
 class SignUpHandler(BaseHandler):
 
     @attribute
-    def viewdata(self):
+    def model(self):
         return attrdict({
             'password': u(''),
             'confirm_password': u(''),
@@ -97,7 +97,7 @@ class SignUpHandler(BaseHandler):
                 registration=registration,
                 credential=registration.credential,
                 account=registration.account,
-                viewdata=self.viewdata,
+                model=self.model,
                 questions=sorted(
                     self.factory.membership.password_questions.items(),
                     key=itemgetter(1))
@@ -110,17 +110,17 @@ class SignUpHandler(BaseHandler):
                     'If your request fails please try again.')
             return self.get()
         registration = Registration()
-        if (not self.try_update_model(self.viewdata)
+        if (not self.try_update_model(self.model)
                 & self.try_update_model(registration)
                 & self.try_update_model(registration.account)
                 & self.try_update_model(registration.credential)
-                or not self.validate(self.viewdata, password_match_validator)
+                or not self.validate(self.model, password_match_validator)
                 & self.validate(registration, registration_validator)
                 & self.validate(registration.account, account_validator)
                 & self.validate(registration.credential, credential_validator)
                 or not self.factory.membership.create_account(registration)):
             registration.credential.password = u('')
-            self.viewdata.confirm_password = u('')
+            self.model.confirm_password = u('')
             return self.get(registration)
         self.principal = Principal(
                 id=registration.credential.username,

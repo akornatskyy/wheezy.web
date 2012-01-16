@@ -8,7 +8,7 @@
     <a href="${path_for('signup')}">Sign up</a>
     if you don't have an account.
     </p>
-    ${credential.error()}
+    ${model.error()}
     <form action="${path_for('signin')}" method="post">
         ${xsrf()}
         <div>
@@ -25,9 +25,9 @@
                 ${credential.password.error()}
                 </p>
                 <p>
-                ${viewdata.remember_me.checkbox()}
-                ${viewdata.remember_me.label('Remember me?', class_='inline')}
-                ${viewdata.remember_me.error()}
+                ${model.remember_me.checkbox()}
+                ${model.remember_me.label('Remember me?', class_='inline')}
+                ${model.remember_me.error()}
                 </p>
                 <p>
                 <input type="submit" name="signin" value="Sign In" />

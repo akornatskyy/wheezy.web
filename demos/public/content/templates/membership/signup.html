@@ -10,7 +10,7 @@
     Passwords are required to be a minimum of 8 characters
     in length.
     </p>
-    ${registration.error()}
+    ${model.error()}
     <form action="${path_for('signup')}" method="post">
         ${resubmission()}
         <div>
@@ -37,14 +37,14 @@
                 ${credential.password.error()}
                 </p>
                 <p>
-                ${viewdata.confirm_password.label('Confirm password:')}
-                ${viewdata.confirm_password.password(autocomplete='off', maxlength='12')}
-                ${viewdata.confirm_password.error()}
+                ${model.confirm_password.label('Confirm password:')}
+                ${model.confirm_password.password(autocomplete='off', maxlength='12')}
+                ${model.confirm_password.error()}
                 </p>
                 <p>
-                ${viewdata.questionid.label('Security question:')}
-                ${viewdata.questionid.dropdown(choices=questions.model)}
-                ${viewdata.questionid.error()}
+                ${model.questionid.label('Security question:')}
+                ${model.questionid.dropdown(choices=questions.model)}
+                ${model.questionid.error()}
                 </p>
                 <p>
                 ${registration.answer.label('Answer:')}
