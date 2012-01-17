@@ -4,6 +4,7 @@
 VERSION=2.6
 
 PYTHON=../../env/bin/python$(VERSION)
+PYTEST=../../env/bin/py.test-$(VERSION)
 
 
 clean:
@@ -11,9 +12,6 @@ clean:
 	find src/ -name '*.py[co]' -delete
 	find src/ -name '*.mo' -delete
 	rm -rf /tmp/mako_modules/
-
-run:
-	$(PYTHON) src/app.py
 
 po:
 	xgettext --join-existing --sort-by-file --omit-header \
@@ -28,7 +26,14 @@ po:
 			-o i18n/$$l/LC_MESSAGES/validation.mo; \
 	done
 
+run:
+	$(PYTHON) src/app.py
+
 uwsgi:
 	/usr/bin/uwsgi_python26 -C 777 --logto=/dev/null \
 		-H ../../env/ --pythonpath src -s /tmp/uwsgi-test.sock \
 		-M -w app:main
+
+test:
+	$(PYTEST) -q -x --pep8 --doctest-modules \
+		src/
