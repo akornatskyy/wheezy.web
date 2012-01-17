@@ -10,7 +10,7 @@
     <p>Try out the following responses:
     </p>
     <ul>
-        <%block cached="True" cache_key="${context.get('route_args').locale}">
+        <%block cached="True" cache_key="${route_args.locale}">
         <li><a href="${path_for('bad_request')}">Bad Request</a></li>
         <li><a href="${path_for('forbidden')}">Forbidden</a></li>
         <li><a href="${path_for('not_found')}">Not Found</a></li>
