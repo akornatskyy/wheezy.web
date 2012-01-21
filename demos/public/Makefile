@@ -1,5 +1,5 @@
-.SILENT: clean po run
-.PHONY: clean po run
+.SILENT: clean po run test
+.PHONY: clean po run test
 
 VERSION=2.6
 
@@ -35,5 +35,4 @@ uwsgi:
 		-M -w app:main
 
 test:
-	$(PYTEST) -q -x --pep8 --doctest-modules \
-		src/
+	$(PYTEST) -q -x --pep8 --doctest-modules src/
