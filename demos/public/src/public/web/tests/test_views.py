@@ -21,11 +21,11 @@ class PublicTestCase(unittest.TestCase):
     def test_home(self):
         """ Ensure home page is rendered.
         """
-        assert 200 == self.client.go('/en/home')
+        assert 200 == self.client.get('/en/home')
         assert '- Home</title>' in self.client.content
 
     def test_about(self):
         """ Ensure about page is rendered.
         """
-        assert 200 == self.client.go('/en/about')
+        assert 200 == self.client.get('/en/about')
         assert '- About</title>' in self.client.content
