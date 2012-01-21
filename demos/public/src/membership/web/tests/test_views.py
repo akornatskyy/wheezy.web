@@ -10,6 +10,7 @@ from app import main
 from config import options
 
 
+AUTH_COOKIE = options['AUTH_COOKIE']
 XSRF_NAME = options['XSRF_NAME']
 
 
@@ -45,9 +46,11 @@ class SignOutMixin(object):
 
     def signout(self):
         client = self.client
+        assert AUTH_COOKIE in self.client.cookies
         assert 'Sign out</a>' in client.content
         client.get('/en/signout')
         assert 200 == client.follow()
+        assert AUTH_COOKIE not in self.client.cookies
         assert 'Sign out</a>' not in client.content
 
 
@@ -66,12 +69,14 @@ class SignInTestCase(unittest.TestCase, SignInMixin):
         """ Ensure sigin page displays field validation errors.
         """
         assert 200 == self.signin('', '')
+        assert AUTH_COOKIE not in self.client.cookies
         assert 'class="error"' in self.client.content
 
     def test_unknown_user(self):
         """ Ensure sigin page displays general error message.
         """
         assert 200 == self.signin('test', 'password')
+        assert AUTH_COOKIE not in self.client.cookies
         assert 'class="error-message"' in self.client.content
 
     def test_valid_user(self):
@@ -79,6 +84,7 @@ class SignInTestCase(unittest.TestCase, SignInMixin):
         """
         self.signin('demo', 'P@ssw0rd')
         assert 200 == self.client.follow()
+        assert AUTH_COOKIE in self.client.cookies
         assert 'Welcome <b>demo' in self.client.content
 
 
