@@ -85,6 +85,7 @@ class SignInTestCase(unittest.TestCase, SignInMixin):
         self.signin('demo', 'P@ssw0rd')
         assert 200 == self.client.follow()
         assert AUTH_COOKIE in self.client.cookies
+        assert XSRF_NAME not in self.client.cookies
         assert 'Welcome <b>demo' in self.client.content
 
 
@@ -98,7 +99,7 @@ class SignOutTestCase(unittest.TestCase, SignInMixin, SignOutMixin):
         self.client = None
 
     def test_signout_user(self):
-        """ Ensure sigin is successful.
+        """ Ensure sigout is successful.
         """
         self.signin('demo', 'P@ssw0rd')
         assert 200 == self.client.follow()
