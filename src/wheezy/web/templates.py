@@ -31,9 +31,9 @@ class MakoCacheImpl(object):
 
     def __init__(self, cache):
         self.template_cache = cache.template.cache_args['template_cache']
-        self.prefix = cache.template.module.__name__
+        self.prefix = cache.id
 
-    def get_and_replace(self, key, creation_function, **kwargs):
+    def get_or_create(self, key, creation_function, **kwargs):
         value = self.template_cache.get(self.prefix + key)
         if value is None:
             value = creation_function()
