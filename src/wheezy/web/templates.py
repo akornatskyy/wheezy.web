@@ -40,7 +40,7 @@ class MakoCacheImpl(object):
             self.template_cache.add(
                     self.prefix + key,
                     value,
-                    time=kwargs.pop('time', 0))
+                    time=int(kwargs.pop('time', 0)))
         return value
 
     def put(self, key, value, **kw):
