@@ -1,7 +1,7 @@
 .SILENT: clean po run test
 .PHONY: clean po run test
 
-VERSION=2.6
+VERSION=2.7
 
 PYTHON=../../env/bin/python$(VERSION)
 PYTEST=../../env/bin/py.test-$(VERSION)
@@ -30,7 +30,7 @@ run:
 	$(PYTHON) src/app.py
 
 uwsgi:
-	/usr/bin/uwsgi_python26 -C 777 --logto=/dev/null \
+	/usr/bin/uwsgi_python27 -C 777 --logto=/dev/null \
 		-H ../../env/ --pythonpath src -s /tmp/uwsgi-test.sock \
 		-M -w app:main
 
