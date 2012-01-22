@@ -4,15 +4,15 @@
 from datetime import datetime
 from datetime import timedelta
 
-from wheezy.caching.memory import MemoryCache
-from wheezy.http.application import WSGIApplication
-from wheezy.http.cache import httpcache
-from wheezy.http.cache import response_cache
-from wheezy.http.cacheprofile import CacheProfile
-from wheezy.http.response import HTTPResponse
+from wheezy.caching import MemoryCache
+from wheezy.http import CacheProfile
+from wheezy.http import HTTPResponse
+from wheezy.http import WSGIApplication
+from wheezy.http import httpcache
+from wheezy.http import response_cache
 from wheezy.routing import url
 from wheezy.web.caching import handler_cache
-from wheezy.web.handlers.base import BaseHandler
+from wheezy.web.handlers import BaseHandler
 from wheezy.web.middleware import bootstrap_defaults
 from wheezy.web.middleware import path_routing_middleware_factory
 
@@ -58,7 +58,7 @@ def now2(request):
     return response
 
 
-all_urls=[
+all_urls = [
         url('', httpcache(WelcomeHandler, public_cache_profile, cache)),
         url('welcome2', Welcome2Handler),
         url('now', httpcache(now, public_cache_profile, cache)),

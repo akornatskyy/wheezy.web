@@ -3,12 +3,12 @@
 
 from datetime import timedelta
 
-from wheezy.http.cache import httpcache
+from wheezy.http import httpcache
 from wheezy.http.transforms import gzip_transform
 from wheezy.http.transforms import response_transforms
 from wheezy.routing import url
-from wheezy.web.handlers.file import file_handler
-from wheezy.web.handlers.template import template_handler
+from wheezy.web.handlers import file_handler
+from wheezy.web.handlers import template_handler
 
 from config import http_cache as cache
 from config import static_cache_profile

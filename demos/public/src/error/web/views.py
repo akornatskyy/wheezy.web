@@ -1,10 +1,10 @@
 """
 """
 
-from wheezy.http.response import bad_request
-from wheezy.http.response import forbidden
-from wheezy.http.response import not_found
-from wheezy.web.handlers.template import template_handler
+from wheezy.http import bad_request
+from wheezy.http import forbidden
+from wheezy.http import not_found
+from wheezy.web.handlers import template_handler
 
 
 http400 = template_handler('error/http400.html', status_code=400)

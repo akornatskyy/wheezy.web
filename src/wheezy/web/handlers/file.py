@@ -9,8 +9,8 @@ from datetime import datetime
 from datetime import timedelta
 
 from wheezy.core.datetime import parse_http_datetime
-from wheezy.http.cachepolicy import HTTPCachePolicy
-from wheezy.http.response import HTTPResponse
+from wheezy.http import HTTPResponse
+from wheezy.http import HTTPCachePolicy
 from wheezy.web.handlers.method import MethodHandler
 
 

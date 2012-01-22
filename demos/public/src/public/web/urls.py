@@ -2,7 +2,7 @@
 """
 
 from wheezy.routing import url
-from wheezy.web.handlers.template import template_handler
+from wheezy.web.handlers import template_handler
 
 from public.web.views import about
 from public.web.views import home

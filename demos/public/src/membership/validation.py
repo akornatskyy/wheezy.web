@@ -1,10 +1,10 @@
 """
 """
 
+from wheezy.validation import Validator
 from wheezy.validation.rules import compare
 from wheezy.validation.rules import length
 from wheezy.validation.rules import required
-from wheezy.validation.validator import Validator
 
 
 _ = lambda s: s

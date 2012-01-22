@@ -69,4 +69,5 @@ doc:
 	$(SPHINX) -a -b html doc/ doc/_build/
 
 test-demos:
+	$(PYTEST) -q -x --pep8 demos/hello
 	make clean test -sC demos/public VERSION=$(VERSION)

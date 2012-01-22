@@ -4,8 +4,8 @@
 
 from wheezy.core.collections import defaultdict
 from wheezy.core.i18n import TranslationsManager
-from wheezy.routing import Router
-from wheezy.security.crypto.ticket import Ticket
+from wheezy.routing import PathRouter
+from wheezy.security.crypto import Ticket
 from wheezy.web.middleware.errors import HTTPErrorMiddleware
 from wheezy.web.middleware.routing import PathRoutingMiddleware
 from wheezy.web.templates import MakoTemplate
@@ -14,7 +14,7 @@ from wheezy.web.templates import MakoTemplate
 def bootstrap_defaults(url_mapping=None):
     def load(options):
         if 'path_router' not in options:
-            options['path_router'] = path_router = Router()
+            options['path_router'] = path_router = PathRouter()
         else:
             path_router = options['path_router']
         if url_mapping:

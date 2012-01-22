@@ -1,7 +1,7 @@
 """
 """
 
-from wheezy.web.handlers.template import template_handler
+from wheezy.web.handlers import template_handler
 
 
 home = template_handler('public/home.html')

@@ -3,12 +3,12 @@
 
 from datetime import timedelta
 
-from wheezy.caching.memory import MemoryCache
+from wheezy.caching import MemoryCache
 from wheezy.core.collections import defaultdict
 from wheezy.core.i18n import TranslationsManager
-from wheezy.http.cacheprofile import CacheProfile
-from wheezy.http.cacheprofile import RequestVary
-from wheezy.security.crypto.ticket import Ticket
+from wheezy.http import CacheProfile
+from wheezy.http import RequestVary
+from wheezy.security.crypto import Ticket
 from wheezy.web.templates import MakoTemplate
 
 from membership.repository.mock import MockFactory
@@ -54,6 +54,12 @@ options.update({
         }),
 })
 
+# wheezy.security.crypto.Ticket
+options.update({
+        'CRYPTO_ENCRYPTION_KEY': '4oqiKhW3qzP2EiattMt7',
+        'CRYPTO_VALIDATION_KEY': 'A7GfjxIBCBA3vNqvafWf'
+})
+
 # BaseHandler
 options.update({
         'translations_manager': TranslationsManager(
@@ -68,10 +74,7 @@ options.update({
         'ticket': Ticket(
             max_age=1200,
             salt='JNbCog95cDTo1NRb7inP',
-            options={
-                'CRYPTO_ENCRYPTION_KEY': '4oqiKhW3qzP2EiattMt7',
-                'CRYPTO_VALIDATION_KEY': 'A7GfjxIBCBA3vNqvafWf'
-            }),
+            options=options),
 
         'AUTH_COOKIE': '_a',
         'AUTH_COOKIE_DOMAIN': None,

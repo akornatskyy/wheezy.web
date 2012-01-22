@@ -6,10 +6,10 @@ from operator import itemgetter
 from wheezy.core.collections import attrdict
 from wheezy.core.comp import u
 from wheezy.core.descriptors import attribute
-from wheezy.http.response import bad_request
-from wheezy.security.principal import Principal
+from wheezy.http import bad_request
+from wheezy.security import Principal
 from wheezy.web.caching import handler_cache
-from wheezy.web.handlers.base import BaseHandler
+from wheezy.web.handlers import BaseHandler
 
 from config import none_cache_profile
 from membership.models import Credential

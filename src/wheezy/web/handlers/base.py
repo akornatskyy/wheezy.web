@@ -10,13 +10,13 @@ from wheezy.core.url import urlparts
 from wheezy.core.uuid import UUID_EMPTY
 from wheezy.core.uuid import parse_uuid
 from wheezy.core.uuid import shrink_uuid
-from wheezy.html.factory import widget
-from wheezy.http.cookie import HTTPCookie
-from wheezy.http.response import HTTPResponse
-from wheezy.http.response import redirect
-from wheezy.security.principal import Principal
-from wheezy.validation.mixin import ValidationMixin
-from wheezy.validation.model import try_update_model
+from wheezy.html import widget
+from wheezy.http import HTTPCookie
+from wheezy.http import HTTPResponse
+from wheezy.http import redirect
+from wheezy.security import Principal
+from wheezy.validation import ValidationMixin
+from wheezy.validation import try_update_model
 from wheezy.web.comp import iteritems
 from wheezy.web.handlers.method import MethodHandler
 

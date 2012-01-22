@@ -1,8 +1,8 @@
 """
 """
 
-from wheezy.http.response import method_not_allowed
-from wheezy.http.response import HTTPResponse
+from wheezy.http import method_not_allowed
+from wheezy.http import HTTPResponse
 
 
 class MethodHandler(object):
