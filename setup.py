@@ -53,9 +53,8 @@ setup(
         'Topic :: Software Development :: Libraries :: Python Modules',
         'Topic :: Utilities'
     ],
-    keywords=[
-        'web'
-    ],
+    keywords='wsgi web handler static file template mako errors routing '
+             'middleware caching transforms',
     packages=[
         'wheezy',
         'wheezy.web',
@@ -66,7 +65,7 @@ setup(
     namespace_packages=['wheezy'],
 
     zip_safe=True,
-    install_requires = install_requires,
+    install_requires=install_requires,
     extras_require={
         'dev': [
             'coverage',

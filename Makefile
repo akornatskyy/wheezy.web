@@ -1,7 +1,7 @@
 .SILENT: clean env doctest-cover test doc release
 .PHONY: clean env doctest-cover test doc release
 
-VERSION=2.6
+VERSION=2.7
 PYPI=http://pypi.python.org/simple
 
 PYTHON=env/bin/python$(VERSION)
