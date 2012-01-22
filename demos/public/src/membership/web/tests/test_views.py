@@ -30,7 +30,8 @@ class SignInPage(object):
         form = self.form
         form.username = username
         form.password = password
-        return self.client.submit(form)
+        self.client.submit(form)
+        return self.client.form.errors()
 
 
 class SignUpPage(object):
@@ -45,7 +46,8 @@ class SignUpPage(object):
     def signup(self, **kwargs):
         form = self.form
         form.update(kwargs)
-        return self.client.submit(form)
+        self.client.submit(form)
+        return self.client.form.errors()
 
 
 # region: mixins
@@ -94,14 +96,16 @@ class SignInTestCase(unittest.TestCase, SignInMixin):
     def test_validation_error(self):
         """ Ensure sigin page displays field validation errors.
         """
-        assert 200 == self.signin('', '')
+        errors = self.signin('', '')
+        assert 2 == len(errors)
         assert AUTH_COOKIE not in self.client.cookies
         assert 'class="error"' in self.client.content
 
     def test_unknown_user(self):
         """ Ensure sigin page displays general error message.
         """
-        assert 200 == self.signin('test', 'password')
+        errors = self.signin('test', 'password')
+        assert not errors
         assert AUTH_COOKIE not in self.client.cookies
         assert 'class="error-message"' in self.client.content
 
@@ -162,21 +166,22 @@ class SignUpTestCase(unittest.TestCase, SignInMixin, SignUpMixin):
     def test_validation_error(self):
         """ Ensure sigup page displays field validation errors.
         """
-        assert 200 == self.signup(username='test')
+        errors = self.signup()
+        assert 5 == len(errors)
         assert AUTH_COOKIE not in self.client.cookies
         assert 'class="error"' in self.client.content
 
     def test_already_registered(self):
         """ Ensure sigup page displays general error message.
         """
-        assert 200 == self.signup(
+        errors = self.signup(
                 username='demo',
                 display_name='Demo',
                 email='demo@somewhere.com',
                 password='P@ssw0rd',
                 confirm_password='P@ssw0rd',
-                answer='7'
-        )
+                answer='7')
+        assert not errors
         assert AUTH_COOKIE not in self.client.cookies
         assert 'class="error-message"' in self.client.content
 
@@ -184,14 +189,14 @@ class SignUpTestCase(unittest.TestCase, SignInMixin, SignUpMixin):
         """ Ensure if all supplied information is valid than
             user is registered and logged in.
         """
-        self.signup(
+        errors = self.signup(
                 username='john',
                 display_name='John',
                 email='john@somewhere.com',
                 password='P@ssw0rd',
                 confirm_password='P@ssw0rd',
-                answer='7'
-        )
+                answer='7')
+        assert not errors
         assert 200 == self.client.follow()
         assert AUTH_COOKIE in self.client.cookies
         assert RESUBMISSION_NAME not in self.client.cookies
@@ -211,5 +216,5 @@ class SignUpTestCase(unittest.TestCase, SignInMixin, SignUpMixin):
         assert 200 == client.get('/en/signup')
         page = SignUpPage(client)
         client.cookies[RESUBMISSION_NAME] = '100'
-        assert 200 == page.signup()
+        page.signup()
         SignUpPage(client)
