@@ -43,7 +43,7 @@ class MakoCacheImpl(object):
                     time=int(kwargs.pop('time', 0)))
         return value
 
-    def put(self, key, value, **kw):
+    def set(self, key, value, **kw):
         raise NotImplementedError()
 
     def get(self, key, **kw):
