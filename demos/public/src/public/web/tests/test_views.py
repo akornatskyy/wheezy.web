@@ -55,3 +55,18 @@ class PublicTestCase(unittest.TestCase):
         """
         self.client.get('/static/js/')
         assert 403 == self.client.follow()
+
+    def test_static_file_gzip(self):
+        """
+        """
+        self.client.get('/static/css/site.css', environ={
+            'SERVER_PROTOCOL': 'HTTP/1.1',
+            'HTTP_ACCEPT_ENCODING': 'gzip, deflate'
+        })
+        assert 'gzip' in self.client.headers['Content-Encoding']
+
+    def test_head_static_file(self):
+        """
+        """
+        assert 200 == self.client.head('/static/css/site.css')
+        assert 0 == len(self.client.content)

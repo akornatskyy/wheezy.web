@@ -114,6 +114,24 @@ class SignInTestCase(unittest.TestCase, SignInMixin):
         assert XSRF_NAME not in self.client.cookies
         assert 'Welcome <b>demo' in self.client.content
 
+    def test_if_authenticated_redirect(self):
+        """ If user is already authenticated redirect
+            to default page.
+        """
+        self.signin('demo', 'P@ssw0rd')
+        assert 200 == self.client.follow()
+        self.client.get('/en/signin')
+        assert 200 == self.client.follow()
+
+    def test_xrsf_token_invalid(self):
+        client = self.client
+        assert 200 == client.get('/en/signin')
+        page = SignInPage(client)
+        client.cookies.clear()
+        page.signin('', '')
+        assert 200 == client.follow()
+        SignInPage(client)
+
 
 class SignOutTestCase(unittest.TestCase, SignInMixin, SignOutMixin):
 
@@ -132,7 +150,7 @@ class SignOutTestCase(unittest.TestCase, SignInMixin, SignOutMixin):
         self.signout()
 
 
-class SignUpTestCase(unittest.TestCase, SignUpMixin):
+class SignUpTestCase(unittest.TestCase, SignInMixin, SignUpMixin):
 
     def setUp(self):
         self.client = WSGIClient(main)
@@ -178,3 +196,20 @@ class SignUpTestCase(unittest.TestCase, SignUpMixin):
         assert AUTH_COOKIE in self.client.cookies
         assert RESUBMISSION_NAME not in self.client.cookies
         assert 'Welcome <b>john' in self.client.content
+
+    def test_if_authenticated_redirect(self):
+        """ If user is already authenticated redirect
+            to default page.
+        """
+        self.signin('demo', 'P@ssw0rd')
+        assert 200 == self.client.follow()
+        self.client.get('/en/signup')
+        assert 200 == self.client.follow()
+
+    def test_resubmission_token_invalid(self):
+        client = self.client
+        assert 200 == client.get('/en/signup')
+        page = SignUpPage(client)
+        client.cookies[RESUBMISSION_NAME] = '100'
+        assert 200 == page.signup()
+        SignUpPage(client)
