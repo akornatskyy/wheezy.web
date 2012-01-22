@@ -11,6 +11,8 @@ from datetime import timedelta
 from wheezy.core.datetime import parse_http_datetime
 from wheezy.http import HTTPResponse
 from wheezy.http import HTTPCachePolicy
+from wheezy.http import forbidden
+from wheezy.http import not_found
 from wheezy.web.handlers.method import MethodHandler
 
 
