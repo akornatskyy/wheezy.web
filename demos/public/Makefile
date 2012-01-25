@@ -3,8 +3,9 @@
 
 VERSION=2.7
 
-PYTHON=../../env/bin/python$(VERSION)
-PYTEST=../../env/bin/py.test-$(VERSION)
+ENV=../../env
+PYTHON=$(ENV)/bin/python$(VERSION)
+PYTEST=$(ENV)/bin/py.test-$(VERSION)
 
 
 clean:
@@ -30,9 +31,13 @@ run:
 	$(PYTHON) src/app.py
 
 uwsgi:
-	/usr/bin/uwsgi_python27 -C 777 --logto=/dev/null \
-		-H ../../env/ --pythonpath src -s /tmp/uwsgi-test.sock \
+	$(ENV)/bin/uwsgi -C 777 --logto=/dev/null -p 2 \
+		-H $(ENV) --pythonpath src -s /tmp/uwsgi-test.sock \
 		-M -w app:main
+
+gunicorn:
+	export PYTHONPATH=$$PYTHONPATH:./src ; \
+		$(ENV)/bin/gunicorn -b 0.0.0.0:8080 -w 2 app:main
 
 test:
 	$(PYTEST) -q -x --pep8 --doctest-modules src/
