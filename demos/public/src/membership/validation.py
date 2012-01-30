@@ -24,5 +24,9 @@ registration_validator = Validator({
 })
 
 password_match_validator = Validator({
-    'password': [compare(equal='confirm_password')]
+    'password': [
+        compare(
+            equal='confirm_password',
+            message_template='Passwords do not match.')
+    ]
 })
