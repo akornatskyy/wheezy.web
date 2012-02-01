@@ -22,6 +22,13 @@ from wheezy.web.handlers.method import MethodHandler
 
 
 class BaseHandler(MethodHandler, ValidationMixin):
+    """ Provides methods that integarte such features like: routing,
+        i18n, model binding, template rendering, authentication,
+        xsrf/resubmission protection.
+
+        You need inherit this class and define get() and/or post() to
+        be able respond to HTTP requests.
+    """
 
     @attribute
     def context(self):
@@ -262,6 +269,8 @@ def redirect_handler(route_name, **route_args):
 
 
 class RedirectRouteHandler(BaseHandler):
+    """ Redirects to given route name.
+    """
 
     def __init__(self, request, route_name, **route_args):
         self.route_name = route_name

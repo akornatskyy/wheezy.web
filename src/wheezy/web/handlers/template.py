@@ -12,6 +12,8 @@ def template_handler(template_name, status_code=200):
 
 
 class TemplateHandler(BaseHandler):
+    """ Serves templates that doesn't require up front data processing.
+    """
 
     def __init__(self, request, template_name, status_code=200):
         self.template_name = template_name

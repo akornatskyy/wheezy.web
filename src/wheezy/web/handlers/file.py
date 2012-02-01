@@ -30,6 +30,8 @@ def file_handler(root, age=None):
 
 
 class FileHandler(MethodHandler):
+    """ Serves static files out of some directory.
+    """
 
     def __init__(self, request, root, age=None):
         assert age is None or isinstance(age, timedelta)

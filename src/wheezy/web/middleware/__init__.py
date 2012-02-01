@@ -12,6 +12,8 @@ from wheezy.web.templates import MakoTemplate
 
 
 def bootstrap_defaults(url_mapping=None):
+    """ Defaults bootstrap.
+    """
     def load(options):
         if 'path_router' not in options:
             options['path_router'] = path_router = PathRouter()
@@ -30,6 +32,8 @@ def bootstrap_defaults(url_mapping=None):
 
 
 def http_error_middleware_factory(options):
+    """ HTTP error middleware factory.
+    """
     path_router = options['path_router']
     try:
         error_mapping = options['http_errors']
@@ -44,6 +48,8 @@ def http_error_middleware_factory(options):
 
 
 def path_routing_middleware_factory(options):
+    """ PathRouting middleware factory.
+    """
     path_router = options['path_router']
     return PathRoutingMiddleware(
             path_router=path_router)

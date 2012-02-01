@@ -6,6 +6,10 @@ from wheezy.http import HTTPResponse
 
 
 class MethodHandler(object):
+    """ Represents the most generic handler. It serves dispatcher purpose
+        for HTTP request method (GET, POST, etc). Base class for all
+        handlers.
+    """
 
     def __new__(klass, *args, **kwargs):
         handler = super(MethodHandler, klass).__new__(klass)
@@ -33,10 +37,16 @@ class MethodHandler(object):
         return response
 
     def head(self):
+        """ Responds to HTTP HEAD requests.
+        """
         return method_not_allowed(self.request.config)
 
     def get(self):
+        """ Responds to HTTP GET requests.
+        """
         return method_not_allowed(self.request.config)
 
     def post(self):
+        """ Responds to HTTP POST requests.
+        """
         return method_not_allowed(self.request.config)
