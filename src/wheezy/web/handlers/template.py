@@ -5,6 +5,8 @@ from wheezy.web.handlers.base import BaseHandler
 
 
 def template_handler(template_name, status_code=200):
+    """ Serves templates that does not require up front data processing.
+    """
     return lambda request: TemplateHandler(
             request,
             template_name=template_name,
@@ -12,7 +14,7 @@ def template_handler(template_name, status_code=200):
 
 
 class TemplateHandler(BaseHandler):
-    """ Serves templates that doesn't require up front data processing.
+    """ Serves templates that does not require up front data processing.
     """
 
     def __init__(self, request, template_name, status_code=200):

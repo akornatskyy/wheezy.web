@@ -3,9 +3,14 @@
 """
 
 
-def handler_transforms(transform=None, transforms=None):
+def handler_transforms(*transforms):
+    """ Transforms is a way to manipulate handler response
+        accordingly to some algorithm.
+    """
     def decorate(factory):
-        if transform:
+        if len(transforms) == 1:
+            transform = transforms[0]
+
             def strategy(handler, *args, **kwargs):
                 return transform(
                         handler.request,

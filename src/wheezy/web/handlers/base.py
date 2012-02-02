@@ -263,6 +263,8 @@ class BaseHandler(MethodHandler, ValidationMixin):
 
 
 def redirect_handler(route_name, **route_args):
+    """ Redirects to given route name.
+    """
     return lambda request: RedirectRouteHandler(request,
             route_name,
             **route_args)

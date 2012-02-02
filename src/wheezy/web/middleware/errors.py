@@ -10,6 +10,8 @@ from wheezy.web.handlers.base import RedirectRouteHandler
 
 
 class HTTPErrorMiddleware(object):
+    """ http error middleware
+    """
 
     def __init__(self, error_mapping):
         assert error_mapping is not None
