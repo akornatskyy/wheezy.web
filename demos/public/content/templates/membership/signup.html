@@ -32,6 +32,11 @@
                 ${account.email.error()}
                 </p>
                 <p>
+                ${registration.date_of_birth.label('Date of birth (YYYY/MM/DD):')}
+                ${registration.date_of_birth.textbox(autocomplete='off')}
+                ${registration.date_of_birth.error()}
+                </p>
+                <p>
                 ${credential.password.label('Password:')}
                 ${credential.password.password(autocomplete='off', maxlength='12')}
                 ${credential.password.error()}

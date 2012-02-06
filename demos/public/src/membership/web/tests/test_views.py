@@ -167,7 +167,7 @@ class SignUpTestCase(unittest.TestCase, SignInMixin, SignUpMixin):
         """ Ensure sigup page displays field validation errors.
         """
         errors = self.signup()
-        assert 5 == len(errors)
+        assert 6 == len(errors)
         assert AUTH_COOKIE not in self.client.cookies
         assert 'class="error"' in self.client.content
 
@@ -178,6 +178,7 @@ class SignUpTestCase(unittest.TestCase, SignInMixin, SignUpMixin):
                 username='demo',
                 display_name='Demo',
                 email='demo@somewhere.com',
+                date_of_birth='1984/11/14',
                 password='P@ssw0rd',
                 confirm_password='P@ssw0rd',
                 answer='7')
@@ -193,6 +194,7 @@ class SignUpTestCase(unittest.TestCase, SignInMixin, SignUpMixin):
                 username='john',
                 display_name='John',
                 email='john@somewhere.com',
+                date_of_birth='1987/2/7',
                 password='P@ssw0rd',
                 confirm_password='P@ssw0rd',
                 answer='7')

@@ -1,6 +1,8 @@
 """
 """
 
+from datetime import date
+
 from wheezy.core.comp import u
 
 
@@ -25,3 +27,4 @@ class Registration(object):
         self.account = Account()
         self.questionid = 0
         self.answer = u('')
+        self.date_of_birth = date.min

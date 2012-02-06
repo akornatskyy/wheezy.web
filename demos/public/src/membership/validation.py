@@ -20,7 +20,8 @@ account_validator = Validator({
 })
 
 registration_validator = Validator({
-    'answer': [required, length(min=1, max=20)]
+    'answer': [required, length(min=1, max=20)],
+    'date_of_birth': [required]
 })
 
 password_match_validator = Validator({

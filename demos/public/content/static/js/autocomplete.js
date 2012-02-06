@@ -14,6 +14,7 @@ function signup() {
     .f("#username[type='text']", nextWord())
     .f("#display-name[type='text']", nextWord())
     .f("#email[type='text']", nextMail())
+    .f("#date-of-birth[type='text']", nextDate(1941, 2000))
     .f("#password", "P@ssw0rd")
     .f("#confirm-password", "P@ssw0rd")
     .f("#answer", nextInt(1, 9))
@@ -171,6 +172,13 @@ function nextInt(min, max) {
     if (min == max) return min;
     if (min > max) return nextInt(max, min);
     return min + Math.floor(Math.random() * (max - min + 1));
+}
+
+function nextDate(min, max) {
+    month = nextInt(1, 12)
+    day = nextInt(1, 28)
+    year = nextInt(min, max)
+    return year + "/" + month + "/" + day
 }
 
 function nextOption(id, all) {
