@@ -32,6 +32,11 @@
                 ${account.email.error()}
                 </p>
                 <p>
+                ${account.account_type.label('Account Type:')}
+                ${account.account_type.radio(choices=(('1', 'User'), ('2', 'Business')))}
+                ${account.account_type.error()}
+                </p>
+                <p>
                 ${registration.date_of_birth.label('Date of birth (YYYY/MM/DD):')}
                 ${registration.date_of_birth.textbox(autocomplete='off')}
                 ${registration.date_of_birth.error()}

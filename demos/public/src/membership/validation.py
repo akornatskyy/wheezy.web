@@ -5,6 +5,7 @@ from wheezy.validation import Validator
 from wheezy.validation.rules import compare
 from wheezy.validation.rules import length
 from wheezy.validation.rules import required
+from wheezy.validation.rules import range
 
 
 _ = lambda s: s
@@ -16,7 +17,8 @@ credential_validator = Validator({
 
 account_validator = Validator({
     'email': [required, length(min=6, max=30)],
-    'display_name': [required, length(max=30)]
+    'display_name': [required, length(max=30)],
+    'account_type': [required, range(min=1, max=2)]
 })
 
 registration_validator = Validator({

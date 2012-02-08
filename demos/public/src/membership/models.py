@@ -18,6 +18,7 @@ class Account(object):
     def __init__(self):
         self.email = u('')
         self.display_name = u('')
+        self.account_type = 1  # 1 - user, 2 - business
 
 
 class Registration(object):
