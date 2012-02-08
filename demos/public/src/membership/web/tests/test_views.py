@@ -164,7 +164,7 @@ class SignUpTestCase(unittest.TestCase, SignInMixin, SignUpMixin):
         self.client = None
 
     def test_validation_error(self):
-        """ Ensure sigup page displays field validation errors.
+        """ Ensure signup page displays field validation errors.
         """
         errors = self.signup()
         assert 6 == len(errors)
@@ -172,7 +172,7 @@ class SignUpTestCase(unittest.TestCase, SignInMixin, SignUpMixin):
         assert 'class="error"' in self.client.content
 
     def test_already_registered(self):
-        """ Ensure sigup page displays general error message.
+        """ Ensure signup page displays general error message.
         """
         errors = self.signup(
                 username='demo',
