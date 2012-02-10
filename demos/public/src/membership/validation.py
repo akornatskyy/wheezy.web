@@ -1,11 +1,14 @@
 """
 """
 
+from datetime import timedelta
+
 from wheezy.validation import Validator
 from wheezy.validation.rules import compare
 from wheezy.validation.rules import length
 from wheezy.validation.rules import required
 from wheezy.validation.rules import range
+from wheezy.validation.rules import relative_date
 
 
 _ = lambda s: s
@@ -25,7 +28,12 @@ registration_validator = Validator({
     'credential': credential_validator,
     'account': account_validator,
     'answer': [required, length(min=1, max=20)],
-    'date_of_birth': [required]
+    'date_of_birth': [
+        required,
+        relative_date(
+            min=timedelta(days=-80 * 365),
+            max=timedelta(days=-7 * 365))
+    ]
 })
 
 password_match_validator = Validator({
