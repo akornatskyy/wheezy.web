@@ -22,6 +22,8 @@ account_validator = Validator({
 })
 
 registration_validator = Validator({
+    'credential': credential_validator,
+    'account': account_validator,
     'answer': [required, length(min=1, max=20)],
     'date_of_birth': [required]
 })
