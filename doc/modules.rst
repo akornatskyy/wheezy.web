@@ -1,6 +1,12 @@
 Modules
 =======
 
+wheezy.web.authorization
+------------------------
+
+.. automodule:: wheezy.web.authorization
+   :members:
+
 wheezy.web.caching
 ------------------
 

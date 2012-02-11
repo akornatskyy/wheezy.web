@@ -308,6 +308,36 @@ Sign out is even simpler, just delete ``principal`` attribute::
             del self.principal
             return self.redirect_for('default')
 
+Authorization
+^^^^^^^^^^^^^
+
+Authorization specify access rights to resources and provide access control 
+in particular to your application.
+
+You are able to request authorization by decorating your handler method with 
+:py:meth:`~wheezy.web.authorization.authorize`::
+
+    from wheezy.web import authorize
+    
+    class MembersOnlyHandler(BaseHandler):
+
+        @authorize
+        def get(self, registration=None):
+            return response
+
+There is also a way to demand specific role::
+
+    class BusinessOnlyHandler(BaseHandler):
+
+        @authorize(roles=('business',))
+        def get(self, registration=None):
+            return response
+
+In case there are multiple roles specified in 
+:py:meth:`~wheezy.web.authorization.authorize` decorator than first match
+grant access. That means user is required to be at least in one role to pass
+this guard.
+
 XSRF/Resubmission
 ^^^^^^^^^^^^^^^^^
 Cross-site request forgery (CSRF or XSRF), also known as a one-click attack 

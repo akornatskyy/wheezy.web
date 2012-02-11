@@ -150,6 +150,6 @@ class BusinessOnlyHandler(BaseHandler):
     def translation(self):
         return self.translations['membership']
 
-    @authorize(roles=['business'])
+    @authorize(roles=('business',))
     def get(self, registration=None):
         return self.render_response('membership/business-only.html')
