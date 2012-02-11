@@ -31,10 +31,12 @@ def authorize(wrapped=None, roles=None):
                 principal = handler.principal
                 if principal:
                     principal_roles = principal.roles
-                    if any(role in principal_roles for role in roles):
-                        return func(handler, *args, **kwargs)
+                    for role in roles:
+                        if role in principal_roles:
+                            break
                     else:
                         return unauthorized(handler.options)
+                    return func(handler, *args, **kwargs)
                 else:
                     return unauthorized(handler.options)
             return check_roles
