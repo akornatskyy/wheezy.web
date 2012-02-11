@@ -37,8 +37,8 @@
                 ${account.account_type.error()}
                 </p>
                 <p>
-                ${registration.date_of_birth.label('Date of birth (YYYY/MM/DD):')}
-                ${registration.date_of_birth.textbox(autocomplete='off')}
+                ${registration.date_of_birth.label(_('Date of birth (YYYY/MM/DD):'))}
+                ${registration.date_of_birth.format(_('YYYY/MM/DD')).textbox(autocomplete='off')}
                 ${registration.date_of_birth.error()}
                 </p>
                 <p>

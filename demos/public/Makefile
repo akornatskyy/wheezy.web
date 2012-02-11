@@ -16,7 +16,9 @@ clean:
 
 po:
 	xgettext --join-existing --sort-by-file --omit-header \
-		-o i18n/membership.po src/membership/**/*.py
+		--language=Python \
+		-o i18n/membership.po src/membership/**/*.py \
+		content/templates/membership/*.html
 	cp i18n/membership.po i18n/en/LC_MESSAGES
 	cp i18n/validation.po i18n/en/LC_MESSAGES
 	for l in `ls --hide *.po i18n`; do \

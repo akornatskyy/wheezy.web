@@ -14,6 +14,14 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
+#: content/templates/membership/signup.html:40
+msgid "Date of birth (YYYY/MM/DD):"
+msgstr "Date of birth (YYYY/MM/DD):"
+
+#: content/templates/membership/signup.html:41
+msgid "YYYY/MM/DD"
+msgstr "%Y/%m/%d"
+
 #: src/membership/service/bridge.py:29 src/membership/service/bridge.py:30
 msgid "Favorite number"
 msgstr "Favorite number"
