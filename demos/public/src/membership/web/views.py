@@ -104,9 +104,9 @@ class SignUpHandler(BaseHandler):
 
     def post(self):
         if not self.validate_resubmission():
-            self.error('Your registration request has been queued. '
+            self.error(self._('Your registration request has been queued. '
                     'Please wait while your request will be processed. '
-                    'If your request fails please try again.')
+                    'If your request fails please try again.'))
             return self.get()
         registration = Registration()
         if (not self.try_update_model(self.model)

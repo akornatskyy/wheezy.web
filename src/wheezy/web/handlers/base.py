@@ -73,6 +73,14 @@ class BaseHandler(MethodHandler, ValidationMixin):
     def translation(self):
         return null_translations
 
+    @attribute
+    def gettext(self):
+        return ref_gettext(self.translation)
+
+    @attribute
+    def _(self):
+        return ref_gettext(self.translation)
+
     # region: model
 
     @attribute
@@ -89,7 +97,7 @@ class BaseHandler(MethodHandler, ValidationMixin):
     @attribute
     def helpers(self):
         return {
-            '_': ref_gettext(self.translation),
+            '_': self._,
             'absolute_url_for': self.absolute_url_for,
             'path_for': self.path_for,
             'principal': self.principal,

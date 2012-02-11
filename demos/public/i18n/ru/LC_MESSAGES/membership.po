@@ -48,3 +48,11 @@ msgid ""
 "The system was unable to create an account for you. Please try again later."
 msgstr "Система не смогла создать учетную запись для Вас. "
 "Пожалуйста, повторите попытку позже."
+
+#: src/membership/web/views.py:107
+msgid ""
+"Your registration request has been queued. Please wait while your request "
+"will be processed. If your request fails please try again."
+msgstr ""
+"Ваш запрос на регистрацию в очереди. Пожалуйста, подождите, пока ваш "
+"запрос будет обработан. Если ваш запрос не выполнен, повторите попытку."
