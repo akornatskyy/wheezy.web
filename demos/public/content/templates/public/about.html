@@ -17,4 +17,10 @@
         <li><a href="${path_for('internal_error')}">Internal Error</a></li>
         </%block>
     </ul>
+    <p><a href="${path_for('members_only')}">Members only</a> page is
+    protected by <i>@authorize</i> decorator for registered members.
+    <a href="${path_for('business_only')}">Business only</a> page is
+    protected by <i>@authorize(roles=['business'])</i> decorator
+    and accessable for business accounts only.
+    </p>
 </div>

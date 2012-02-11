@@ -34,21 +34,29 @@ msgstr "City of birth"
 msgid "Favorite color"
 msgstr "Favorite color"
 
-#: src/membership/service/bridge.py:41 src/membership/service/bridge.py:42
+#: src/membership/service/bridge.py:37
+msgid "User"
+msgstr "User"
+
+#: src/membership/service/bridge.py:38
+msgid "Business"
+msgstr "Business"
+
+#: src/membership/service/bridge.py:47
 msgid "The username or password provided is incorrect."
 msgstr "The username or password provided is incorrect."
 
-#: src/membership/service/bridge.py:52 src/membership/service/bridge.py:55
+#: src/membership/service/bridge.py:61
 msgid "The user with such username is already registered. Please try another."
 msgstr "The user with such username is already registered. Please try another."
 
-#: src/membership/service/bridge.py:57 src/membership/service/bridge.py:60
+#: src/membership/service/bridge.py:66
 msgid ""
 "The system was unable to create an account for you. Please try again later."
 msgstr ""
 "The system was unable to create an account for you. Please try again later."
 
-#: src/membership/web/views.py:107
+#: src/membership/web/views.py:107 src/membership/web/views.py:112
 msgid ""
 "Your registration request has been queued. Please wait while your request "
 "will be processed. If your request fails please try again."

@@ -34,6 +34,14 @@ msgstr "Город в котором Вы родились"
 msgid "Favorite color"
 msgstr "Любимый цвет"
 
+#: src/membership/service/bridge.py:37
+msgid "User"
+msgstr "Пользователь"
+
+#: src/membership/service/bridge.py:38
+msgid "Business"
+msgstr "Бизнес"
+
 #: src/membership/service/bridge.py:40
 msgid "The username or password provided is incorrect."
 msgstr "Предоставленное имя пользователя или пароль неверные."

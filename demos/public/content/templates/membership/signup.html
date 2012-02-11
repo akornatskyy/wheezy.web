@@ -33,7 +33,7 @@
                 </p>
                 <p>
                 ${account.account_type.label('Account Type:')}
-                ${account.account_type.radio(choices=(('1', 'User'), ('2', 'Business')))}
+                ${account.account_type.radio(choices=account_types.model)}
                 ${account.account_type.error()}
                 </p>
                 <p>

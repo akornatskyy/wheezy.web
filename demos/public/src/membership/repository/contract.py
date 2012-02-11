@@ -11,5 +11,8 @@ class IMembershipRepository(object):
     def has_account(self, username):
         return False
 
+    def user_roles(self, username):
+        return tuple([])
+
     def create_account(self, registration):
         return False

@@ -8,7 +8,8 @@ from wheezy.core.comp import u
 from wheezy.core.descriptors import attribute
 from wheezy.http import bad_request
 from wheezy.security import Principal
-from wheezy.web.caching import handler_cache
+from wheezy.web import authorize
+from wheezy.web import handler_cache
 from wheezy.web.handlers import BaseHandler
 
 from config import none_cache_profile
@@ -57,7 +58,9 @@ class SignInHandler(BaseHandler):
             return self.get(credential)
         self.principal = Principal(
                 id=credential.username,
-                alias=credential.username)
+                alias=credential.username,
+                roles=tuple(self.factory.membership.roles(
+                    credential.username)))
         del self.xsrf_token
         return self.redirect_for('default')
 
@@ -99,8 +102,10 @@ class SignUpHandler(BaseHandler):
                 model=self.model,
                 questions=sorted(
                     self.factory.membership.password_questions.items(),
-                    key=itemgetter(1))
-                )
+                    key=itemgetter(1)),
+                account_types=sorted(
+                    self.factory.membership.account_types.items(),
+                    key=itemgetter(1)))
 
     def post(self):
         if not self.validate_resubmission():
@@ -121,6 +126,30 @@ class SignUpHandler(BaseHandler):
             return self.get(registration)
         self.principal = Principal(
                 id=registration.credential.username,
-                alias=registration.credential.username)
+                alias=registration.account.display_name,
+                roles=tuple(self.factory.membership.roles(
+                    registration.credential.username)))
         del self.resubmission
         return self.redirect_for('default')
+
+
+class MembersOnlyHandler(BaseHandler):
+
+    @attribute
+    def translation(self):
+        return self.translations['membership']
+
+    @authorize
+    def get(self, registration=None):
+        return self.render_response('membership/members-only.html')
+
+
+class BusinessOnlyHandler(BaseHandler):
+
+    @attribute
+    def translation(self):
+        return self.translations['membership']
+
+    @authorize(roles=['business'])
+    def get(self, registration=None):
+        return self.render_response('membership/business-only.html')

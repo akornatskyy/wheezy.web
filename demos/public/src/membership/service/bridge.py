@@ -25,12 +25,18 @@ class MembershipService(IMembershipService, ValidationMixin):
 
     @attribute
     def password_questions(self):
-        questions = {
+        return {
                 '1': self.gettext('Favorite number'),
                 '2': self.gettext('City of birth'),
                 '3': self.gettext('Favorite color')
         }
-        return questions
+
+    @attribute
+    def account_types(self):
+        return {
+                'user': self.gettext('User'),
+                'business': self.gettext('Business')
+        }
 
     def authenticate(self, credential):
         assert isinstance(credential, Credential)
@@ -41,6 +47,9 @@ class MembershipService(IMembershipService, ValidationMixin):
                 "The username or password provided is incorrect."))
             return False
         return True
+
+    def roles(self, username):
+        return self.repository.membership.user_roles(username)
 
     def create_account(self, registration):
         assert isinstance(registration, Registration)

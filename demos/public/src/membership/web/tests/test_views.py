@@ -192,7 +192,7 @@ class SignUpTestCase(unittest.TestCase, SignInMixin, SignUpMixin):
         """
         errors = self.signup(
                 username='john',
-                display_name='John',
+                display_name='John Smith',
                 email='john@somewhere.com',
                 date_of_birth='1987/2/7',
                 password='P@ssw0rd',
@@ -202,7 +202,7 @@ class SignUpTestCase(unittest.TestCase, SignInMixin, SignUpMixin):
         assert 200 == self.client.follow()
         assert AUTH_COOKIE in self.client.cookies
         assert RESUBMISSION_NAME not in self.client.cookies
-        assert 'Welcome <b>john' in self.client.content
+        assert 'Welcome <b>John Smith' in self.client.content
 
     def test_if_authenticated_redirect(self):
         """ If user is already authenticated redirect
@@ -220,3 +220,63 @@ class SignUpTestCase(unittest.TestCase, SignInMixin, SignUpMixin):
         client.cookies[RESUBMISSION_NAME] = '100'
         page.signup()
         SignUpPage(client)
+
+
+class MembersOnlyTestCase(unittest.TestCase, SignInMixin):
+
+    def setUp(self):
+        self.client = WSGIClient(main)
+
+    def tearDown(self):
+        del self.client
+        self.client = None
+
+    def test_unauthorized(self):
+        """ Ensure unauthorized user is redirected to signin page.
+        """
+        self.client.get('/en/members-only')
+        assert 200 == self.client.follow()
+        SignInPage(self.client)
+
+    def test_authorized(self):
+        """ Ensure authorized user is able to see restricted page.
+        """
+        self.signin('demo', 'P@ssw0rd')
+        assert 200 == self.client.follow()
+        assert 200 == self.client.get('/en/members-only')
+        assert 'Members Only' in self.client.content
+
+
+class BusinessOnlyTestCase(unittest.TestCase, SignInMixin):
+
+    def setUp(self):
+        self.client = WSGIClient(main)
+
+    def tearDown(self):
+        del self.client
+        self.client = None
+
+    def test_unauthorized(self):
+        """ Ensure unauthorized user is redirected to signin page.
+        """
+        self.client.get('/en/business-only')
+        assert 200 == self.client.follow()
+        SignInPage(self.client)
+
+    def test_authorized_but_not_business(self):
+        """ Ensure authorized user that is not in business role
+            is not able to see restricted page.
+        """
+        self.signin('demo', 'P@ssw0rd')
+        assert 200 == self.client.follow()
+        assert 302 == self.client.get('/en/business-only')
+        assert '/en/signin' in self.client.headers['Location'][0]
+
+    def test_authorized_in_business_role(self):
+        """ Ensure authorized user in business role
+            is able to see restricted page.
+        """
+        self.signin('biz', 'P@ssw0rd')
+        assert 200 == self.client.follow()
+        assert 200 == self.client.get('/en/business-only')
+        assert 'Business Accounts' in self.client.content

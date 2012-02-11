@@ -29,6 +29,10 @@ class MembershipRepository(IMembershipRepository):
         # TODO:
         return self.inner.has_account(username)
 
+    def user_roles(self, username):
+        # TODO:
+        return self.inner.user_roles(username)
+
     def create_account(self, registration):
         # TODO:
         return self.inner.create_account(registration)

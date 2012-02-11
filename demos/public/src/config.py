@@ -48,6 +48,7 @@ options.update({
         'http_errors': defaultdict(lambda: 'http500', {
             # HTTP status code: route name
             400: 'http400',
+            401: 'signin',
             403: 'http403',
             404: 'http404',
             500: 'http500',
