@@ -81,6 +81,7 @@ integrate such features:
 #. model binding
 #. template rendering
 #. authentication
+#. authorization
 #. xsrf/resubmission protection
 #. context sharing
 
@@ -338,6 +339,11 @@ In case there are multiple roles specified in
 grant access. That means user is required to be at least in one role to pass
 this guard.
 
+:py:meth:`~wheezy.web.authorization.authorize` decorator return http status 
+code 401 (Unauthorized). It is recommended to use 
+:py:class:`~wheezy.web.middleware.errors.HTTPErrorMiddleware` to route 401
+status code to signin page. Read more in :ref:`httperrormiddleware` section.
+
 XSRF/Resubmission
 ^^^^^^^^^^^^^^^^^
 Cross-site request forgery (CSRF or XSRF), also known as a one-click attack 
@@ -557,7 +563,9 @@ integartation with `wheezy.routing`_ package. It is added to
    :lines: 33-38
 
 This factory requires `path_router` to be available in application options.
-   
+
+.. _httperrormiddleware:
+
 HTTPErrorMiddleware
 ~~~~~~~~~~~~~~~~~~~
 
@@ -589,6 +597,7 @@ The following configuration options available::
     options['http_errors'] = defaultdict(lambda: 'http500', {
                 # HTTP status code: route name
                 400: 'http400',
+                401: 'signin',
                 403: 'http403',
                 404: 'http404',
                 500: 'http500',
