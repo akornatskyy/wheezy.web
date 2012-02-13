@@ -84,6 +84,33 @@ class SignOutMixin(object):
 
 # region: test cases
 
+class MembershipTestCase(unittest.TestCase):
+
+    def setUp(self):
+        self.client = WSGIClient(main)
+
+    def tearDown(self):
+        del self.client
+        self.client = None
+
+    def test_signin(self):
+        """ Ensure signin page is rendered
+        """
+        assert 200 == self.client.go('/en/signin')
+        assert '- Sign In</title>' in self.client.content
+
+    def test_signup(self):
+        """
+        """
+        assert 200 == self.client.go('/en/signup')
+        assert '- Sign Up</title>' in self.client.content
+
+    def test_signout(self):
+        """
+        """
+        assert 302 == self.client.go('/en/signout')
+
+
 class SignInTestCase(unittest.TestCase, SignInMixin):
 
     def setUp(self):

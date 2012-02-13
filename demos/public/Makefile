@@ -1,11 +1,12 @@
-.SILENT: clean po run test
-.PHONY: clean po run test
+.SILENT: clean po run test benchmark
+.PHONY: clean po run test benchmark
 
 VERSION=2.7
 
 ENV=../../env
 PYTHON=$(ENV)/bin/python$(VERSION)
 PYTEST=$(ENV)/bin/py.test-$(VERSION)
+NOSE=$(ENV)/bin/nosetests-$(VERSION)
 
 
 clean:
@@ -43,3 +44,6 @@ gunicorn:
 
 test:
 	$(PYTEST) -q -x --pep8 --doctest-modules src/
+
+benchmark:
+	$(NOSE) -qs -m benchmark src/

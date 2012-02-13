@@ -22,7 +22,7 @@ from wheezy.web.handlers.method import MethodHandler
 
 
 class BaseHandler(MethodHandler, ValidationMixin):
-    """ Provides methods that integarte such features like: routing,
+    """ Provides methods that integrate such features like: routing,
         i18n, model binding, template rendering, authentication,
         xsrf/resubmission protection.
 
