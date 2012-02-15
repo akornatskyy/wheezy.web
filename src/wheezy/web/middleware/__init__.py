@@ -4,6 +4,7 @@
 
 from wheezy.core.collections import defaultdict
 from wheezy.core.i18n import TranslationsManager
+from wheezy.http.config import bootstrap_http_defaults
 from wheezy.routing import PathRouter
 from wheezy.security.crypto import Ticket
 from wheezy.web.middleware.errors import HTTPErrorMiddleware
@@ -15,6 +16,7 @@ def bootstrap_defaults(url_mapping=None):
     """ Defaults bootstrap.
     """
     def load(options):
+        bootstrap_http_defaults(options)
         if 'path_router' not in options:
             options['path_router'] = path_router = PathRouter()
         else:

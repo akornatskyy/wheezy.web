@@ -27,7 +27,7 @@ no_cache_profile = CacheProfile(
 class WelcomeHandler(BaseHandler):
 
     def get(self):
-        response = HTTPResponse(options=self.request.config)
+        response = HTTPResponse()
         response.write('Hello World! It is %s.'
                 % datetime.now().time().strftime('%H:%M:%S'))
         return response
@@ -37,14 +37,14 @@ class Welcome2Handler(BaseHandler):
 
     @handler_cache(profile=public_cache_profile, cache=cache)
     def get(self):
-        response = HTTPResponse(options=self.request.config)
+        response = HTTPResponse()
         response.write('Hello World! It is %s.'
                 % datetime.now().time().strftime('%H:%M:%S'))
         return response
 
 
 def now(request):
-    response = HTTPResponse(options=request.config)
+    response = HTTPResponse()
     response.write('It is %s.'
                 % datetime.now().time().strftime('%H:%M:%S'))
     return response
@@ -52,7 +52,7 @@ def now(request):
 
 @response_cache(profile=public_cache_profile, cache=cache)
 def now2(request):
-    response = HTTPResponse(options=request.config)
+    response = HTTPResponse()
     response.write('It is %s.'
                 % datetime.now().time().strftime('%H:%M:%S'))
     return response
@@ -65,11 +65,13 @@ all_urls = [
         url('now2', now2)
 ]
 
+options = {}
 main = WSGIApplication(
         middleware=[
             bootstrap_defaults(url_mapping=all_urls),
             path_routing_middleware_factory
-        ]
+        ],
+        options=options
 )
 
 

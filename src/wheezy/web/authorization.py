@@ -35,17 +35,17 @@ def authorize(wrapped=None, roles=None):
                         if role in principal_roles:
                             break
                     else:
-                        return unauthorized(handler.options)
+                        return unauthorized()
                     return func(handler, *args, **kwargs)
                 else:
-                    return unauthorized(handler.options)
+                    return unauthorized()
             return check_roles
         else:
             def check_authenticated(handler, *args, **kwargs):
                 if handler.principal:
                     return func(handler, *args, **kwargs)
                 else:
-                    return unauthorized(handler.options)
+                    return unauthorized()
             return check_authenticated
     if wrapped is None:
         return decorate

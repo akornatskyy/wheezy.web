@@ -17,7 +17,7 @@ class MethodHandler(object):
         return handler()
 
     def __init__(self, request):
-        self.options = request.config.options
+        self.options = request.options
         self.request = request
         self.route_args = request.environ['route_args']
         self.cookies = []
@@ -31,7 +31,7 @@ class MethodHandler(object):
         elif method == 'HEAD':
             response = self.head()
         else:
-            response = method_not_allowed(self.request.config)
+            response = method_not_allowed()
         if self.cookies:
             response.cookies.extend(self.cookies)
         return response
@@ -39,14 +39,14 @@ class MethodHandler(object):
     def head(self):
         """ Responds to HTTP HEAD requests.
         """
-        return method_not_allowed(self.request.config)
+        return method_not_allowed()
 
     def get(self):
         """ Responds to HTTP GET requests.
         """
-        return method_not_allowed(self.request.config)
+        return method_not_allowed()
 
     def post(self):
         """ Responds to HTTP POST requests.
         """
-        return method_not_allowed(self.request.config)
+        return method_not_allowed()

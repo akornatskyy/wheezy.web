@@ -14,15 +14,15 @@ http500 = template_handler('error/http500.html', status_code=500)
 
 
 def test_bad_request(request):
-    return bad_request(request.config)
+    return bad_request()
 
 
 def test_forbidden(request):
-    return forbidden(request.config)
+    return forbidden()
 
 
 def test_not_found(request):
-    return not_found(request.config)
+    return not_found()
 
 
 def test_internal_error(request):

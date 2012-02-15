@@ -60,8 +60,7 @@ class FileHandler(MethodHandler):
         request = self.request
         response = HTTPResponse(
                 content_type=mime_type or 'plain/text',
-                encoding=encoding,
-                options=request.config)
+                encoding=encoding)
 
         response.cache = cache_policy = HTTPCachePolicy('public')
 

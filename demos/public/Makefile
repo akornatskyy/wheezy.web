@@ -47,3 +47,10 @@ test:
 
 benchmark:
 	$(NOSE) -qs -m benchmark src/
+
+profile:
+	$(NOSE) -qs -m benchmark --with-profile \
+		--profile-stats-file=public.pstats src/membership
+
+gropf:
+	gprof2dot.py -f pstats public.pstats | dot -Tpng -o public.png

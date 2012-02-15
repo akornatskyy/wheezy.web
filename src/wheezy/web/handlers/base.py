@@ -56,8 +56,7 @@ class BaseHandler(MethodHandler, ValidationMixin):
     def redirect_for(self, name, **kwargs):
         return redirect(
                 self.absolute_url_for(name, **kwargs),
-                permanent=False,
-                options=self.options)
+                permanent=False)
 
     # region: i18n
 
@@ -109,13 +108,14 @@ class BaseHandler(MethodHandler, ValidationMixin):
     def render_template(self, template_name, **kwargs):
         if kwargs:
             errors = self.errors
-            kwargs = dict((name, widget(value, errors))
-                    for name, value in iteritems(kwargs))
+            kwargs = dict([(name, widget(kwargs[name], errors))
+                    for name in kwargs])
         kwargs.update(self.helpers)
         return self.options['render_template'](template_name, **kwargs)
 
     def render_response(self, template_name, **kwargs):
-        response = HTTPResponse(options=self.options)
+        options = self.options
+        response = HTTPResponse(options['CONTENT_TYPE'], options['ENCODING'])
         response.write(self.render_template(
             template_name,
             **kwargs))
@@ -131,11 +131,12 @@ class BaseHandler(MethodHandler, ValidationMixin):
         if hasattr(self, '_BaseHandler__principal'):
             return self.__principal
         principal = None
-        try:
-            options = self.options
+        auth_cookie = self.request.cookies.get(
+                self.options['AUTH_COOKIE'], None)
+        if auth_cookie is not None:
             auth_ticket = self.ticket
             ticket, time_left = auth_ticket.decode(
-                self.request.cookies[options['AUTH_COOKIE']]
+                    auth_cookie
             )
             if ticket:
                 principal = Principal.load(ticket)
@@ -145,17 +146,14 @@ class BaseHandler(MethodHandler, ValidationMixin):
                     return principal
             else:
                 self.delprincipal()
-        except KeyError:  # No auth cookie
-            pass
         self.__principal = principal
         return principal
 
     def setprincipal(self, principal):
         options = self.options
-        auth_ticket = self.ticket
         self.cookies.append(HTTPCookie(
             options['AUTH_COOKIE'],
-            value=auth_ticket.encode(principal.dump()),
+            value=self.ticket.encode(principal.dump()),
             path=self.request.root_path + options['AUTH_COOKIE_PATH'],
             domain=options['AUTH_COOKIE_DOMAIN'],
             secure=options['AUTH_COOKIE_SECURE'],
