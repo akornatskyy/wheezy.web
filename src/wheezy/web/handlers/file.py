@@ -92,7 +92,7 @@ class FileHandler(MethodHandler):
             response.headers.append(HTTP_HEADER_ACCEPT_RANGE_NONE)
             file = open(abspath, 'rb')
             try:
-                response.write(file.read())
+                response.write_bytes(file.read())
             finally:
                 file.close()
         else:
