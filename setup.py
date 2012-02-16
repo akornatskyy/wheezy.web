@@ -27,7 +27,7 @@ except:
 
 setup(
     name='wheezy.web',
-    version='0.1.1',
+    version='0.1',
     description='A lightweight web library',
     long_description=README,
     url='https://bitbucket.org/akorn/wheezy.web',

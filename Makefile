@@ -1,8 +1,9 @@
-.SILENT: clean env doctest-cover test doc release
-.PHONY: clean env doctest-cover test doc release
+.SILENT: clean env doctest-cover test doc release upload
+.PHONY: clean env doctest-cover test doc release upload
 
 VERSION=2.7
 PYPI=http://pypi.python.org/simple
+DIST_DIR=dist
 
 PYTHON=env/bin/python$(VERSION)
 EASY_INSTALL=env/bin/easy_install-$(VERSION)
@@ -51,6 +52,19 @@ clean:
 
 release:
 	$(PYTHON) setup.py -q bdist_egg
+
+upload:
+	REV=$$(hg head --template '{rev}');\
+	if [ "$$(echo $(VERSION) | sed 's/\.//')" -eq 27 ]; then \
+		$(PYTHON) setup.py -q egg_info --tag-build .$$REV \
+			sdist register upload; \
+		make -s doc; \
+		python setup.py upload_docs; \
+	fi; \
+	$(PYTHON) setup.py -q egg_info --tag-build .$$REV \
+		bdist_egg --dist-dir=$(DIST_DIR) \
+		rotate --match=$(VERSION).egg --keep=1 --dist-dir=$(DIST_DIR) \
+		upload;
 
 test:
 	$(PYTEST) -q -x --pep8 --doctest-modules \
