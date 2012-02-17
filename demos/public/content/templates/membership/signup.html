@@ -33,7 +33,7 @@
                 </p>
                 <p>
                 ${account.account_type.label('Account Type:')}
-                ${account.account_type.radio(choices=account_types.model)}
+                ${account.account_type.radio(choices=account_types)}
                 ${account.account_type.error()}
                 </p>
                 <p>
@@ -53,7 +53,7 @@
                 </p>
                 <p>
                 ${model.questionid.label('Security question:')}
-                ${model.questionid.dropdown(choices=questions.model)}
+                ${model.questionid.dropdown(choices=questions)}
                 ${model.questionid.error()}
                 </p>
                 <p>

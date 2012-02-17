@@ -17,7 +17,6 @@ from wheezy.http import redirect
 from wheezy.security import Principal
 from wheezy.validation import ValidationMixin
 from wheezy.validation import try_update_model
-from wheezy.web.comp import iteritems
 from wheezy.web.handlers.method import MethodHandler
 
 
@@ -91,6 +90,13 @@ class BaseHandler(MethodHandler, ValidationMixin):
                 model, values or self.request.form, self.errors,
                 self.translations['validation'])
 
+    # region: widgets
+
+    def widgets(self, **kwargs):
+        errors = self.errors
+        return [(name, widget(kwargs[name], errors))
+                    for name in kwargs]
+
     # region: templates
 
     @attribute
@@ -98,6 +104,8 @@ class BaseHandler(MethodHandler, ValidationMixin):
         return {
             '_': self._,
             'absolute_url_for': self.absolute_url_for,
+            'errors': self.errors,
+            'handler': self,
             'path_for': self.path_for,
             'principal': self.principal,
             'resubmission': self.resubmission_widget,
@@ -105,19 +113,20 @@ class BaseHandler(MethodHandler, ValidationMixin):
             'xsrf': self.xsrf_widget
         }
 
-    def render_template(self, template_name, **kwargs):
+    def render_template(self, template_name, widgets=None, **kwargs):
+        data = self.helpers
         if kwargs:
-            errors = self.errors
-            kwargs = dict([(name, widget(kwargs[name], errors))
-                    for name in kwargs])
-        kwargs.update(self.helpers)
-        return self.options['render_template'](template_name, **kwargs)
+            data.update(kwargs)
+        if widgets:
+            data.update(widgets)
+        return self.options['render_template'](template_name, **data)
 
-    def render_response(self, template_name, **kwargs):
+    def render_response(self, template_name, widgets=None, **kwargs):
         options = self.options
         response = HTTPResponse(options['CONTENT_TYPE'], options['ENCODING'])
         response.write(self.render_template(
             template_name,
+            widgets,
             **kwargs))
         return response
 

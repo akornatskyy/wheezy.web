@@ -6,7 +6,6 @@ from operator import itemgetter
 from wheezy.core.collections import attrdict
 from wheezy.core.comp import u
 from wheezy.core.descriptors import attribute
-from wheezy.http import bad_request
 from wheezy.security import Principal
 from wheezy.web import authorize
 from wheezy.web import handler_cache
@@ -43,8 +42,9 @@ class SignInHandler(BaseHandler):
             return self.redirect_for('default')
         credential = credential or Credential()
         return self.render_response('membership/signin.html',
-                credential=credential,
-                model=self.model)
+                self.widgets(
+                    credential=credential,
+                    model=self.model))
 
     def post(self):
         if not self.validate_xsrf_token():
@@ -96,10 +96,11 @@ class SignUpHandler(BaseHandler):
             return self.redirect_for('default')
         registration = registration or Registration()
         return self.render_response('membership/signup.html',
-                registration=registration,
-                credential=registration.credential,
-                account=registration.account,
-                model=self.model,
+                self.widgets(
+                    registration=registration,
+                    credential=registration.credential,
+                    account=registration.account,
+                    model=self.model),
                 questions=sorted(
                     self.factory.membership.password_questions.items(),
                     key=itemgetter(1)),
