@@ -67,7 +67,7 @@ attributes:
 
 Please note that this handler automatically respond with HTTP status code 405
 (method not allowed) in case requested HTTP method is not overridden in your
-handler, e.g. there is incoming POST request but your handler does not 
+handler, e.g. there is incoming POST request but your handler does not
 provide implementation.
 
 BaseHandler
@@ -85,10 +85,10 @@ integrate such features:
 #. xsrf/resubmission protection
 #. context sharing
 
-You need inherit this class and define get() and/or post() to be able 
-respond to HTTP requests. This class inherit 
+You need inherit this class and define get() and/or post() to be able
+respond to HTTP requests. This class inherit
 :py:class:`~wheezy.web.handlers.method.MethodHandler` so everything mentioned
-for :py:class:`~wheezy.web.handlers.method.MethodHandler` applies to 
+for :py:class:`~wheezy.web.handlers.method.MethodHandler` applies to
 :py:class:`~wheezy.web.handlers.base.BaseHandler` as well.
 
 Routing
@@ -172,7 +172,7 @@ Here is example from :ref:`public_demo` demo application (see file
                 return self.redirect_for('default')
             credential = credential or Credential()
             return self.render_response('membership/signin.html',
-                    credential=credential)
+                    self.widgets(credential=credential))
 
         def post(self):
             credential = Credential()
@@ -214,7 +214,7 @@ how we add ``MakoTemplate`` renderer (see file `config.py`_)::
     options['render_template'] = MakoTemplate(
             directories=['content/templates'],
             filesystem_checks=False,
-            template_cache=template_cache),
+            template_cache=template_cache)
 
 Template contract is any callable of the following form::
 
@@ -228,34 +228,82 @@ There are the following attributes and methods:
   in case you need more specific context information in template).
 
   * ``_`` - ``gettext`` translations support.
+  * ``errors`` - a dictionary with errors reported during validation. Key
+    corresponds to attribute validated and value to a list of errors.
+  * ``handler`` - an instance of currently executing handler.
   * ``route_args``, ``absolute_url_for``, ``path_for`` - relates to
     routing related methods.
   * ``principal`` - an instance of ``wheezy.security.Principal`` for the
     authenticated request or ``None``.
   * ``resubmission`` - resubmission HTML form widget.
   * ``xsrf`` - XSRF protection HTML form widget.
-  
+
 * ``render_template(template_name, **kwargs)`` - renders template with name
   ``template_name`` and pass it context information in ``**kwargs``.
-* ``render_response(template_name, **kwargs)`` - writes result of 
+* ``render_response(template_name, **kwargs)`` - writes result of
   ``render_template`` into ``wheezy.http.HTTPResponse`` and return it.
+
+Widgets
+^^^^^^^
+
+Widgets are coming from `wheezy.html`_ package. You have to be explicit when
+you need widgets. Here is ``SignUpHandler`` from demo::
+
+    class SignUpHandler(BaseHandler):
+
+        ...
+
+        @handler_cache(profile=none_cache_profile)
+        def get(self, registration=None):
+            registration = registration or Registration()
+            return self.render_response('membership/signup.html',
+                    self.widgets( # ====== Wrapping widgets ======
+                        registration=registration,
+                        credential=registration.credential,
+                        account=registration.account,
+                        model=self.model),
+                    questions=sorted(
+                        self.factory.membership.password_questions.items(),
+                        key=itemgetter(1)),
+                    account_types=sorted(
+                        self.factory.membership.account_types.items(),
+                        key=itemgetter(1)))
+
+In the example above four models (registration, credential, accout and model)
+are wrapped by ``self.widgets`` and two (questions and account_types) are
+passed as is.
+
+The benefit of using widgets is a syntax sugar in html template::
+
+    <p>
+        ${account.email.label('Email:')}
+        ${account.email.textbox(autocomplete='off')}
+        ${account.email.error()}
+    </p>
+    <p>
+        ${account.account_type.label('Account Type:')}
+        ${account.account_type.radio(choices=account_types)}
+        ${account.account_type.error()}
+    </p>
+
+Read more about available widgets in `wheezy.html`_ package.
 
 Authentication
 ^^^^^^^^^^^^^^
 
 Authentication is a process of confirming the truth of security principal.
 In web application it usually relates to creating an encrypted cookie value
-so it can not be easily compromised by attacker. This is where integration 
+so it can not be easily compromised by attacker. This is where integration
 with `wheezy.security`_ happens.
 
-The process of creating authentication cookie is as simple as assiging 
+The process of creating authentication cookie is as simple as assiging
 instance of ``wheezy.security.Principal`` to attribute ``principal``. Let
 demonstrate this by example::
 
     from wheezy.security import Principal
 
     class SignInHandler(BaseHandler):
-    
+
         def post(self):
             ...
             self.principal = Principal(
@@ -266,7 +314,7 @@ demonstrate this by example::
 Once we confirmed user has entered valid username and password we create
 an instance of ``Principal`` and assign it to ``principal`` attribute. In
 ``setprincipal`` implementation authentication cookie is created with a
-dump of ``Principal`` object and it value is protected by 
+dump of ``Principal`` object and it value is protected by
 ``wheezy.security.crypto.Ticket`` (read more in `wheezy.security`_).
 
 Here are authentication configuration options (see file `config.py`_)::
@@ -289,9 +337,9 @@ Here are authentication configuration options (see file `config.py`_)::
             'AUTH_COOKIE_PATH': '',
             'AUTH_COOKIE_SECURE': False,
     })
-    
+
 You can obtain current security ``Principal`` by requesting ``principal``
-attribute. The example below redirects user to default route in case he 
+attribute. The example below redirects user to default route in case he
 or she is already authenticated::
 
     class SignInHandler(BaseHandler):
@@ -312,14 +360,14 @@ Sign out is even simpler, just delete ``principal`` attribute::
 Authorization
 ^^^^^^^^^^^^^
 
-Authorization specify access rights to resources and provide access control 
+Authorization specify access rights to resources and provide access control
 in particular to your application.
 
-You are able to request authorization by decorating your handler method with 
+You are able to request authorization by decorating your handler method with
 :py:meth:`~wheezy.web.authorization.authorize`::
 
     from wheezy.web import authorize
-    
+
     class MembersOnlyHandler(BaseHandler):
 
         @authorize
@@ -334,26 +382,26 @@ There is also a way to demand specific role::
         def get(self, registration=None):
             return response
 
-In case there are multiple roles specified in 
+In case there are multiple roles specified in
 :py:meth:`~wheezy.web.authorization.authorize` decorator than first match
 grant access. That means user is required to be at least in one role to pass
 this guard.
 
-:py:meth:`~wheezy.web.authorization.authorize` decorator return http status 
-code 401 (Unauthorized). It is recommended to use 
+:py:meth:`~wheezy.web.authorization.authorize` decorator return http status
+code 401 (Unauthorized). It is recommended to use
 :py:class:`~wheezy.web.middleware.errors.HTTPErrorMiddleware` to route 401
 status code to signin page. Read more in :ref:`httperrormiddleware` section.
 
 XSRF/Resubmission
 ^^^^^^^^^^^^^^^^^
-Cross-site request forgery (CSRF or XSRF), also known as a one-click attack 
-is a type of malicious exploit of a website whereby unauthorized commands are 
-transmitted from a user that the website trusts. Logging out of sites and 
-avoiding their "remember me" features can mitigate CSRF risk. 
+Cross-site request forgery (CSRF or XSRF), also known as a one-click attack
+is a type of malicious exploit of a website whereby unauthorized commands are
+transmitted from a user that the website trusts. Logging out of sites and
+avoiding their "remember me" features can mitigate CSRF risk.
 
-Forms that can be accidentally, or maliciously submitted multiple times can 
-cause undesired behavior and/or result in your application. Resubmits can 
-happen for many reasons, mainly through page refresh, browser back button 
+Forms that can be accidentally, or maliciously submitted multiple times can
+cause undesired behavior and/or result in your application. Resubmits can
+happen for many reasons, mainly through page refresh, browser back button
 and incident multiple button clicks.
 
 Regardless a source of issue you need to be aware it happening.
@@ -375,11 +423,11 @@ has context functions ``xsrf()`` and ``resubmission()`` for this purpose::
         ...
     </form>
 
-Validation happens in handler, here is how it implemented in 
+Validation happens in handler, here is how it implemented in
 `membership/web/views.py`_::
 
     class SignInHandler(BaseHandler):
-    
+
         def get(self, credential=None):
             if not self.validate_xsrf_token():
                 return self.redirect_for(self.route_args.route_name)
@@ -389,7 +437,7 @@ If XSRF token is invalid we redisplay the same page. Or we can show user an
 error message, here is use case for resubmission check::
 
     class SignUpHandler(BaseHandler):
-    
+
         def post(self):
             if not self.validate_resubmission():
                 self.error('Your registration request has been queued. '
@@ -400,7 +448,7 @@ error message, here is use case for resubmission check::
 
 Since there is no simple rule of thumb when to use which protection and how
 to react in case it happening, it still strongly recommended take into account
-such situations during application development and provide unified application 
+such situations during application development and provide unified application
 wide behavior.
 
 Context
@@ -414,7 +462,7 @@ There is ``context`` attribute available for this purpose. It is
 a dictionary that extends ``options`` with the following information: errors,
 locale, principal and translations.
 
-Here is example from :ref:`public_demo` demo application (see 
+Here is example from :ref:`public_demo` demo application (see
 `membership/web/views.py`_)::
 
     class SignInHandler(BaseHandler):
@@ -428,9 +476,9 @@ Context is passed to service factory.
 RedirectRouteHandler
 ~~~~~~~~~~~~~~~~~~~~
 
-:py:class:`~wheezy.web.handlers.base.RedirectRouteHandler` redirects to given 
-route name. You can use 
-:py:meth:`~wheezy.web.handlers.base.redirect_handler` in url mapping 
+:py:class:`~wheezy.web.handlers.base.RedirectRouteHandler` redirects to given
+route name. You can use
+:py:meth:`~wheezy.web.handlers.base.redirect_handler` in url mapping
 declaration::
 
     all_urls = [
@@ -438,15 +486,15 @@ declaration::
         ...
     ]
 
-The example above always redirect match for route `default` to route 
+The example above always redirect match for route `default` to route
 `welcome`. It asks browser to redirect it request to another page.
 
 FileHandler
 ~~~~~~~~~~~
 
 :py:class:`~wheezy.web.handlers.file.FileHandler` serves static files out
-of some directory. You can use 
-:py:meth:`~wheezy.web.handlers.file.file_handler` in url mapping 
+of some directory. You can use
+:py:meth:`~wheezy.web.handlers.file.file_handler` in url mapping
 declaration::
 
     all_urls = [
@@ -459,8 +507,8 @@ declaration::
 :py:meth:`~wheezy.web.handlers.file.file_handler` accepts the following
 arguments:
 
-* ``root`` - a root path of directory that holds static files, e.g. 
-  `.css`, `.js`, `.jpg`, etc. It is recommended that this directory be 
+* ``root`` - a root path of directory that holds static files, e.g.
+  `.css`, `.js`, `.jpg`, etc. It is recommended that this directory be
   isolated of any other part of application.
 * ``age`` - controls http browser cache policy period.
 
@@ -468,14 +516,14 @@ Request Headers
 ^^^^^^^^^^^^^^^
 
 :py:class:`~wheezy.web.handlers.file.FileHandler` handles both GET and HEAD
-browser requests, provides `Last-Modified` and `ETag` HTTP response headers, 
-as well as understands `If-Modified-Since` and `If-None-Match` request headers 
+browser requests, provides `Last-Modified` and `ETag` HTTP response headers,
+as well as understands `If-Modified-Since` and `If-None-Match` request headers
 sent by browser for static content.
 
 GZip and Caching
 ^^^^^^^^^^^^^^^^
 
-It is recommended to use :py:meth:`~wheezy.web.handlers.file.file_handler` 
+It is recommended to use :py:meth:`~wheezy.web.handlers.file.file_handler`
 together with ``gzip_transform`` and ``httpcache``.
 
 Here is example from :ref:`public_demo` demo application::
@@ -496,7 +544,7 @@ Here is example from :ref:`public_demo` demo application::
 Templates
 ^^^^^^^^^
 
-Path for static files is provided by standard `wheezy.routing`_ 
+Path for static files is provided by standard `wheezy.routing`_
 ``path_for(name, **kwargs)`` function::
 
     path_for('static', path='core.js')
@@ -504,21 +552,21 @@ Path for static files is provided by standard `wheezy.routing`_
 TemplateHandler
 ~~~~~~~~~~~~~~~
 
-:py:class:`~wheezy.web.handlers.template.TemplateHandler` serves templates 
+:py:class:`~wheezy.web.handlers.template.TemplateHandler` serves templates
 that does not require up front data processing. This mostly relates to some
 static pages, e.g. about, help, error, etc.
 
-You can use 
-:py:meth:`~wheezy.web.handlers.template.template_handler` in url mapping 
+You can use
+:py:meth:`~wheezy.web.handlers.template.template_handler` in url mapping
 declaration::
 
     from wheezy.web.handlers import template_handler
-    
+
     public_urls = [
         url('about', template_handler('public/about.html'), name='about'),
     ]
 
-:py:meth:`~wheezy.web.handlers.template.template_handler` supports the 
+:py:meth:`~wheezy.web.handlers.template.template_handler` supports the
 following arguments:
 
 * ``template_name`` - template name used to render response.
@@ -542,12 +590,12 @@ and provide defaults.
 
 The following options are checked:
 
-* ``path_router`` - if it is not defined already and instance of 
+* ``path_router`` - if it is not defined already and instance of
   ``wheezy.routing.PathRouter`` is created. Argument ``url_mapping`` is
   passed to ``PathRouter.add_routes`` method.
-* ``render_template`` - defaults to an instance of 
+* ``render_template`` - defaults to an instance of
   ``wheezy.web.templates.MakoTemplate``.
-* ``translations_manager`` - defaults to an instance of 
+* ``translations_manager`` - defaults to an instance of
   ``wheezy.core.i18n.TranslationsManager``.
 * ``ticket`` - defaults to an instance of ``wheezy.security.crypto.Ticket``.
 
@@ -555,8 +603,8 @@ PathRoutingMiddleware
 ~~~~~~~~~~~~~~~~~~~~~
 
 :py:class:`~wheezy.web.middleware.routing.PathRoutingMiddleware` provides
-integartation with `wheezy.routing`_ package. It is added to 
-``WSGIApplication`` via 
+integartation with `wheezy.routing`_ package. It is added to
+``WSGIApplication`` via
 :py:meth:`~wheezy.web.middleware.path_routing_middleware_factory`.
 
 .. literalinclude:: ../demos/hello/hello.py
@@ -572,12 +620,12 @@ HTTPErrorMiddleware
 :py:class:`~wheezy.web.middleware.errors.HTTPErrorMiddleware` provides a
 custom error page in case http status code is above 400 (HTTP status codes
 from 400 and up relates to client error, 500 and up - server error). This
-middleware is initialized with ``error_mapping`` dictionary, where key 
-corresponds to HTTP status code and value to route name. In case of status 
+middleware is initialized with ``error_mapping`` dictionary, where key
+corresponds to HTTP status code and value to route name. In case of status
 code match it redirects incoming request to route per ``error_mapping``.
 
-:py:class:`~wheezy.web.middleware.errors.HTTPErrorMiddleware` can be added to 
-``WSGIApplication`` via 
+:py:class:`~wheezy.web.middleware.errors.HTTPErrorMiddleware` can be added to
+``WSGIApplication`` via
 :py:meth:`~wheezy.web.middleware.http_error_middleware_factory`::
 
         main = WSGIApplication(
@@ -592,7 +640,7 @@ code match it redirects incoming request to route per ``error_mapping``.
 The following configuration options available::
 
     from wheezy.core.collections import defaultdict
-    
+
     options = {}
     options['http_errors'] = defaultdict(lambda: 'http500', {
                 # HTTP status code: route name
@@ -606,16 +654,16 @@ The following configuration options available::
 
 ``defaultdict`` is used to provide default route name if there is no match in
 ``http_errors`` dictionary. All routes defined in ``http_errors`` must exist.
-These checks occur in 
+These checks occur in
 :py:meth:`~wheezy.web.middleware.http_error_middleware_factory`.
 
 Transforms
 ----------
 
 Transforms is a way to manipulate handler response accordingly to some
-algorithm. :ref:`wheezy.web` provide decorator 
+algorithm. :ref:`wheezy.web` provide decorator
 :py:meth:`~wheezy.web.transforms.handler_transforms` to adapt transforms
-available in `wheezy.http`_ to web handlers sub-classed from 
+available in `wheezy.http`_ to web handlers sub-classed from
 :py:class:`~wheezy.web.handlers.base.BaseHandler`::
 
     from wheezy.http.transforms import gzip_transform
@@ -623,7 +671,7 @@ available in `wheezy.http`_ to web handlers sub-classed from
     from wheezy.web.transforms import response_transforms
 
     class MyHandler(BaseHandler):
-    
+
         @handler_transforms(gzip_transform(compress_level=9))
         def get(self):
             return response
@@ -641,7 +689,7 @@ instead it offers integration with the following packages:
 Mako Templates
 ~~~~~~~~~~~~~~
 
-Here is configuration option to define how templates are rendered within 
+Here is configuration option to define how templates are rendered within
 application (see `config.py`_ for details)::
 
     options = {}
@@ -664,9 +712,9 @@ Template contract is any callable of the following form::
 Caching
 -------
 
-:ref:`wheezy.web` provide decorator 
+:ref:`wheezy.web` provide decorator
 :py:meth:`~wheezy.web.caching.handler_cache` to adapt cache interface
-available in `wheezy.http`_ to web handlers sub-classed from 
+available in `wheezy.http`_ to web handlers sub-classed from
 :py:class:`~wheezy.web.handlers.base.BaseHandler`::
 
     from wheezy.http import CacheProfile
@@ -677,9 +725,9 @@ available in `wheezy.http`_ to web handlers sub-classed from
             'none',
             no_store=True,
             enabled=True)
-        
+
     class MyHandler(BaseHandler):
-    
+
         @handler_cache(profile=none_cache_profile)
         def get(self, credential=None):
             return response
@@ -690,6 +738,7 @@ Please refer to `wheezy.http`_ documentation for more information.
 
 .. _`WSGI`: http://www.python.org/dev/peps/pep-3333
 .. _`wheezy.core`: http://bitbucket.org/akorn/wheezy.core
+.. _`wheezy.html`: http://packages.python.org/wheezy.html
 .. _`wheezy.http`: http://packages.python.org/wheezy.http
 .. _`wheezy.routing`: http://packages.python.org/wheezy.routing
 .. _`wheezy.validation`: http://packages.python.org/wheezy.validation

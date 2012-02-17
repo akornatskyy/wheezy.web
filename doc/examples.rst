@@ -56,7 +56,7 @@ Application
 (:py:meth:`~wheezy.web.middleware.path_routing_middleware_factory`):
 
 .. literalinclude:: ../demos/hello/hello.py
-   :lines: 33-38
+   :lines: 33-40
 
 .. _public_demo:
 

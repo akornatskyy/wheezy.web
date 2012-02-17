@@ -13,13 +13,13 @@ from wheezy.web.middleware import path_routing_middleware_factory
 class WelcomeHandler(BaseHandler):
 
     def get(self):
-        response = HTTPResponse(options=self.request.config)
+        response = HTTPResponse()
         response.write('Hello World!')
         return response
 
 
 def welcome(request):
-    response = HTTPResponse(options=request.config)
+    response = HTTPResponse()
     response.write('Hello World!')
     return response
 
@@ -30,11 +30,13 @@ all_urls = [
 ]
 
 
+options = {}
 main = WSGIApplication(
         middleware=[
             bootstrap_defaults(url_mapping=all_urls),
             path_routing_middleware_factory
-        ]
+        ],
+        options=options
 )
 
 
