@@ -1,4 +1,4 @@
-`wheezy.web`_ is a `python`_ package written in pure Python code. 
+`wheezy.web`_ is a `python`_ package written in pure Python code.
 It is a lightweight `WSGI`_ web framework.
 
 It is optimized for performance, well tested and documented.
@@ -14,11 +14,11 @@ Install
 -------
 
 `wheezy.web`_ requires `python`_ version 2.4 to 2.7 or 3.2.
-It is independent of operating system. You can install it from `pypi`_ 
+It is independent of operating system. You can install it from `pypi`_
 site using `setuptools`_::
 
     $ easy_install wheezy.web
-    
+
 If you are using `virtualenv`_::
 
     $ virtualenv env
@@ -40,14 +40,14 @@ Prepare `virtualenv`_ environment in *env* directory ::
 
     $ make test
 
-You can read how to compile from source code different versions of 
+You can read how to compile from source code different versions of
 `python`_ in the `article`_ published on `mind reference`_ blog.
 
 You can run certain make targets with specific python version. Here
 we are going to run `doctest`_ with python3.2::
 
     $ make env doctest-cover VERSION=3.2
-    
+
 Generate documentation with `sphinx`_::
 
 	$ make doc
@@ -62,14 +62,14 @@ If you run into any issue or have comments, go ahead and add on
 .. _`eggs`: http://pypi.python.org/pypi/wheezy.web
 .. _`examples`: http://bitbucket.org/akorn/wheezy.web/src/tip/demos
 .. _`issues`: http://bitbucket.org/akorn/wheezy.web/issues
-.. _`mercurial`: http://mercurial.selenic.com/
-.. _`mind reference`: http://mindref.blogspot.com/
-.. _`pypi`: http://pypi.python.org/pypi/wheezy.web
+.. _`mercurial`: http://mercurial.selenic.com
+.. _`mind reference`: http://mindref.blogspot.com
+.. _`pypi`: http://pypi.python.org
 .. _`python`: http://www.python.org
-.. _`readthedocs`: http://readthedocs.org/builds/wheezyweb/
+.. _`readthedocs`: http://readthedocs.org/builds/wheezyweb
 .. _`setuptools`: http://pypi.python.org/pypi/setuptools
 .. _`source code`: http://bitbucket.org/akorn/wheezy.web/src
-.. _`sphinx`: http://sphinx.pocoo.org/
+.. _`sphinx`: http://sphinx.pocoo.org
 .. _`virtualenv`: http://pypi.python.org/pypi/virtualenv
 .. _`wheezy.web`: http://pypi.python.org/pypi/wheezy.web
 .. _`WSGI`: http://www.python.org/dev/peps/pep-3333
