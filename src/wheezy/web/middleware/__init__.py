@@ -21,6 +21,8 @@ def bootstrap_defaults(url_mapping=None):
             options['path_router'] = path_router = PathRouter()
         else:
             path_router = options['path_router']
+        if 'path_for' not in options:
+            options['path_for'] = path_router.path_for
         if url_mapping:
             path_router.add_routes(url_mapping)
         if 'render_template' not in options:
@@ -36,13 +38,13 @@ def bootstrap_defaults(url_mapping=None):
 def http_error_middleware_factory(options):
     """ HTTP error middleware factory.
     """
-    path_router = options['path_router']
+    path_for = options['path_for']
     try:
         error_mapping = options['http_errors']
         assert isinstance(error_mapping, defaultdict)
-        assert path_router.path_for(error_mapping.default_factory())
+        assert path_for(error_mapping.default_factory())
         for route_name in error_mapping.values():
-            assert path_router.path_for(route_name)
+            assert path_for(route_name)
     except KeyError:
         error_mapping = defaultdict(str)
     return HTTPErrorMiddleware(
