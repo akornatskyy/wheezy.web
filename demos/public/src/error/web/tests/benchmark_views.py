@@ -15,7 +15,7 @@ class BenchmarkTestCase(ErrorTestCase):
         p = Benchmark((
             self.test_error_400,
             self.test_error_403,
-            self.test_error_403,
+            self.test_error_404,
             ), 1000)
         p.report('error', baselines={
                 'test_error_400': 1.0,
