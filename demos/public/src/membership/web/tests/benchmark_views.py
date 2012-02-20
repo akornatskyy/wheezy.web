@@ -17,7 +17,7 @@ class BenchmarkTestCase(MembershipTestCase):
             self.test_signup,
             self.test_signout,
             ), 1000)
-        p.report('signin', baselines={
+        p.report('membership', baselines={
                 'test_signin': 1.0,
                 'test_signup': 0.667,
                 'test_signout': 4.0,
