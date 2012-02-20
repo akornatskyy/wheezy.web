@@ -6,6 +6,7 @@ from datetime import timedelta
 from wheezy.caching import MemoryCache
 from wheezy.core.collections import defaultdict
 from wheezy.core.i18n import TranslationsManager
+from wheezy.html.ext.mako import widget_preprocessor
 from wheezy.http import CacheProfile
 from wheezy.http import RequestVary
 from wheezy.security.crypto import Ticket
@@ -70,7 +71,9 @@ options.update({
         'render_template': MakoTemplate(
             directories=['content/templates'],
             filesystem_checks=False,
-            template_cache=template_cache),
+            template_cache=template_cache,
+            preprocessor=[widget_preprocessor]
+            ),
 
         'ticket': Ticket(
             max_age=1200,

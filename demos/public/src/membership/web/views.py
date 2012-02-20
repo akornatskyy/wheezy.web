@@ -42,9 +42,8 @@ class SignInHandler(BaseHandler):
             return self.redirect_for('default')
         credential = credential or Credential()
         return self.render_response('membership/signin.html',
-                self.widgets(
-                    credential=credential,
-                    model=self.model))
+                        credential=credential,
+                        model=self.model)
 
     def post(self):
         if not self.validate_xsrf_token():
@@ -96,11 +95,10 @@ class SignUpHandler(BaseHandler):
             return self.redirect_for('default')
         registration = registration or Registration()
         return self.render_response('membership/signup.html',
-                self.widgets(
-                    registration=registration,
-                    credential=registration.credential,
-                    account=registration.account,
-                    model=self.model),
+                model=self.model,
+                registration=registration,
+                account=registration.account,
+                credential=registration.credential,
                 questions=sorted(
                     self.factory.membership.password_questions.items(),
                     key=itemgetter(1)),
