@@ -1,5 +1,5 @@
 
-""" ``benchmark_views`` module.
+""" ``benchmark_hello`` module.
 """
 
 from wheezy.core.benchmark import Benchmark
@@ -19,7 +19,7 @@ class BenchmarkTestCase(HelloTestCase):
             self.test_welcome,
             self.test_home
             ), 20000)
-        p.report('public', baselines={
+        p.report('hello', baselines={
                 'test_welcome': 1.0,
                 'test_home': 0.9
         })
