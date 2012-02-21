@@ -30,6 +30,20 @@ class PublicTestCase(unittest.TestCase):
         assert 200 == self.client.get('/en/about')
         assert '- About</title>' in self.client.content
 
+    def test_widgets(self):
+        """ Ensure widgets page is rendered.
+        """
+        assert 200 == self.client.get('/en/widgets')
+        assert '- Widgets</title>' in self.client.content
+        assert 'no error</b>' in self.client.content
+
+    def test_widgets_with_errors(self):
+        """ Ensure widgets-with-errors page is rendered.
+        """
+        assert 200 == self.client.get('/en/widgets-with-errors')
+        assert '- Widgets</title>' in self.client.content
+        assert 'error reported</b>' in self.client.content
+
     def test_static_files(self):
         """ Ensure static content is served.
         """

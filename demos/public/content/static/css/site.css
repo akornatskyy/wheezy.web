@@ -72,8 +72,8 @@ table tr.row-alternate { background-color: #e8eef4; }
 
 .clear { clear: both; }
 input[type="text"], input[type="password"], textarea { border: 1px solid #BBB; border-radius: 3px; }
-code { padding: 10px; text-align: left; display: block; overflow: auto; background: #fafafa; border: 1px solid #f2f2f2; border-left: 3px solid #5c87b2; }
-code { font: 500 1em/1.5em 'Lucida Console' , 'courier new' , monospace; }
+code, pre { padding: 10px; text-align: left; display: block; overflow: auto; background: #fafafa; border: 1px solid #f2f2f2; border-left: 3px solid #5c87b2; }
+code, pre { font: 500 1em/1.5em Consolas, monospace; }
 
 input.error, textarea.error, select.error { border: 1px solid #FF0000; background-color: #FFEEEE; }
 span.error { color: #FF0000; }

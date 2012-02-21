@@ -2,13 +2,17 @@
 """
 
 from wheezy.routing import url
-from wheezy.web.handlers import template_handler
 
 from public.web.views import about
 from public.web.views import home
+from public.web.views import WidgetsHandler
 
 
 public_urls = [
     url('home', home, name='home'),
     url('about', about, name='about'),
+    url('widgets-with-errors', WidgetsHandler,
+        kwargs={'mode': 'errors'}, name='widgets-with-errors'),
+    url('widgets', WidgetsHandler,
+        kwargs={'mode': 'no-errors'}, name='widgets'),
 ]
