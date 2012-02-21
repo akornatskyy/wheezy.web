@@ -31,6 +31,14 @@ def bootstrap_defaults(url_mapping=None):
             options['translations_manager'] = TranslationsManager()
         if 'ticket' not in options:
             options['ticket'] = Ticket()
+
+        options.setdefault('AUTH_COOKIE', '_a')
+        options.setdefault('AUTH_COOKIE_DOMAIN', None)
+        options.setdefault('AUTH_COOKIE_PATH', '')
+        options.setdefault('AUTH_COOKIE_SECURE', False)
+
+        options.setdefault('XSRF_NAME', '_x')
+        options.setdefault('RESUBMISSION_NAME', '_c')
         return None
     return load
 
