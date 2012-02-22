@@ -30,6 +30,20 @@ class PublicTestCase(unittest.TestCase):
         assert 200 == self.client.get('/en/about')
         assert '- About</title>' in self.client.content
 
+    def test_now(self):
+        """
+        """
+        assert 200 == self.client.get('/en/now', environ={
+            'HTTP_X_REQUESTED_WITH': 'XMLHttpRequest'
+        })
+        assert 'now' in self.client.content
+
+    def test_now_bad_request(self):
+        """
+        """
+        self.client.get('/en/now')
+        assert 400 == self.client.follow()
+
     def test_widgets(self):
         """ Ensure widgets page is rendered.
         """

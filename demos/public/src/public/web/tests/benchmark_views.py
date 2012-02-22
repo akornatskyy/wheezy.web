@@ -15,6 +15,7 @@ class BenchmarkTestCase(PublicTestCase):
         p = Benchmark((
             self.test_home,
             self.test_about,
+            self.test_now,
             self.test_widgets,
             self.test_widgets_with_errors,
             self.test_static_files,
@@ -26,6 +27,7 @@ class BenchmarkTestCase(PublicTestCase):
         p.report('public', baselines={
                 'test_home': 1.0,
                 'test_about': 0.89,
+                'test_now': 3.34,
                 'test_widgets': 0.52,
                 'test_widgets_with_errors': 0.51,
                 'test_static_files': 1.655,

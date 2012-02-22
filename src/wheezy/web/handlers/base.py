@@ -6,6 +6,7 @@ from wheezy.core.collections import last_item_adapter
 from wheezy.core.descriptors import attribute
 from wheezy.core.i18n import null_translations
 from wheezy.core.i18n import ref_gettext
+from wheezy.core.json import json_encode
 from wheezy.core.url import urlparts
 from wheezy.core.uuid import UUID_EMPTY
 from wheezy.core.uuid import parse_uuid
@@ -105,7 +106,6 @@ class BaseHandler(MethodHandler, ValidationMixin):
             '_': self._,
             'absolute_url_for': self.absolute_url_for,
             'errors': self.errors,
-            'handler': self,
             'path_for': self.path_for,
             'principal': self.principal,
             'resubmission': self.resubmission_widget,
@@ -128,6 +128,16 @@ class BaseHandler(MethodHandler, ValidationMixin):
             template_name,
             widgets,
             **kwargs))
+        return response
+
+    # region: json
+
+    def json_response(self, obj):
+        encoding = self.options['ENCODING']
+        response = HTTPResponse(
+                'application/json; charset=' + encoding,
+                encoding)
+        response.write_bytes(json_encode(obj).encode(encoding))
         return response
 
     # region: authentication

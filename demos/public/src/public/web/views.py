@@ -1,14 +1,25 @@
 """
 """
 
+from datetime import datetime
+
 from wheezy.core.collections import attrdict
 from wheezy.core.descriptors import attribute
+from wheezy.http import bad_request
 from wheezy.web.handlers import BaseHandler
 from wheezy.web.handlers import template_handler
 
 
 home = template_handler('public/home.html')
 about = template_handler('public/about.html')
+
+
+class NowHandler(BaseHandler):
+
+    def get(self):
+        if not self.request.ajax:
+            return bad_request()
+        return self.json_response({'now': datetime.now()})
 
 
 class WidgetsHandler(BaseHandler):

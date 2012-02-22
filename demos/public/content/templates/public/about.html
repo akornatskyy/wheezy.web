@@ -24,5 +24,25 @@
     and accessable for business accounts only.
     </p>
     <p>Take a look at <a href="${path_for('widgets')}">widgets</a>
-    available.</a>
+    available.
+    </p>
+    <p><a id="st" href="${path_for('now')}">Click</a> to
+    make an ajax call
+    to get json response with server time. The server time is:
+    <span id="now">N/A</span>
+    </p>
 </div>
+<%block name="script">
+<script language="javascript" type="text/javascript">
+    $(document).ready(function() {
+        $("#st").click(function(e){
+            e.preventDefault();
+            $.getJSON(this.href, function(data) {
+                $.each(data, function(key, val) {
+                    $("#" + key).text(val)
+                })
+            });
+        });
+    })
+</script>
+</%block>
