@@ -4,6 +4,11 @@
 
 import unittest
 
+try:
+    import json
+except ImportError:
+    json = None
+
 from wheezy.http.functional import WSGIClient
 
 from app import main
@@ -31,15 +36,21 @@ class PublicTestCase(unittest.TestCase):
         assert '- About</title>' in self.client.content
 
     def test_now(self):
+        """ Tests ajax call to now handler.
         """
-        """
-        assert 200 == self.client.get('/en/now', environ={
-            'HTTP_X_REQUESTED_WITH': 'XMLHttpRequest'
-        })
-        assert 'now' in self.client.content
+        if json:
+            assert 200 == self.client.get('/en/now', environ={
+                'HTTP_X_REQUESTED_WITH': 'XMLHttpRequest'
+            })
+            assert 'now' in self.client.content
+        else:
+            self.client.get('/en/now', environ={
+                'HTTP_X_REQUESTED_WITH': 'XMLHttpRequest'
+            })
+            assert 500 == self.client.follow()
 
     def test_now_bad_request(self):
-        """
+        """ None ajax request to now handler returns bad request.
         """
         self.client.get('/en/now')
         assert 400 == self.client.follow()
