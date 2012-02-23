@@ -14,7 +14,10 @@ from wheezy.core.uuid import shrink_uuid
 from wheezy.html import widget
 from wheezy.http import HTTPCookie
 from wheezy.http import HTTPResponse
+from wheezy.http import permanent_redirect
 from wheezy.http import redirect
+from wheezy.http import see_other
+from wheezy.http import temporary_redirect
 from wheezy.security import Principal
 from wheezy.validation import ValidationMixin
 from wheezy.validation import try_update_model
@@ -53,10 +56,21 @@ class BaseHandler(MethodHandler, ValidationMixin):
             path=self.path_for(name, **kwargs)))
         return parts.geturl()
 
+    def permanent_redirect_for(self, name, **kwargs):
+        return permanent_redirect(
+                self.absolute_url_for(name, **kwargs))
+
     def redirect_for(self, name, **kwargs):
         return redirect(
-                self.absolute_url_for(name, **kwargs),
-                permanent=False)
+                self.absolute_url_for(name, **kwargs))
+
+    def see_other_for(self, name, **kwargs):
+        return see_other(
+                self.absolute_url_for(name, **kwargs))
+
+    def temporary_redirect_for(self, name, **kwargs):
+        return temporary_redirect(
+                self.absolute_url_for(name, **kwargs))
 
     # region: i18n
 
