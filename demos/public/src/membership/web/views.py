@@ -54,6 +54,8 @@ class SignInHandler(BaseHandler):
                 or not self.validate(credential, credential_validator)
                 or not self.factory.membership.authenticate(credential)):
             credential.password = u('')
+            if self.request.ajax:
+                return self.json_response({'errors': self.errors})
             return self.get(credential)
         self.principal = Principal(
                 id=credential.username,
@@ -61,7 +63,7 @@ class SignInHandler(BaseHandler):
                 roles=tuple(self.factory.membership.roles(
                     credential.username)))
         del self.xsrf_token
-        return self.redirect_for('default')
+        return self.see_other_for('default')
 
 
 class SignOutHandler(BaseHandler):
@@ -122,6 +124,8 @@ class SignUpHandler(BaseHandler):
                 or not self.factory.membership.create_account(registration)):
             registration.credential.password = u('')
             self.model.confirm_password = u('')
+            if self.request.ajax:
+                return self.json_response({'errors': self.errors})
             return self.get(registration)
         self.principal = Principal(
                 id=registration.credential.username,
@@ -129,7 +133,7 @@ class SignUpHandler(BaseHandler):
                 roles=tuple(self.factory.membership.roles(
                     registration.credential.username)))
         del self.resubmission
-        return self.redirect_for('default')
+        return self.see_other_for('default')
 
 
 class MembersOnlyHandler(BaseHandler):

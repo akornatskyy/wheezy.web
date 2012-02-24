@@ -30,7 +30,7 @@
                 ${model.remember_me.error()}
                 </p>
                 <p>
-                <input type="submit" name="signin" value="Sign In" />
+                <input type="submit" value="Sign In" />
                 </p>
             </fieldset>
             <i><b>demo</b> user password is P@ssw0rd. You can press 'Ctrl'
@@ -38,3 +38,10 @@
         </div>
     </form>
 </div>
+<%block name="script">
+<script type="text/javascript">
+    $(document).ready(function() {
+        ajaxForm();
+    })
+</script>
+</%block>

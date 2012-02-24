@@ -62,9 +62,16 @@
                 ${registration.answer.error()}
                 </p>
                 <p>
-                <input name="register" type="submit" value="Register" />
+                <input type="submit" value="Register" />
                 </p>
             </fieldset>
         </div>
     </form>
 </div>
+<%block name="script">
+<script type="text/javascript">
+    $(document).ready(function() {
+        ajaxForm();
+    })
+</script>
+</%block>
