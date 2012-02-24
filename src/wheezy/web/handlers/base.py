@@ -13,8 +13,10 @@ from wheezy.core.uuid import shrink_uuid
 from wheezy.html import widget
 from wheezy.http import HTTPCookie
 from wheezy.http import HTTPResponse
+from wheezy.http import ajax_redirect
 from wheezy.http import json_response
 from wheezy.http import redirect
+from wheezy.http import permanent_redirect
 from wheezy.http import see_other
 from wheezy.security import Principal
 from wheezy.validation import ValidationMixin
@@ -55,10 +57,16 @@ class BaseHandler(MethodHandler, ValidationMixin):
         return parts.geturl()
 
     def redirect_for(self, name, **kwargs):
+        if self.request.ajax:
+            return ajax_redirect(
+                self.absolute_url_for(name, **kwargs))
         return redirect(
                 self.absolute_url_for(name, **kwargs))
 
     def see_other_for(self, name, **kwargs):
+        if self.request.ajax:
+            return ajax_redirect(
+                self.absolute_url_for(name, **kwargs))
         return see_other(
                 self.absolute_url_for(name, **kwargs))
 
@@ -271,6 +279,8 @@ class BaseHandler(MethodHandler, ValidationMixin):
     resubmission = property(getresubmission, setresubmission, delresubmission)
 
     def validate_resubmission(self):
+        if self.request.ajax:
+            return True
         name = self.options['RESUBMISSION_NAME']
         counter = last_item_adapter(self.request.form)[name]
         if counter and counter == self.resubmission:
@@ -281,13 +291,15 @@ class BaseHandler(MethodHandler, ValidationMixin):
             return False
 
     def resubmission_widget(self):
+        if self.request.ajax:
+            return ''
         return '<input type="hidden" name="' + \
                 self.options['RESUBMISSION_NAME'] \
                 + '" value="' + self.resubmission + '" />'
 
 
 def redirect_handler(route_name, **route_args):
-    """ Redirects to given route name.
+    """ Redirects to given route name (HTTP status code 302).
     """
     return lambda request: RedirectRouteHandler(request,
             route_name,
@@ -295,7 +307,7 @@ def redirect_handler(route_name, **route_args):
 
 
 class RedirectRouteHandler(BaseHandler):
-    """ Redirects to given route name.
+    """ Redirects to given route name (HTTP status code 302).
     """
 
     def __init__(self, request, route_name, **route_args):
@@ -308,3 +320,31 @@ class RedirectRouteHandler(BaseHandler):
 
     def post(self):
         return self.redirect_for(self.route_name, **self.route_args)
+
+
+def permanent_redirect_handler(route_name, **route_args):
+    """ Performs permanent redirect (HTTP status code 301) to given route
+        name.
+    """
+    return lambda request: PermanentRedirectRouteHandler(request,
+            route_name,
+            **route_args)
+
+
+class PermanentRedirectRouteHandler(BaseHandler):
+    """ Performs permanent redirect (HTTP status code 301) to given route
+        name.
+    """
+
+    def __init__(self, request, route_name, **route_args):
+        self.route_name = route_name
+        self.route_args = route_args
+        super(PermanentRedirectRouteHandler, self).__init__(request)
+
+    def get(self):
+        return permanent_redirect(
+                self.absolute_url_for(self.route_name, **self.route_args))
+
+    def post(self):
+        return permanent_redirect(
+                self.absolute_url_for(self.route_name, **self.route_args))
