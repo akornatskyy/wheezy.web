@@ -17,8 +17,9 @@ function JSONForm(data, form) {
                     value.pop()))
         }
         else {
+            key = key.replace(/_/g, '-');
             $('label[for="{0}"]'.format(key), form).addClass('error')
-            var field = $('#' + key.replace(/_/g, '-'), form);
+            var field = $('#' + key, form);
             field.addClass('error');
             field.after('<span class="error">{0}</span>'.format(
                 value.pop()));
@@ -49,7 +50,7 @@ function ajaxForm(selector, dataType) {
                 if (jqXHR.status == 207) {
                     window.location.replace(jqXHR.getResponseHeader('Location'));
                 } else if (data.see_other) {
-                    window.location.replace(d.see_other);
+                    window.location.replace(data.see_other);
                 } else if (dataType == 'json'){
                     submit.removeAttr('disabled');
                     JSONForm(data, form);
