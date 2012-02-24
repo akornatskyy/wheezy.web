@@ -76,7 +76,7 @@ code, pre { padding: 10px; text-align: left; display: block; overflow: auto; bac
 code, pre { font: 500 1em/1.5em Consolas, monospace; }
 
 input.error, textarea.error, select.error { border: 1px solid #FF0000; background-color: #FFEEEE; }
-span.error { color: #FF0000; }
+span.error { color: #FF0000; display: block; font-size: 0.95em; background: transparent url("../img/error.png") 0px 2px no-repeat; text-indent: 16px; }
 
 span.error-message, span.warning-message, span.info-message { display: block; padding: 25px 25px 25px 80px; margin: 0 0 15px 0; border: 1px solid #DFDFDF; color: #333333; font-size: 13px; line-height: 17px; float: none; font-weight: normal; width: auto; -moz-border-radius:5px 5px 5px 5px; }
 span.error-message { border:1px solid #C44509; background:url("../img/alert/error.png") no-repeat scroll 20px 50% #fdcea4; }
