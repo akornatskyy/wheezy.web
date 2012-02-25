@@ -53,9 +53,9 @@ class SignInHandler(BaseHandler):
                 & self.try_update_model(self.model)
                 or not self.validate(credential, credential_validator)
                 or not self.factory.membership.authenticate(credential)):
-            credential.password = u('')
             if self.request.ajax:
                 return self.json_response({'errors': self.errors})
+            credential.password = u('')
             return self.get(credential)
         self.principal = Principal(
                 id=credential.username,

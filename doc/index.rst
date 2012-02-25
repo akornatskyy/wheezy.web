@@ -36,6 +36,6 @@ Contents
 .. _`issues`: http://bitbucket.org/akorn/wheezy.web/issues
 .. _`pypi`: http://pypi.python.org
 .. _`python`: http://www.python.org
-.. _`readthedocs`: http://readthedocs.org/builds/wheezyweb/
+.. _`readthedocs`: http://readthedocs.org/builds/wheezyweb
 .. _`source code`: http://bitbucket.org/akorn/wheezy.web/src
 .. _`WSGI`: http://www.python.org/dev/peps/pep-3333

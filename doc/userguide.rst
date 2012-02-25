@@ -42,7 +42,8 @@ returns ``HTTPResponse``::
 MethodHandler
 ~~~~~~~~~~~~~
 
-:ref:`wheezy.web` routes incoming web request to handler per url mapping:
+:ref:`wheezy.web` routes incoming web request to handler per url mapping
+(it uses `wheezy.routing`_ for this purpose):
 
 .. literalinclude:: ../demos/hello/hello.py
    :lines: 27-30
@@ -77,8 +78,10 @@ BaseHandler
 integrate such features:
 
 #. routing
+#. AJAX
 #. i18n
 #. model binding
+#. JSON
 #. template rendering
 #. authentication
 #. authorization
@@ -95,11 +98,16 @@ Routing
 ^^^^^^^
 
 Routing feature is provided via integartation with `wheezy.routing`_ package.
-There the following methods:
+There are the following methods:
 
-* ``path_for(name, **kwargs)`` - returns url path by route name.
-* ``absolute_url_for(name, **kwargs)`` - returns url by route name.
-* ``redirect_for(name, **kwargs)`` - returns redirect response by route name.
+* ``path_for(name, **kwargs)`` - returns url path by route name. Any missing
+  parameters are obtained from that current route.
+* ``absolute_url_for(name, **kwargs)`` - returns absolute url for the given
+  route name by combining current request with route information.
+* ``redirect_for(name, **kwargs)`` - returns redirect found response (HTTP
+  status code 302) by route name.
+* ``see_other_for(name, **kwargs)`` - returns see other redirect response
+  (HTTP status code 303) by route name.
 
 All these methods support the following arguments:
 
@@ -107,6 +115,34 @@ All these methods support the following arguments:
 * ``kwargs`` - extra arguments necessary for routing.
 
 Please refer to `wheezy.routing`_ documentation for more information.
+
+AJAX
+^^^^
+
+Both redirects ``redirect_for`` and ``see_other_for`` understands
+AJAX requests and change HTTP status code to 207 while preserving HTTP
+header ``Location``.
+
+Browsers incorrectly handle redirect response to ajax request, so there is
+used HTTP status code 207 that javascript is capable to receive and process
+browser redirect. Here is an example for jQuery (see file `core.js`_)::
+
+    $.ajax({
+        // ...
+        success: function(data, textStatus, jqXHR) {
+            if (jqXHR.status == 207) {
+                window.location.replace(
+                    jqXHR.getResponseHeader('Location'));
+            } else {
+                // ...
+            }
+        }
+    });
+
+If AJAX response status code is 207, browser navigates to URL specified
+in HTTP response header ``Location``.
+
+Please refer to `wheezy.http`_ documentation for more information.
 
 Internationalization
 ^^^^^^^^^^^^^^^^^^^^
@@ -200,6 +236,35 @@ how to use general error (see file `membership/web/views.py`_)::
 
 Read more about model binding and validation in `wheezy.validation`_
 package.
+
+JSON
+^^^^
+
+There is integration with `wheezy.http`_ package in JSON object encoding.
+
+* :py:meth:`~wheezy.web.handlers.BaseHandler.json_response` - returns
+  ``HTTPResponse`` with JSON content.
+
+Here is an example::
+
+    class SignInHandler(BaseHandler):
+        ...
+        def post(self):
+            ...
+            credential = Credential()
+            if (not self.try_update_model(credential)
+                    ...):
+                if self.request.ajax:
+                    return self.json_response({'errors': self.errors})
+                return self.get(credential)
+            ...
+            return self.see_other_for('default')
+
+In case of error, handler in ajax request returns JSON object with
+any errors reported, otherwise renders response template. This way you
+are able to serve both: browsers with javascript enabled and disabled.
+
+See file `core.js`_ for an example of how errors are processed by browser.
 
 Templates
 ^^^^^^^^^
@@ -473,11 +538,11 @@ Here is example from :ref:`public_demo` demo application (see
 
 Context is passed to service factory.
 
-RedirectRouteHandler
-~~~~~~~~~~~~~~~~~~~~
+Redirect Handler
+~~~~~~~~~~~~~~~~
 
 :py:class:`~wheezy.web.handlers.base.RedirectRouteHandler` redirects to given
-route name. You can use
+route name (HTTP status code 302). You can use
 :py:meth:`~wheezy.web.handlers.base.redirect_handler` in url mapping
 declaration::
 
@@ -488,6 +553,23 @@ declaration::
 
 The example above always redirect match for route `default` to route
 `welcome`. It asks browser to redirect it request to another page.
+
+Permanent Redirect
+~~~~~~~~~~~~~~~~~~
+
+:py:class:`~wheezy.web.handlers.base.PermanentRedirectRouteHandler`
+performs permanent redirect (HTTP status code 301) to given route name.
+You can use
+:py:meth:`~wheezy.web.handlers.base.permanent_redirect_handler` in url
+mapping declaration::
+
+    all_urls = [
+        url('', permanent_redirect_handler('welcome'), name='default'),
+        ...
+    ]
+
+The example above issue permanent redirect for route `default` to route
+`welcome`.
 
 FileHandler
 ~~~~~~~~~~~
@@ -746,4 +828,5 @@ Please refer to `wheezy.http`_ documentation for more information.
 .. _`i18n`: https://bitbucket.org/akorn/wheezy.web/src/tip/demos/public/i18n
 .. _`config.py`: https://bitbucket.org/akorn/wheezy.web/src/tip/demos/public/src/config.py
 .. _`membership/web/views.py`: https://bitbucket.org/akorn/wheezy.web/src/tip/demos/public/src/membership/web/views.py
-.. _`mako`: http://docs.makotemplates.org/
+.. _`core.js`: https://bitbucket.org/akorn/wheezy.web/src/tip/demos/public/content/static/js/core.js
+.. _`mako`: http://docs.makotemplates.org
