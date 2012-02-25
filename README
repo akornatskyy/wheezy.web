@@ -1,7 +1,7 @@
-:ref:`wheezy.web` is a `python`_ package written in pure Python code.
+`wheezy.web`_ is a `python`_ package written in pure Python code.
 It is a lightweight `WSGI`_ web framework. The framework aims to alleviate the
 overhead associated with common activities performed in Web application
-development. :ref:`wheezy.web` framework follows the model–view–controller
+development. `wheezy.web`_ framework follows the model–view–controller
 (MVC) architectural pattern (push-based) to separate the data model from
 the user interface.
 
