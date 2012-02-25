@@ -273,13 +273,15 @@ Templates
 it provides you a convinient contract to add one you prefer. Here is
 how we add ``MakoTemplate`` renderer (see file `config.py`_)::
 
+    from wheezy.html.ext.mako import widget_preprocessor
     from wheezy.web.templates import MakoTemplate
 
     options = {}
     options['render_template'] = MakoTemplate(
             directories=['content/templates'],
             filesystem_checks=False,
-            template_cache=template_cache)
+            template_cache=template_cache,
+            preprocessor=[widget_preprocessor])
 
 Template contract is any callable of the following form::
 
@@ -303,10 +305,17 @@ There are the following attributes and methods:
   * ``resubmission`` - resubmission HTML form widget.
   * ``xsrf`` - XSRF protection HTML form widget.
 
-* ``render_template(template_name, **kwargs)`` - renders template with name
-  ``template_name`` and pass it context information in ``**kwargs``.
-* ``render_response(template_name, **kwargs)`` - writes result of
-  ``render_template`` into ``wheezy.http.HTTPResponse`` and return it.
+* ``render_template(template_name, widgets=None, **kwargs)`` - renders
+  template with name ``template_name`` and pass it context information
+  in ``**kwargs``.
+* ``render_response(template_name, widgets=None, **kwargs)`` - writes
+  result of ``render_template`` into ``wheezy.http.HTTPResponse`` and
+  return it.
+
+``widgets`` argument in ``render_template`` and ``render_response`` is
+used to explicitly wrap HTML widgets (see `wheezy.html`_ package).
+Note, if you are using template engine that comes with widgets preprocessing
+you do not need to explicitly initialize this argument.
 
 Widgets
 ^^^^^^^
@@ -350,6 +359,14 @@ The benefit of using widgets is a syntax sugar in html template::
         ${account.account_type.radio(choices=account_types)}
         ${account.account_type.error()}
     </p>
+
+Please note that `wheezy.html`_ package provides optimization of widgets
+per template engine used. That optimization is provided through use of
+template specific constructs. Preprocessor for Mako templates translates
+widgets to Mako operations offering optimal performance. If you are
+using template engine with preprocessing you can eliminate need to wrap
+widgets explicitely in your handler (since all calls to widgets in template
+are  replaced with appropriate template native constructs).
 
 Read more about available widgets in `wheezy.html`_ package.
 
