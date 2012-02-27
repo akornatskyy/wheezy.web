@@ -3,14 +3,10 @@
 
 from wheezy.core.comp import u
 
-from membership.models import Credential
 from membership.repository.contract import IMembershipRepository
 
 
 class MockFactory(object):
-
-    def __init__(self, context):
-        pass
 
     def membership(self):
         return MembershipRepository()

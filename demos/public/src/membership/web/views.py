@@ -122,10 +122,10 @@ class SignUpHandler(BaseHandler):
                 or not self.validate(self.model, password_match_validator)
                 & self.validate(registration, registration_validator)
                 or not self.factory.membership.create_account(registration)):
-            registration.credential.password = u('')
-            self.model.confirm_password = u('')
             if self.request.ajax:
                 return self.json_response({'errors': self.errors})
+            registration.credential.password = u('')
+            self.model.confirm_password = u('')
             return self.get(registration)
         self.principal = Principal(
                 id=registration.credential.username,

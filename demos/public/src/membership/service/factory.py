@@ -10,7 +10,7 @@ from membership.service.bridge import MembershipService
 class Factory(object):
 
     def __init__(self, context):
-        self.repository = RepositoryFactory(context)
+        self.repository = RepositoryFactory()
         self.translations = context['translations']
         self.errors = context['errors']
 

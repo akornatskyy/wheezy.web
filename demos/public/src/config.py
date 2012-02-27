@@ -20,10 +20,10 @@ http_cache = cache
 template_cache = cache
 
 # Custom
-options = {
-        'membership': MockFactory,
-        'membership_cache': cache,
-}
+MembershipPersistenceFactory = MockFactory
+membership_cache = cache
+
+options = {}
 
 # HTTPCacheMiddleware
 middleware_vary = RequestVary(environ=['HTTP_ACCEPT_ENCODING'])

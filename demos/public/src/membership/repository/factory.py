@@ -3,15 +3,15 @@
 
 from wheezy.core.descriptors import attribute
 
+from config import MembershipPersistenceFactory as PersistenceFactory
 from membership.repository.caching import CachingFactory
 
 
 class RepositoryFactory(object):
 
-    def __init__(self, context):
-        PersistenceFactory = context['membership']
-        self.persistence_factory = PersistenceFactory(context)
-        self.caching_factory = CachingFactory(context)
+    def __init__(self):
+        self.persistence_factory = PersistenceFactory()
+        self.caching_factory = CachingFactory()
 
     @attribute
     def membership(self):

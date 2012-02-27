@@ -35,12 +35,12 @@ class BaseHandler(MethodHandler, ValidationMixin):
 
     @attribute
     def context(self):
-        c = dict(self.options)
-        c['errors'] = self.errors
-        c['locale'] = self.locale
-        c['principal'] = self.principal
-        c['translations'] = self.translations
-        return c
+        return {
+                'errors': self.errors,
+                'locale': self.locale,
+                'principal': self.principal,
+                'translations': self.translations
+        }
 
     # region: routing
 
