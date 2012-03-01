@@ -6,7 +6,7 @@ Wheezy Web
 Introduction
 ------------
 
-:ref:`wheezy.web` is a `python`_ package written in pure Python code. 
+:ref:`wheezy.web` is a `python`_ package written in pure Python code.
 It is a lightweight `WSGI`_ web framework.
 
 It is optimized for performance, well tested and documented.
@@ -26,6 +26,7 @@ Contents
 
    gettingstarted
    examples
+   tutorial
    userguide
    modules
 
