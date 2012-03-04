@@ -196,6 +196,7 @@ Let see how it works from python command prompt::
     >>> from repository import Repository
     >>> db = session()
     >>> repo = Repository(db)
+    >>> greetings = repo.list_greetings()
     >>> greetings[0]
     <models.Greeting object at 0xa023e4c>
     >>> greetings[0].created_on
@@ -298,7 +299,8 @@ Layout
 ^^^^^^
 
 Since templates usually have many things in common let define layout used
-by both pages we are going to create (file ``layout.html``)::
+by both pages we are going to create (create directory ``templates`` and
+add file ``layout.html``)::
 
     <html>
         <head>
@@ -316,8 +318,8 @@ by both pages we are going to create (file ``layout.html``)::
 Templates
 ^^^^^^^^^
 
-Define template for list handler (create directory ``templates`` and
-add file ``list.html``)::
+Define template for list handler (in directory ``templates`` add file
+``list.html``)::
 
     <%inherit file="/layout.html"/>
 
@@ -339,7 +341,7 @@ Define template for add handler (in directory ``templates`` add file
 ``add.html``)::
 
     <%inherit file="/layout.html"/>
-    
+
     <h1>Sign Guestbook</h1>
     ${greeting.error()}
     <form action="${path_for('add')}" method='post'>
@@ -366,18 +368,18 @@ Style
 
 Let add some style (create directory ``static`` and add file ``site.css``)::
 
-    input[type="text"], textarea { 
+    input[type="text"], textarea {
         border: 1px solid #BBB; border-radius: 3px; }
-    input.error, textarea.error { 
+    input.error, textarea.error {
         border: 1px solid #FF0000; background-color: #FFEEEE; }
-    span.error { color: #FF0000; display: block; font-size: 0.95em; 
+    span.error { color: #FF0000; display: block; font-size: 0.95em;
         background: transparent 0px 2px no-repeat; text-indent: 2px; }
-    span.error-message { 
-        display: block; padding: 25px 25px 25px 80px; margin: 0 0 15px 0; 
-        border: 1px solid #DFDFDF; color: #333333; font-size: 13px; 
-        line-height: 17px; float: none; font-weight: normal; 
+    span.error-message {
+        display: block; padding: 25px 25px 25px 80px; margin: 0 0 15px 0;
+        border: 1px solid #DFDFDF; color: #333333; font-size: 13px;
+        line-height: 17px; float: none; font-weight: normal;
         width: auto; -moz-border-radius:5px 5px 5px 5px; }
-    span.error-message { border:1px solid #C44509; 
+    span.error-message { border:1px solid #C44509;
         background: no-repeat scroll 2px 50% #fdcea4; }
 
 
@@ -385,7 +387,7 @@ URLs
 ----
 
 URLs tell how browser requests maps to handlers that ultimately process them.
-Let map the root path to list handler and ``add`` path to add handler 
+Let map the root path to list handler and ``add`` path to add handler
 (file ``urls.py``)::
 
     from wheezy.routing import url
@@ -396,8 +398,8 @@ Let map the root path to list handler and ``add`` path to add handler
     all_urls = [
             url('', ListHandler, name='list'),
             url('add', AddHandler, name='add'),
-            url('static/{path:any}', 
-                file_handler(root='static/'), 
+            url('static/{path:any}',
+                file_handler(root='static/'),
                 name='static')
     ]
 
@@ -407,13 +409,13 @@ function that build reverse path for given name or perform request redirect.
 Application
 -----------
 
-Let define an entry point for guestbook application and combines all 
+Let define an entry point for guestbook application and combines all
 together (file ``app.py``)::
 
     from wheezy.http import WSGIApplication
     from wheezy.web.middleware import bootstrap_defaults
     from wheezy.web.middleware import path_routing_middleware_factory
-    
+
     from config import options
     from urls import all_urls
 
@@ -440,4 +442,3 @@ Try run application by issuing the following command::
 
 .. _`wheezy.html`: http://packages.python.org/wheezy.html
 .. _`wheezy.validation`: http://packages.python.org/wheezy.validation
-
