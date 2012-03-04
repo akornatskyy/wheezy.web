@@ -26,7 +26,7 @@ membership_cache = cache
 options = {}
 
 # HTTPCacheMiddleware
-middleware_vary = RequestVary(environ=['HTTP_ACCEPT_ENCODING'])
+middleware_vary = RequestVary()
 options.update({
         'http_cache': http_cache,
         'http_cache_middleware_vary': middleware_vary

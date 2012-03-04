@@ -2,33 +2,25 @@
 """ ``caching`` module.
 """
 
-from wheezy.http.cache import get_or_set2
 
-
-def handler_cache(profile, cache=None):
-    def decorate(factory):
+def handler_cache(profile):
+    def decorate(method):
         if not profile.enabled:
-            return factory
+            return method
 
         if profile.request_vary:
-            assert cache is not None
-
-            def strategy(handler, *args, **kwargs):
-                if args or kwargs:
-                    response = factory(handler, *args, **kwargs)
-                else:
-                    response = get_or_set2(
-                            request=handler.request,
-                            cache=cache,
-                            cache_profile=profile,
-                            factory=lambda ignore: factory(handler))
+            def cache(handler, *args, **kwargs):
+                response = method(handler, *args, **kwargs)
+                response.cache_profile = profile
+                if response.cache_policy is None:
+                    response.cache_policy = profile.cache_policy()
                 return response
+            return cache
         else:
-            def strategy(handler, *args, **kwargs):
-                response = factory(handler, *args, **kwargs)
-                if response.status_code == 200:
-                    if response.cache is None:
-                        response.cache = profile.cache_policy()
+            def no_cache(handler, *args, **kwargs):
+                response = method(handler, *args, **kwargs)
+                if response.cache_policy is None:
+                    response.cache_policy = profile.cache_policy()
                 return response
-        return strategy
+            return no_cache
     return decorate

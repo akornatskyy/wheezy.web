@@ -8,16 +8,17 @@ from wheezy.caching import MemoryCache
 from wheezy.http import CacheProfile
 from wheezy.http import HTTPResponse
 from wheezy.http import WSGIApplication
-from wheezy.http import httpcache
 from wheezy.http import response_cache
+from wheezy.http.middleware import http_cache_middleware_factory
 from wheezy.routing import url
 from wheezy.web.caching import handler_cache
 from wheezy.web.handlers import BaseHandler
 from wheezy.web.middleware import bootstrap_defaults
+from wheezy.web.middleware import http_error_middleware_factory
 from wheezy.web.middleware import path_routing_middleware_factory
 
 
-cache = MemoryCache()
+http_cache = MemoryCache()
 public_cache_profile = CacheProfile(
         'public', duration=timedelta(minutes=15), enabled=True)
 no_cache_profile = CacheProfile(
@@ -35,7 +36,7 @@ class WelcomeHandler(BaseHandler):
 
 class Welcome2Handler(BaseHandler):
 
-    @handler_cache(profile=public_cache_profile, cache=cache)
+    @handler_cache(public_cache_profile)
     def get(self):
         response = HTTPResponse()
         response.write('Hello World! It is %s.'
@@ -50,7 +51,7 @@ def now(request):
     return response
 
 
-@response_cache(profile=public_cache_profile, cache=cache)
+@response_cache(public_cache_profile)
 def now2(request):
     response = HTTPResponse()
     response.write('It is %s.'
@@ -59,16 +60,20 @@ def now2(request):
 
 
 all_urls = [
-        url('', httpcache(WelcomeHandler, public_cache_profile, cache)),
+        url('', WelcomeHandler),
         url('welcome2', Welcome2Handler),
-        url('now', httpcache(now, public_cache_profile, cache)),
+        url('now', now),
         url('now2', now2)
 ]
 
-options = {}
+options = {
+        'http_cache': http_cache
+}
 main = WSGIApplication(
         middleware=[
             bootstrap_defaults(url_mapping=all_urls),
+            http_cache_middleware_factory,
+            http_error_middleware_factory,
             path_routing_middleware_factory
         ],
         options=options
