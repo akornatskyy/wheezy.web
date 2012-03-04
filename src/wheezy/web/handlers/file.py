@@ -62,7 +62,7 @@ class FileHandler(MethodHandler):
                 content_type=mime_type or 'plain/text',
                 encoding=encoding)
 
-        response.cache = cache_policy = HTTPCachePolicy('public')
+        response.cache_policy = cache_policy = HTTPCachePolicy('public')
 
         last_modified_stamp = os.stat(abspath)[stat.ST_MTIME]
         last_modified = datetime.utcfromtimestamp(last_modified_stamp)
