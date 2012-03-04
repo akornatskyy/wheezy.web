@@ -52,7 +52,7 @@ def http_error_middleware_factory(options):
         assert isinstance(error_mapping, defaultdict)
         assert path_for(error_mapping.default_factory())
         for route_name in error_mapping.values():
-            assert path_for(route_name)
+            assert path_for(route_name) is not None
     except KeyError:
         error_mapping = defaultdict(str)
     return HTTPErrorMiddleware(
