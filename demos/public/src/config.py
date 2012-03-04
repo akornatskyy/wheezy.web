@@ -8,7 +8,6 @@ from wheezy.core.collections import defaultdict
 from wheezy.core.i18n import TranslationsManager
 from wheezy.html.ext.mako import widget_preprocessor
 from wheezy.http import CacheProfile
-from wheezy.http import RequestVary
 from wheezy.security.crypto import Ticket
 from wheezy.web.templates import MakoTemplate
 
@@ -26,10 +25,8 @@ membership_cache = cache
 options = {}
 
 # HTTPCacheMiddleware
-middleware_vary = RequestVary()
 options.update({
-        'http_cache': http_cache,
-        'http_cache_middleware_vary': middleware_vary
+        'http_cache': http_cache
 })
 
 # Cache Profiles
@@ -41,7 +38,6 @@ static_cache_profile = CacheProfile(
         'public',
         duration=timedelta(minutes=15),
         vary_environ=['HTTP_ACCEPT_ENCODING'],
-        middleware_vary=middleware_vary,
         enabled=True)
 
 # HTTPErrorMiddleware
@@ -52,6 +48,7 @@ options.update({
             401: 'signin',
             403: 'http403',
             404: 'http404',
+            405: 'default',
             500: 'http500',
         }),
 })
