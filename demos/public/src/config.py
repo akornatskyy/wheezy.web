@@ -15,18 +15,18 @@ from membership.repository.mock import MockFactory
 
 
 cache = MemoryCache()
-http_cache = cache
-template_cache = cache
+cache_factory = lambda: cache
+
 
 # Custom
 MembershipPersistenceFactory = MockFactory
-membership_cache = cache
+membership_cache = None
 
 options = {}
 
 # HTTPCacheMiddleware
 options.update({
-        'http_cache': http_cache
+        'http_cache_factory': cache_factory
 })
 
 # Cache Profiles
@@ -38,6 +38,7 @@ static_cache_profile = CacheProfile(
         'public',
         duration=timedelta(minutes=15),
         vary_environ=['HTTP_ACCEPT_ENCODING'],
+        namespace='static',
         enabled=True)
 
 # HTTPErrorMiddleware
@@ -68,7 +69,7 @@ options.update({
         'render_template': MakoTemplate(
             directories=['content/templates'],
             filesystem_checks=False,
-            template_cache=template_cache,
+            cache_factory=cache_factory,
             preprocessor=[widget_preprocessor]
             ),
 

@@ -7,7 +7,7 @@ class MakoTemplate(object):
     def __init__(self,
             directories=None,
             module_directory='/tmp/mako_modules',
-            template_cache=None,
+            cache_factory=None,
             **kwargs):
         from mako.cache import register_plugin
         from mako.lookup import TemplateLookup
@@ -17,7 +17,7 @@ class MakoTemplate(object):
                 directories=directories or ['content/templates'],
                 module_directory=module_directory,
                 cache_impl='wheezy',
-                cache_args={'template_cache': template_cache},
+                cache_args={'cache_factory': cache_factory},
                 **kwargs)
 
     def __call__(self, template_name, **kwargs):
@@ -30,18 +30,25 @@ class MakoTemplate(object):
 class MakoCacheImpl(object):
 
     def __init__(self, cache):
-        self.template_cache = cache.template.cache_args['template_cache']
+        self.cache_factory = cache.template.cache_args['cache_factory']
         self.prefix = cache.id
 
     def get_or_create(self, key, creation_function, **kwargs):
-        value = self.template_cache.get(self.prefix + key)
-        if value is None:
-            value = creation_function()
-            self.template_cache.add(
-                    self.prefix + key,
-                    value,
-                    time=int(kwargs.pop('time', 0)))
-        return value
+        namespace = kwargs.get('namespace', None)
+        context = self.cache_factory()
+        cache = context.__enter__()
+        try:
+            value = cache.get(self.prefix + key, namespace)
+            if value is None:
+                value = creation_function()
+                cache.add(
+                        self.prefix + key,
+                        value,
+                        int(kwargs.get('time', 0)),
+                        namespace)
+            return value
+        finally:
+            context.__exit__(None, None, None)
 
     def set(self, key, value, **kw):
         raise NotImplementedError()

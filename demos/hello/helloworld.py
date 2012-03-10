@@ -18,7 +18,8 @@ from wheezy.web.middleware import http_error_middleware_factory
 from wheezy.web.middleware import path_routing_middleware_factory
 
 
-http_cache = MemoryCache()
+cache = MemoryCache()
+cache_factory = lambda: cache
 public_cache_profile = CacheProfile(
         'public', duration=timedelta(minutes=15), enabled=True)
 no_cache_profile = CacheProfile(
@@ -67,7 +68,7 @@ all_urls = [
 ]
 
 options = {
-        'http_cache': http_cache
+        'http_cache_factory': cache_factory
 }
 main = WSGIApplication(
         middleware=[

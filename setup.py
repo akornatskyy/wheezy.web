@@ -11,9 +11,9 @@ README = open(os.path.join(os.path.dirname(__file__), 'README')).read()
 
 install_requires = [
     'wheezy.core>=0.1.59',
-    'wheezy.caching>=0.1.31',
+    'wheezy.caching>=0.1.42',
     'wheezy.html>=0.1.60',
-    'wheezy.http>=0.1.162',
+    'wheezy.http>=0.1.175',
     'wheezy.routing>=0.1.121',
     'wheezy.security>=0.1.28',
     'wheezy.validation>=0.1.62',
@@ -28,7 +28,7 @@ except:
 setup(
     name='wheezy.web',
     version='0.1',
-    description='A lightweight WSGI web framework',
+    description='A lightweight WSGI web framework.',
     long_description=README,
     url='https://bitbucket.org/akorn/wheezy.web',
 
