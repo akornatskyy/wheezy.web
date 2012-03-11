@@ -13,10 +13,10 @@ class ListHandler(BaseHandler):
         with session() as db:
             repo = Repository(db)
             greetings = repo.list_greetings()
-        return self.render_response('list.html', 
+        return self.render_response('list.html',
                 greetings=greetings)
-                
-                
+
+
 class AddHandler(BaseHandler):
 
     def get(self, greeting=None):

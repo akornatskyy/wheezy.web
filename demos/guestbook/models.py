@@ -1,5 +1,7 @@
 from datetime import datetime
+
 from wheezy.core.comp import u
+
 
 class Greeting(object):
 

@@ -1,5 +1,6 @@
 from models import Greeting
 
+
 class Repository(object):
 
     def __init__(self, db):
