@@ -4,6 +4,9 @@
 
 
 def handler_cache(profile):
+    """ Decorator that applies cache profile strategy to the
+        wrapping handler.
+    """
     def decorate(method):
         if not profile.enabled:
             return method

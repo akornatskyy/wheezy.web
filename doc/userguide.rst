@@ -831,7 +831,8 @@ available in `wheezy.http`_ to web handlers sub-classed from
         def get(self, credential=None):
             return response
 
-Please refer to `wheezy.http`_ documentation for more information.
+Please refer to `wheezy.http`_ documentation for more information. All features
+available in `wheezy.http`_ caching are applicable.
 
 
 
