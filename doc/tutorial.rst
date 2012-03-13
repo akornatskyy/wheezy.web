@@ -40,7 +40,7 @@ Sign guestbook:
 .. image:: static/screenshot2.png
 
 For the purpose of this tutorial we store each of identified software
-actors in own file so at the end you will get a project structure with well
+actor in own file so at the end you will get a project structure with well
 defined roles.
 
 Domain Model
@@ -419,11 +419,11 @@ together (file ``app.py``)::
     from config import options
     from urls import all_urls
 
+
     main = WSGIApplication([
                 bootstrap_defaults(url_mapping=all_urls),
                 path_routing_middleware_factory
     ], options)
-
 
     if __name__ == '__main__':
         from wsgiref.simple_server import make_server
@@ -438,7 +438,72 @@ Try run application by issuing the following command::
 
     $ env/bin/python app.py
 
+Visit http://localhost:8080/ to see your site in browser.
 
+AJAX and JSON
+-------------
+
+AJAX and JSON significantly minimize HTTP traffic between web browser and
+server thus allow you save bandwidth and serve more clients.
+
+In this tutorial we will display validation errors using AJAX + JSON and
+fallback to regular HTML rendering is case browser has JavaScript disabled
+for some reason.
+
+Add changes to ``views.py``::
+
+    class AddHandler(BaseHandler):
+
+        ...
+
+        def post(self):
+            greeting = Greeting()
+            if (not self.try_update_model(greeting)
+                    or not self.validate(greeting, greeting_validator)):
+                if self.request.ajax:
+                    return self.json_response({'errors': self.errors})
+                return self.get(greeting)
+            ...
+
+What we added here is check if the current request is AJAX request and if so
+we return JSON response with errors reported::
+
+    if self.request.ajax:
+        return self.json_response({'errors': self.errors})
+
+Now we need some JavaScript code to:
+
+* submit HTML form via AJAX
+* display errors
+* correctly handle redirect response
+
+Create a new file ``site.js`` and place it in ``static`` directory with the
+following content (we will be using `jQuery`_):
+
+.. literalinclude:: ../demos/guestbook/static/site.js
+   :lines: 1-
+
+Open ``layout.html`` and add link to `jQuery`_ library and ``site.js``
+somewhere within head HTML tag::
+
+    <head>
+        ...
+        <script type="text/javascript"
+        src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js">
+        </script>
+        <script type="text/javascript"
+        src="${path_for('static', path='site.js')}">
+        </script>
+    </head>
+
+Try run application by issuing the following command::
+
+    $ env/bin/python app.py
+
+Visit http://localhost:8080/ to see your site in browser (try both with
+JavaScript enabled and disabled).
 
 .. _`wheezy.html`: http://packages.python.org/wheezy.html
 .. _`wheezy.validation`: http://packages.python.org/wheezy.validation
+.. _`jQuery`: http://docs.jquery.com/Downloading_jQuery
+

@@ -1,3 +1,5 @@
+""" ``urls`` module.
+"""
 
 from wheezy.routing import url
 from wheezy.web.handlers import file_handler

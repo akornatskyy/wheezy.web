@@ -1,3 +1,6 @@
+""" ``repository`` module.
+"""
+
 from models import Greeting
 
 

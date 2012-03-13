@@ -1,3 +1,5 @@
+""" ``config`` module.
+"""
 
 import sqlite3
 

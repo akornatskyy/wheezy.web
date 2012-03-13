@@ -1,7 +1,10 @@
+""" ``validation`` module.
+"""
 
 from wheezy.validation import Validator
 from wheezy.validation.rules import length
 from wheezy.validation.rules import required
+
 
 greeting_validator = Validator({
     'author': [length(max=20)],

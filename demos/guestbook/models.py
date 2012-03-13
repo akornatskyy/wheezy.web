@@ -1,3 +1,6 @@
+""" ``models`` module.
+"""
+
 from datetime import datetime
 
 from wheezy.core.comp import u
