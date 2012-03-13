@@ -5,7 +5,9 @@ Tutorial
 This tutorial will teach you the basics of building a :ref:`wheezy.web`
 application using your favorite text editor and python. We will use SQLite as
 database and python version 2.6+ or 3.2 (mainly for context manager and
-built-in json support).
+built-in JSON support). *AJAX and JSON* section of tutorial require jQuery.
+
+Estimated completion time: 30-60 minutes.
 
 Prerequisites
 -------------
@@ -567,7 +569,7 @@ Visit http://localhost:8080/ to see your site in browser. Try add a greeting
 and notice that list page is not updated (it is being cached by server). Next
 we will use cache dependency to invalidate content cache.
 
-Take a look at `wheezy.http`_ for various options available for content 
+Take a look at `wheezy.http`_ for various options available for content
 caching.
 
 Cache Dependency
@@ -582,7 +584,7 @@ In file ``views.py`` add import for ``CacheDependency``::
 
 Declare cache dependency (right after all imports)::
 
-    list_cache_dependency = CacheDependency('list', time=15*60)
+    list_cache_dependency = CacheDependency('list', time=15 * 60)
 
 Modify ``ListHandler`` so it is aware about the list cache dependency::
 
@@ -591,6 +593,7 @@ Modify ``ListHandler`` so it is aware about the list cache dependency::
         @handler_cache(CacheProfile('server', duration=timedelta(minutes=15)))
         def get(self):
             ...
+                greetings = repo.list_greetings()
             response = self.render_response('list.html',
                     greetings=greetings)
             response.dependency = list_cache_dependency
@@ -631,7 +634,7 @@ application performance. How about content compression? That is another great
 option to save traffic. What if we were able cache compressed response thus
 we will save on server CPU as well. Let implement this use case.
 
-Transforms are used to manipulate handler response according to some 
+Transforms are used to manipulate handler response according to some
 algorithm. We will use this feature to compress response right before it
 enters content cache.
 
@@ -653,27 +656,25 @@ Notice :py:meth:`~wheezy.web.transforms.handler_transforms` decorator
 is after handler cache, this way it able compress response before it goes to
 cache.
 
-At this point we have a single version of the cached page - compressed. What 
+At this point we have a single version of the cached page - compressed. What
 about browsers that do not accept gzip content encoding? Would be good somehow
 distinguish web requests that support compression and some that do not.
 Fortunately browser sends HTTP header ``Accept-Encoding`` that serves exactly
 this purpose. All we need is instruct content cache to *vary* response
 depending on value in ``Accept-Encoding`` HTTP header.
 
-Instruct ``ListHandler`` cache to vary response on ``Accept-Encoding`` HTTP 
-header::
+Instruct ``ListHandler`` cache profile to vary response by ``Accept-Encoding``
+HTTP request header::
 
     class ListHandler(BaseHandler):
 
-        @handler_cache(CacheProfile(
-                'server',
-                vary_environ=['HTTP_ACCEPT_ENCODING'], 
-                duration=timedelta(minutes=15)))
+        @handler_cache(CacheProfile('server', duration=timedelta(minutes=15),
+            vary_environ=['HTTP_ACCEPT_ENCODING']))
         @handler_transforms(gzip_transform(compress_level=9, min_length=250))
         def get(self):
             ...
 
-Notice we added ``vary_environ`` and used WSGI environment variable 
+Notice we added ``vary_environ`` and used WSGI environment variable
 ``HTTP_ACCEPT_ENCODING`` to be included into cache key used by content cache.
 
 Try run application by issuing the following command::
@@ -682,7 +683,7 @@ Try run application by issuing the following command::
 
 Visit http://localhost:8080/ to see your site in browser.
 
-Take a look at `wheezy.http`_ for various options available for content 
+Take a look at `wheezy.http`_ for various options available for content
 caching.
 
 .. _`wheezy.caching`: http://packages.python.org/wheezy.caching
