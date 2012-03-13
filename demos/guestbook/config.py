@@ -3,8 +3,13 @@
 
 import sqlite3
 
+from wheezy.caching import MemoryCache
 from wheezy.html.ext.mako import widget_preprocessor
 from wheezy.web.templates import MakoTemplate
+
+
+cache = MemoryCache()
+cache_factory = lambda: cache
 
 
 def session():
@@ -19,3 +24,8 @@ options = {
             preprocessor=[widget_preprocessor]
         )
 }
+
+# HTTPCacheMiddleware
+options.update({
+        'http_cache_factory': cache_factory
+})

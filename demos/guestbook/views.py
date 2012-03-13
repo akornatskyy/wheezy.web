@@ -1,22 +1,34 @@
 """ ``views`` module.
 """
 
+from datetime import timedelta
+
+from wheezy.caching import CacheDependency
+from wheezy.http import CacheProfile
+from wheezy.web import handler_cache
 from wheezy.web.handlers import BaseHandler
 
+from config import cache_factory
 from config import session
 from models import Greeting
 from repository import Repository
 from validation import greeting_validator
 
 
+list_cache_dependency = CacheDependency('list', time=15*60)
+
+
 class ListHandler(BaseHandler):
 
+    @handler_cache(CacheProfile('server', duration=timedelta(minutes=15)))
     def get(self):
         with session() as db:
             repo = Repository(db)
             greetings = repo.list_greetings()
-        return self.render_response('list.html',
+        response = self.render_response('list.html',
                 greetings=greetings)
+        response.dependency = list_cache_dependency
+        return response
 
 
 class AddHandler(BaseHandler):
@@ -38,4 +50,6 @@ class AddHandler(BaseHandler):
                 self.error('Sorry, can not add your greeting.')
                 return self.get(greeting)
             db.commit()
+        with cache_factory() as cache:
+            list_cache_dependency.delete(cache)
         return self.see_other_for('list')

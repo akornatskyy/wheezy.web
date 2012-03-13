@@ -503,7 +503,125 @@ Try run application by issuing the following command::
 Visit http://localhost:8080/ to see your site in browser (try both with
 JavaScript enabled and disabled).
 
+Content Cache
+-------------
+
+Why would be make a call to database every time the list of greetings is
+displayed to user? What if we can cache that page for some period of time
+and regenerate only when someone added another greeting? Let implement
+this use case with `wheezy.caching`_ package.
+
+Open ``config.py`` and add import for MemoryCache::
+
+    from wheezy.caching import MemoryCache
+
+At the end of ``config.py`` add initialization logic for cache, cache factory
+and configuration options for HTTP cache middleware)::
+
+    cache = MemoryCache()
+    cache_factory = lambda: cache
+
+    # HTTPCacheMiddleware
+    options.update({
+            'http_cache_factory': cache_factory
+    })
+
+Since we are going to use HTTP cache middleware we need instruct application
+bootstrap process about middleware we are going to use. Open file ``app.py``
+and import ``http_cache_middleware_factory``::
+
+    from wheezy.http.middleware import http_cache_middleware_factory
+
+To the list of ``WSGIApplication`` middleware add HTTP cache middleware
+factory::
+
+    main = WSGIApplication([
+                bootstrap_defaults(url_mapping=all_urls),
+                http_cache_middleware_factory,
+                path_routing_middleware_factory
+    ], options)
+
+Finally let apply cache profile to the ListHandler. Few imports
+(``views.py``)::
+
+    from datetime import timedelta
+
+    from wheezy.http import CacheProfile
+    from wheezy.web import handler_cache
+
+Use ``handler_cache`` decorator to apply cache profile to handler response::
+
+    class ListHandler(BaseHandler):
+
+        @handler_cache(CacheProfile('server', duration=timedelta(minutes=15)))
+        def get(self):
+            ...
+
+The ``ListHandler`` response is cached by server for 15 minutes.
+
+Try run application by issuing the following command::
+
+    $ env/bin/python app.py
+
+Visit http://localhost:8080/ to see your site in browser. Try add a greeting
+and notice that list page is not updated (it is being cached by server). Next
+we will use cache dependency to invalidate content cache.
+
+Cache Dependency
+----------------
+
+Let add cache invalidation logic so once user enters a new greeting it cause
+the list page to be refreshed.
+
+In file ``views.py`` add import for ``CacheDependency``::
+
+    from wheezy.caching import CacheDependency
+
+Declare cache dependency (right after all imports)::
+
+    list_cache_dependency = CacheDependency('list', time=15*60)
+
+Modify ``ListHandler`` so it is aware about the list cache dependency::
+
+    class ListHandler(BaseHandler):
+
+        @handler_cache(CacheProfile('server', duration=timedelta(minutes=15)))
+        def get(self):
+            ...
+            response = self.render_response('list.html',
+                    greetings=greetings)
+            response.dependency = list_cache_dependency
+            return response
+
+Finally let add a trigger that cause the invalidation to occur in cache.
+Import cache factory from config module::
+
+    from config import cache_factory
+
+Modify ``AddHandler`` so on successful commit the content cache for
+``ListHandler`` response is invalidated::
+
+    class AddHandler(BaseHandler):
+        ...
+        def post(self):
+            ...
+                db.commit()
+            with cache_factory() as cache:
+                list_cache_dependency.delete(cache)
+            return self.see_other_for('list')
+
+Try run application by issuing the following command::
+
+    $ env/bin/python app.py
+
+Visit http://localhost:8080/ to see your site in browser. Try add a greeting
+and notice that list page is refreshed this time.
+
+Take a look at `wheezy.caching`_ for various cache implementations including
+distributed cache support.
+
+
+.. _`wheezy.caching`: http://packages.python.org/wheezy.caching
 .. _`wheezy.html`: http://packages.python.org/wheezy.html
 .. _`wheezy.validation`: http://packages.python.org/wheezy.validation
 .. _`jQuery`: http://docs.jquery.com/Downloading_jQuery
-
