@@ -15,7 +15,7 @@ from repository import Repository
 from validation import greeting_validator
 
 
-list_cache_dependency = CacheDependency('list', time=15*60)
+list_cache_dependency = CacheDependency('list', time=15 * 60)
 
 
 class ListHandler(BaseHandler):
