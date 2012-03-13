@@ -623,17 +623,22 @@ GZip and Caching
 ^^^^^^^^^^^^^^^^
 
 It is recommended to use :py:meth:`~wheezy.web.handlers.file.file_handler`
-together with ``gzip_transform`` and ``httpcache``.
+together with ``gzip_transform`` and ``response_cache`` (requries HTTP cache
+middleware).
 
 Here is example from :ref:`public_demo` demo application::
 
-    static_files = httpcache(
-            response_transforms(gzip_transform(compress_level=6))(
-                file_handler(
-                    root='content/static/',
-                    age=timedelta(hours=1))),
-            cache_profile=static_cache_profile,
-            cache=cache)
+    from wheezy.http import response_cache
+    from wheezy.http.transforms import gzip_transform
+    from wheezy.http.transforms import response_transforms
+    from wheezy.web.handlers import file_handler
+
+
+    static_files = response_cache(static_cache_profile)(
+        response_transforms(gzip_transform(compress_level=6))(
+            file_handler(
+                root='content/static/',
+                age=timedelta(hours=1))))
 
     all_urls = [
         url('static/{path:any}', static_files, name='static'),
@@ -767,7 +772,7 @@ available in `wheezy.http`_ to web handlers sub-classed from
 
     from wheezy.http.transforms import gzip_transform
     from wheezy.web.handlers import BaseHandler
-    from wheezy.web.transforms import response_transforms
+    from wheezy.web.transforms import handler_transforms
 
     class MyHandler(BaseHandler):
 

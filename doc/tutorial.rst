@@ -567,6 +567,9 @@ Visit http://localhost:8080/ to see your site in browser. Try add a greeting
 and notice that list page is not updated (it is being cached by server). Next
 we will use cache dependency to invalidate content cache.
 
+Take a look at `wheezy.http`_ for various options available for content 
+caching.
+
 Cache Dependency
 ----------------
 
@@ -620,8 +623,70 @@ and notice that list page is refreshed this time.
 Take a look at `wheezy.caching`_ for various cache implementations including
 distributed cache support.
 
+Cache Vary
+----------
+
+AJAX + JSON, content caching and cache dependency are a great way to boost
+application performance. How about content compression? That is another great
+option to save traffic. What if we were able cache compressed response thus
+we will save on server CPU as well. Let implement this use case.
+
+Transforms are used to manipulate handler response according to some 
+algorithm. We will use this feature to compress response right before it
+enters content cache.
+
+Add imports in file ``views.py``::
+
+    from wheezy.http.transforms import gzip_transform
+    from wheezy.web.transforms import handler_transforms
+
+Let apply compression to ``ListHandler``::
+
+    class ListHandler(BaseHandler):
+
+        @handler_cache(CacheProfile('server', duration=timedelta(minutes=15)))
+        @handler_transforms(gzip_transform(compress_level=9, min_length=250))
+        def get(self):
+            ...
+
+Notice :py:meth:`~wheezy.web.transforms.handler_transforms` decorator
+is after handler cache, this way it able compress response before it goes to
+cache.
+
+At this point we have a single version of the cached page - compressed. What 
+about browsers that do not accept gzip content encoding? Would be good somehow
+distinguish web requests that support compression and some that do not.
+Fortunately browser sends HTTP header ``Accept-Encoding`` that serves exactly
+this purpose. All we need is instruct content cache to *vary* response
+depending on value in ``Accept-Encoding`` HTTP header.
+
+Instruct ``ListHandler`` cache to vary response on ``Accept-Encoding`` HTTP 
+header::
+
+    class ListHandler(BaseHandler):
+
+        @handler_cache(CacheProfile(
+                'server',
+                vary_environ=['HTTP_ACCEPT_ENCODING'], 
+                duration=timedelta(minutes=15)))
+        @handler_transforms(gzip_transform(compress_level=9, min_length=250))
+        def get(self):
+            ...
+
+Notice we added ``vary_environ`` and used WSGI environment variable 
+``HTTP_ACCEPT_ENCODING`` to be included into cache key used by content cache.
+
+Try run application by issuing the following command::
+
+    $ env/bin/python app.py
+
+Visit http://localhost:8080/ to see your site in browser.
+
+Take a look at `wheezy.http`_ for various options available for content 
+caching.
 
 .. _`wheezy.caching`: http://packages.python.org/wheezy.caching
 .. _`wheezy.html`: http://packages.python.org/wheezy.html
+.. _`wheezy.http`: http://packages.python.org/wheezy.http
 .. _`wheezy.validation`: http://packages.python.org/wheezy.validation
 .. _`jQuery`: http://docs.jquery.com/Downloading_jQuery
