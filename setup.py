@@ -28,7 +28,7 @@ except:
 setup(
     name='wheezy.web',
     version='0.1',
-    description='A lightweight WSGI web framework.',
+    description='A lightweight WSGI web framework',
     long_description=README,
     url='https://bitbucket.org/akorn/wheezy.web',
 
@@ -59,10 +59,7 @@ setup(
         'Topic :: Internet :: WWW/HTTP :: WSGI :: Application',
         'Topic :: Internet :: WWW/HTTP :: WSGI :: Middleware',
         'Topic :: Software Development :: Libraries :: Application Frameworks',
-        'Topic :: Software Development :: Libraries :: Python Modules',
-        'Topic :: Software Development :: Quality Assurance',
-        'Topic :: Software Development :: Testing',
-        'Topic :: Utilities'
+        'Topic :: Software Development :: Libraries :: Python Modules'
     ],
     keywords='wsgi web handler static file template mako errors routing '
              'middleware caching transforms',
