@@ -9,6 +9,7 @@ try:
 except ImportError:
     json = None
 
+
 from wheezy.http.functional import WSGIClient
 
 from app import main
@@ -108,15 +109,19 @@ class PublicTestCase(unittest.TestCase):
     def test_static_file_if_modified_since(self):
         """
         """
+        assert 200 == self.client.get('/static/css/site.css')
+        last_modified = self.client.headers['Last-Modified'][0]
         assert 304 == self.client.get('/static/css/site.css', environ={
-            'HTTP_IF_MODIFIED_SINCE': 'Fri, 24 Feb 2012 14:11:30 GMT'
+            'HTTP_IF_MODIFIED_SINCE': last_modified
         })
 
     def test_static_file_if_none_match(self):
         """
         """
+        assert 200 == self.client.get('/static/css/site.css')
+        etag = self.client.headers['ETag'][0]
         assert 304 == self.client.get('/static/css/site.css', environ={
-            'HTTP_IF_NONE_MATCH': '"4f479a92"'
+            'HTTP_IF_NONE_MATCH': etag
         })
 
     def test_head_static_file(self):
