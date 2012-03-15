@@ -22,10 +22,8 @@ list_cache_dependency = CacheDependency('list', time=15 * 60)
 
 class ListHandler(BaseHandler):
 
-    @handler_cache(CacheProfile(
-            'server',
-            vary_environ=['HTTP_ACCEPT_ENCODING'],
-            duration=timedelta(minutes=15)))
+    @handler_cache(CacheProfile('server', duration=timedelta(minutes=15),
+            vary_environ=['HTTP_ACCEPT_ENCODING']))
     @handler_transforms(gzip_transform(compress_level=9, min_length=250))
     def get(self):
         with session() as db:
