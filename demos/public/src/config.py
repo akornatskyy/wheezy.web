@@ -40,6 +40,13 @@ static_cache_profile = CacheProfile(
         vary_environ=['HTTP_ACCEPT_ENCODING'],
         namespace='static',
         enabled=True)
+public_cache_profile = CacheProfile(
+        'server',
+        duration=timedelta(minutes=15),
+        vary_environ=['HTTP_ACCEPT_ENCODING'],
+        vary_cookies=['_a'],
+        no_store=True,
+        enabled=True)
 
 # HTTPErrorMiddleware
 options.update({
