@@ -21,6 +21,8 @@ class BenchmarkTestCase(PublicTestCase):
             self.test_static_files,
             self.test_static_file_not_found,
             self.test_static_file_forbidden,
+            self.test_static_file_if_modified_since,
+            self.test_static_file_if_none_match,
             self.test_static_file_gzip,
             self.test_head_static_file
             ), 1000)
@@ -31,8 +33,10 @@ class BenchmarkTestCase(PublicTestCase):
                 'test_widgets': 0.52,
                 'test_widgets_with_errors': 0.51,
                 'test_static_files': 1.655,
-                'test_static_file_not_found': 0.64,
-                'test_static_file_forbidden': 0.62,
+                'test_static_file_not_found': 2.0,
+                'test_static_file_forbidden': 2.2,
+                'test_static_file_if_modified_since': 7.0,
+                'test_static_file_if_none_match': 11.3,
                 'test_static_file_gzip': 8.91,
                 'test_head_static_file': 9.08
         })

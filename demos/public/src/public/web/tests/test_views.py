@@ -75,6 +75,7 @@ class PublicTestCase(unittest.TestCase):
         for static_file in [
                 '/favicon.ico',
                 '/static/css/site.css',
+                '/static/img/error.png',
                 '/static/js/core.js',
                 '/static/js/autocomplete.js',
                 '/static/js/jquery-1.7.1.min.js',
@@ -85,15 +86,15 @@ class PublicTestCase(unittest.TestCase):
         """ Ensure 404 status code for non existing
             static content.
         """
-        self.client.get('/static/css/unknown.css')
-        assert 404 == self.client.follow()
+        assert 302 == self.client.get('/static/css/unknown.css')
+        assert '404' in self.client.headers['Location'][0]
 
     def test_static_file_forbidden(self):
         """ Ensure 403 status code for forbidden
             static content.
         """
-        self.client.get('/static/js/')
-        assert 403 == self.client.follow()
+        assert 302 == self.client.get('/static/../templates/')
+        assert '403' in self.client.headers['Location'][0]
 
     def test_static_file_gzip(self):
         """
@@ -103,6 +104,20 @@ class PublicTestCase(unittest.TestCase):
             'HTTP_ACCEPT_ENCODING': 'gzip, deflate'
         })
         assert 'gzip' in self.client.headers['Content-Encoding']
+
+    def test_static_file_if_modified_since(self):
+        """
+        """
+        assert 304 == self.client.get('/static/css/site.css', environ={
+            'HTTP_IF_MODIFIED_SINCE': 'Fri, 24 Feb 2012 14:11:30 GMT'
+        })
+
+    def test_static_file_if_none_match(self):
+        """
+        """
+        assert 304 == self.client.get('/static/css/site.css', environ={
+            'HTTP_IF_NONE_MATCH': '"4f479a92"'
+        })
 
     def test_head_static_file(self):
         """
