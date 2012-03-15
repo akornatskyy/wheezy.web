@@ -57,37 +57,35 @@ class FileHandler(MethodHandler):
             return forbidden()
 
         mime_type, encoding = mimetypes.guess_type(abspath)
-        request = self.request
-        response = HTTPResponse(
-                content_type=mime_type or 'plain/text',
-                encoding=encoding)
-
-        response.cache_policy = cache_policy = HTTPCachePolicy('public')
+        response = HTTPResponse(mime_type or 'plain/text', encoding)
 
         last_modified_stamp = os.stat(abspath)[stat.ST_MTIME]
+        environ = self.request.environ
+
+        etag = '\"' + hex(last_modified_stamp)[2:] + '\"'
+        none_match = environ.get('HTTP_IF_NONE_MATCH', None)
+        if none_match and etag in none_match:
+            response.status_code = 304
+            response.skip_body = True
+            return response
+
         last_modified = datetime.utcfromtimestamp(last_modified_stamp)
+        modified_since = environ.get('HTTP_IF_MODIFIED_SINCE', None)
+        if modified_since:
+            modified_since = parse_http_datetime(modified_since)
+            if modified_since >= last_modified:
+                response.status_code = 304
+                response.skip_body = True
+                return response
+
+        response.cache_policy = cache_policy = HTTPCachePolicy('public')
+        cache_policy.etag(etag)
         cache_policy.last_modified(last_modified)
 
         age = self.age
         if age:
             cache_policy.max_age(age)
             cache_policy.expires(datetime.utcnow() + age)
-
-        environ = request.environ
-        modified_since = environ.get('HTTP_IF_MODIFIED_SINCE', None)
-        if modified_since:
-            modified_since = parse_http_datetime(modified_since)
-            if modified_since >= last_modified:
-                response.status_code = 304
-                skip_body = True
-
-        etag = '\"' + hex(last_modified_stamp)[2:] + '\"'
-        cache_policy.etag(etag)
-        none_match = environ.get('HTTP_IF_NONE_MATCH', None)
-        if none_match and etag in none_match:
-            response.status_code = 304
-            skip_body = True
-
         if not skip_body:
             response.headers.append(HTTP_HEADER_ACCEPT_RANGE_NONE)
             file = open(abspath, 'rb')
