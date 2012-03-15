@@ -2,7 +2,6 @@
 """
 
 from wheezy.http import method_not_allowed
-from wheezy.http import HTTPResponse
 
 
 class MethodHandler(object):
