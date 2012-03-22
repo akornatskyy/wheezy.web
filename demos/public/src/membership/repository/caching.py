@@ -1,15 +1,8 @@
 """
 """
 
-from config import membership_cache
 from membership.repository import keys
 from membership.repository.contract import IMembershipRepository
-
-
-class CachingFactory(object):
-
-    def membership(self, inner):
-        return MembershipRepository(inner, membership_cache)
 
 
 class MembershipRepository(IMembershipRepository):

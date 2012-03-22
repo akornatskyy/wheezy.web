@@ -11,7 +11,7 @@ from wheezy.http import CacheProfile
 from wheezy.security.crypto import Ticket
 from wheezy.web.templates import MakoTemplate
 
-from membership.repository.mock import MockFactory
+from membership.repository.mock import MembershipRepository
 
 
 cache = MemoryCache()
@@ -19,8 +19,7 @@ cache_factory = lambda: cache
 
 
 # Custom
-MembershipPersistenceFactory = MockFactory
-membership_cache = None
+MembershipPersistence = MembershipRepository
 
 options = {}
 
@@ -46,7 +45,7 @@ public_cache_profile = CacheProfile(
         vary_environ=['HTTP_ACCEPT_ENCODING'],
         vary_cookies=['_a'],
         no_store=True,
-        enabled=True)
+        enabled=False)
 
 # HTTPErrorMiddleware
 options.update({

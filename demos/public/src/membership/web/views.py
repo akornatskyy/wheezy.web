@@ -12,9 +12,9 @@ from wheezy.web import handler_cache
 from wheezy.web.handlers import BaseHandler
 
 from config import none_cache_profile
+from factory.service import Factory
 from membership.models import Credential
 from membership.models import Registration
-from membership.service.factory import Factory
 from membership.validation import credential_validator
 from membership.validation import password_match_validator
 from membership.validation import registration_validator

@@ -6,12 +6,6 @@ from wheezy.core.comp import u
 from membership.repository.contract import IMembershipRepository
 
 
-class MockFactory(object):
-
-    def membership(self):
-        return MembershipRepository()
-
-
 class MembershipRepository(IMembershipRepository):
     credentials = {
             'demo': u('P@ssw0rd'),
@@ -21,6 +15,9 @@ class MembershipRepository(IMembershipRepository):
             'demo': tuple(['user']),
             'biz': tuple(['business'])
     }
+
+    def __init__(self, session):
+        pass
 
     def authenticate(self, credential):
         return credential.password == self.credentials.get(
