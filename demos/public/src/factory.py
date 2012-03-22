@@ -3,7 +3,8 @@
 
 from wheezy.core.descriptors import attribute
 
-from factory.repository import RepositoryFactory
+from config import MembershipPersistence
+from membership.repository.caching import MembershipRepository
 from membership.service.bridge import MembershipService
 
 
@@ -28,3 +29,16 @@ class Factory(object):
                 self.repository,
                 self.errors,
                 self.translations)
+
+
+class RepositoryFactory(object):
+
+    def __init__(self, session, cache):
+        self.session = session
+        self.cache = cache
+
+    @attribute
+    def membership(self):
+        return MembershipRepository(
+                MembershipPersistence(self.session),
+                self.cache)
