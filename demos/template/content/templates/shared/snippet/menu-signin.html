@@ -1,0 +1,8 @@
+<%page cached="True" cache_time="900"
+    cache_key="${(principal and principal.alias or '') + route_args.locale}" />
+% if principal:
+Welcome <b>${principal.alias | h}</b>!
+[<a href="${path_for('signout')}">Sign out</a>]
+% else:
+[<a href="${path_for('signin')}">Sign in</a>]
+% endif

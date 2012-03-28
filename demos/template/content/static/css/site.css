@@ -1,0 +1,93 @@
+/*----------------------------------------------------------
+ * The base color for this template is #5c87b2. If you'd like
+ * to use a different color start by replacing all instances of
+ * #5c87b2 with your new color.
+ * ----------------------------------------------------------*/
+body { background-color: #5c87b2; font-size: .75em; font-family: Verdana, Helvetica, Sans-Serif; margin: 0; padding: 0; color: #696969; }
+
+a:link { color: #034af3; text-decoration: underline; }
+a:visited { color: #505abc; }
+a:hover { color: #1d60ff; text-decoration: none; }
+a:active { color: #12eb87; }
+
+p, ul { margin-bottom: 20px; line-height: 1.6em; }
+
+/* HEADINGS
+ * ----------------------------------------------------------*/
+h1, h2, h3, h4, h5, h6 { font-size: 1.5em; color: #666; font-family: Arial, Helvetica, sans-serif; }
+
+h1 { font-size: 2em; padding-bottom: 0; margin-bottom: 0; }
+h2 { padding: 0 0 10px 0; }
+h3 { font-size: 1.2em; }
+h4 { font-size: 1.1em; }
+h5, h6 { font-size: 1em; }
+h2 strong { color: #525252; }
+/* this rule styles <h2> tags that are the
+ * first child of the left and right table columns */
+.rightColumn > h1, .rightColumn > h2, .leftColumn > h1, .leftColumn > h2 { margin-top: 0; }
+
+/* PRIMARY LAYOUT ELEMENTS
+ * ----------------------------------------------------------*/
+
+/* you can specify a greater or lesser percentage for the
+ * page width. Or, you can specify an exact pixel width. */
+.page { width: 90%; margin-left: auto; margin-right: auto; }
+#header { position: relative; margin-bottom: 0px; color: #000; padding: 0; }
+#header h1 { font-weight: bold; padding: 5px 0; margin: 0; color: #fff; border: none; line-height: 2em; font-family: Arial, Helvetica, sans-serif; font-size: 32px !important; }
+#header h1 a { color: #fff; text-decoration: none; }
+#main { padding: 30px 30px 15px 30px; background-color: #fff; margin-bottom: 30px; _height: 1px; /* only IE6 applies CSS properties starting with an underscrore */ }
+#footer { color: #999; padding: 10px 0; text-align: center; line-height: normal; margin: 0; font-size: .9em; }
+
+/* TAB MENU
+ * ----------------------------------------------------------*/
+ul#menu { border-bottom: 1px #5C87B2 solid; padding: 0 0 2px; position: relative; margin: 0; text-align: right; }
+ul#menu li { display: inline; list-style: none; }
+ul#menu li#greeting { padding: 10px 20px; font-weight: bold; text-decoration: none; line-height: 2.8em; color: #fff; }
+ul#menu li a { padding: 10px 20px; font-weight: bold; text-decoration: none; line-height: 2.8em; background-color: #e8eef4; color: #034af3; }
+ul#menu li a:hover { background-color: #fff; text-decoration: none; }
+ul#menu li a:active { background-color: #a6e2a6; text-decoration: none; }
+ul#menu li.active a { background-color: #fff; color: #000; }
+
+/* FORM LAYOUT ELEMENTS
+ * ----------------------------------------------------------*/
+
+fieldset { margin: 1em 0; padding: 1em; border: 1px solid #CCC; }
+fieldset p { margin: 2px 12px 10px 10px; }
+fieldset label { display: block; }
+fieldset label.inline { display: inline; }
+legend { font-size: 1.1em; font-weight: 600; padding: 2px 4px 8px 4px; }
+input[type="text"] { width: 200px; border: 1px solid #CCC; }
+input[type="password"] { width: 200px; border: 1px solid #CCC; }
+
+/* TABLE
+ * ----------------------------------------------------------*/
+
+table { border: solid 1px #e8eef4; border-collapse: collapse; width: 100%; }
+table td { padding: 5px; border: solid 1px #e8eef4; }
+table th { padding: 6px 5px; text-align: left; color: #FFF; background-color: #5C87B2; border: solid 1px #5C87B2; white-space: nowrap; }
+table tr.row-alternate { background-color: #e8eef4; }
+
+/* MISC
+ * ----------------------------------------------------------*/
+
+.clear { clear: both; }
+input[type="text"], input[type="password"], textarea { border: 1px solid #BBB; border-radius: 3px; }
+code, pre { padding: 10px; text-align: left; display: block; overflow: auto; background: #fafafa; border: 1px solid #f2f2f2; border-left: 3px solid #5c87b2; }
+code, pre { font: 500 1em/1.5em Consolas, monospace; }
+
+input.error, textarea.error, select.error { border: 1px solid #FF0000; background-color: #FFEEEE; }
+span.error { color: #FF0000; display: block; font-size: 0.95em; background: transparent url("../img/error.png") 0px 2px no-repeat; text-indent: 16px; }
+
+span.error-message, span.warning-message, span.info-message { display: block; padding: 25px 25px 25px 80px; margin: 0 0 15px 0; border: 1px solid #DFDFDF; color: #333333; font-size: 13px; line-height: 17px; float: none; font-weight: normal; width: auto; -moz-border-radius:5px 5px 5px 5px; }
+span.error-message { border:1px solid #C44509; background:url("../img/alert/error.png") no-repeat scroll 20px 50% #fdcea4; }
+span.warning-message { background:url("../img/alert/warning.png") no-repeat scroll 20px 50% #FEFFC8; border:1px solid #f0881a }
+span.info-message { background:url("../img/alert/info.png") no-repeat scroll 20px 50% #D4F684; border:1px solid #739f1d; }
+
+
+#menucontainer { margin-top: 20px; }
+div#title { display: block; float: left; text-align: left; }
+#logindisplay { font-size: 1.1em; display: block; text-align: right; margin: 10px; color: White; }
+#logindisplay i { display: block; margin-top: 10px; }
+#logindisplay a:link { color: white; text-decoration: underline; }
+#logindisplay a:visited { color: white; text-decoration: underline; }
+#logindisplay a:hover { color: white; text-decoration: none; }

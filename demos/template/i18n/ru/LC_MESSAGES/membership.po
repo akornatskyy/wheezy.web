@@ -1,0 +1,66 @@
+# Messages for ``demos.public``.
+# Copyright (C) 2011 Andriy Kornatskyy
+# Andriy Kornatskyy <andriy.kornatskyy@live.com>, 2011.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: wheezy.validation\n"
+"Report-Msgid-Bugs-To: Andriy Kornatskyy <andriy.kornatskyy@live.com>\n"
+"POT-Creation-Date: 2011-12-21 18:39+0200\n"
+"PO-Revision-Date: 2011-12-21 18:39+0200\n"
+"Last-Translator: Andriy Kornatskyy <andriy.kornatskyy@live.com>\n"
+"Language: Russian\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: content/templates/membership/signup.html:40
+msgid "Date of birth (YYYY/MM/DD):"
+msgstr "День рождения (ДД.ММ.ГГГГ):"
+
+#: content/templates/membership/signup.html:41
+msgid "YYYY/MM/DD"
+msgstr "%d.%m.%Y"
+
+#: src/membership/service/bridge.py:28
+msgid "Favorite number"
+msgstr "Любимое число"
+
+#: src/membership/service/bridge.py:29
+msgid "City of birth"
+msgstr "Город в котором Вы родились"
+
+#: src/membership/service/bridge.py:30
+msgid "Favorite color"
+msgstr "Любимый цвет"
+
+#: src/membership/service/bridge.py:37
+msgid "User"
+msgstr "Пользователь"
+
+#: src/membership/service/bridge.py:38
+msgid "Business"
+msgstr "Бизнес"
+
+#: src/membership/service/bridge.py:40
+msgid "The username or password provided is incorrect."
+msgstr "Предоставленное имя пользователя или пароль неверные."
+
+#: src/membership/service/bridge.py:55
+msgid "The user with such username is already registered. Please try another."
+msgstr "Пользователь с таким именем уже зарегистрирован. "
+"Пожалуйста, попробуйте другое."
+
+#: src/membership/service/bridge.py:60
+msgid ""
+"The system was unable to create an account for you. Please try again later."
+msgstr "Система не смогла создать учетную запись для Вас. "
+"Пожалуйста, повторите попытку позже."
+
+#: src/membership/web/views.py:107
+msgid ""
+"Your registration request has been queued. Please wait while your request "
+"will be processed. If your request fails please try again."
+msgstr ""
+"Ваш запрос на регистрацию в очереди. Пожалуйста, подождите, пока ваш "
+"запрос будет обработан. Если ваш запрос не выполнен, повторите попытку."

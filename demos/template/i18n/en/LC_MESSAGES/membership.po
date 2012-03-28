@@ -1,0 +1,65 @@
+# Messages for ``demos.public``.
+# Copyright (C) 2011 Andriy Kornatskyy
+# Andriy Kornatskyy <andriy.kornatskyy@live.com>, 2011.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: wheezy.validation\n"
+"Report-Msgid-Bugs-To: Andriy Kornatskyy <andriy.kornatskyy@live.com>\n"
+"POT-Creation-Date: 2011-12-21 18:39+0200\n"
+"PO-Revision-Date: 2011-12-21 18:39+0200\n"
+"Last-Translator: Andriy Kornatskyy <andriy.kornatskyy@live.com>\n"
+"Language: US English\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: content/templates/membership/signup.html:40
+msgid "Date of birth (YYYY/MM/DD):"
+msgstr "Date of birth (YYYY/MM/DD):"
+
+#: content/templates/membership/signup.html:41
+msgid "YYYY/MM/DD"
+msgstr "%Y/%m/%d"
+
+#: src/membership/service/bridge.py:29 src/membership/service/bridge.py:30
+msgid "Favorite number"
+msgstr "Favorite number"
+
+#: src/membership/service/bridge.py:30 src/membership/service/bridge.py:31
+msgid "City of birth"
+msgstr "City of birth"
+
+#: src/membership/service/bridge.py:31 src/membership/service/bridge.py:32
+msgid "Favorite color"
+msgstr "Favorite color"
+
+#: src/membership/service/bridge.py:37
+msgid "User"
+msgstr "User"
+
+#: src/membership/service/bridge.py:38
+msgid "Business"
+msgstr "Business"
+
+#: src/membership/service/bridge.py:47
+msgid "The username or password provided is incorrect."
+msgstr "The username or password provided is incorrect."
+
+#: src/membership/service/bridge.py:61
+msgid "The user with such username is already registered. Please try another."
+msgstr "The user with such username is already registered. Please try another."
+
+#: src/membership/service/bridge.py:66
+msgid ""
+"The system was unable to create an account for you. Please try again later."
+msgstr ""
+"The system was unable to create an account for you. Please try again later."
+
+#: src/membership/web/views.py:107 src/membership/web/views.py:112
+msgid ""
+"Your registration request has been queued. Please wait while your request "
+"will be processed. If your request fails please try again."
+msgstr ""
+"Your registration request has been queued. Please wait while your request "
+"will be processed. If your request fails please try again."
