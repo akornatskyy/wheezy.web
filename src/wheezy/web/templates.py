@@ -29,6 +29,8 @@ class MakoTemplate(object):
 
 class MakoCacheImpl(object):
 
+    pass_context = False
+
     def __init__(self, cache):
         self.cache_factory = cache.template.cache_args['cache_factory']
         self.prefix = cache.id
