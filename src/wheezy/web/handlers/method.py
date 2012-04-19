@@ -49,3 +49,9 @@ class MethodHandler(object):
         """ Responds to HTTP POST requests.
         """
         return method_not_allowed()
+
+
+def handler_factory(klass, *args, **kwargs):
+    handler = super(MethodHandler, klass).__new__(klass)
+    handler.__init__(*args, **kwargs)
+    return handler
