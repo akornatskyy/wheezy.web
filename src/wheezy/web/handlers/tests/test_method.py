@@ -26,6 +26,15 @@ class MethodHandlerTestCase(unittest.TestCase):
             response = MethodHandler(self.mock_request)
             assert 405 == response.status_code
 
+    def test_call_unknown_http_method(self):
+        """ Ensure HTTP request method is dispatched correctly
+            in case HTTP request method is not supported.
+        """
+        from wheezy.web.handlers.method import MethodHandler
+        self.mock_request.method = 'UNKNOWN'
+        response = MethodHandler(self.mock_request)
+        assert 405 == response.status_code
+
     def test_call(self):
         """ Ensure HTTP request method is dispatched correctly.
         """
@@ -33,13 +42,11 @@ class MethodHandlerTestCase(unittest.TestCase):
         for method in ['GET', 'POST', 'HEAD']:
             patcher = patch('wheezy.web.handlers.method.MethodHandler.'
                     + method.lower())
-
             self.mock_request.method = method
             mock_method = patcher.start()
             mock_method.return_value = 'response'
             response = MethodHandler(self.mock_request)
             assert 'response' == response
-
             patcher.stop()
 
     def test_extend_response_with_cookies(self):
