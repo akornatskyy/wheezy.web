@@ -77,8 +77,9 @@ doctest-cover:
 		--with-coverage --cover-package=wheezy.web
 
 test-cover:
-	$(PYTEST) -q --cov wheezy.web \
-		--cov-report term-missing \
+	$(PYTEST) -q --cov wheezy.web --cov wheezy.web.handlers \
+		--cov wheezy.web.middleware --cov-report term-missing \
+		src/wheezy/web/handlers/tests src/wheezy/web/middleware/tests \
 		src/wheezy/web/tests
 
 doc:
