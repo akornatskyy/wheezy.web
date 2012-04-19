@@ -2,7 +2,6 @@
 """
 from uuid import uuid4
 
-from wheezy.core.collections import last_item_adapter
 from wheezy.core.descriptors import attribute
 from wheezy.core.i18n import null_translations
 from wheezy.core.i18n import ref_gettext
@@ -205,9 +204,10 @@ class BaseHandler(MethodHandler, ValidationMixin):
             return self.__xsrf_token
         options = self.options
         xsrf_name = options['XSRF_NAME']
-        try:
-            xsrf_token = self.request.cookies[xsrf_name]
-        except KeyError:
+        cookies = self.request.cookies
+        if xsrf_name in cookies:
+            xsrf_token = cookies[xsrf_name]
+        else:
             xsrf_token = shrink_uuid(uuid4())
             self.cookies.append(HTTPCookie(
                 xsrf_name,
@@ -229,12 +229,12 @@ class BaseHandler(MethodHandler, ValidationMixin):
     xsrf_token = property(getxsrf_token, None, delxsrf_token)
 
     def validate_xsrf_token(self):
-        options = self.options
-        xsrf_name = options['XSRF_NAME']
-        xsrf_token = last_item_adapter(self.request.form)[xsrf_name]
-        if xsrf_token and xsrf_token == self.xsrf_token and parse_uuid(
-                xsrf_token) != UUID_EMPTY:
-            return True
+        xsrf_name = self.options['XSRF_NAME']
+        form = self.request.form
+        if xsrf_name in form:
+            xsrf_token = form[xsrf_name][-1]
+            return xsrf_token == self.xsrf_token \
+                    and parse_uuid(xsrf_token) != UUID_EMPTY
         else:
             self.delxsrf_token()
             return False
@@ -248,10 +248,12 @@ class BaseHandler(MethodHandler, ValidationMixin):
     def getresubmission(self):
         if hasattr(self, '_BaseHandler__resubmission'):
             return self.__resubmission
-        try:
-            counter = self.request.cookies[self.options['RESUBMISSION_NAME']]
+        resubmission_name = self.options['RESUBMISSION_NAME']
+        cookies = self.request.cookies
+        if resubmission_name in cookies:
+            counter = cookies[resubmission_name]
             self.__resubmission = counter
-        except (KeyError, TypeError):
+        else:
             counter = '0'
             self.setresubmission(counter)
         return counter
@@ -282,13 +284,17 @@ class BaseHandler(MethodHandler, ValidationMixin):
         if self.request.ajax:
             return True
         name = self.options['RESUBMISSION_NAME']
-        counter = last_item_adapter(self.request.form)[name]
-        if counter and counter == self.resubmission:
-            counter = str(int(counter) + 1)
-            self.setresubmission(counter)
-            return True
-        else:
-            return False
+        form = self.request.form
+        if name in form:
+            counter = form[name][-1]
+            if counter == self.resubmission:
+                try:
+                    counter = str(int(counter) + 1)
+                    self.setresubmission(counter)
+                    return True
+                except ValueError:
+                    self.setresubmission('0')
+        return False
 
     def resubmission_widget(self):
         if self.request.ajax:
