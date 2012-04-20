@@ -94,10 +94,9 @@ class AuthorizeTestCase(unittest.TestCase):
         """
         from wheezy.web.authorization import authorize
         mock_handler = Mock()
-        mock_handler.principal = None
+        mock_handler.principal = 'UserA'
 
         @authorize
         def get(self):
             return 'response'
-        response = get(mock_handler)
-        assert 401 == response.status_code
+        assert 'response' == get(mock_handler)
