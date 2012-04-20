@@ -27,6 +27,4 @@ class PathRoutingMiddleware(object):
 def path_routing_middleware_factory(options):
     """ PathRouting middleware factory.
     """
-    path_router = options['path_router']
-    return PathRoutingMiddleware(
-            path_router=path_router)
+    return PathRoutingMiddleware(options['path_router'])

@@ -58,3 +58,18 @@ class PathRoutingMiddlewareTestCase(unittest.TestCase):
         mock_path_router.match.assert_called_once_with('en/signin')
         assert 'route_args' in mock_request.environ
         mock_handler.assert_called_once_with(mock_request)
+
+
+class PathRoutingMiddlewareFactoryTestCase(unittest.TestCase):
+    """ Test the ``path_routing_middleware_factory``.
+    """
+
+    def test_call(self):
+        """ Returns an instance of PathRoutingMiddleware.
+        """
+        from wheezy.web.middleware.routing \
+                import path_routing_middleware_factory
+        mock_path_router = Mock()
+        assert path_routing_middleware_factory({
+                'path_router': mock_path_router
+        })
