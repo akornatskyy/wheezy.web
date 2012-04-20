@@ -11,16 +11,17 @@ def handler_transforms(*transforms):
         if len(transforms) == 1:
             transform = transforms[0]
 
-            def strategy(handler, *args, **kwargs):
+            def single_strategy(handler, *args, **kwargs):
                 return transform(
                         handler.request,
                         factory(handler, *args, **kwargs))
+            return single_strategy
         else:
-            def strategy(handler, *args, **kwargs):
+            def multi_strategy(handler, *args, **kwargs):
                 request = handler.request
                 response = factory(handler, *args, **kwargs)
                 for transform in transforms:
                     response = transform(request, response)
                 return response
-        return strategy
+            return multi_strategy
     return decorate
