@@ -1,5 +1,5 @@
 
-""" Unit tests for ``wheezy.web.middleware.errors``.
+""" Unit tests for ``wheezy.web.middleware.routing``.
 """
 
 import unittest
