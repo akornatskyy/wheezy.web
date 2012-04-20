@@ -9,22 +9,25 @@ class MakoTemplate(object):
             module_directory='/tmp/mako_modules',
             cache_factory=None,
             **kwargs):
-        from mako.cache import register_plugin
         from mako.lookup import TemplateLookup
-
-        register_plugin('wheezy', 'wheezy.web.templates', 'MakoCacheImpl')
-        self.template_lookup = TemplateLookup(
-                directories=directories or ['content/templates'],
-                module_directory=module_directory,
-                cache_impl='wheezy',
-                cache_args={'cache_factory': cache_factory},
+        if cache_factory is None:
+            self.template_lookup = TemplateLookup(
+                    directories=directories or ['content/templates'],
+                    module_directory=module_directory,
                 **kwargs)
+        else:
+            from mako.cache import register_plugin
+            register_plugin('wheezy', 'wheezy.web.templates', 'MakoCacheImpl')
+            self.template_lookup = TemplateLookup(
+                    directories=directories or ['content/templates'],
+                    module_directory=module_directory,
+                    cache_impl='wheezy',
+                    cache_args={'cache_factory': cache_factory},
+                    **kwargs)
 
     def __call__(self, template_name, **kwargs):
         template = self.template_lookup.get_template(template_name)
-        return template.render(
-                **kwargs
-        )
+        return template.render(**kwargs)
 
 
 class MakoCacheImpl(object):
