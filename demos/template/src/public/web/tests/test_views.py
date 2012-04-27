@@ -124,6 +124,13 @@ class ErrorTestCase(unittest.TestCase):
         assert 404 == self.client.get('/en/error/404')
         assert 'Code 404' in self.client.content
 
+    def test_route_not_found(self):
+        """ Ensure not found page is rendered.
+        """
+        self.client.get('/test-not-found')
+        assert 404 == self.client.follow()
+        assert 'Code 404' in self.client.content
+
     def test_error_500(self):
         """ Ensure internal error page is rendered.
         """

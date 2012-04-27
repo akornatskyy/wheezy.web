@@ -24,7 +24,7 @@ class PathRoutingMiddlewareTestCase(unittest.TestCase):
         mock_path_router.match.return_value = (None, {})
         middleware = PathRoutingMiddleware(mock_path_router)
         assert 'response' == middleware(mock_request, mock_following)
-        assert 'route_args' not in mock_request.environ
+        assert 'route_args' in mock_request.environ
         mock_path_router.match.assert_called_once_with('en/signin')
 
     def test_following_is_none(self):
@@ -40,7 +40,7 @@ class PathRoutingMiddlewareTestCase(unittest.TestCase):
         mock_path_router.match.return_value = (None, {})
         middleware = PathRoutingMiddleware(mock_path_router)
         assert None == middleware(mock_request, None)
-        assert 'route_args' not in mock_request.environ
+        assert 'route_args' in mock_request.environ
 
     def test_match(self):
         """ There is matching handler for incoming request.

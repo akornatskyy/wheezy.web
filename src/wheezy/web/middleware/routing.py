@@ -16,11 +16,11 @@ class PathRoutingMiddleware(object):
     def __call__(self, request, following):
         environ = request.environ
         handler, route_args = self.match(environ['PATH_INFO'].lstrip('/'))
+        environ['route_args'] = defaultattrdict(str, route_args)
         if handler is None:
             if following is not None:
                 return following(request)
             return None
-        environ['route_args'] = defaultattrdict(str, route_args)
         return handler(request)
 
 
