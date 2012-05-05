@@ -8,6 +8,7 @@ from wheezy.core.collections import defaultattrdict
 class PathRoutingMiddleware(object):
     """ path routing middleware
     """
+    __slots__ = ('match')
 
     def __init__(self, path_router):
         assert path_router
