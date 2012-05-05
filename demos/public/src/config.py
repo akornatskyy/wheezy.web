@@ -7,6 +7,7 @@ from wheezy.caching import MemoryCache
 from wheezy.core.collections import defaultdict
 from wheezy.core.i18n import TranslationsManager
 from wheezy.html.ext.mako import widget_preprocessor
+from wheezy.html.ext.mako import whitespace_preprocessor
 from wheezy.http import CacheProfile
 from wheezy.security.crypto import Ticket
 from wheezy.web.templates import MakoTemplate
@@ -76,8 +77,10 @@ options.update({
             directories=['content/templates'],
             filesystem_checks=False,
             cache_factory=cache_factory,
-            preprocessor=[widget_preprocessor]
-            ),
+            preprocessor=[
+                widget_preprocessor,
+                whitespace_preprocessor,
+            ]),
 
         'ticket': Ticket(
             max_age=1200,

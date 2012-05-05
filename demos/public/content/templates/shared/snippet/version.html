@@ -1,8 +1,0 @@
-<%page cached="True" />\
-<%
-from datetime import datetime
-v=local.template.cache.starttime
-v=datetime.fromtimestamp(v)
-v=v.strftime('Version 0.1.0.0 [%m/%d/%Y %I:%M%p]')
-context.write(v)
-%>\

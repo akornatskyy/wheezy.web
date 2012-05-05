@@ -54,10 +54,12 @@ ${model.username.label('<i>*</i>Username', class_="inline")}
 <pre><%text filter="h">
 ##${model.username.textbox(autocomplete='off')}
 ##${model.password.password(maxlength=10)}
+##${model.min_amount.emptybox()}
 ##${model.remember_me.checkbox()}
 </%text><%block filter="h">
 ${model.username.textbox(autocomplete='off')}
 ${model.password.password(maxlength=10)}
+${model.min_amount.emptybox()}
 ${model.remember_me.checkbox()}
 </%block></pre>
     </p>
@@ -112,17 +114,11 @@ ${model.scms.listbox(choices=scm)}
 ##${model.username_status.warning()}
 </%text><%block filter="h">
 ${message.info()}
-
 ${message.warning()}
-
 ${model.error()}
-
 ${model.username.error()}
-
 ${model.password_status.warning()}
-
 ${model.username_status.info()}
-
 ${model.username_status.warning()}
 </%block></pre>
     </p>

@@ -34,13 +34,13 @@ run:
 	$(PYTHON) src/app.py
 
 uwsgi:
-	$(ENV)/bin/uwsgi -C 777 --logto=/dev/null -p 2 \
+	$(ENV)/bin/uwsgi -C 777 --logto=/dev/null -p 1 \
 		-H $(ENV) --pythonpath src -s /tmp/uwsgi-test.sock \
 		-M -w app:main
 
 gunicorn:
 	export PYTHONPATH=$$PYTHONPATH:./src ; \
-		$(ENV)/bin/gunicorn -b 0.0.0.0:8080 -w 2 app:main
+		$(ENV)/bin/gunicorn -b 0.0.0.0:8080 -w 1 app:main
 
 test:
 	$(PYTEST) -q -x --pep8 --doctest-modules src/

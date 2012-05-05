@@ -28,6 +28,7 @@ class WidgetsHandler(BaseHandler):
         return attrdict({
             'username': 'John Smith',
             'username_status': 'Taken!',
+            'min_amount': 0,
             'password': '',
             'password_status': '',
             'notes': 'Lorem ipsum dolor sit amet.',
