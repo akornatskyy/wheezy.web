@@ -3,6 +3,7 @@
 
 
 class MakoTemplate(object):
+    __slots__ = ('template_lookup')
 
     def __init__(self,
             directories=None,
@@ -31,6 +32,7 @@ class MakoTemplate(object):
 
 
 class MakoCacheImpl(object):
+    __slots__ = ('cache_factory', 'prefix')
 
     pass_context = False
 
