@@ -51,9 +51,7 @@ run:
 	$(PYTHON) src/app.py
 
 uwsgi:
-	$(ENV)/bin/uwsgi -C 777 --logto=/dev/null -p 1 \
-		-H $(ENV) --pythonpath src -s /tmp/uwsgi-test.sock \
-		-M -w app:main
+	$(ENV)/bin/uwsgi --ini development.ini
 
 gunicorn:
 	export PYTHONPATH=$$PYTHONPATH:./src ; \

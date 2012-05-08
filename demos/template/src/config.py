@@ -1,6 +1,7 @@
 """
 """
 
+from ConfigParser import ConfigParser
 from datetime import timedelta
 
 from wheezy.caching import MemoryCache
@@ -14,6 +15,9 @@ from wheezy.web.templates import MakoTemplate
 
 from membership.repository.mock import MembershipRepository
 
+
+config = ConfigParser()
+config.read('development.ini')
 
 cache = MemoryCache()
 cache_factory = lambda: cache
@@ -39,14 +43,14 @@ static_cache_profile = CacheProfile(
         duration=timedelta(minutes=15),
         vary_environ=['HTTP_ACCEPT_ENCODING'],
         namespace='static',
-        enabled=True)
+        enabled=config.getboolean('cache-profile', 'static-enabled'))
 public_cache_profile = CacheProfile(
         'server',
         duration=timedelta(minutes=15),
         vary_environ=['HTTP_ACCEPT_ENCODING'],
         vary_cookies=['_a'],
         no_store=True,
-        enabled=False)
+        enabled=config.getboolean('cache-profile', 'public-enabled'))
 
 # HTTPErrorMiddleware
 options.update({
@@ -63,8 +67,8 @@ options.update({
 
 # wheezy.security.crypto.Ticket
 options.update({
-        'CRYPTO_ENCRYPTION_KEY': 'r0sWsYR3dHUcrPWeTcB7',
-        'CRYPTO_VALIDATION_KEY': 'kTrdyg9ZwcNyE6YKoPJU'
+        'CRYPTO_ENCRYPTION_KEY': config.get('crypto', 'encryption-key'),
+        'CRYPTO_VALIDATION_KEY': config.get('crypto', 'validation-key')
 })
 
 # BaseHandler
@@ -74,8 +78,9 @@ options.update({
             default_lang='en'),
 
         'render_template': MakoTemplate(
+            module_directory=config.get('mako', 'module-directory'),
+            filesystem_checks=config.getboolean('mako', 'filesystem-checks'),
             directories=['content/templates'],
-            filesystem_checks=False,
             cache_factory=cache_factory,
             preprocessor=[
                 widget_preprocessor,
@@ -83,8 +88,8 @@ options.update({
             ]),
 
         'ticket': Ticket(
-            max_age=1200,
-            salt='WmMFjzVbSpWlCKb6cOC4',
+            max_age=config.getint('crypto', 'ticket-max-age'),
+            salt=config.get('crypto', 'ticket-salt'),
             options=options),
 
         'AUTH_COOKIE': '_a',
