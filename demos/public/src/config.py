@@ -11,6 +11,8 @@ from wheezy.html.ext.mako import widget_preprocessor
 from wheezy.html.ext.mako import whitespace_preprocessor
 from wheezy.http import CacheProfile
 from wheezy.security.crypto import Ticket
+from wheezy.security.crypto.comp import aes128
+from wheezy.security.crypto.comp import sha1
 from wheezy.web.templates import MakoTemplate
 
 from membership.repository.mock import MembershipRepository
@@ -90,6 +92,8 @@ options.update({
         'ticket': Ticket(
             max_age=config.getint('crypto', 'ticket-max-age'),
             salt=config.get('crypto', 'ticket-salt'),
+            cypher=aes128,
+            digestmod=sha1,
             options=options),
 
         'AUTH_COOKIE': '_a',
