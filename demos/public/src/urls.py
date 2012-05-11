@@ -25,15 +25,15 @@ static_files = response_cache(static_cache_profile)(
                 root='content/static/',
                 age=timedelta(hours=1))))
 
+locale_urls = public_urls + membership_urls
+locale_urls.append(('error/', error_urls, locale_defaults))
+locale_urls.append(('error/', test_error_urls, locale_defaults))
 all_urls = [
         url('',
             template_handler('public/home.html'),
             locale_defaults,
             name='default'),
-        (locale_pattern, public_urls, locale_defaults),
-        (locale_pattern, membership_urls, locale_defaults),
-        (locale_pattern + 'error/', error_urls, locale_defaults),
-        (locale_pattern + 'error/', test_error_urls, locale_defaults),
+        (locale_pattern, locale_urls, locale_defaults),
         url('static/{path:any}', static_files, name='static'),
         url('favicon.ico', static_files, {'path': 'img/favicon.ico'})
 ]
