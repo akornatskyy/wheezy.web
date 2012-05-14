@@ -15,9 +15,8 @@ install_requires = [
     'wheezy.html>=0.1.68',
     'wheezy.http>=0.1.223',
     'wheezy.routing>=0.1.124',
-    'wheezy.security>=0.1.35',
+    'wheezy.security>=0.1.36',
     'wheezy.validation>=0.1.72',
-    'mako>=0.6.2'
 ]
 
 try:
@@ -82,6 +81,12 @@ setup(
             'pytest-pep8',
             'pytest-cov',
             'mock'
+        ],
+        'mako': [
+            'mako>=0.7.0'
+        ],
+        'tenjin': [
+            'tenjin>=1.1.0'
         ]
     },
 

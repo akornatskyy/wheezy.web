@@ -15,9 +15,9 @@ install_requires = [
     'wheezy.html>=0.1.86',
     'wheezy.http>=0.1.223',
     'wheezy.routing>=0.1.124',
-    'wheezy.security>=0.1.35',
+    'wheezy.security>=0.1.36',
     'wheezy.validation>=0.1.72',
-    'wheezy.web>=0.1.207',
+    'wheezy.web>=0.1.220',
 ]
 
 try:
