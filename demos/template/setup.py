@@ -12,13 +12,12 @@ README = open(os.path.join(os.path.dirname(__file__), 'README')).read()
 install_requires = [
     'wheezy.core>=0.1.70',
     'wheezy.caching>=0.1.54',
-    'wheezy.html>=0.1.68',
+    'wheezy.html>=0.1.86',
     'wheezy.http>=0.1.223',
     'wheezy.routing>=0.1.124',
     'wheezy.security>=0.1.35',
     'wheezy.validation>=0.1.72',
     'wheezy.web>=0.1.207',
-    'mako>=0.6.2'
 ]
 
 try:
@@ -67,6 +66,12 @@ setup(
             'pytest',
             'pytest-pep8',
             'pytest-cov'
+        ],
+        'mako': [
+            'mako>=0.7.0'
+        ],
+        'tenjin': [
+            'tenjin>=1.1.0'
         ]
     },
 

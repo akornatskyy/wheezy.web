@@ -1,21 +1,20 @@
 """
 """
 
+import os
+
 from ConfigParser import ConfigParser
 from datetime import timedelta
 
 from wheezy.caching import MemoryCache
 from wheezy.core.collections import defaultdict
 from wheezy.core.i18n import TranslationsManager
-from wheezy.html.ext.mako import widget_preprocessor
-from wheezy.html.ext.mako import whitespace_preprocessor
 from wheezy.http import CacheProfile
 from wheezy.security.crypto import Ticket
 from wheezy.security.crypto.comp import aes128
 from wheezy.security.crypto.comp import ripemd160
 from wheezy.security.crypto.comp import sha1
 from wheezy.security.crypto.comp import sha256
-from wheezy.web.templates import MakoTemplate
 
 from membership.repository.mock import MembershipRepository
 
@@ -75,21 +74,45 @@ options.update({
         'CRYPTO_VALIDATION_KEY': config.get('crypto', 'validation-key')
 })
 
+#template_engine = os.getenv('TEMPLATE_ENGINE', 'mako')
+template_engine = os.getenv('TEMPLATE_ENGINE', 'tenjin')
+if template_engine == 'mako':
+    from wheezy.html.ext.mako import whitespace_preprocessor
+    from wheezy.html.ext.mako import widget_preprocessor
+    from wheezy.web.templates import MakoTemplate
+
+    render_template = MakoTemplate(
+            module_directory=config.get('mako', 'module-directory'),
+            filesystem_checks=config.getboolean('mako', 'filesystem-checks'),
+            directories=['content/templates-mako'],
+            cache_factory=cache_factory,
+            preprocessor=[
+                widget_preprocessor,
+                whitespace_preprocessor,
+            ])
+else:
+    from wheezy.html.ext.tenjin import whitespace_preprocessor
+    from wheezy.html.ext.tenjin import widget_preprocessor
+    from wheezy.html.utils import format_value
+    from wheezy.web.templates import TenjinTemplate
+
+    render_template = TenjinTemplate(
+            path=['content/templates-tenjin'],
+            pp=[
+                widget_preprocessor,
+                whitespace_preprocessor,
+            ],
+            helpers={
+                'format_value': format_value
+            })
+
 # BaseHandler
 options.update({
         'translations_manager': TranslationsManager(
             directories=['i18n'],
             default_lang='en'),
 
-        'render_template': MakoTemplate(
-            module_directory=config.get('mako', 'module-directory'),
-            filesystem_checks=config.getboolean('mako', 'filesystem-checks'),
-            directories=['content/templates'],
-            cache_factory=cache_factory,
-            preprocessor=[
-                widget_preprocessor,
-                whitespace_preprocessor,
-            ]),
+        'render_template': render_template,
 
         'ticket': Ticket(
             max_age=config.getint('crypto', 'ticket-max-age'),

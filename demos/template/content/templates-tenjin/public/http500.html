@@ -1,0 +1,10 @@
+<?py _context["_layout"] = "shared/master.html" ?>
+<?py for _ in capture_as("title"): ?>We are sorry, we can not process your request.<?py #endfor ?>
+<div id="error">
+    <h2>Oops! Code 500. Sorry, we can not process your request.</h2>
+    <p>
+    The web server encountered an unexpected condition that
+    prevented it from fulfilling the request by the client for
+    access to the requested URL.
+    </p>
+</div>

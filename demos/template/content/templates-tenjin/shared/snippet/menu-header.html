@@ -1,0 +1,6 @@
+<?py #@ARGS route_name, title, route_args, path_for ?>
+<?py if route_name == route_args.route_name: ?>
+<li class="active"><a href="#{path_for(route_name)}">#{title}</a></li>
+<?py else: ?>
+<li><a href="#{path_for(route_name)}">#{title}</a></li>
+<?py #endif ?>

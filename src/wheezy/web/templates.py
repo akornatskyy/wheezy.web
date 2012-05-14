@@ -65,3 +65,33 @@ class MakoCacheImpl(object):
 
     def invalidate(self, key, **kw):
         raise NotImplementedError()
+
+
+class TenjinTemplate(object):
+    __slots__ = ('engine', 'helpers')
+
+    def __init__(self, path=None, pp=None, helpers=None,
+            encoding='UTF-8', postfix='.html', cache=None,
+            **kwargs):
+        import tenjin
+        tenjin.set_template_encoding(encoding)
+        from tenjin.helpers import capture_as, escape,\
+                captured_as, cache_as
+        self.helpers = {
+                'to_str': unicode,
+                'escape': escape,
+                'capture_as': capture_as,
+                'captured_as': captured_as,
+                'cache_as': cache_as,
+        }
+        if helpers:
+            self.helpers.update(helpers)
+        self.engine = tenjin.Engine(
+                path=path or ['content/templates'],
+                postfix=postfix,
+                cache=cache or tenjin.MemoryCacheStorage(),
+                pp=pp,
+                **kwargs)
+
+    def __call__(self, template_name, **kwargs):
+        return self.engine.render(template_name, kwargs, self.helpers)

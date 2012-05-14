@@ -1,0 +1,39 @@
+<?py from public import __version__ ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <title>My Site - <?py #pass ?>
+        <?py if not captured_as("title"): ?>
+        <?py pass ?>
+        <?py #endif ?></title>
+        <link href="#{path_for('static', path='css/site.css')}"
+        type="text/css" rel="stylesheet" />
+    </head>
+    <body>
+        <div class="page">
+            <div id="header">
+                <div id="title">
+                    <h1><a href="#{path_for('default')}">My Site</a></h1>
+                </div>
+                <div id="logindisplay">
+                    <?py include("shared/snippet/menu-signin.html") ?>
+                    <?py include("shared/snippet/menu-locale.html") ?>
+                </div>
+                <div id="menucontainer">
+                    <ul id="menu">
+                    <?py include('shared/snippet/menu-header.html', route_name='home', title='Home') ?>
+                    <?py include('shared/snippet/menu-header.html', route_name='about', title='About') ?>
+                    </ul>
+                </div>
+            </div>
+            <div id="main">
+                <div id="placeholder">#{_content}</div>
+                <div id="footer">Version #{__version__}</div>
+            </div>
+        </div>
+        <?py include("shared/snippet/script.html") ?>
+        <?py if not captured_as("script"): ?>
+        <?py pass ?>
+        <?py #endif ?>
+    </body>
+</html>

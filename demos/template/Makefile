@@ -27,6 +27,7 @@ clean:
 	find src/ -type d -name __pycache__ | xargs rm -rf
 	find src/ -name '*.py[co]' -delete
 	find src/ -name '*.mo' -delete
+	find src/ -name '*.cache' -delete
 	rm -rf /tmp/mako_modules/
 
 release:
@@ -36,7 +37,8 @@ po:
 	xgettext --join-existing --sort-by-file --omit-header \
 		--language=Python \
 		-o i18n/membership.po src/membership/**/*.py \
-		content/templates/membership/*.html
+		content/templates-mako/membership/*.html \
+		content/templates-tenjin/membership/*.html
 	cp i18n/membership.po i18n/en/LC_MESSAGES
 	cp i18n/validation.po i18n/en/LC_MESSAGES
 	for l in `ls --hide *.po i18n`; do \
@@ -58,6 +60,9 @@ gunicorn:
 		$(ENV)/bin/gunicorn -b 0.0.0.0:8080 -w 1 app:main
 
 test:
+	echo mako ; export TEMPLATE_ENGINE=mako ; \
+	$(PYTEST) -q -x --pep8 --doctest-modules src/ ; \
+	echo tenjin ; export TEMPLATE_ENGINE=tenjin ; \
 	$(PYTEST) -q -x --pep8 --doctest-modules src/
 
 test-cover:
@@ -66,6 +71,9 @@ test-cover:
 		src/
 
 benchmark:
+	echo mako ; export TEMPLATE_ENGINE=mako ; \
+	$(NOSE) -qs -m benchmark src/ ; \
+	echo tenjin ; export TEMPLATE_ENGINE=tenjin ; \
 	$(NOSE) -qs -m benchmark src/
 
 profile:

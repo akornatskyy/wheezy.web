@@ -1,0 +1,6 @@
+<?py if principal: ?>
+Welcome <b>${principal.alias}</b>!
+[<a href="#{path_for('signout')}">Sign out</a>]
+<?py else: ?>
+[<a href="#{path_for('signin')}">Sign in</a>]
+<?py #endif ?>
