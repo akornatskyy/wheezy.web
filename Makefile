@@ -88,4 +88,3 @@ doc:
 test-demos:
 	$(PYTEST) -q -x --pep8 demos/hello
 	make clean po test -sC demos/template VERSION=$(VERSION)
-	make clean po test -sC demos/public VERSION=$(VERSION)
