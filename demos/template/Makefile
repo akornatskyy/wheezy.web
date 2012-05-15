@@ -4,6 +4,7 @@
 VERSION=2.7
 PYPI=http://pypi.python.org/simple
 ENV=../../env
+TEMPLATE_ENGINE=tenjin
 
 PYTHON=$(ENV)/bin/python$(VERSION)
 EASY_INSTALL=$(ENV)/bin/easy_install-$(VERSION)
@@ -50,19 +51,20 @@ po:
 	done
 
 run:
+	echo $(TEMPLATE_ENGINE) ; export TEMPLATE_ENGINE=$(TEMPLATE_ENGINE) ; \
 	$(PYTHON) src/app.py
 
 uwsgi:
+	echo $(TEMPLATE_ENGINE) ; export TEMPLATE_ENGINE=$(TEMPLATE_ENGINE) ; \
 	$(ENV)/bin/uwsgi --ini development.ini
 
 gunicorn:
+	echo $(TEMPLATE_ENGINE) ; export TEMPLATE_ENGINE=$(TEMPLATE_ENGINE) ; \
 	export PYTHONPATH=$$PYTHONPATH:./src ; \
 		$(ENV)/bin/gunicorn -b 0.0.0.0:8080 -w 1 app:main
 
 test:
-	echo mako ; export TEMPLATE_ENGINE=mako ; \
-	$(PYTEST) -q -x --pep8 --doctest-modules src/ ; \
-	echo tenjin ; export TEMPLATE_ENGINE=tenjin ; \
+	echo $(TEMPLATE_ENGINE) ; export TEMPLATE_ENGINE=$(TEMPLATE_ENGINE) ; \
 	$(PYTEST) -q -x --pep8 --doctest-modules src/
 
 test-cover:
@@ -71,12 +73,11 @@ test-cover:
 		src/
 
 benchmark:
-	echo mako ; export TEMPLATE_ENGINE=mako ; \
-	$(NOSE) -qs -m benchmark src/ ; \
-	echo tenjin ; export TEMPLATE_ENGINE=tenjin ; \
+	echo $(TEMPLATE_ENGINE) ; export TEMPLATE_ENGINE=$(TEMPLATE_ENGINE) ; \
 	$(NOSE) -qs -m benchmark src/
 
 profile:
+	echo $(TEMPLATE_ENGINE) ; export TEMPLATE_ENGINE=$(TEMPLATE_ENGINE) ; \
 	$(NOSE) -qs -m benchmark --with-profile \
 		--profile-stats-file=public.pstats src/membership
 

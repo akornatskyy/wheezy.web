@@ -94,7 +94,7 @@ if template_engine == 'mako':
                 widget_preprocessor,
                 whitespace_preprocessor,
             ])
-else:
+elif template_engine == 'tenjin':
     from wheezy.html.ext.tenjin import whitespace_preprocessor
     from wheezy.html.ext.tenjin import widget_preprocessor
     from wheezy.html.utils import format_value

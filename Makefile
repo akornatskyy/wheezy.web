@@ -10,6 +10,7 @@ EASY_INSTALL=env/bin/easy_install-$(VERSION)
 PYTEST=env/bin/py.test-$(VERSION)
 NOSE=env/bin/nosetests-$(VERSION)
 SPHINX=/usr/bin/python /usr/bin/sphinx-build
+TEMPLATE_ENGINE=tenjin
 
 all: clean doctest-cover test test-demos release
 
