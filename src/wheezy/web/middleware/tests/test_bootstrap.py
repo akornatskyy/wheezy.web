@@ -29,12 +29,11 @@ class BootstrapWebDefaultsTestCase(unittest.TestCase):
         assert None == bootstrap_defaults({})(options)
 
         required_options = tuple(sorted(options.keys()))
-        assert 13 == len(required_options)
+        assert 12 == len(required_options)
         assert ('AUTH_COOKIE', 'AUTH_COOKIE_DOMAIN', 'AUTH_COOKIE_PATH',
                 'AUTH_COOKIE_SECURE', 'CONTENT_TYPE', 'ENCODING',
                 'RESUBMISSION_NAME', 'XSRF_NAME', 'path_for', 'path_router',
-                'render_template', 'ticket',
-                'translations_manager') == required_options
+                'ticket', 'translations_manager') == required_options
 
     def test_path_router(self):
         """ Ensure required keys exist.

@@ -1,6 +1,9 @@
 
 """ ``bootstrap`` module.
 """
+
+from warnings import warn
+
 from wheezy.http import bootstrap_http_defaults
 
 
@@ -19,8 +22,7 @@ def bootstrap_defaults(url_mapping=None):
         if url_mapping:
             path_router.add_routes(url_mapping)
         if 'render_template' not in options:
-            from wheezy.web.templates import MakoTemplate
-            options['render_template'] = MakoTemplate()
+            warn('Bootstrap: render_template is not defined', stacklevel=2)
         if 'translations_manager' not in options:
             from wheezy.core.i18n import TranslationsManager
             options['translations_manager'] = TranslationsManager()
