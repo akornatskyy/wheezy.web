@@ -49,3 +49,5 @@ If you run into any issue or have comments, go ahead and add on
 .. _`source code`: http://bitbucket.org/akorn/wheezy.web/src
 .. _`virtualenv`: http://pypi.python.org/pypi/virtualenv
 .. _`wheezy.web`: http://pypi.python.org/pypi/wheezy.web
+.. _`WSGI`: http://www.python.org/dev/peps/pep-3333
+
