@@ -158,7 +158,7 @@ package (module ``i18n``). There are the following attributes:
   implementation return ``NullTranslations`` object. Your application handler
   must override this attribute to provide valid ``gettext`` translations.
 
-Here is example from :ref:`public_demo` demo application::
+Here is example from `template`_ demo application::
 
     class SignInHandler(BaseHandler):
 
@@ -198,7 +198,7 @@ There are the following attributes and methods:
 * ``ValidationMixin::error(message)`` - adds a general error (this error
   is added with key *__ERROR__*).
 
-Here is example from :ref:`public_demo` demo application (see file
+Here is example from `template`_ demo application (see file
 `membership/web/views.py`_)::
 
     class SignInHandler(BaseHandler):
@@ -221,7 +221,7 @@ This handler on post updates ``credential`` with values from html form
 submitted. In case ``try_update_model`` or ``valida`` fails we re-display
 sign in page with errors reported.
 
-Here is example from :ref:`public_demo` demo application that demonstrates
+Here is example from `template`_ demo application that demonstrates
 how to use general error (see file `membership/web/views.py`_)::
 
     class SignUpHandler(BaseHandler):
@@ -362,11 +362,13 @@ The benefit of using widgets is a syntax sugar in html template::
 
 Please note that `wheezy.html`_ package provides optimization of widgets
 per template engine used. That optimization is provided through use of
-template specific constructs. Preprocessor for Mako templates translates
-widgets to Mako operations offering optimal performance. If you are
-using template engine with preprocessing you can eliminate need to wrap
-widgets explicitely in your handler (since all calls to widgets in template
-are  replaced with appropriate template native constructs).
+template specific constructs. Preprocessor for Mako/Tenjin templates
+translates widgets to template engine specific operations offering optimal
+performance.
+
+If you are using template engine with preprocessing you can eliminate need
+to wrap widgets explicitely in your handler (since all calls to widgets
+in template are replaced with appropriate template native constructs).
 
 Read more about available widgets in `wheezy.html`_ package.
 
@@ -544,7 +546,7 @@ There is ``context`` attribute available for this purpose. It is
 a dictionary that extends ``options`` with the following information: errors,
 locale, principal and translations.
 
-Here is example from :ref:`public_demo` demo application (see
+Here is example from `template`_ demo application (see
 `membership/web/views.py`_)::
 
     class SignInHandler(BaseHandler):
@@ -626,7 +628,7 @@ It is recommended to use :py:meth:`~wheezy.web.handlers.file.file_handler`
 together with ``gzip_transform`` and ``response_cache`` (requries HTTP cache
 middleware).
 
-Here is example from :ref:`public_demo` demo application::
+Here is example from `template`_ demo application::
 
     from wheezy.http import response_cache
     from wheezy.http.transforms import gzip_transform
@@ -788,22 +790,8 @@ Templates
 :ref:`wheezy.web` does not provide own implementation for template rendering
 instead it offers integration with the following packages:
 
-* Mako Templates
-
-Mako Templates
-~~~~~~~~~~~~~~
-
-Here is configuration option to define how templates are rendered within
-application (see `config.py`_ for details)::
-
-    options = {}
-    options['render_template'] = MakoTemplate(
-            directories=['content/templates'],
-            filesystem_checks=False,
-            template_cache=template_cache),
-
-The arguments passed to ``MakoTemplate`` are specific to Mako templates and
-not explained here. Please refer to `Mako`_ documentation.
+* `Mako`_ Templates
+* `Tenjin`_ Templates
 
 Contract
 ~~~~~~~~
@@ -811,7 +799,55 @@ Contract
 Template contract is any callable of the following form::
 
     def render_template(self, template_name, **kwargs):
-        return string
+        return 'unicode string'
+
+Mako Templates
+~~~~~~~~~~~~~~
+
+Here is configuration option to define how templates are rendered within
+application (see `config.py`_ for details)::
+
+    from wheezy.html.ext.mako import whitespace_preprocessor
+    from wheezy.html.ext.mako import widget_preprocessor
+    from wheezy.web.templates import MakoTemplate
+
+
+    render_template = MakoTemplate(
+            module_directory='/tmp/mako_modules',
+            filesystem_checks=False,
+            directories=['content/templates'],
+            cache_factory=cache_factory,
+            preprocessor=[
+                widget_preprocessor,
+                whitespace_preprocessor,
+            ])
+
+The arguments passed to ``MakoTemplate`` are specific to Mako templates and
+not explained here. Please refer to `Mako`_ documentation.
+
+Tenjin Templates
+~~~~~~~~~~~~~~~~
+
+Here is configuration option to define how templates are rendered within
+application (see `config.py`_ for details)::
+
+    from wheezy.html.ext.tenjin import whitespace_preprocessor
+    from wheezy.html.ext.tenjin import widget_preprocessor
+    from wheezy.html.utils import format_value
+    from wheezy.web.templates import TenjinTemplate
+
+    render_template = TenjinTemplate(
+            path=['content/templates'],
+            pp=[
+                widget_preprocessor,
+                whitespace_preprocessor,
+            ],
+            helpers={
+                'format_value': format_value
+            })
+
+The arguments passed to ``TenjinTemplate`` are specific to Tenjin templates
+and not explained here. Please refer to `Tenjin`_ documentation.
 
 Caching
 -------
@@ -839,17 +875,21 @@ available in `wheezy.http`_ to web handlers sub-classed from
 Please refer to `wheezy.http`_ documentation for more information. All features
 available in `wheezy.http`_ caching are applicable.
 
+Content caching plus cache dependency is the most advanced boost of your
+application performance. Regardless of template engine this can give up to
+8-10 times better performance.
 
-
-.. _`WSGI`: http://www.python.org/dev/peps/pep-3333
+.. _`config.py`: https://bitbucket.org/akorn/wheezy.web/src/tip/demos/template/src/config.py
+.. _`core.js`: https://bitbucket.org/akorn/wheezy.web/src/tip/demos/template/content/static/js/core.js
+.. _`i18n`: https://bitbucket.org/akorn/wheezy.web/src/tip/demos/template/i18n
+.. _`mako`: http://docs.makotemplates.org
+.. _`membership/web/views.py`: https://bitbucket.org/akorn/wheezy.web/src/tip/demos/template/src/membership/web/views.py
+.. _`template`: https://bitbucket.org/akorn/wheezy.web/src/tip/demos/template
+.. _`tenjin`: http://www.kuwata-lab.com/tenjin
 .. _`wheezy.core`: http://bitbucket.org/akorn/wheezy.core
 .. _`wheezy.html`: http://packages.python.org/wheezy.html
 .. _`wheezy.http`: http://packages.python.org/wheezy.http
 .. _`wheezy.routing`: http://packages.python.org/wheezy.routing
-.. _`wheezy.validation`: http://packages.python.org/wheezy.validation
 .. _`wheezy.security`: http://packages.python.org/wheezy.security
-.. _`i18n`: https://bitbucket.org/akorn/wheezy.web/src/tip/demos/public/i18n
-.. _`config.py`: https://bitbucket.org/akorn/wheezy.web/src/tip/demos/public/src/config.py
-.. _`membership/web/views.py`: https://bitbucket.org/akorn/wheezy.web/src/tip/demos/public/src/membership/web/views.py
-.. _`core.js`: https://bitbucket.org/akorn/wheezy.web/src/tip/demos/public/content/static/js/core.js
-.. _`mako`: http://docs.makotemplates.org
+.. _`wheezy.validation`: http://packages.python.org/wheezy.validation
+.. _`WSGI`: http://www.python.org/dev/peps/pep-3333

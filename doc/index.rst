@@ -9,6 +9,12 @@ Introduction
 :ref:`wheezy.web` is a `python`_ package written in pure Python code.
 It is a lightweight `WSGI`_ web framework.
 
+The framework is template engine agnostic and provides integration with
+the following template systems:
+
+* `Mako Templates <http://www.makotemplates.org>`_
+* `Tenjin Templates <http://www.kuwata-lab.com/tenjin/>`_
+
 It is optimized for performance, well tested and documented.
 
 Resources:

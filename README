@@ -5,6 +5,12 @@ development. `wheezy.web`_ framework follows the model–view–controller
 (MVC) architectural pattern (push-based) to separate the data model from
 the user interface.
 
+The framework is template engine agnostic and provides integration with
+the following template systems:
+
+* `Mako Templates <http://www.makotemplates.org>`_
+* `Tenjin Templates <http://www.kuwata-lab.com/tenjin/>`_
+
 It is optimized for performance, well tested and documented.
 
 Resources:
@@ -43,4 +49,3 @@ If you run into any issue or have comments, go ahead and add on
 .. _`source code`: http://bitbucket.org/akorn/wheezy.web/src
 .. _`virtualenv`: http://pypi.python.org/pypi/virtualenv
 .. _`wheezy.web`: http://pypi.python.org/pypi/wheezy.web
-.. _`WSGI`: http://www.python.org/dev/peps/pep-3333

@@ -690,4 +690,4 @@ caching.
 .. _`wheezy.html`: http://packages.python.org/wheezy.html
 .. _`wheezy.http`: http://packages.python.org/wheezy.http
 .. _`wheezy.validation`: http://packages.python.org/wheezy.validation
-.. _`jQuery`: http://docs.jquery.com/Downloading_jQuery
+.. _`jquery`: http://jquery.com/

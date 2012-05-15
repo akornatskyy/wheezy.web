@@ -6,9 +6,26 @@ We start with a simple example. Before we proceed
 let setup `virtualenv`_ environment::
 
     $ virtualenv env
-    $ env/bin/easy_install wheezy.web
 
-.. _helloworld:
+Since :ref:`wheezy.web` is template engine agnostic, you need specify
+extra requirements (per template engine of your choice)::
+
+    $ env/bin/easy_install wheezy.web[mako]
+
+or::
+
+    $ env/bin/easy_install wheezy.web[tenjin]
+
+Templates
+---------
+
+`Template`_ application serves template purpose for you. It includes:
+
+* Integration with both mako and tenjin template system.
+* User registration and authentication.
+* Form validation.
+
+If you are about to start a new project it is a good starting point.
 
 Hello World
 -----------
@@ -91,19 +108,13 @@ Here is output::
     ----------------------------------------------------------------------
     Ran 1 test in 3.686s
 
-.. _public_demo:
-
-Public
-------
-
-`Public`_ application serves template purpose for you. If you are about to start a
-new project it is a good starting point.
 
 .. _`virtualenv`: http://pypi.python.org/pypi/virtualenv
 .. _`hello.py`: https://bitbucket.org/akorn/wheezy.web/src/tip/demos/hello/hello.py
 .. _`test_hello.py`: https://bitbucket.org/akorn/wheezy.web/src/tip/demos/hello/test_hello.py
 .. _`benchmark_hello.py`: https://bitbucket.org/akorn/wheezy.web/src/tip/demos/hello/benchmark_hello.py
-.. _`public`: https://bitbucket.org/akorn/wheezy.web/src/tip/demos/public
+.. _`template`: https://bitbucket.org/akorn/wheezy.web/src/tip/demos/template
 .. _`WSGI`: http://www.python.org/dev/peps/pep-3333
 .. _`wheezy.http`: http://packages.python.org/wheezy.http
 .. _`wheezy.routing`: http://packages.python.org/wheezy.routing
+
