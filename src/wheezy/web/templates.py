@@ -75,10 +75,10 @@ class TenjinTemplate(object):
             **kwargs):
         import tenjin
         tenjin.set_template_encoding(encoding)
-        from tenjin.helpers import capture_as, escape,\
-                captured_as, cache_as
+        from tenjin.helpers import capture_as, escape, captured_as, cache_as
+        from wheezy.core.comp import str_type
         self.helpers = {
-                'to_str': unicode,
+                'to_str': str_type,
                 'escape': escape,
                 'capture_as': capture_as,
                 'captured_as': captured_as,

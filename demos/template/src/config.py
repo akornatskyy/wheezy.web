@@ -7,8 +7,10 @@ from datetime import timedelta
 
 try:  # pragma: nocover
     from ConfigParser import ConfigParser
+    config = ConfigParser()
 except ImportError:  # pragma: nocover
     from configparser import ConfigParser
+    config = ConfigParser(strict=False)
 
 from wheezy.caching import MemoryCache
 from wheezy.core.collections import defaultdict
@@ -23,7 +25,6 @@ from wheezy.security.crypto.comp import sha256
 from membership.repository.mock import MembershipRepository
 
 
-config = ConfigParser()
 config.read('development.ini')
 
 cache = MemoryCache()
