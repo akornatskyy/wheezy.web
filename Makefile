@@ -10,7 +10,6 @@ EASY_INSTALL=env/bin/easy_install-$(VERSION)
 PYTEST=env/bin/py.test-$(VERSION)
 NOSE=env/bin/nosetests-$(VERSION)
 SPHINX=/usr/bin/python /usr/bin/sphinx-build
-TEMPLATE_ENGINE=tenjin
 
 all: clean doctest-cover test test-demos release
 
@@ -88,4 +87,6 @@ doc:
 
 test-demos:
 	$(PYTEST) -q -x --pep8 demos/hello
-	make clean po test -sC demos/template VERSION=$(VERSION)
+	make clean po -sC demos/template VERSION=$(VERSION)
+	make test -sC demos/template TEMPLATE_ENGINE=mako VERSION=$(VERSION)
+	make test -sC demos/template TEMPLATE_ENGINE=tenjin VERSION=$(VERSION)
