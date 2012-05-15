@@ -60,7 +60,7 @@ setup(
         'Topic :: Software Development :: Libraries :: Application Frameworks',
         'Topic :: Software Development :: Libraries :: Python Modules'
     ],
-    keywords='wsgi web handler static file template mako errors routing '
+    keywords='wsgi web handler static template mako tenjin routing '
              'middleware caching transforms',
     packages=[
         'wheezy',
