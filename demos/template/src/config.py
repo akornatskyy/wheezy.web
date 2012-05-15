@@ -3,8 +3,12 @@
 
 import os
 
-from ConfigParser import ConfigParser
 from datetime import timedelta
+
+try:  # pragma: nocover
+    from ConfigParser import ConfigParser
+except ImportError:  # pragma: nocover
+    from configparser import ConfigParser
 
 from wheezy.caching import MemoryCache
 from wheezy.core.collections import defaultdict
