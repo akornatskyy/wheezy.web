@@ -134,3 +134,64 @@ class MakoCacheImplTestCase(unittest.TestCase):
         mock_cache.get.assert_called_once_with(
                 'prefix-key', 'namespace')
         assert not mock_creation_function.called
+
+
+class TenjinTemplateTestCase(unittest.TestCase):
+    """ Test the ``TenjinTemplate``.
+    """
+
+    def setUp(self):
+        import tenjin
+        self.patcher_encoding = patch.object(tenjin, 'set_template_encoding')
+        self.mock_encoding = self.patcher_encoding.start()
+        self.patcher_cache = patch.object(tenjin, 'MemoryCacheStorage')
+        self.mock_cache = self.patcher_cache.start()
+        self.patcher_engine = patch.object(tenjin, 'Engine')
+        self.mock_engine = self.patcher_engine.start()
+
+    def tearDown(self):
+        self.patcher_engine.stop()
+        self.patcher_cache.stop()
+        self.patcher_encoding.stop()
+
+    def test_init_with_defaults(self):
+        """ Check __init__ with all default values.
+        """
+        from wheezy.web.templates import TenjinTemplate
+        template = TenjinTemplate()
+        assert ['cache_as', 'capture_as', 'captured_as',
+                'escape', 'to_str'] == sorted(template.helpers.keys())
+        self.mock_encoding.assert_called_once_with('UTF-8')
+        self.mock_cache.assert_called_once_with()
+        self.mock_engine.assert_called_once_with(
+                path=['content/templates'],
+                postfix='.html',
+                pp=None,
+                cache=self.mock_cache.return_value
+        )
+
+    def test_init_with_helpers(self):
+        """ Check __init__ with helpers values.
+        """
+        from wheezy.web.templates import TenjinTemplate
+        helpers = {
+                'to_str': 'to_str',
+                'escape': 'escape',
+                'capture_as': 'capture_as',
+                'captured_as': 'captured_as',
+                'cache_as': 'cache_as',
+        }
+        template = TenjinTemplate(helpers=helpers)
+        assert helpers == template.helpers
+
+    def test_render(self):
+        """ __call__.
+        """
+        from wheezy.web.templates import TenjinTemplate
+        mock_render = self.mock_engine.return_value.render
+        mock_render.return_value = 'html'
+        template = TenjinTemplate()
+        assert 'html' == template('signin.html', user='john')
+        mock_render.assert_called_once_with('signin.html', {
+                'user': 'john'
+            }, template.helpers)
