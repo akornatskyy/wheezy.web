@@ -21,7 +21,7 @@ env:
 	fi;\
 	virtualenv --python=$$PYTHON_EXE env
 	$(EASY_INSTALL) -i $(PYPI) -O2 coverage nose pytest \
-	        pytest-pep8 pytest-cov wsgiref mako tenjin
+	        pytest-pep8 pytest-cov wsgiref mako tenjin lxml
 	$(PYTHON) setup.py develop -i $(PYPI)
 
 clean:
