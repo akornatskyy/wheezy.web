@@ -110,6 +110,27 @@ elif template_engine == 'tenjin':
             helpers={
                 'format_value': format_value
             })
+elif template_engine == 'jinja2':
+    from jinja2 import Environment
+    from jinja2 import FileSystemLoader
+    from wheezy.html.ext.jinja2 import WidgetExtension
+    from wheezy.html.ext.jinja2 import WhitespaceExtension
+    from wheezy.html.utils import format_value
+    from wheezy.web.templates import Jinja2Template
+    from public import __version__
+
+    env = Environment(
+        loader=FileSystemLoader('content/templates-jinja2'),
+        auto_reload=config.get('jinja2', 'auto-reload'),
+        extensions=[
+            WidgetExtension,
+            WhitespaceExtension
+        ])
+    env.globals.update({
+        'format_value': format_value,
+        '__version__': __version__
+    })
+    render_template = Jinja2Template(env)
 
 # BaseHandler
 options.update({

@@ -1,0 +1,20 @@
+{% extends "/shared/master.html" %}
+{% block title %}About{% endblock %}
+{% block content %}
+<div id="about">
+    <h2>About</h2>
+    <p>Proin at lorem vel dolor pharetra aliquam. Phasellus auctor,
+    nunc vitae lobortis pretium, mauris ligula sagittis quam, nec
+    volutpat est arcu a diam. Nunc nisi augue, sollicitudin eu
+    adipiscing ac, commodo at urna. Nullam sit amet odio sit amet
+    elit dictum ultrices.</p>
+    <p>Try out the following responses:
+    </p>
+    <ul>
+        <li><a href="{{ path_for('http400') }}">Bad Request</a></li>
+        <li><a href="{{ path_for('http403') }}">Forbidden</a></li>
+        <li><a href="{{ path_for('http404') }}">Not Found</a></li>
+        <li><a href="{{ path_for('http500') }}">Internal Error</a></li>
+    </ul>
+</div>
+{% endblock %}

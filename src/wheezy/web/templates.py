@@ -3,6 +3,8 @@
 
 
 class MakoTemplate(object):
+    """ Integration with Mako templates.
+    """
     __slots__ = ('template_lookup')
 
     def __init__(self,
@@ -68,6 +70,8 @@ class MakoCacheImpl(object):
 
 
 class TenjinTemplate(object):
+    """ Integration with Tenjin templates.
+    """
     __slots__ = ('engine', 'helpers')
 
     def __init__(self, path=None, pp=None, helpers=None,
@@ -95,3 +99,15 @@ class TenjinTemplate(object):
 
     def __call__(self, template_name, **kwargs):
         return self.engine.render(template_name, kwargs, self.helpers)
+
+
+class Jinja2Template(object):
+    """ Integration with Jinja2 templates.
+    """
+
+    def __init__(self, env):
+        assert env
+        self.env = env
+
+    def __call__(self, template_name, **kwargs):
+        return self.env.get_template(template_name).render(kwargs)

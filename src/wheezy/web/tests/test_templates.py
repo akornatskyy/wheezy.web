@@ -195,3 +195,28 @@ class TenjinTemplateTestCase(unittest.TestCase):
         mock_render.assert_called_once_with('signin.html', {
                 'user': 'john'
             }, template.helpers)
+
+
+class Jinja2TemplateTestCase(unittest.TestCase):
+    """ Test the ``Jinja2Template``.
+    """
+
+    def test_init(self):
+        """ Assert environment is not None
+        """
+        from wheezy.web.templates import Jinja2Template
+        self.assertRaises(AssertionError, lambda: Jinja2Template(None))
+
+    def test_render(self):
+        """ __call__.
+        """
+        from wheezy.web.templates import Jinja2Template
+        mock_env = Mock()
+        mock_render = mock_env.get_template.return_value.render
+        mock_render.return_value = 'html'
+        template = Jinja2Template(mock_env)
+        assert 'html' == template('signin.html', user='john')
+        mock_env.get_template.assert_called_once_with('signin.html')
+        mock_render.assert_called_once_with({
+                'user': 'john'
+            })

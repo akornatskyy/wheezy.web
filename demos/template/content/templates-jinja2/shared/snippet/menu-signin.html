@@ -1,0 +1,6 @@
+{% if principal: %}
+Welcome <b>{{ principal.alias | e }}</b>!
+[<a href="{{ path_for('signout') }}">Sign out</a>]
+{% else: %}
+[<a href="{{ path_for('signin') }}">Sign in</a>]
+{% endif %}
