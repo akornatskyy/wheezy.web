@@ -88,5 +88,6 @@ doc:
 test-demos:
 	$(PYTEST) -q -x --pep8 demos/hello
 	make clean po -sC demos/template VERSION=$(VERSION)
+	make test -sC demos/template TEMPLATE_ENGINE=jinja2 VERSION=$(VERSION)
 	make test -sC demos/template TEMPLATE_ENGINE=mako VERSION=$(VERSION)
 	make test -sC demos/template TEMPLATE_ENGINE=tenjin VERSION=$(VERSION)
