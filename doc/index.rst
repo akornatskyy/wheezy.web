@@ -12,6 +12,7 @@ It is a lightweight `WSGI`_ web framework.
 The framework is template engine agnostic and provides integration with
 the following template systems:
 
+* `Jinja2 Templates <http://jinja.pocoo.org>`_
 * `Mako Templates <http://www.makotemplates.org>`_
 * `Tenjin Templates <http://www.kuwata-lab.com/tenjin/>`_
 

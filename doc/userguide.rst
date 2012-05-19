@@ -270,20 +270,8 @@ Templates
 ^^^^^^^^^
 
 :ref:`wheezy.web` is not tied to some specific template engine, instead
-it provides you a convinient contract to add one you prefer. Here is
-how we add ``MakoTemplate`` renderer (see file `config.py`_)::
-
-    from wheezy.html.ext.mako import widget_preprocessor
-    from wheezy.web.templates import MakoTemplate
-
-    options = {}
-    options['render_template'] = MakoTemplate(
-            directories=['content/templates'],
-            filesystem_checks=False,
-            template_cache=template_cache,
-            preprocessor=[widget_preprocessor])
-
-Template contract is any callable of the following form::
+it provides you a convinient contract to add one you prefer (see file
+`config.py`_). Template contract is any callable of the following form::
 
     def render_template(self, template_name, **kwargs):
         return string
@@ -790,6 +778,7 @@ Templates
 :ref:`wheezy.web` does not provide own implementation for template rendering
 instead it offers integration with the following packages:
 
+* `Jinja2`_ Templates
 * `Mako`_ Templates
 * `Tenjin`_ Templates
 
@@ -800,6 +789,34 @@ Template contract is any callable of the following form::
 
     def render_template(self, template_name, **kwargs):
         return 'unicode string'
+
+Jinja2 Templates
+~~~~~~~~~~~~~~~~
+
+Here is configuration option to define how templates are rendered within
+application (see `config.py`_ for details)::
+
+    from jinja2 import Environment
+    from jinja2 import FileSystemLoader
+    from wheezy.html.ext.jinja2 import WidgetExtension
+    from wheezy.html.ext.jinja2 import WhitespaceExtension
+    from wheezy.html.utils import format_value
+    from wheezy.web.templates import Jinja2Template
+
+    env = Environment(
+        loader=FileSystemLoader('content/templates'),
+        auto_reload=False,
+        extensions=[
+            WidgetExtension,
+            WhitespaceExtension
+        ])
+    env.globals.update({
+        'format_value': format_value,
+    })
+    render_template = Jinja2Template(env)
+
+The arguments passed to ``Environment`` are specific to Jinja2 templates and
+not explained here. Please refer to `Jinja2`_ documentation.
 
 Mako Templates
 ~~~~~~~~~~~~~~
@@ -882,6 +899,7 @@ application performance. Regardless of template engine this can give up to
 .. _`config.py`: https://bitbucket.org/akorn/wheezy.web/src/tip/demos/template/src/config.py
 .. _`core.js`: https://bitbucket.org/akorn/wheezy.web/src/tip/demos/template/content/static/js/core.js
 .. _`i18n`: https://bitbucket.org/akorn/wheezy.web/src/tip/demos/template/i18n
+.. _`jinja2`: http://jinja.pocoo.org
 .. _`mako`: http://docs.makotemplates.org
 .. _`membership/web/views.py`: https://bitbucket.org/akorn/wheezy.web/src/tip/demos/template/src/membership/web/views.py
 .. _`template`: https://bitbucket.org/akorn/wheezy.web/src/tip/demos/template

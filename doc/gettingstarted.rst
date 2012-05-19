@@ -19,6 +19,7 @@ If you are using `virtualenv`_::
 Since :ref:`wheezy.web` is template engine agnostic, you need specify
 extra requirements (per template engine of your choice)::
 
+    $ env/bin/easy_install wheezy.web[jinja2]
     $ env/bin/easy_install wheezy.web[mako]
     $ env/bin/easy_install wheezy.web[tenjin]
 
