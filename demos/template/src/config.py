@@ -2,15 +2,19 @@
 """
 
 import os
+import sys
 
 from datetime import timedelta
 
-try:  # pragma: nocover
-    from ConfigParser import ConfigParser
-    config = ConfigParser()
-except ImportError:  # pragma: nocover
+
+PY3 = sys.version_info[0] >= 3
+
+if PY3:  # pragma: nocover
     from configparser import ConfigParser
     config = ConfigParser(strict=False)
+else:  # pragma: nocover
+    from ConfigParser import ConfigParser
+    config = ConfigParser()
 
 from wheezy.caching import MemoryCache
 from wheezy.core.collections import defaultdict
@@ -94,7 +98,7 @@ if template_engine == 'mako':
             directories=directories,
             cache_factory=cache_factory,
             default_filters=[],
-            imports=['s = unicode'],
+            imports=[PY3 and 's=str' or 's=unicode'],
             preprocessor=[
                 inline_preprocessor(directories, enabled=config.getboolean(
                     'mako', 'inline-preprocessor-enabled')),
