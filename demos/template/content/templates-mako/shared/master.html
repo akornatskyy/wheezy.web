@@ -15,11 +15,11 @@ from public import __version__
                     <h1><a href="${path_for('default')}">My Site</a></h1>
                 </div>
                 <div id="logindisplay">
-                    <%include file="snippet/menu-signin.html"/>
-                    <%include file="snippet/menu-locale.html"/>
+                    <%inline file="/shared/snippet/menu-signin.html"/>
+                    <%inline file="/shared/snippet/menu-locale.html"/>
                 </div>
                 <div id="menucontainer">
-                    <%include file="snippet/menu-header.html"/>
+                    <%inline file="/shared/snippet/menu-header.html"/>
                 </div>
             </div>
             <div id="main">
@@ -27,7 +27,7 @@ from public import __version__
                 <div id="footer">Version ${__version__}</div>
             </div>
         </div>
-        <%include file="snippet/script.html"/>
+        <%inline file="/shared/snippet/script.html"/>
         <%block name="script"/>
     </body>
 </html>

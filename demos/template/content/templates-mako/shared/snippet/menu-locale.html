@@ -1,6 +1,8 @@
-<%page cached="True" cache_time="900"
-    cache_key="${route_args.route_name}" />
+<%block cached="True" cache_time="900"
+    cache_key="${'menu-locale' + route_args.route_name}">
+
 <i><a href="${path_for(route_args.route_name, locale='en')}"
         >English</a> | <a
         href="${path_for(route_args.route_name, locale='ru')}"
         >Russian</a></i>
+</%block>

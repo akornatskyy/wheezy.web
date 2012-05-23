@@ -82,16 +82,21 @@ options.update({
 #template_engine = os.getenv('TEMPLATE_ENGINE', 'mako')
 template_engine = os.getenv('TEMPLATE_ENGINE', 'tenjin')
 if template_engine == 'mako':
+    from wheezy.html.ext.mako import inline_preprocessor
     from wheezy.html.ext.mako import whitespace_preprocessor
     from wheezy.html.ext.mako import widget_preprocessor
     from wheezy.web.templates import MakoTemplate
 
+    directories = ['content/templates-mako']
     render_template = MakoTemplate(
             module_directory=config.get('mako', 'module-directory'),
             filesystem_checks=config.getboolean('mako', 'filesystem-checks'),
-            directories=['content/templates-mako'],
+            directories=directories,
             cache_factory=cache_factory,
+            default_filters=[],
+            imports=['s = unicode'],
             preprocessor=[
+                inline_preprocessor(directories, enabled=True),
                 widget_preprocessor,
                 whitespace_preprocessor,
             ])
