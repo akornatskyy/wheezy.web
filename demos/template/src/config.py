@@ -96,7 +96,8 @@ if template_engine == 'mako':
             default_filters=[],
             imports=['s = unicode'],
             preprocessor=[
-                inline_preprocessor(directories, enabled=True),
+                inline_preprocessor(directories, enabled=config.getboolean(
+                    'mako', 'inline-preprocessor-enabled')),
                 widget_preprocessor,
                 whitespace_preprocessor,
             ])
