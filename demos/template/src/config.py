@@ -117,16 +117,19 @@ elif template_engine == 'tenjin':
 elif template_engine == 'jinja2':
     from jinja2 import Environment
     from jinja2 import FileSystemLoader
+    from wheezy.html.ext.jinja2 import InlineExtension
     from wheezy.html.ext.jinja2 import WidgetExtension
     from wheezy.html.ext.jinja2 import WhitespaceExtension
     from wheezy.html.utils import format_value
     from wheezy.web.templates import Jinja2Template
     from public import __version__
-
+    searchpath = ['content/templates-jinja2']
     env = Environment(
-        loader=FileSystemLoader('content/templates-jinja2'),
+        loader=FileSystemLoader(searchpath),
         auto_reload=config.get('jinja2', 'auto-reload'),
         extensions=[
+            InlineExtension(searchpath, config.getboolean(
+                    'jinja2', 'inline-preprocessor-fallback')),
             WidgetExtension,
             WhitespaceExtension
         ])
