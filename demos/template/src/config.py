@@ -2,19 +2,16 @@
 """
 
 import os
-import sys
 
 from datetime import timedelta
 
 
-PY3 = sys.version_info[0] >= 3
-
-if PY3:  # pragma: nocover
-    from configparser import ConfigParser
-    config = ConfigParser(strict=False)
-else:  # pragma: nocover
+try:  # pragma: nocover
     from ConfigParser import ConfigParser
     config = ConfigParser()
+except ImportError:  # pragma: nocover
+    from configparser import ConfigParser
+    config = ConfigParser(strict=False)
 
 from wheezy.caching import MemoryCache
 from wheezy.core.collections import defaultdict
@@ -83,7 +80,6 @@ options.update({
         'CRYPTO_VALIDATION_KEY': config.get('crypto', 'validation-key')
 })
 
-#template_engine = os.getenv('TEMPLATE_ENGINE', 'mako')
 template_engine = os.getenv('TEMPLATE_ENGINE', 'tenjin')
 if template_engine == 'mako':
     from wheezy.html.ext.mako import inline_preprocessor
@@ -97,11 +93,9 @@ if template_engine == 'mako':
             filesystem_checks=config.getboolean('mako', 'filesystem-checks'),
             directories=directories,
             cache_factory=cache_factory,
-            default_filters=[],
-            imports=[PY3 and 's=str' or 's=unicode'],
             preprocessor=[
-                inline_preprocessor(directories, enabled=config.getboolean(
-                    'mako', 'inline-preprocessor-enabled')),
+                inline_preprocessor(directories, config.getboolean(
+                    'mako', 'inline-preprocessor-fallback')),
                 widget_preprocessor,
                 whitespace_preprocessor,
             ])
