@@ -100,14 +100,18 @@ if template_engine == 'mako':
                 whitespace_preprocessor,
             ])
 elif template_engine == 'tenjin':
+    from wheezy.html.ext.tenjin import inline_preprocessor
     from wheezy.html.ext.tenjin import whitespace_preprocessor
     from wheezy.html.ext.tenjin import widget_preprocessor
     from wheezy.html.utils import format_value
     from wheezy.web.templates import TenjinTemplate
 
+    path = ['content/templates-tenjin']
     render_template = TenjinTemplate(
-            path=['content/templates-tenjin'],
+            path=path,
             pp=[
+                inline_preprocessor(path, config.getboolean(
+                    'tenjin', 'inline-preprocessor-fallback')),
                 widget_preprocessor,
                 whitespace_preprocessor,
             ],

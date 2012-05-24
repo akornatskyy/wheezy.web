@@ -16,8 +16,8 @@
                     <h1><a href="#{path_for('default')}">My Site</a></h1>
                 </div>
                 <div id="logindisplay">
-                    <?py include("shared/snippet/menu-signin.html") ?>
-                    <?py include("shared/snippet/menu-locale.html") ?>
+                    <?py inline("shared/snippet/menu-signin.html") ?>
+                    <?py inline("shared/snippet/menu-locale.html") ?>
                 </div>
                 <div id="menucontainer">
                     <ul id="menu">
@@ -31,7 +31,7 @@
                 <div id="footer">Version #{__version__}</div>
             </div>
         </div>
-        <?py include("shared/snippet/script.html") ?>
+        <?py inline("shared/snippet/script.html") ?>
         <?py if not captured_as("script"): ?>
         <?py pass ?>
         <?py #endif ?>
