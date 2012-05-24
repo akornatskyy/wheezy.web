@@ -29,7 +29,7 @@ function JSONForm(data, form) {
 
 function ajaxForm(selector, dataType) {
     if (!dataType) dataType = 'json'
-    $(selector || 'input[type="submit"]').live('click', function(e) {
+    $(selector || 'input[type="submit"]:not(.noajax)').live('click', function(e) {
         submit = $(this);
         submit.attr('disabled', 'disabled');
         var form = submit.parents('form:first');
@@ -60,3 +60,7 @@ function ajaxForm(selector, dataType) {
         return false;
     });
 }
+
+$(document).ready(function() {
+    ajaxForm();
+})
