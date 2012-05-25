@@ -46,7 +46,7 @@ def http_error_middleware_factory(options):
     if 'http_errors' in options:
         error_mapping = options['http_errors']
         assert isinstance(error_mapping, defaultdict)
-        assert path_for(error_mapping.default_factory())
+        assert path_for(error_mapping.default_factory()) is not None
         for route_name in error_mapping.values():
             assert path_for(route_name) is not None
     else:
