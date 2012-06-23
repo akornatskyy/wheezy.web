@@ -92,7 +92,7 @@ setup(
             'jinja2>=2.6'
         ],
         'wheezy.template': [
-            'wheezy.template>=0.1.31'
+            'wheezy.template>=0.1.34'
         ]
     },
 
