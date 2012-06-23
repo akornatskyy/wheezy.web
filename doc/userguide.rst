@@ -335,24 +335,29 @@ In the example above four models (registration, credential, accout and model)
 are wrapped by ``self.widgets`` and two (questions and account_types) are
 passed as is.
 
-The benefit of using widgets is a syntax sugar in html template::
+The benefit of using widgets is a syntax sugar in html template.
+
+Mako example::
 
     <p>
         ${account.email.label('Email:')}
         ${account.email.textbox(autocomplete='off')}
         ${account.email.error()}
     </p>
+
+Wheezy Template example::
+
     <p>
-        ${account.account_type.label('Account Type:')}
-        ${account.account_type.radio(choices=account_types)}
-        ${account.account_type.error()}
+        @account.account_type.label('Account Type:')
+        @account.account_type.radio(choices=account_types)
+        @account.account_type.error()
     </p>
 
 Please note that `wheezy.html`_ package provides optimization of widgets
 per template engine used. That optimization is provided through use of
-template specific constructs. Preprocessor for Mako/Tenjin templates
-translates widgets to template engine specific operations offering optimal
-performance.
+template specific constructs. Preprocessor for Mako / Jinja2 /
+Tenjin / Wheezy.Template templates translates widgets to template engine
+specific operations offering optimal performance.
 
 If you are using template engine with preprocessing you can eliminate need
 to wrap widgets explicitely in your handler (since all calls to widgets
@@ -466,6 +471,7 @@ status code to signin page. Read more in :ref:`httperrormiddleware` section.
 
 XSRF/Resubmission
 ^^^^^^^^^^^^^^^^^
+
 Cross-site request forgery (CSRF or XSRF), also known as a one-click attack
 is a type of malicious exploit of a website whereby unauthorized commands are
 transmitted from a user that the website trusts. Logging out of sites and
@@ -781,6 +787,7 @@ instead it offers integration with the following packages:
 * `Jinja2`_ Templates
 * `Mako`_ Templates
 * `Tenjin`_ Templates
+* `Wheezy.Template`_
 
 Contract
 ~~~~~~~~
@@ -866,6 +873,38 @@ application (see `config.py`_ for details)::
 The arguments passed to ``TenjinTemplate`` are specific to Tenjin templates
 and not explained here. Please refer to `Tenjin`_ documentation.
 
+Wheezy Template
+~~~~~~~~~~~~~~~
+
+Here is configuration option to define how templates are rendered within
+application (see `config.py`_ for details)::
+
+    from wheezy.html.ext.template import WhitespaceExtension
+    from wheezy.html.ext.template import WidgetExtension
+    from wheezy.html.utils import format_value
+    from wheezy.html.utils import html_escape
+    from wheezy.template.engine import Engine
+    from wheezy.template.ext.core import CoreExtension
+    from wheezy.template.loader import FileLoader
+    from wheezy.web.templates import WheezyTemplate
+
+    searchpath = ['content/templates-wheezy']
+    engine = Engine(
+            loader=FileLoader(searchpath),
+            extensions=[
+                CoreExtension,
+                WhitespaceExtension,
+                WidgetExtension,
+    ])
+    engine.global_vars.update({
+        'format_value': format_value,
+        'h': html_escape,
+    })
+    render_template = WheezyTemplate(engine)
+
+The arguments passed to ``Engine`` are specific to `Wheezy.Template`_
+and not explained here. Please refer to `Wheezy.Template`_ documentation.
+
 Caching
 -------
 
@@ -909,5 +948,6 @@ application performance. Regardless of template engine this can give up to
 .. _`wheezy.http`: http://packages.python.org/wheezy.http
 .. _`wheezy.routing`: http://packages.python.org/wheezy.routing
 .. _`wheezy.security`: http://packages.python.org/wheezy.security
+.. _`wheezy.template`: http://pypi.python.org/pypi/wheezy.template
 .. _`wheezy.validation`: http://packages.python.org/wheezy.validation
 .. _`WSGI`: http://www.python.org/dev/peps/pep-3333

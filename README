@@ -11,6 +11,7 @@ the following template systems:
 * `Jinja2 Templates <http://jinja.pocoo.org>`_
 * `Mako Templates <http://www.makotemplates.org>`_
 * `Tenjin Templates <http://www.kuwata-lab.com/tenjin/>`_
+* `Wheezy Templates <http://pypi.python.org/pypi/wheezy.template/>`_
 
 It is optimized for performance, well tested and documented.
 

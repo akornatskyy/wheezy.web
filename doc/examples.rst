@@ -13,6 +13,7 @@ extra requirements (per template engine of your choice)::
     $ env/bin/easy_install wheezy.web[jinja2]
     $ env/bin/easy_install wheezy.web[mako]
     $ env/bin/easy_install wheezy.web[tenjin]
+    $ env/bin/easy_install wheezy.web[wheezy.template]
 
 Templates
 ---------

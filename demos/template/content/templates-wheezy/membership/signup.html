@@ -1,0 +1,83 @@
+@extends("shared/master.html")
+
+@def title():
+Sign Up\
+@end
+
+@def content():
+@require(credential, account, registration, account_types, questions)
+@require(model, errors, path_for, resubmission, _)
+<div id="signup">
+    <h2>
+        Create a New Account</h2>
+    <p>
+    Use the form below to create a new account.
+    </p>
+    <p>
+    Passwords are required to be a minimum of 8 characters
+    in length.
+    </p>
+    @model.error()
+    <form action="@path_for('signup')" method="post">
+        @resubmission()
+        <div>
+            <fieldset>
+                <legend>Account Information</legend>
+                <p>
+                @credential.username.label('Username:')
+                @credential.username.textbox(autocomplete='off')!h
+                @credential.username.error()
+                </p>
+                <p>
+                @account.display_name.label('Display name:')
+                @account.display_name.textbox(autocomplete='off')!h
+                @account.display_name.error()
+                </p>
+                <p>
+                @account.email.label('Email:')
+                @account.email.textbox(autocomplete='off')!h
+                @account.email.error()
+                </p>
+                <p>
+                @account.account_type.label('Account Type:')
+                @account.account_type.radio(choices=account_types)
+                @account.account_type.error()
+                </p>
+                <p>
+                @registration.date_of_birth.label(_('Date of birth (YYYY/MM/DD):'))
+                @registration.date_of_birth.format(_('YYYY/MM/DD')).textbox(autocomplete='off')!h
+                @registration.date_of_birth.error()
+                </p>
+                <p>
+                @credential.password.label('Password:')
+                @credential.password.password(autocomplete='off', maxlength='12')!h
+                @credential.password.error()
+                </p>
+                <p>
+                @model.confirm_password.label('Confirm password:')
+                @model.confirm_password.password(autocomplete='off', maxlength='12')!h
+                @model.confirm_password.error()
+                </p>
+                <p>
+                @model.questionid.label('Security question:')
+                @model.questionid.dropdown(choices=questions)
+                @model.questionid.error()
+                </p>
+                <p>
+                @registration.answer.label('Answer:')
+                @registration.answer.textbox(autocomplete='off', maxlength='30')!h
+                @registration.answer.error()
+                </p>
+                <p>
+                <input type="submit" value="Register" />
+                </p>
+            </fieldset>
+        </div>
+    </form>
+</div>
+@end
+
+@def script():
+<script type="text/javascript">
+</script>
+@end

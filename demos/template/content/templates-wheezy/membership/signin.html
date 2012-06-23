@@ -1,0 +1,52 @@
+@extends("shared/master.html")
+
+@def title():
+Sign In\
+@end
+
+@def content():
+@require(credential, model, errors, path_for, xsrf)
+<div id="signin">
+    <h2>
+        Sign In</h2>
+    <p>
+    Please enter your username and password.
+    <a href="@path_for('signup')">Sign up</a>
+    if you don't have an account.
+    </p>
+    @model.error()
+    <form action="@path_for('signin')" method="post">
+        @xsrf()
+        <div>
+            <fieldset>
+                <legend>Account Credentials</legend>
+                <p>
+                @credential.username.label('Username:')
+                @credential.username.textbox(autocomplete='off')!h
+                @credential.username.error()
+                </p>
+                <p>
+                @credential.password.label('Password:')
+                @credential.password.password(autocomplete='off', maxlength='12')!h
+                @credential.password.error()
+                </p>
+                <p>
+                @model.remember_me.checkbox()
+                @model.remember_me.label('Remember me?', class_='inline')
+                @model.remember_me.error()
+                </p>
+                <p>
+                <input type="submit" value="Sign In" />
+                </p>
+            </fieldset>
+            <i><b>demo</b> user password is P@@ssw0rd. You can press 'Ctrl'
+                + '1' to auto complete information.</i>
+        </div>
+    </form>
+</div>
+@end
+
+@def script():
+<script type="text/javascript">
+</script>
+@end

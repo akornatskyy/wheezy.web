@@ -142,6 +142,30 @@ elif template_engine == 'jinja2':
         '__version__': __version__
     })
     render_template = Jinja2Template(env)
+elif template_engine == 'wheezy.template':
+    from wheezy.html.ext.template import WhitespaceExtension
+    from wheezy.html.ext.template import WidgetExtension
+    from wheezy.html.utils import format_value
+    from wheezy.html.utils import html_escape
+    from wheezy.template.engine import Engine
+    from wheezy.template.ext.core import CoreExtension
+    from wheezy.template.loader import FileLoader
+    from wheezy.web.templates import WheezyTemplate
+    from public import __version__
+    searchpath = ['content/templates-wheezy']
+    engine = Engine(
+            loader=FileLoader(searchpath),
+            extensions=[
+                CoreExtension,
+                WhitespaceExtension,
+                WidgetExtension,
+    ])
+    engine.global_vars.update({
+        'format_value': format_value,
+        'h': html_escape,
+        '__version__': __version__
+    })
+    render_template = WheezyTemplate(engine)
 
 # BaseHandler
 options.update({
