@@ -28,7 +28,7 @@ class MakoTemplate(object):
                     cache_args={'cache_factory': cache_factory},
                     **kwargs)
 
-    def __call__(self, template_name, **kwargs):
+    def __call__(self, template_name, kwargs):
         template = self.template_lookup.get_template(template_name)
         return template.render(**kwargs)
 
@@ -87,6 +87,7 @@ class TenjinTemplate(object):
                 'capture_as': capture_as,
                 'captured_as': captured_as,
                 'cache_as': cache_as,
+                'tenjin': tenjin
         }
         if helpers:
             self.helpers.update(helpers)
@@ -97,7 +98,7 @@ class TenjinTemplate(object):
                 pp=pp,
                 **kwargs)
 
-    def __call__(self, template_name, **kwargs):
+    def __call__(self, template_name, kwargs):
         return self.engine.render(template_name, kwargs, self.helpers)
 
 
@@ -109,5 +110,17 @@ class Jinja2Template(object):
         assert env
         self.env = env
 
-    def __call__(self, template_name, **kwargs):
+    def __call__(self, template_name, kwargs):
         return self.env.get_template(template_name).render(kwargs)
+
+
+class WheezyTemplate(object):
+    """ Integration with wheezy.template.
+    """
+
+    def __init__(self, engine):
+        assert engine
+        self.render = engine.render
+
+    def __call__(self, template_name, kwargs):
+        return self.render(template_name, kwargs, {}, {})

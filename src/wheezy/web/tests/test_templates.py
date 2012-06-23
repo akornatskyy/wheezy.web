@@ -58,7 +58,7 @@ class MakoTemplateTestCase(unittest.TestCase):
         self.mock_template_lookup_class.return_value \
                 .get_template.return_value.render.return_value = 'html'
         template = MakoTemplate()
-        assert 'html' == template('signin.html', user='john')
+        assert 'html' == template('signin.html', {'user': 'john'})
         self.mock_template_lookup_class.return_value \
                 .get_template.assert_called_once_with('signin.html')
         self.mock_template_lookup_class.return_value \
@@ -160,7 +160,8 @@ class TenjinTemplateTestCase(unittest.TestCase):
         from wheezy.web.templates import TenjinTemplate
         template = TenjinTemplate()
         assert ['cache_as', 'capture_as', 'captured_as',
-                'escape', 'to_str'] == sorted(template.helpers.keys())
+                'escape', 'tenjin', 'to_str'] == sorted(
+                        template.helpers.keys())
         self.mock_encoding.assert_called_once_with('UTF-8')
         self.mock_cache.assert_called_once_with()
         self.mock_engine.assert_called_once_with(
@@ -180,6 +181,7 @@ class TenjinTemplateTestCase(unittest.TestCase):
                 'capture_as': 'capture_as',
                 'captured_as': 'captured_as',
                 'cache_as': 'cache_as',
+                'tenjin': 'tenjin'
         }
         template = TenjinTemplate(helpers=helpers)
         assert helpers == template.helpers
@@ -191,7 +193,7 @@ class TenjinTemplateTestCase(unittest.TestCase):
         mock_render = self.mock_engine.return_value.render
         mock_render.return_value = 'html'
         template = TenjinTemplate()
-        assert 'html' == template('signin.html', user='john')
+        assert 'html' == template('signin.html', {'user': 'john'})
         mock_render.assert_called_once_with('signin.html', {
                 'user': 'john'
             }, template.helpers)
@@ -215,8 +217,34 @@ class Jinja2TemplateTestCase(unittest.TestCase):
         mock_render = mock_env.get_template.return_value.render
         mock_render.return_value = 'html'
         template = Jinja2Template(mock_env)
-        assert 'html' == template('signin.html', user='john')
+        assert 'html' == template('signin.html', {'user': 'john'})
         mock_env.get_template.assert_called_once_with('signin.html')
         mock_render.assert_called_once_with({
                 'user': 'john'
             })
+
+
+class WheezyTemplateTestCase(unittest.TestCase):
+    """ Test the ``WheezyTemplate``.
+    """
+
+    def test_init(self):
+        """ Assert environment is not None
+        """
+        from wheezy.web.templates import WheezyTemplate
+        self.assertRaises(AssertionError, lambda: WheezyTemplate(None))
+
+    def test_render(self):
+        """ __call__.
+        """
+        from wheezy.web.templates import WheezyTemplate
+        mock_engine = Mock()
+        mock_render = mock_engine.render
+        mock_render.return_value = 'html'
+        template = WheezyTemplate(mock_engine)
+        assert 'html' == template('signin.html', {'user': 'john'})
+        mock_render.assert_called_once_with(
+                'signin.html',
+                {'user': 'john'},
+                {}, {}
+        )
