@@ -4,7 +4,7 @@
 VERSION=2.7
 PYPI=http://pypi.python.org/simple
 ENV=../../env
-TEMPLATE_ENGINE=tenjin
+TEMPLATE_ENGINE=wheeyzy.template
 
 PYTHON=$(ENV)/bin/python$(VERSION)
 EASY_INSTALL=$(ENV)/bin/easy_install-$(VERSION)
