@@ -242,27 +242,13 @@ class BaseHandlerTemplatesTestCase(unittest.TestCase):
     def test_render_template_with_kwargs(self):
         """ render_template with optional data arguments.
         """
-        def render_template(template_name, **data):
+        def render_template(template_name, data):
             assert 'signin.html' == template_name
             assert 10 == data['test']
             return 'html'
         self.options['render_template'] = render_template
         assert 'html' == self.handler.render_template(
                 'signin.html', test=10)
-
-    def test_render_template_with_widgets(self):
-        """ render_template with optional widget argument.
-        """
-        def render_template(template_name, **data):
-            from wheezy.html.factory import WidgetFactory
-            assert 'signin.html' == template_name
-            widget = data['test']
-            assert isinstance(widget, WidgetFactory)
-            assert 10 == widget.model
-            return 'html'
-        self.options['render_template'] = render_template
-        assert 'html' == self.handler.render_template(
-                'signin.html', widgets=self.handler.widgets(test=10))
 
     def test_render_response(self):
         """ render_response.

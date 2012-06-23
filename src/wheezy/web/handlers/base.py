@@ -44,10 +44,8 @@ class BaseHandler(MethodHandler, ValidationMixin):
     # region: routing
 
     def path_for(self, name, **kwargs):
-        route_args = dict(self.route_args)
-        route_args.update(kwargs)
         return self.request.root_path + self.options['path_for'](
-                name, **route_args)
+                name, **dict(self.route_args, **kwargs))
 
     def absolute_url_for(self, name, **kwargs):
         parts = self.request.urlparts
@@ -102,13 +100,6 @@ class BaseHandler(MethodHandler, ValidationMixin):
                 model, values or self.request.form, self.errors,
                 self.translations['validation'])
 
-    # region: widgets
-
-    def widgets(self, **kwargs):
-        errors = self.errors
-        return [(name, widget(kwargs[name], errors))
-                    for name in kwargs]
-
     # region: templates
 
     @attribute
@@ -124,21 +115,15 @@ class BaseHandler(MethodHandler, ValidationMixin):
             'xsrf': self.xsrf_widget
         }
 
-    def render_template(self, template_name, widgets=None, **kwargs):
-        data = self.helpers
-        if kwargs:
-            data.update(kwargs)
-        if widgets:
-            data.update(widgets)
-        return self.options['render_template'](template_name, **data)
+    def render_template(self, template_name, **kwargs):
+        return self.options['render_template'](
+                template_name, dict(self.helpers, **kwargs))
 
-    def render_response(self, template_name, widgets=None, **kwargs):
+    def render_response(self, template_name, **kwargs):
         options = self.options
         response = HTTPResponse(options['CONTENT_TYPE'], options['ENCODING'])
-        response.write(self.render_template(
-            template_name,
-            widgets,
-            **kwargs))
+        response.write(options['render_template'](
+                template_name, dict(self.helpers, **kwargs)))
         return response
 
     # region: json
