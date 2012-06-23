@@ -16,12 +16,12 @@
                 <legend>Account Credentials</legend>
                 <p>
                 ${credential.username.label('Username:')}
-                ${credential.username.textbox(autocomplete='off')}
+                ${credential.username.textbox(autocomplete='off')|h}
                 ${credential.username.error()}
                 </p>
                 <p>
                 ${credential.password.label('Password:')}
-                ${credential.password.password(autocomplete='off', maxlength='12')}
+                ${credential.password.password(autocomplete='off', maxlength='12')|h}
                 ${credential.password.error()}
                 </p>
                 <p>
