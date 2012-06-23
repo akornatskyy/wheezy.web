@@ -157,14 +157,15 @@ elif template_engine == 'wheezy.template':
             loader=FileLoader(searchpath),
             extensions=[
                 CoreExtension,
-                WhitespaceExtension,
                 WidgetExtension,
+                WhitespaceExtension,
     ])
     engine.global_vars.update({
         'format_value': format_value,
         'h': html_escape,
         '__version__': __version__
     })
+    engine.preload()
     render_template = WheezyTemplate(engine)
 
 # BaseHandler
