@@ -150,11 +150,16 @@ elif template_engine == 'wheezy.template':
     from wheezy.template.engine import Engine
     from wheezy.template.ext.core import CoreExtension
     from wheezy.template.loader import FileLoader
+    from wheezy.template.loader import uwsgi_autoreload
     from wheezy.web.templates import WheezyTemplate
     from public import __version__
     searchpath = ['content/templates-wheezy']
     engine = Engine(
-            loader=FileLoader(searchpath),
+            loader=uwsgi_autoreload(
+                FileLoader(searchpath),
+                signum=10,
+                enabled=config.getint('uwsgi', 'python-auto-reload') > 0
+            ),
             extensions=[
                 CoreExtension,
                 WidgetExtension,
@@ -165,7 +170,6 @@ elif template_engine == 'wheezy.template':
         'h': html_escape,
         '__version__': __version__
     })
-    engine.preload()
     render_template = WheezyTemplate(engine)
 
 # BaseHandler
