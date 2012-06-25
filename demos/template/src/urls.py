@@ -19,19 +19,19 @@ from public.web.urls import public_urls
 locale_pattern = '{locale:(en|ru)}/'
 locale_defaults = {'locale': 'en'}
 static_files = response_cache(static_cache_profile)(
-        response_transforms(gzip_transform(compress_level=6))(
-            file_handler(
-                root='content/static/',
-                age=timedelta(hours=1))))
+    response_transforms(gzip_transform(compress_level=6))(
+        file_handler(
+            root='content/static/',
+            age=timedelta(hours=1))))
 
 locale_urls = public_urls + membership_urls
 locale_urls.append(('error/', error_urls, locale_defaults))
 all_urls = [
-        url('',
-            template_handler('public/home.html'),
-            locale_defaults,
-            name='default'),
-        (locale_pattern, locale_urls, locale_defaults),
-        url('static/{path:any}', static_files, name='static'),
-        url('favicon.ico', static_files, {'path': 'img/favicon.ico'})
+    url('',
+        template_handler('public/home.html'),
+        locale_defaults,
+        name='default'),
+    (locale_pattern, locale_urls, locale_defaults),
+    url('static/{path:any}', static_files, name='static'),
+    url('favicon.ico', static_files, {'path': 'img/favicon.ico'})
 ]

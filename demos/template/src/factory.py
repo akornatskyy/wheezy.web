@@ -26,9 +26,9 @@ class Factory(object):
     @attribute
     def membership(self):
         return MembershipService(
-                self.repository,
-                self.errors,
-                self.translations)
+            self.repository,
+            self.errors,
+            self.translations)
 
 
 class RepositoryFactory(object):
@@ -40,5 +40,5 @@ class RepositoryFactory(object):
     @attribute
     def membership(self):
         return MembershipRepository(
-                MembershipPersistence(self.session),
-                self.cache)
+            MembershipPersistence(self.session),
+            self.cache)

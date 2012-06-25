@@ -25,7 +25,7 @@ class SignInHandler(BaseHandler):
     def model(self):
         return attrdict({
             'remember_me': False
-            })
+        })
 
     @attribute
     def translation(self):
@@ -40,9 +40,10 @@ class SignInHandler(BaseHandler):
         if self.principal:
             return self.redirect_for('default')
         credential = credential or Credential()
-        return self.render_response('membership/signin.html',
-                        credential=credential,
-                        model=self.model)
+        return self.render_response(
+            'membership/signin.html',
+            credential=credential,
+            model=self.model)
 
     def post(self):
         if not self.validate_xsrf_token():
@@ -57,10 +58,10 @@ class SignInHandler(BaseHandler):
             credential.password = u('')
             return self.get(credential)
         self.principal = Principal(
-                id=credential.username,
-                alias=credential.username,
-                roles=tuple(self.factory.membership.roles(
-                    credential.username)))
+            id=credential.username,
+            alias=credential.username,
+            roles=tuple(self.factory.membership.roles(
+                credential.username)))
         del self.xsrf_token
         return self.see_other_for('default')
 
@@ -80,7 +81,7 @@ class SignUpHandler(BaseHandler):
             'password': u(''),
             'confirm_password': u(''),
             'questionid': '1'
-            })
+        })
 
     @attribute
     def translation(self):
@@ -95,23 +96,25 @@ class SignUpHandler(BaseHandler):
         if self.principal:
             return self.redirect_for('default')
         registration = registration or Registration()
-        return self.render_response('membership/signup.html',
-                model=self.model,
-                registration=registration,
-                account=registration.account,
-                credential=registration.credential,
-                questions=sorted(
-                    self.factory.membership.password_questions.items(),
-                    key=itemgetter(1)),
-                account_types=sorted(
-                    self.factory.membership.account_types.items(),
-                    key=itemgetter(1)))
+        return self.render_response(
+            'membership/signup.html',
+            model=self.model,
+            registration=registration,
+            account=registration.account,
+            credential=registration.credential,
+            questions=sorted(
+                self.factory.membership.password_questions.items(),
+                key=itemgetter(1)),
+            account_types=sorted(
+                self.factory.membership.account_types.items(),
+                key=itemgetter(1)))
 
     def post(self):
         if not self.validate_resubmission():
             self.error(self._('Your registration request has been queued. '
-                    'Please wait while your request will be processed. '
-                    'If your request fails please try again.'))
+                              'Please wait while your request will be '
+                              'processed. If your request fails please '
+                              'try again.'))
             return self.get()
         registration = Registration()
         if (not self.try_update_model(self.model)
@@ -127,9 +130,9 @@ class SignUpHandler(BaseHandler):
             self.model.confirm_password = u('')
             return self.get(registration)
         self.principal = Principal(
-                id=registration.credential.username,
-                alias=registration.account.display_name,
-                roles=tuple(self.factory.membership.roles(
-                    registration.credential.username)))
+            id=registration.credential.username,
+            alias=registration.account.display_name,
+            roles=tuple(self.factory.membership.roles(
+                registration.credential.username)))
         del self.resubmission
         return self.see_other_for('default')

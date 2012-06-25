@@ -40,13 +40,13 @@ class PublicTestCase(unittest.TestCase):
         """ Ensure static content is served.
         """
         for static_file in [
-                '/favicon.ico',
-                '/static/css/site.css',
-                '/static/img/error.png',
-                '/static/js/core.js',
-                '/static/js/autocomplete.js',
-                '/static/js/jquery-1.7.1.min.js',
-                ]:
+            '/favicon.ico',
+            '/static/css/site.css',
+            '/static/img/error.png',
+            '/static/js/core.js',
+            '/static/js/autocomplete.js',
+            '/static/js/jquery-1.7.1.min.js',
+        ]:
             assert 200 == self.client.get(static_file)
 
     def test_static_file_not_found(self):

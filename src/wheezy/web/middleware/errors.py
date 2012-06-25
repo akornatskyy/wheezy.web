@@ -51,5 +51,4 @@ def http_error_middleware_factory(options):
             assert path_for(route_name) is not None
     else:
         error_mapping = defaultdict(str)
-    return HTTPErrorMiddleware(
-            error_mapping=error_mapping)
+    return HTTPErrorMiddleware(error_mapping=error_mapping)

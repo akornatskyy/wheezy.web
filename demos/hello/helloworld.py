@@ -21,9 +21,9 @@ from wheezy.web.middleware import path_routing_middleware_factory
 cache = MemoryCache()
 cache_factory = lambda: cache
 public_cache_profile = CacheProfile(
-        'public', duration=timedelta(minutes=15), enabled=True)
+    'public', duration=timedelta(minutes=15), enabled=True)
 no_cache_profile = CacheProfile(
-        'none', no_store=True, enabled=True)
+    'none', no_store=True, enabled=True)
 
 
 class WelcomeHandler(BaseHandler):
@@ -31,7 +31,7 @@ class WelcomeHandler(BaseHandler):
     def get(self):
         response = HTTPResponse()
         response.write('Hello World! It is %s.'
-                % datetime.now().time().strftime('%H:%M:%S'))
+                       % datetime.now().time().strftime('%H:%M:%S'))
         return response
 
 
@@ -41,14 +41,14 @@ class Welcome2Handler(BaseHandler):
     def get(self):
         response = HTTPResponse()
         response.write('Hello World! It is %s.'
-                % datetime.now().time().strftime('%H:%M:%S'))
+                       % datetime.now().time().strftime('%H:%M:%S'))
         return response
 
 
 def now(request):
     response = HTTPResponse()
     response.write('It is %s.'
-                % datetime.now().time().strftime('%H:%M:%S'))
+                   % datetime.now().time().strftime('%H:%M:%S'))
     return response
 
 
@@ -56,28 +56,29 @@ def now(request):
 def now2(request):
     response = HTTPResponse()
     response.write('It is %s.'
-                % datetime.now().time().strftime('%H:%M:%S'))
+                   % datetime.now().time().strftime('%H:%M:%S'))
     return response
 
 
 all_urls = [
-        url('', WelcomeHandler),
-        url('welcome2', Welcome2Handler),
-        url('now', now),
-        url('now2', now2)
+    url('', WelcomeHandler),
+    url('welcome2', Welcome2Handler),
+    url('now', now),
+    url('now2', now2)
 ]
 
 options = {
-        'http_cache_factory': cache_factory
+    'http_cache_factory': cache_factory
 }
+
 main = WSGIApplication(
-        middleware=[
-            bootstrap_defaults(url_mapping=all_urls),
-            http_cache_middleware_factory,
-            http_error_middleware_factory,
-            path_routing_middleware_factory
-        ],
-        options=options
+    middleware=[
+        bootstrap_defaults(url_mapping=all_urls),
+        http_cache_middleware_factory,
+        http_error_middleware_factory,
+        path_routing_middleware_factory
+    ],
+    options=options
 )
 
 

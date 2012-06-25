@@ -9,7 +9,6 @@ from wheezy.core.url import urlparts
 from wheezy.core.uuid import UUID_EMPTY
 from wheezy.core.uuid import parse_uuid
 from wheezy.core.uuid import shrink_uuid
-from wheezy.html import widget
 from wheezy.http import HTTPCookie
 from wheezy.http import HTTPResponse
 from wheezy.http import ajax_redirect
@@ -35,17 +34,17 @@ class BaseHandler(MethodHandler, ValidationMixin):
     @attribute
     def context(self):
         return {
-                'errors': self.errors,
-                'locale': self.locale,
-                'principal': self.principal,
-                'translations': self.translations
+            'errors': self.errors,
+            'locale': self.locale,
+            'principal': self.principal,
+            'translations': self.translations
         }
 
     # region: routing
 
     def path_for(self, name, **kwargs):
         return self.request.root_path + self.options['path_for'](
-                name, **dict(self.route_args, **kwargs))
+            name, **dict(self.route_args, **kwargs))
 
     def absolute_url_for(self, name, **kwargs):
         parts = self.request.urlparts
@@ -58,14 +57,14 @@ class BaseHandler(MethodHandler, ValidationMixin):
             return ajax_redirect(
                 self.absolute_url_for(name, **kwargs))
         return redirect(
-                self.absolute_url_for(name, **kwargs))
+            self.absolute_url_for(name, **kwargs))
 
     def see_other_for(self, name, **kwargs):
         if self.request.ajax:
             return ajax_redirect(
                 self.absolute_url_for(name, **kwargs))
         return see_other(
-                self.absolute_url_for(name, **kwargs))
+            self.absolute_url_for(name, **kwargs))
 
     # region: i18n
 
@@ -97,8 +96,8 @@ class BaseHandler(MethodHandler, ValidationMixin):
 
     def try_update_model(self, model, values=None):
         return try_update_model(
-                model, values or self.request.form, self.errors,
-                self.translations['validation'])
+            model, values or self.request.form, self.errors,
+            self.translations['validation'])
 
     # region: templates
 
@@ -117,13 +116,13 @@ class BaseHandler(MethodHandler, ValidationMixin):
 
     def render_template(self, template_name, **kwargs):
         return self.options['render_template'](
-                template_name, dict(self.helpers, **kwargs))
+            template_name, dict(self.helpers, **kwargs))
 
     def render_response(self, template_name, **kwargs):
         options = self.options
         response = HTTPResponse(options['CONTENT_TYPE'], options['ENCODING'])
         response.write(options['render_template'](
-                template_name, dict(self.helpers, **kwargs)))
+            template_name, dict(self.helpers, **kwargs)))
         return response
 
     # region: json
@@ -142,12 +141,10 @@ class BaseHandler(MethodHandler, ValidationMixin):
             return self.__principal
         principal = None
         auth_cookie = self.request.cookies.get(
-                self.options['AUTH_COOKIE'], None)
+            self.options['AUTH_COOKIE'], None)
         if auth_cookie is not None:
             auth_ticket = self.ticket
-            ticket, time_left = auth_ticket.decode(
-                    auth_cookie
-            )
+            ticket, time_left = auth_ticket.decode(auth_cookie)
             if ticket:
                 principal = Principal.load(ticket)
                 if time_left < auth_ticket.max_age / 2:
@@ -219,14 +216,14 @@ class BaseHandler(MethodHandler, ValidationMixin):
         if xsrf_name in form:
             xsrf_token = form[xsrf_name][-1]
             return xsrf_token == self.xsrf_token \
-                    and parse_uuid(xsrf_token) != UUID_EMPTY
+                and parse_uuid(xsrf_token) != UUID_EMPTY
         else:
             self.delxsrf_token()
             return False
 
     def xsrf_widget(self):
-        return '<input type="hidden" name="' + self.options['XSRF_NAME'] \
-                + '" value="' + self.xsrf_token + '" />'
+        return '<input type="hidden" name="' + self.options['XSRF_NAME'] + \
+            '" value="' + self.xsrf_token + '" />'
 
     # region: resubmission
 
@@ -285,16 +282,15 @@ class BaseHandler(MethodHandler, ValidationMixin):
         if self.request.ajax:
             return ''
         return '<input type="hidden" name="' + \
-                self.options['RESUBMISSION_NAME'] \
-                + '" value="' + self.resubmission + '" />'
+            self.options['RESUBMISSION_NAME'] + \
+            '" value="' + self.resubmission + '" />'
 
 
 def redirect_handler(route_name, **route_args):
     """ Redirects to given route name (HTTP status code 302).
     """
-    return lambda request: RedirectRouteHandler(request,
-            route_name,
-            **route_args)
+    return lambda request: RedirectRouteHandler(
+        request, route_name, **route_args)
 
 
 class RedirectRouteHandler(BaseHandler):
@@ -317,9 +313,8 @@ def permanent_redirect_handler(route_name, **route_args):
     """ Performs permanent redirect (HTTP status code 301) to given route
         name.
     """
-    return lambda request: PermanentRedirectRouteHandler(request,
-            route_name,
-            **route_args)
+    return lambda request: PermanentRedirectRouteHandler(
+        request, route_name, **route_args)
 
 
 class PermanentRedirectRouteHandler(BaseHandler):
@@ -334,8 +329,8 @@ class PermanentRedirectRouteHandler(BaseHandler):
 
     def get(self):
         return permanent_redirect(
-                self.absolute_url_for(self.route_name, **self.route_args))
+            self.absolute_url_for(self.route_name, **self.route_args))
 
     def post(self):
         return permanent_redirect(
-                self.absolute_url_for(self.route_name, **self.route_args))
+            self.absolute_url_for(self.route_name, **self.route_args))

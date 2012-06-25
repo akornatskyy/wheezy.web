@@ -27,9 +27,9 @@ def file_handler(root, age=None):
     assert os.path.isdir(abspath)
     assert age is None or isinstance(age, timedelta)
     return lambda request: FileHandler(
-            request,
-            root=abspath,
-            age=age)
+        request,
+        root=abspath,
+        age=age)
 
 
 class FileHandler(MethodHandler):

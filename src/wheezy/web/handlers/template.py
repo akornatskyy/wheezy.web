@@ -8,9 +8,9 @@ def template_handler(template_name, status_code=200):
     """ Serves templates that does not require up front data processing.
     """
     return lambda request: TemplateHandler(
-            request,
-            template_name=template_name,
-            status_code=status_code)
+        request,
+        template_name=template_name,
+        status_code=status_code)
 
 
 class TemplateHandler(BaseHandler):

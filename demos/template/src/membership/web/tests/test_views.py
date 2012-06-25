@@ -202,13 +202,13 @@ class SignUpTestCase(unittest.TestCase, SignInMixin, SignUpMixin):
         """ Ensure signup page displays general error message.
         """
         errors = self.signup(
-                username='demo',
-                display_name='Demo',
-                email='demo@somewhere.com',
-                date_of_birth='1984/11/14',
-                password='P@ssw0rd',
-                confirm_password='P@ssw0rd',
-                answer='7')
+            username='demo',
+            display_name='Demo',
+            email='demo@somewhere.com',
+            date_of_birth='1984/11/14',
+            password='P@ssw0rd',
+            confirm_password='P@ssw0rd',
+            answer='7')
         assert not errors
         assert AUTH_COOKIE not in self.client.cookies
         assert 'class="error-message"' in self.client.content
@@ -218,13 +218,13 @@ class SignUpTestCase(unittest.TestCase, SignInMixin, SignUpMixin):
             user is registered and logged in.
         """
         errors = self.signup(
-                username='john',
-                display_name='John Smith',
-                email='john@somewhere.com',
-                date_of_birth='1987/2/7',
-                password='P@ssw0rd',
-                confirm_password='P@ssw0rd',
-                answer='7')
+            username='john',
+            display_name='John Smith',
+            email='john@somewhere.com',
+            date_of_birth='1987/2/7',
+            password='P@ssw0rd',
+            confirm_password='P@ssw0rd',
+            answer='7')
         assert not errors
         assert 200 == self.client.follow()
         assert AUTH_COOKIE in self.client.cookies

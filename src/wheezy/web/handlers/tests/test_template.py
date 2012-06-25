@@ -15,22 +15,22 @@ class TemplateHandlerTestCase(unittest.TestCase):
         from wheezy.web.handlers.template import TemplateHandler
         from wheezy.web.handlers.method import handler_factory
         self.options = {
-                'CONTENT_TYPE': 'text/plain',
-                'ENCODING': 'UTF-8',
-                'AUTH_COOKIE': '_a'
+            'CONTENT_TYPE': 'text/plain',
+            'ENCODING': 'UTF-8',
+            'AUTH_COOKIE': '_a'
         }
         self.mock_request = Mock()
         self.mock_request.options = self.options
         self.route_args = {}
         self.mock_request.environ = {
-                'route_args': self.route_args
+            'route_args': self.route_args
         }
         self.mock_request.root_path = 'my_site/'
         self.mock_request.cookies = {}
         self.handler = handler_factory(
-                TemplateHandler,
-                self.mock_request,
-                template_name='test.html')
+            TemplateHandler,
+            self.mock_request,
+            template_name='test.html')
 
     def test_get(self):
         """ get.
@@ -51,15 +51,15 @@ class TemplateHandlerFactoryTestCase(unittest.TestCase):
 
     def setUp(self):
         self.options = {
-                'CONTENT_TYPE': 'text/plain',
-                'ENCODING': 'UTF-8',
-                'AUTH_COOKIE': '_a'
+            'CONTENT_TYPE': 'text/plain',
+            'ENCODING': 'UTF-8',
+            'AUTH_COOKIE': '_a'
         }
         self.mock_request = Mock()
         self.mock_request.options = self.options
         self.route_args = {}
         self.mock_request.environ = {
-                'route_args': self.route_args
+            'route_args': self.route_args
         }
         self.mock_request.method = 'GET'
         self.mock_request.root_path = 'my_site/'

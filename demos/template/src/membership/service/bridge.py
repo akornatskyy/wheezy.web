@@ -26,16 +26,16 @@ class MembershipService(IMembershipService, ValidationMixin):
     @attribute
     def password_questions(self):
         return {
-                '1': self.gettext('Favorite number'),
-                '2': self.gettext('City of birth'),
-                '3': self.gettext('Favorite color')
+            '1': self.gettext('Favorite number'),
+            '2': self.gettext('City of birth'),
+            '3': self.gettext('Favorite color')
         }
 
     @attribute
     def account_types(self):
         return {
-                'user': self.gettext('User'),
-                'business': self.gettext('Business')
+            'user': self.gettext('User'),
+            'business': self.gettext('Business')
         }
 
     def authenticate(self, credential):

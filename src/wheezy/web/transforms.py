@@ -13,8 +13,8 @@ def handler_transforms(*transforms):
 
             def single_strategy(handler, *args, **kwargs):
                 return transform(
-                        handler.request,
-                        factory(handler, *args, **kwargs))
+                    handler.request,
+                    factory(handler, *args, **kwargs))
             return single_strategy
         else:
             def multi_strategy(handler, *args, **kwargs):

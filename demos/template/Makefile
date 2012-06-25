@@ -30,7 +30,7 @@ clean:
 	find src/ -name '*.py[co]' -delete
 	find src/ -name '*.mo' -delete
 	find src/ -name '*.cache' -delete
-	rm -rf /tmp/mako_modules/
+	rm -rf /tmp/mako_modules/ .cache .coverage
 
 release:
 	$(PYTHON) setup.py -q egg_info sdist
@@ -57,7 +57,7 @@ run:
 
 uwsgi:
 	echo $(TEMPLATE_ENGINE) ; export TEMPLATE_ENGINE=$(TEMPLATE_ENGINE) ; \
-	$(ENV)/bin/uwsgi --ini development.ini
+	../../uwsgi-1.3-snapshot2/uwsgi --ini development.ini
 
 gunicorn:
 	echo $(TEMPLATE_ENGINE) ; export TEMPLATE_ENGINE=$(TEMPLATE_ENGINE) ; \

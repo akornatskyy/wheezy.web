@@ -31,8 +31,8 @@ def bootstrap_defaults(url_mapping=None):
             options['ticket'] = Ticket()
 
         options.setdefault('ENCODING', 'UTF-8')
-        options.setdefault('CONTENT_TYPE', 'text/html; charset=' +
-                options['ENCODING'])
+        options.setdefault(
+            'CONTENT_TYPE', 'text/html; charset=' + options['ENCODING'])
         options.setdefault('AUTH_COOKIE', '_a')
         options.setdefault('AUTH_COOKIE_DOMAIN', None)
         options.setdefault('AUTH_COOKIE_PATH', '')

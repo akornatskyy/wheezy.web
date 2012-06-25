@@ -41,7 +41,7 @@ class BootstrapWebDefaultsTestCase(unittest.TestCase):
         from wheezy.web.middleware.bootstrap import bootstrap_defaults
         mock_path_router = Mock()
         options = {
-                'path_router': mock_path_router
+            'path_router': mock_path_router
         }
 
         assert None == bootstrap_defaults({

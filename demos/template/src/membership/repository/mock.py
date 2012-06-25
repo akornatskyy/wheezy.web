@@ -8,12 +8,12 @@ from membership.repository.contract import IMembershipRepository
 
 class MembershipRepository(IMembershipRepository):
     credentials = {
-            'demo': u('P@ssw0rd'),
-            'biz': u('P@ssw0rd')
+        'demo': u('P@ssw0rd'),
+        'biz': u('P@ssw0rd')
     }
     roles = {
-            'demo': tuple(['user']),
-            'biz': tuple(['business'])
+        'demo': tuple(['user']),
+        'biz': tuple(['business'])
     }
 
     def __init__(self, session):
@@ -21,7 +21,7 @@ class MembershipRepository(IMembershipRepository):
 
     def authenticate(self, credential):
         return credential.password == self.credentials.get(
-                credential.username, None)
+            credential.username, None)
 
     def has_account(self, username):
         return username in self.credentials
@@ -33,5 +33,5 @@ class MembershipRepository(IMembershipRepository):
         credential = registration.credential
         self.credentials[credential.username] = credential.password
         self.roles[credential.username] = tuple(
-                [registration.account.account_type])
+            [registration.account.account_type])
         return True

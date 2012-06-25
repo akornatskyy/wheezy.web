@@ -49,5 +49,5 @@ class HandlerTransformsTestCase(unittest.TestCase):
         mock_handler.request = 'request'
         mock_handler_method = Mock(return_value='response')
         handler = handler_transforms(
-                transformA, transformB)(mock_handler_method)
+            transformA, transformB)(mock_handler_method)
         assert 'response-A-B' == handler(mock_handler)

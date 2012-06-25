@@ -24,13 +24,13 @@ class FileHandlerTestCase(unittest.TestCase):
         self.mock_request.options = self.options
         self.route_args = {}
         self.mock_request.environ = {
-                'route_args': self.route_args
+            'route_args': self.route_args
         }
         self.mock_request.root_path = 'my_site/'
         self.handler = handler_factory(
-                FileHandler,
-                self.mock_request,
-                root=rootdir)
+            FileHandler,
+            self.mock_request,
+            root=rootdir)
 
     def test_get_out_of_root_path(self):
         """ if requested file is not within root directory
@@ -121,7 +121,7 @@ class FileHandlerFactoryTestCase(unittest.TestCase):
         self.route_args = {}
         self.mock_request.method = 'GET'
         self.mock_request.environ = {
-                'route_args': self.route_args
+            'route_args': self.route_args
         }
         self.mock_request.root_path = 'my_site/'
 

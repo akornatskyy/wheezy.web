@@ -24,16 +24,16 @@ class BenchmarkTestCase(PublicTestCase, ErrorTestCase):  # pragma: nocover
             self.test_static_file_forbidden,
             self.test_static_file_gzip,
             self.test_head_static_file,
-            ), 1000)
+        ), 1000)
         p.report('public', baselines={
-                'test_home': 1.0,
-                'test_about': 0.95,
-                'test_error_400': 0.95,
-                'test_error_403': 0.95,
-                'test_error_404': 0.95,
-                'test_static_files': 2.17,
-                'test_static_file_not_found': 2.1,
-                'test_static_file_forbidden': 2.3,
-                'test_static_file_gzip': 11.4,
-                'test_head_static_file': 12.5,
+            'test_home': 1.0,
+            'test_about': 0.95,
+            'test_error_400': 0.95,
+            'test_error_403': 0.95,
+            'test_error_404': 0.95,
+            'test_static_files': 2.17,
+            'test_static_file_not_found': 2.1,
+            'test_static_file_forbidden': 2.3,
+            'test_static_file_gzip': 11.4,
+            'test_head_static_file': 12.5,
         })

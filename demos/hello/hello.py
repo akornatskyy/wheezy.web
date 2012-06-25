@@ -25,18 +25,18 @@ def welcome(request):
 
 
 all_urls = [
-        url('', WelcomeHandler, name='default'),
-        url('welcome', welcome, name='welcome')
+    url('', WelcomeHandler, name='default'),
+    url('welcome', welcome, name='welcome')
 ]
 
 
 options = {}
 main = WSGIApplication(
-        middleware=[
-            bootstrap_defaults(url_mapping=all_urls),
-            path_routing_middleware_factory
-        ],
-        options=options
+    middleware=[
+        bootstrap_defaults(url_mapping=all_urls),
+        path_routing_middleware_factory
+    ],
+    options=options
 )
 
 

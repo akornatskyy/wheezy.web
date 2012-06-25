@@ -16,7 +16,7 @@ from public.web.views import http500
 
 
 server_cache = lambda handler: response_cache(public_cache_profile)(
-        response_transforms(gzip_transform(compress_level=9))(handler))
+    response_transforms(gzip_transform(compress_level=9))(handler))
 
 public_urls = [
     url('home', server_cache(home), name='home'),

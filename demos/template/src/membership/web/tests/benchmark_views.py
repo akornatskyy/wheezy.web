@@ -18,11 +18,11 @@ class BenchmarkTestCase(MembershipTestCase):  # pragma: nocover
             self.test_signin,
             self.test_signup,
             self.test_signout,
-            ), 1000)
+        ), 1000)
         p.report('membership', baselines={
-                'test_signin': 1.0,
-                'test_signup': 0.89,
-                'test_signout': 4.32,
+            'test_signin': 1.0,
+            'test_signup': 0.89,
+            'test_signout': 4.32,
         })
 
 
@@ -35,12 +35,12 @@ class BenchmarkSigninTestCase(SignInTestCase):
             self.test_validation_error,
             self.test_unknown_user,
             self.test_xrsf_token_invalid
-            ), 200)
+        ), 200)
 
         p.report('signin', baselines={
-                'test_validation_error': 1.0,
-                'test_unknown_user': 1.0,
-                'test_xrsf_token_invalid': 0.94
+            'test_validation_error': 1.0,
+            'test_unknown_user': 1.0,
+            'test_xrsf_token_invalid': 0.94
         })
 
 
@@ -53,10 +53,10 @@ class BenchmarkSignupTestCase(SignUpTestCase):
             self.test_validation_error,
             self.test_already_registered,
             self.test_resubmission_token_invalid,
-            ), 100)
+        ), 100)
 
         p.report('signup', baselines={
-                'test_validation_error': 1.0,
-                'test_already_registered': 1.0,
-                'test_resubmission_token_invalid': 1.05
+            'test_validation_error': 1.0,
+            'test_already_registered': 1.0,
+            'test_resubmission_token_invalid': 1.05
         })

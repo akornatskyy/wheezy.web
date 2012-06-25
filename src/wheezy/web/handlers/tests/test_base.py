@@ -17,13 +17,13 @@ class BaseHandlerTestCase(unittest.TestCase):
         from wheezy.web.handlers.base import BaseHandler
         from wheezy.web.handlers.method import handler_factory
         self.options = {
-                'AUTH_COOKIE': '_a',
-                'AUTH_COOKIE_PATH': 'members',
-                'AUTH_COOKIE_DOMAIN': 'python.org',
-                'AUTH_COOKIE_SECURE': True,
-                'HTTP_COOKIE_SECURE': False,
-                'HTTP_COOKIE_HTTPONLY': False,
-                'translations_manager': {'en': 'translations'}
+            'AUTH_COOKIE': '_a',
+            'AUTH_COOKIE_PATH': 'members',
+            'AUTH_COOKIE_DOMAIN': 'python.org',
+            'AUTH_COOKIE_SECURE': True,
+            'HTTP_COOKIE_SECURE': False,
+            'HTTP_COOKIE_HTTPONLY': False,
+            'translations_manager': {'en': 'translations'}
         }
         self.mock_request = Mock()
         self.mock_request.options = self.options
@@ -32,7 +32,7 @@ class BaseHandlerTestCase(unittest.TestCase):
         self.mock_request.root_path = 'my_site/'
         self.mock_request.cookies = {}
         self.mock_request.urlparts = urlparts(
-                scheme='https', netloc='python.org')
+            scheme='https', netloc='python.org')
         self.handler = handler_factory(BaseHandler, self.mock_request)
         assert isinstance(self.handler, BaseHandler)
 
@@ -40,8 +40,8 @@ class BaseHandlerTestCase(unittest.TestCase):
         """ context
         """
         context = self.handler.context
-        assert ('errors', 'locale', 'principal',
-                'translations') == tuple(sorted(context.keys()))
+        assert ('errors', 'locale', 'principal', 'translations') \
+            == tuple(sorted(context.keys()))
 
 
 class BaseHandlerRoutingTestCase(unittest.TestCase):
@@ -59,7 +59,7 @@ class BaseHandlerRoutingTestCase(unittest.TestCase):
         self.mock_request.method = 'GET'
         self.mock_request.root_path = 'my_site/'
         self.mock_request.urlparts = urlparts(
-                scheme='https', netloc='python.org')
+            scheme='https', netloc='python.org')
         self.handler = handler_factory(BaseHandler, self.mock_request)
         assert isinstance(self.handler, BaseHandler)
 
@@ -141,8 +141,8 @@ class BaseHandlerI18NTestCase(unittest.TestCase):
         """ Translations returned per current locale.
         """
         translations_manager = {
-                'en': 'en-trans',
-                'uk': 'uk-trans'
+            'en': 'en-trans',
+            'uk': 'uk-trans'
         }
         self.handler.route_args['locale'] = 'uk'
         self.options['translations_manager'] = translations_manager
@@ -190,17 +190,17 @@ class BaseHandlerModelsTestCase(unittest.TestCase):
         """
         from wheezy.core.i18n import null_translations
         translations_manager = {
-                'en': {
-                    'validation': null_translations
-                }
+            'en': {
+                'validation': null_translations
+            }
         }
         self.handler.route_args['locale'] = 'en'
         self.options['translations_manager'] = translations_manager
         self.mock_request.form = {
-                'name': ['test']
+            'name': ['test']
         }
         model = {
-                'name': ''
+            'name': ''
         }
         assert True == self.handler.try_update_model(model)
         assert 'test' == model['name']
@@ -214,7 +214,7 @@ class BaseHandlerTemplatesTestCase(unittest.TestCase):
         from wheezy.web.handlers.base import BaseHandler
         from wheezy.web.handlers.method import handler_factory
         self.options = {
-                'AUTH_COOKIE': '_a'
+            'AUTH_COOKIE': '_a'
         }
         self.mock_request = Mock()
         self.mock_request.options = self.options
@@ -227,8 +227,9 @@ class BaseHandlerTemplatesTestCase(unittest.TestCase):
     def test_helpers(self):
         """ template helpers.
         """
-        assert ('_', 'absolute_url_for', 'errors', 'path_for',
-                'principal', 'resubmission', 'route_args', 'xsrf'
+        assert (
+            '_', 'absolute_url_for', 'errors', 'path_for',
+            'principal', 'resubmission', 'route_args', 'xsrf'
         ) == tuple(sorted(self.handler.helpers.keys()))
 
     def test_render_template(self):
@@ -248,16 +249,16 @@ class BaseHandlerTemplatesTestCase(unittest.TestCase):
             return 'html'
         self.options['render_template'] = render_template
         assert 'html' == self.handler.render_template(
-                'signin.html', test=10)
+            'signin.html', test=10)
 
     def test_render_response(self):
         """ render_response.
         """
         mock_render_template = Mock(return_value='html')
         self.options.update({
-                'render_template': mock_render_template,
-                'CONTENT_TYPE': 'text/plain',
-                'ENCODING': 'UTF-8'
+            'render_template': mock_render_template,
+            'CONTENT_TYPE': 'text/plain',
+            'ENCODING': 'UTF-8'
         })
         response = self.handler.render_response('signin.html')
         assert mock_render_template.called
@@ -289,12 +290,12 @@ class BaseHandlerAuthenticationTestCase(unittest.TestCase):
         from wheezy.web.handlers.base import BaseHandler
         from wheezy.web.handlers.method import handler_factory
         self.options = {
-                'AUTH_COOKIE': '_a',
-                'AUTH_COOKIE_PATH': 'members',
-                'AUTH_COOKIE_DOMAIN': 'python.org',
-                'AUTH_COOKIE_SECURE': True,
-                'HTTP_COOKIE_SECURE': False,
-                'HTTP_COOKIE_HTTPONLY': False
+            'AUTH_COOKIE': '_a',
+            'AUTH_COOKIE_PATH': 'members',
+            'AUTH_COOKIE_DOMAIN': 'python.org',
+            'AUTH_COOKIE_SECURE': True,
+            'HTTP_COOKIE_SECURE': False,
+            'HTTP_COOKIE_HTTPONLY': False
         }
         self.mock_request = Mock()
         self.mock_request.options = self.options
@@ -366,7 +367,7 @@ class BaseHandlerXSRFTestCase(unittest.TestCase):
         from wheezy.web.handlers.base import BaseHandler
         from wheezy.web.handlers.method import handler_factory
         self.options = {
-                'XSRF_NAME': '_x'
+            'XSRF_NAME': '_x'
         }
         self.mock_request = Mock()
         self.mock_request.options = self.options
@@ -381,8 +382,8 @@ class BaseHandlerXSRFTestCase(unittest.TestCase):
         """
         from wheezy.web.handlers import base
         self.options.update({
-                'HTTP_COOKIE_DOMAIN': None,
-                'HTTP_COOKIE_SECURE': True
+            'HTTP_COOKIE_DOMAIN': None,
+            'HTTP_COOKIE_SECURE': True
         })
         patcher = patch.object(base, 'shrink_uuid')
         mock_shrink_uuid = patcher.start()
@@ -405,9 +406,9 @@ class BaseHandlerXSRFTestCase(unittest.TestCase):
         """ delxsrf_token.
         """
         self.options.update({
-                'HTTP_COOKIE_DOMAIN': None,
-                'HTTP_COOKIE_SECURE': True,
-                'HTTP_COOKIE_HTTPONLY': True
+            'HTTP_COOKIE_DOMAIN': None,
+            'HTTP_COOKIE_SECURE': True,
+            'HTTP_COOKIE_HTTPONLY': True
         })
         self.handler.delxsrf_token()
         assert 1 == len(self.handler.cookies)
@@ -419,9 +420,9 @@ class BaseHandlerXSRFTestCase(unittest.TestCase):
             submitted.
         """
         self.options.update({
-                'HTTP_COOKIE_DOMAIN': None,
-                'HTTP_COOKIE_SECURE': True,
-                'HTTP_COOKIE_HTTPONLY': True
+            'HTTP_COOKIE_DOMAIN': None,
+            'HTTP_COOKIE_SECURE': True,
+            'HTTP_COOKIE_HTTPONLY': True
         })
         self.mock_request.form = {}
         assert not self.handler.validate_xsrf_token()
@@ -468,7 +469,7 @@ class BaseHandlerResibmissionTestCase(unittest.TestCase):
         from wheezy.web.handlers.base import BaseHandler
         from wheezy.web.handlers.method import handler_factory
         self.options = {
-                'RESUBMISSION_NAME': '_r'
+            'RESUBMISSION_NAME': '_r'
         }
         self.mock_request = Mock()
         self.mock_request.options = self.options
@@ -482,9 +483,9 @@ class BaseHandlerResibmissionTestCase(unittest.TestCase):
         """ XSRF cookie was not supplied with request.
         """
         self.options.update({
-                'HTTP_COOKIE_DOMAIN': None,
-                'HTTP_COOKIE_SECURE': True,
-                'HTTP_COOKIE_HTTPONLY': True
+            'HTTP_COOKIE_DOMAIN': None,
+            'HTTP_COOKIE_SECURE': True,
+            'HTTP_COOKIE_HTTPONLY': True
         })
         assert '0' == self.handler.getresubmission()
         assert 1 == len(self.handler.cookies)
@@ -503,9 +504,9 @@ class BaseHandlerResibmissionTestCase(unittest.TestCase):
         """ delete resubmission cookie.
         """
         self.options.update({
-                'HTTP_COOKIE_DOMAIN': None,
-                'HTTP_COOKIE_SECURE': True,
-                'HTTP_COOKIE_HTTPONLY': True
+            'HTTP_COOKIE_DOMAIN': None,
+            'HTTP_COOKIE_SECURE': True,
+            'HTTP_COOKIE_HTTPONLY': True
         })
         self.mock_request.cookies['_r'] = '100'
         self.handler.delresubmission()
@@ -541,9 +542,9 @@ class BaseHandlerResibmissionTestCase(unittest.TestCase):
         """ counter is not valid integer value.
         """
         self.options.update({
-                'HTTP_COOKIE_DOMAIN': None,
-                'HTTP_COOKIE_SECURE': True,
-                'HTTP_COOKIE_HTTPONLY': True
+            'HTTP_COOKIE_DOMAIN': None,
+            'HTTP_COOKIE_SECURE': True,
+            'HTTP_COOKIE_HTTPONLY': True
         })
         self.mock_request.ajax = False
         self.mock_request.cookies['_r'] = 'x'
@@ -558,9 +559,9 @@ class BaseHandlerResibmissionTestCase(unittest.TestCase):
         """ validate_resubmission.
         """
         self.options.update({
-                'HTTP_COOKIE_DOMAIN': None,
-                'HTTP_COOKIE_SECURE': True,
-                'HTTP_COOKIE_HTTPONLY': True
+            'HTTP_COOKIE_DOMAIN': None,
+            'HTTP_COOKIE_SECURE': True,
+            'HTTP_COOKIE_HTTPONLY': True
         })
         self.mock_request.ajax = False
         self.mock_request.cookies['_r'] = '247'
@@ -604,11 +605,11 @@ class RedirectRouteHandlerTestCase(unittest.TestCase):
         self.mock_request.method = 'GET'
         self.mock_request.root_path = 'my_site/'
         self.mock_request.urlparts = urlparts(
-                scheme='https', netloc='python.org')
+            scheme='https', netloc='python.org')
         self.handler = handler_factory(
-                RedirectRouteHandler,
-                self.mock_request,
-                'default')
+            RedirectRouteHandler,
+            self.mock_request,
+            'default')
         assert isinstance(self.handler, RedirectRouteHandler)
 
     def test_redirect_http_get(self):
@@ -658,7 +659,7 @@ class RedirectHandlerTestCase(unittest.TestCase):
         self.mock_request.ajax = False
         self.mock_request.root_path = 'my_site/'
         self.mock_request.urlparts = urlparts(
-                scheme='https', netloc='python.org')
+            scheme='https', netloc='python.org')
 
     def test_redirect_http_get(self):
         """ get.
@@ -693,7 +694,7 @@ class PermanentRedirectHandlerTestCase(unittest.TestCase):
         self.mock_request.ajax = False
         self.mock_request.root_path = 'my_site/'
         self.mock_request.urlparts = urlparts(
-                scheme='https', netloc='python.org')
+            scheme='https', netloc='python.org')
 
     def test_redirect_http_get(self):
         """ get.

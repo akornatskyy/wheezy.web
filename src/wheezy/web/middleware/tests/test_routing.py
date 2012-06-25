@@ -17,7 +17,7 @@ class PathRoutingMiddlewareTestCase(unittest.TestCase):
         from wheezy.web.middleware.routing import PathRoutingMiddleware
         mock_request = Mock()
         mock_request.environ = {
-                'PATH_INFO': '/en/signin'
+            'PATH_INFO': '/en/signin'
         }
         mock_following = Mock(return_value='response')
         mock_path_router = Mock()
@@ -34,7 +34,7 @@ class PathRoutingMiddlewareTestCase(unittest.TestCase):
         from wheezy.web.middleware.routing import PathRoutingMiddleware
         mock_request = Mock()
         mock_request.environ = {
-                'PATH_INFO': '/en/signin'
+            'PATH_INFO': '/en/signin'
         }
         mock_path_router = Mock()
         mock_path_router.match.return_value = (None, {})
@@ -48,7 +48,7 @@ class PathRoutingMiddlewareTestCase(unittest.TestCase):
         from wheezy.web.middleware.routing import PathRoutingMiddleware
         mock_request = Mock()
         mock_request.environ = {
-                'PATH_INFO': '/en/signin'
+            'PATH_INFO': '/en/signin'
         }
         mock_path_router = Mock()
         mock_handler = Mock(return_value='response')
@@ -68,8 +68,8 @@ class PathRoutingMiddlewareFactoryTestCase(unittest.TestCase):
         """ Returns an instance of PathRoutingMiddleware.
         """
         from wheezy.web.middleware.routing \
-                import path_routing_middleware_factory
+            import path_routing_middleware_factory
         mock_path_router = Mock()
         assert path_routing_middleware_factory({
-                'path_router': mock_path_router
+            'path_router': mock_path_router
         })
