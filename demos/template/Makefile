@@ -57,7 +57,7 @@ run:
 
 uwsgi:
 	echo $(TEMPLATE_ENGINE) ; export TEMPLATE_ENGINE=$(TEMPLATE_ENGINE) ; \
-	../../uwsgi-1.3-snapshot2/uwsgi --ini development.ini
+	$(ENV)/bin/uwsgi --ini development.ini
 
 gunicorn:
 	echo $(TEMPLATE_ENGINE) ; export TEMPLATE_ENGINE=$(TEMPLATE_ENGINE) ; \
