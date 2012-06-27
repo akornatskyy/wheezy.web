@@ -12,7 +12,7 @@ README = open(os.path.join(os.path.dirname(__file__), 'README')).read()
 install_requires = [
     'wheezy.core>=0.1.70',
     'wheezy.caching>=0.1.54',
-    'wheezy.html>=0.1.101',
+    'wheezy.html>=0.1.106',
     'wheezy.http>=0.1.236',
     'wheezy.routing>=0.1.124',
     'wheezy.security>=0.1.36',
@@ -92,7 +92,7 @@ setup(
             'jinja2>=2.6'
         ],
         'wheezy.template': [
-            'wheezy.template>=0.1.34'
+            'wheezy.template>=0.1.75'
         ]
     },
 

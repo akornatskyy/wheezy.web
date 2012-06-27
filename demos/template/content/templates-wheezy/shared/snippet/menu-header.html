@@ -2,9 +2,9 @@
 @def menu_item(route_name, title):
     @# ignore
     @if route_name == route_args.route_name:
-        <li class="active">\
+        <li class="active"> \
     @else:
-        <li>\
+        <li> \
     @end
     <a href="@path_for(route_name)">@title</a></li>\
 @end
