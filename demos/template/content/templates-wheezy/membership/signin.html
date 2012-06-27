@@ -10,9 +10,8 @@ Sign In\
     <h2>
         Sign In</h2>
     <p>
-    Please enter your username and password.
-    <a href="@path_for('signup')">Sign up</a>
-    if you don't have an account.
+    Please enter your username and password. <a href="@path_for('signup')">
+    Sign up</a> if you don't have an account.
     </p>
     @model.error()
     <form action="@path_for('signin')" method="post">
