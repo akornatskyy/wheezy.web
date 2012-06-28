@@ -143,6 +143,7 @@ elif template_engine == 'jinja2':
     })
     render_template = Jinja2Template(env)
 elif template_engine == 'wheezy.template':
+    from wheezy.html.ext.template import InlineExtension
     from wheezy.html.ext.template import WhitespaceExtension
     from wheezy.html.ext.template import WidgetExtension
     from wheezy.html.utils import format_value
@@ -150,17 +151,14 @@ elif template_engine == 'wheezy.template':
     from wheezy.template.engine import Engine
     from wheezy.template.ext.core import CoreExtension
     from wheezy.template.loader import FileLoader
-    from wheezy.template.loader import uwsgi_autoreload
     from wheezy.web.templates import WheezyTemplate
     from public import __version__
     searchpath = ['content/templates-wheezy']
     engine = Engine(
-        loader=uwsgi_autoreload(
-            FileLoader(searchpath),
-            signum=10,
-            enabled=config.getint('uwsgi', 'python-auto-reload') > 0
-        ),
+        loader=FileLoader(searchpath),
         extensions=[
+            InlineExtension(searchpath, fallback=config.getboolean(
+                'wheezy', 'inline-preprocessor-fallback')),
             CoreExtension,
             WidgetExtension,
             WhitespaceExtension,

@@ -16,11 +16,11 @@
                     <h1><a href="@path_for('default')">My Site</a></h1>
                 </div>
                 <div id="logindisplay">
-                    @include("shared/snippet/menu-signin.html")
-                    @include("shared/snippet/menu-locale.html")
+                    @inline("shared/snippet/menu-signin.html")
+                    @inline("shared/snippet/menu-locale.html")
                 </div>
                 <div id="menucontainer">
-                    @include("shared/snippet/menu-header.html")
+                    @inline("shared/snippet/menu-header.html")
                 </div>
             </div>
             <div id="main">
@@ -32,7 +32,7 @@
                 <div id="footer">Version @__version__</div>
             </div>
         </div>
-        @include("shared/snippet/script.html")
+        @inline("shared/snippet/script.html")
         @def script():
         @end
         @script()\
