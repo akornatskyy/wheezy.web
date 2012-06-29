@@ -150,19 +150,20 @@ elif template_engine == 'wheezy.template':
     from wheezy.html.utils import html_escape
     from wheezy.template.engine import Engine
     from wheezy.template.ext.core import CoreExtension
+    from wheezy.template.loader import autoreload
     from wheezy.template.loader import FileLoader
     from wheezy.web.templates import WheezyTemplate
     from public import __version__
     searchpath = ['content/templates-wheezy']
-    engine = Engine(
+    engine = autoreload(Engine(
         loader=FileLoader(searchpath),
         extensions=[
             InlineExtension(searchpath, fallback=config.getboolean(
-                'wheezy', 'inline-preprocessor-fallback')),
+                'wheezy.template', 'inline-preprocessor-fallback')),
             CoreExtension,
             WidgetExtension,
             WhitespaceExtension,
-        ])
+        ]), enabled=config.get('wheezy.template', 'auto-reload'))
     engine.global_vars.update({
         'format_value': format_value,
         'h': html_escape,
