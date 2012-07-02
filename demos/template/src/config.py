@@ -130,7 +130,7 @@ elif template_engine == 'jinja2':
     searchpath = ['content/templates-jinja2']
     env = Environment(
         loader=FileSystemLoader(searchpath),
-        auto_reload=config.get('jinja2', 'auto-reload'),
+        auto_reload=config.getboolean('jinja2', 'auto-reload'),
         extensions=[
             InlineExtension(searchpath, config.getboolean(
                 'jinja2', 'inline-preprocessor-fallback')),
@@ -163,7 +163,7 @@ elif template_engine == 'wheezy.template':
             CoreExtension,
             WidgetExtension,
             WhitespaceExtension,
-        ]), enabled=config.get('wheezy.template', 'auto-reload'))
+        ]), enabled=config.getboolean('wheezy.template', 'auto-reload'))
     engine.global_vars.update({
         'format_value': format_value,
         'h': html_escape,
