@@ -160,9 +160,9 @@ elif template_engine == 'wheezy.template':
         extensions=[
             InlineExtension(searchpath, fallback=config.getboolean(
                 'wheezy.template', 'inline-preprocessor-fallback')),
-            CoreExtension,
-            WidgetExtension,
-            WhitespaceExtension,
+            CoreExtension(),
+            WidgetExtension(),
+            WhitespaceExtension(),
         ]), enabled=config.getboolean('wheezy.template', 'auto-reload'))
     engine.global_vars.update({
         'format_value': format_value,
