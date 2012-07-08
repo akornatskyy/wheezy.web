@@ -14,13 +14,17 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
+#: content/templates-jinja2/membership/signup.html:41
 #: content/templates-mako/membership/signup.html:40
+#: content/templates-wheezy/membership/signup.html:47
 #: content/templates/membership/signup.html:40
 msgid "Date of birth (YYYY/MM/DD):"
 msgstr "Date of birth (YYYY/MM/DD):"
 
+#: content/templates-jinja2/membership/signup.html:42
 #: content/templates-mako/membership/signup.html:41
 #: content/templates-tenjin/membership/signup.html:41
+#: content/templates-wheezy/membership/signup.html:48
 #: content/templates/membership/signup.html:41
 msgid "YYYY/MM/DD"
 msgstr "%Y/%m/%d"

@@ -1,4 +1,3 @@
-@require(path_for)
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
     <head>
@@ -16,11 +15,11 @@
                     <h1><a href="@path_for('default')">My Site</a></h1>
                 </div>
                 <div id="logindisplay">
-                    @inline("shared/snippet/menu-signin.html")
-                    @inline("shared/snippet/menu-locale.html")
+                    #include("shared/snippet/menu-signin.html")
+                    #include("shared/snippet/menu-locale.html")
                 </div>
                 <div id="menucontainer">
-                    @inline("shared/snippet/menu-header.html")
+                    #include("shared/snippet/menu-header.html")
                 </div>
             </div>
             <div id="main">
@@ -29,10 +28,10 @@
                     @end
                     @content()\
                 </div>
-                <div id="footer">Version @__version__</div>
+                <div id="footer">Version #__version__</div>
             </div>
         </div>
-        @inline("shared/snippet/script.html")
+        #include("shared/snippet/script.html")
         @def script():
         @end
         @script()\

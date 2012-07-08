@@ -93,3 +93,4 @@ test-demos:
 	make test -sC demos/template TEMPLATE_ENGINE=mako VERSION=$(VERSION)
 	make test -sC demos/template TEMPLATE_ENGINE=tenjin VERSION=$(VERSION)
 	make test -sC demos/template TEMPLATE_ENGINE=wheezy.template VERSION=$(VERSION)
+	make test -sC demos/template TEMPLATE_ENGINE=wheezy.preprocessor VERSION=$(VERSION)

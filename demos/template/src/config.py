@@ -170,6 +170,51 @@ elif template_engine == 'wheezy.template':
         '__version__': __version__
     })
     render_template = WheezyTemplate(engine)
+elif template_engine == 'wheezy.preprocessor':
+    from wheezy.html.ext.template import WhitespaceExtension
+    from wheezy.html.ext.template import WidgetExtension
+    from wheezy.html.utils import format_value
+    from wheezy.html.utils import html_escape
+    from wheezy.template.engine import Engine
+    from wheezy.template.ext.core import CoreExtension
+    from wheezy.template.ext.determined import DeterminedExtension
+    from wheezy.template.loader import autoreload
+    from wheezy.template.loader import FileLoader
+    from wheezy.template.preprocessor import Preprocessor
+    from wheezy.web.templates import WheezyTemplate
+    from public import __version__
+
+    def runtime_engine_factory(loader):
+        engine = Engine(
+            loader=loader,
+            extensions=[
+                CoreExtension(),
+                WidgetExtension(),
+                WhitespaceExtension(),
+            ])
+        engine.global_vars.update({
+            'format_value': format_value,
+            'h': html_escape,
+        })
+        return engine
+
+    searchpath = [
+        'content/templates-wheezy/preprocessor',
+        'content/templates-wheezy']
+    engine = Engine(
+        loader=FileLoader(searchpath),
+        extensions=[
+            CoreExtension('#', line_join=None),
+            DeterminedExtension(['path_for', '_']),
+        ])
+    engine.global_vars.update({
+        '__version__': __version__
+    })
+    engine = Preprocessor(runtime_engine_factory, engine,
+                          key_factory=lambda ctx: ctx['locale'])
+    engine = autoreload(engine, enabled=config.getboolean(
+        'wheezy.template', 'auto-reload'))
+    render_template = WheezyTemplate(engine)
 
 # BaseHandler
 options.update({

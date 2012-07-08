@@ -39,8 +39,11 @@ po:
 	xgettext --join-existing --sort-by-file --omit-header \
 		--language=Python \
 		-o i18n/membership.po src/membership/**/*.py \
+		content/templates-jinja2/membership/*.html \
 		content/templates-mako/membership/*.html \
-		content/templates-tenjin/membership/*.html
+		content/templates-tenjin/membership/*.html \
+		content/templates-wheezy/preprocessor/membership/*.html \
+		content/templates-wheezy/membership/*.html
 	cp i18n/membership.po i18n/en/LC_MESSAGES
 	cp i18n/validation.po i18n/en/LC_MESSAGES
 	for l in `ls --hide *.po i18n`; do \
