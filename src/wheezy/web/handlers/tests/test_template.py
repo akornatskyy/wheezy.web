@@ -21,7 +21,7 @@ class TemplateHandlerTestCase(unittest.TestCase):
         }
         self.mock_request = Mock()
         self.mock_request.options = self.options
-        self.route_args = {}
+        self.route_args = {'locale': 'en'}
         self.mock_request.environ = {
             'route_args': self.route_args
         }
@@ -57,7 +57,7 @@ class TemplateHandlerFactoryTestCase(unittest.TestCase):
         }
         self.mock_request = Mock()
         self.mock_request.options = self.options
-        self.route_args = {}
+        self.route_args = {'locale': 'en'}
         self.mock_request.environ = {
             'route_args': self.route_args
         }

@@ -218,7 +218,7 @@ class BaseHandlerTemplatesTestCase(unittest.TestCase):
         }
         self.mock_request = Mock()
         self.mock_request.options = self.options
-        self.mock_request.environ = {'route_args': {}}
+        self.mock_request.environ = {'route_args': {'locale': 'en'}}
         self.mock_request.root_path = 'my_site/'
         self.mock_request.cookies = {}
         self.handler = handler_factory(BaseHandler, self.mock_request)
@@ -228,7 +228,7 @@ class BaseHandlerTemplatesTestCase(unittest.TestCase):
         """ template helpers.
         """
         assert (
-            '_', 'absolute_url_for', 'errors', 'path_for',
+            '_', 'absolute_url_for', 'errors', 'locale', 'path_for',
             'principal', 'resubmission', 'route_args', 'xsrf'
         ) == tuple(sorted(self.handler.helpers.keys()))
 

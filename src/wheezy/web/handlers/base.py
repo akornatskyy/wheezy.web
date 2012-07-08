@@ -107,6 +107,7 @@ class BaseHandler(MethodHandler, ValidationMixin):
             '_': self._,
             'absolute_url_for': self.absolute_url_for,
             'errors': self.errors,
+            'locale': self.locale,
             'path_for': self.path_for,
             'principal': self.principal,
             'resubmission': self.resubmission_widget,
