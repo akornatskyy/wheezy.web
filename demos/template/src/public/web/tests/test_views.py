@@ -24,6 +24,12 @@ class PublicTestCase(unittest.TestCase):
         del self.client
         self.client = None
 
+    def test_root(self):
+        """ Ensure root page is rendered.
+        """
+        assert 200 == self.client.get('/')
+        assert '- Home</title>' in self.client.content
+
     def test_home(self):
         """ Ensure home page is rendered.
         """
