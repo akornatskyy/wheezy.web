@@ -7,13 +7,12 @@ from wheezy.core.benchmark import Benchmark
 from public.web.tests.test_views import PublicTestCase
 from public.web.tests.test_views import ErrorTestCase
 
-
-class PublicBenchmarkTestCase(PublicTestCase, ErrorTestCase):  # pragma: nocover
+class PublicBenchmarkTestCase(PublicTestCase, ErrorTestCase):
 
     def runTest(self):
         """ Perform bachmark and print results.
         """
-        p = Benchmark((
+        b = Benchmark((
             self.test_root,
             self.test_home,
             self.test_about,
@@ -21,7 +20,7 @@ class PublicBenchmarkTestCase(PublicTestCase, ErrorTestCase):  # pragma: nocover
             self.test_error_403,
             self.test_error_404,
         ), 1000)
-        p.report('public', baselines={
+        b.report('public', baselines={
             'test_root': 1.0,
             'test_home': 0.8,
             'test_about': 0.8,
@@ -31,19 +30,19 @@ class PublicBenchmarkTestCase(PublicTestCase, ErrorTestCase):  # pragma: nocover
         })
 
 
-class StaticBenchmarkTestCase(PublicTestCase, ErrorTestCase):  # pragma: nocover
+class StaticFilesBenchmarkTestCase(PublicTestCase, ErrorTestCase):
 
     def runTest(self):
         """ Perform bachmark and print results.
         """
-        p = Benchmark((
+        b = Benchmark((
             self.test_static_files,
             self.test_static_file_not_found,
             self.test_static_file_forbidden,
             self.test_static_file_gzip,
             self.test_head_static_file,
         ), 1000)
-        p.report('static', baselines={
+        b.report('static', baselines={
             'test_static_files': 1.00,
             'test_static_file_not_found': 0.95,
             'test_static_file_forbidden': 1.05,
