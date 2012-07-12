@@ -52,6 +52,6 @@ class MethodHandler(object):
 
 
 def handler_factory(klass, *args, **kwargs):
-    handler = super(MethodHandler, klass).__new__(klass)
+    handler = object.__new__(klass)
     handler.__init__(*args, **kwargs)
     return handler
