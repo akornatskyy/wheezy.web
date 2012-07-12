@@ -7,6 +7,7 @@ from wheezy.core.benchmark import Benchmark
 from public.web.tests.test_views import PublicTestCase
 from public.web.tests.test_views import ErrorTestCase
 
+
 class PublicBenchmarkTestCase(PublicTestCase, ErrorTestCase):
 
     def runTest(self):
