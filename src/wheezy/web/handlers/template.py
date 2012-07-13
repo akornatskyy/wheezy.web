@@ -1,26 +1,33 @@
 """
 """
 
+from wheezy.core.i18n import ref_gettext
 from wheezy.web.handlers.base import BaseHandler
 
 
-def template_handler(template_name, status_code=200):
+def template_handler(template_name, status_code=200, translation_name=None):
     """ Serves templates that does not require up front data processing.
     """
-    return lambda request: TemplateHandler(
-        request,
-        template_name=template_name,
-        status_code=status_code)
+    def handle_request(request):
+        h = object.__new__(TemplateHandler)
+        h.__init__(request)
+        h.template_name = template_name
+        h.status_code = status_code
+        h.helpers = {
+            '_': ref_gettext(h.options['translations_manager']
+                             [h.locale][translation_name]),
+            'locale': h.locale,
+            'path_for': h.path_for,
+            'principal': h.principal,
+            'route_args': h.route_args,
+        }
+        return h()
+    return handle_request
 
 
 class TemplateHandler(BaseHandler):
     """ Serves templates that does not require up front data processing.
     """
-
-    def __init__(self, request, template_name, status_code=200):
-        self.template_name = template_name
-        self.status_code = status_code
-        super(TemplateHandler, self).__init__(request)
 
     def get(self):
         response = self.render_response(self.template_name)
