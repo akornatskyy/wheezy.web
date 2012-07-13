@@ -2,7 +2,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
     <head>
-        <title>My Site - <?py #pass ?>
+        <title>#{_('My Site')} - <?py #pass ?>
         <?py if not captured_as("title"): ?>
         <?py pass ?>
         <?py #endif ?></title>
@@ -13,7 +13,7 @@
         <div class="page">
             <div id="header">
                 <div id="title">
-                    <h1><a href="#{path_for('default')}">My Site</a></h1>
+                    <h1><a href="#{path_for('default')}">#{_('My Site')}</a></h1>
                 </div>
                 <div id="logindisplay">
                     <?py inline("shared/snippet/menu-signin.html") ?>
@@ -21,14 +21,14 @@
                 </div>
                 <div id="menucontainer">
                     <ul id="menu">
-                    <?py include('shared/snippet/menu-header.html', route_name='home', title='Home') ?>
-                    <?py include('shared/snippet/menu-header.html', route_name='about', title='About') ?>
+                    <?py include('shared/snippet/menu-header.html', route_name='home', title=_('s:Home')) ?>
+                    <?py include('shared/snippet/menu-header.html', route_name='about', title=_('s:About')) ?>
                     </ul>
                 </div>
             </div>
             <div id="main">
                 <div id="placeholder">#{_content}</div>
-                <div id="footer">Version #{__version__}</div>
+                <div id="footer">#{_('Version')} #{__version__}</div>
             </div>
         </div>
         <?py inline("shared/snippet/script.html") ?>
