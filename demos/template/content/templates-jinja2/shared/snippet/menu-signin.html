@@ -1,6 +1,6 @@
 {% if principal: %}
-Welcome <b>{{ principal.alias | e }}</b>!
-[<a href="{{ path_for('signout') }}">Sign out</a>]
+{{ _('Welcome') }} <b>{{ principal.alias | e }}</b>!
+[<a href="{{ path_for('signout') }}">{{ _('Sign out') }}</a>]
 {% else: %}
-[<a href="{{ path_for('signin') }}">Sign in</a>]
+[<a href="{{ path_for('signin') }}">{{ _('Sign in') }}</a>]
 {% endif %}
