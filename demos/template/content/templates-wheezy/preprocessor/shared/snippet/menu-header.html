@@ -1,4 +1,4 @@
-#require(path_for)
+#require(_, path_for)
 @require(route_args)
 
 #def link(href, title):
@@ -15,6 +15,6 @@
 @end
 
 <ul id="menu">
-    @active_item('home')#link('home', 'Home')
-    @active_item('about')#link('about', 'About')
+    @active_item('home')#link('home', _('s:Home'))
+    @active_item('about')#link('about', _('s:About'))
 </ul>
