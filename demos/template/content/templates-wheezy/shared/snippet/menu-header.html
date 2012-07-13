@@ -1,4 +1,4 @@
-@require(path_for, route_args)
+@require(_, path_for, route_args)
 @def menu_item(route_name, title):
     @# ignore
     @if route_name == route_args.route_name:
@@ -9,6 +9,6 @@
     <a href="@path_for(route_name)">@title</a></li>\
 @end
 <ul id="menu">
-    @menu_item('home', 'Home')
-    @menu_item('about', 'About')
+    @menu_item('home', _('s:Home'))
+    @menu_item('about', _('s:About'))
 </ul>

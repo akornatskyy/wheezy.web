@@ -1,7 +1,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
     <head>
-        <title>My Site - \
+        <title>@_('My Site') - \
         @def title():
         @end
         @title()</title>
@@ -12,7 +12,7 @@
         <div class="page">
             <div id="header">
                 <div id="title">
-                    <h1><a href="@path_for('default')">My Site</a></h1>
+                    <h1><a href="@path_for('default')">@_('My Site')</a></h1>
                 </div>
                 <div id="logindisplay">
                     #include("shared/snippet/menu-signin.html")
@@ -28,7 +28,7 @@
                     @end
                     @content()\
                 </div>
-                <div id="footer">Version #__version__</div>
+                <div id="footer">@_('Version') #__version__</div>
             </div>
         </div>
         #include("shared/snippet/script.html")

@@ -1,7 +1,7 @@
-@require(principal, path_for)
+@require(_, principal, path_for)
 @if principal:
-Welcome <b>@principal.alias!h</b>! [
-<a href="@path_for('signout')">Sign out</a>]
+@_('Welcome') <b>@principal.alias!h</b>! [
+<a href="@path_for('signout')">@_('Sign out')</a>]
 @else:
-[<a href="@path_for('signin')">Sign in</a>]
+[<a href="@path_for('signin')">@_('Sign in')</a>]
 @end
