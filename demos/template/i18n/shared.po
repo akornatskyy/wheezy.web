@@ -1,0 +1,85 @@
+# Messages for ``demos.public``.
+# Copyright (C) 2011 Andriy Kornatskyy
+# Andriy Kornatskyy <andriy.kornatskyy@live.com>, 2011.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: wheezy.demo.template\n"
+"Report-Msgid-Bugs-To: Andriy Kornatskyy <andriy.kornatskyy@live.com>\n"
+"POT-Creation-Date: 2012-07-13 9:53+0200\n"
+"PO-Revision-Date: 2012-07-13 9:53+0200\n"
+"Last-Translator: Andriy Kornatskyy <andriy.kornatskyy@live.com>\n"
+"Language: US English\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: content/templates-jinja2/shared/master.html:4
+#: content/templates-jinja2/shared/master.html:12
+#: content/templates-mako/shared/master.html:7
+#: content/templates-mako/shared/master.html:15
+#: content/templates-tenjin/shared/master.html:5
+#: content/templates-tenjin/shared/master.html:16
+#: content/templates-wheezy/preprocessor/shared/master.html:4
+#: content/templates-wheezy/preprocessor/shared/master.html:15
+#: content/templates-wheezy/shared/master.html:5
+#: content/templates-wheezy/shared/master.html:16
+msgid "My Site"
+msgstr "My Site"
+
+#: content/templates-jinja2/shared/master.html:27
+#: content/templates-mako/shared/master.html:27
+#: content/templates-tenjin/shared/master.html:31
+#: content/templates-wheezy/preprocessor/shared/master.html:31
+#: content/templates-wheezy/shared/master.html:32
+msgid "Version"
+msgstr "Version"
+
+#: content/templates-jinja2/shared/snippet/menu-header.html:11
+#: content/templates-mako/shared/snippet/menu-header.html:14
+#: content/templates-wheezy/preprocessor/shared/snippet/menu-header.html:18
+#: content/templates-wheezy/shared/snippet/menu-header.html:12
+msgid "s:Home"
+msgstr "Home"
+
+#: content/templates-jinja2/shared/snippet/menu-header.html:12
+#: content/templates-mako/shared/snippet/menu-header.html:15
+#: content/templates-wheezy/preprocessor/shared/snippet/menu-header.html:19
+#: content/templates-wheezy/shared/snippet/menu-header.html:13
+msgid "s:About"
+msgstr "About"
+
+#: content/templates-jinja2/shared/snippet/menu-locale.html:2
+#: content/templates-mako/shared/snippet/menu-locale.html:5
+#: content/templates-tenjin/shared/snippet/menu-locale.html:2
+#: content/templates-wheezy/shared/snippet/menu-locale.html:3
+msgid "English"
+msgstr "English"
+
+#: content/templates-jinja2/shared/snippet/menu-locale.html:4
+#: content/templates-mako/shared/snippet/menu-locale.html:7
+#: content/templates-tenjin/shared/snippet/menu-locale.html:4
+#: content/templates-wheezy/shared/snippet/menu-locale.html:4
+msgid "Russian"
+msgstr "Русский"
+
+#: content/templates-jinja2/shared/snippet/menu-signin.html:2
+#: content/templates-mako/shared/snippet/menu-signin.html:5
+#: content/templates-tenjin/shared/snippet/menu-signin.html:2
+#: content/templates-wheezy/shared/snippet/menu-signin.html:3
+msgid "Welcome"
+msgstr "Welcome"
+
+#: content/templates-jinja2/shared/snippet/menu-signin.html:3
+#: content/templates-mako/shared/snippet/menu-signin.html:6
+#: content/templates-tenjin/shared/snippet/menu-signin.html:3
+#: content/templates-wheezy/shared/snippet/menu-signin.html:4
+msgid "Sign out"
+msgstr "Sign out"
+
+#: content/templates-jinja2/shared/snippet/menu-signin.html:5
+#: content/templates-mako/shared/snippet/menu-signin.html:8
+#: content/templates-tenjin/shared/snippet/menu-signin.html:5
+#: content/templates-wheezy/shared/snippet/menu-signin.html:6
+msgid "Sign in"
+msgstr "Sign in"

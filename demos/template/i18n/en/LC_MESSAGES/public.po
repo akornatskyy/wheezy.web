@@ -1,0 +1,24 @@
+#: content/templates-jinja2/public/about.html:2
+#: content/templates-jinja2/public/about.html:5
+#: content/templates-tenjin/public/about.html:2
+#: content/templates-tenjin/public/about.html:4
+#: content/templates-wheezy/public/about.html:5
+#: content/templates-wheezy/public/about.html:10
+msgid "About"
+msgstr "About"
+
+#: content/templates-jinja2/public/home.html:2
+#: content/templates-mako/public/home.html:2
+#: content/templates-tenjin/public/home.html:2
+#: content/templates-wheezy/public/home.html:4
+#: content/templates-wheezy/public/home.html:5
+msgid "Home"
+msgstr "Home"
+
+#: content/templates-jinja2/public/home.html:5
+#: content/templates-mako/public/home.html:4
+#: content/templates-tenjin/public/home.html:4
+#: content/templates-wheezy/public/home.html:9
+#: content/templates-wheezy/public/home.html:10
+msgid "Welcome!"
+msgstr "Welcome!"

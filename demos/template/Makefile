@@ -4,7 +4,7 @@
 VERSION=2.7
 PYPI=http://pypi.python.org/simple
 ENV=../../env
-TEMPLATE_ENGINE=wheezy.template
+TEMPLATE_ENGINE=wheezy.preprocessor
 
 PYTHON=$(ENV)/bin/python$(VERSION)
 EASY_INSTALL=$(ENV)/bin/easy_install-$(VERSION)
@@ -38,17 +38,35 @@ release:
 po:
 	xgettext --join-existing --sort-by-file --omit-header \
 		--language=Python \
+		-o i18n/shared.po \
+		content/templates-jinja2/shared/**/*.html \
+		content/templates-mako/shared/**/*.html \
+		content/templates-tenjin/shared/**/*.html \
+		content/templates-wheezy/preprocessor/shared/**/*.html \
+		content/templates-wheezy/shared/**/*.html
+	xgettext --join-existing --sort-by-file --omit-header \
+		--language=Python \
+		-o i18n/public.po src/public/**/*.py \
+		content/templates-jinja2/public/*.html \
+		content/templates-mako/public/*.html \
+		content/templates-tenjin/public/*.html \
+		content/templates-wheezy/public/*.html
+	xgettext --join-existing --sort-by-file --omit-header \
+		--language=Python \
 		-o i18n/membership.po src/membership/**/*.py \
 		content/templates-jinja2/membership/*.html \
 		content/templates-mako/membership/*.html \
 		content/templates-tenjin/membership/*.html \
 		content/templates-wheezy/preprocessor/membership/*.html \
 		content/templates-wheezy/membership/*.html
-	cp i18n/membership.po i18n/en/LC_MESSAGES
-	cp i18n/validation.po i18n/en/LC_MESSAGES
+	cp i18n/*.po i18n/en/LC_MESSAGES
 	for l in `ls --hide *.po i18n`; do \
 		echo -n "$$l => "; \
+		msgfmt -v i18n/$$l/LC_MESSAGES/public.po \
+			i18n/$$l/LC_MESSAGES/shared.po \
+			-o i18n/$$l/LC_MESSAGES/public.mo; \
 		msgfmt -v i18n/$$l/LC_MESSAGES/membership.po \
+			i18n/$$l/LC_MESSAGES/shared.po \
 			-o i18n/$$l/LC_MESSAGES/membership.mo; \
 		msgfmt -v i18n/$$l/LC_MESSAGES/validation.po \
 			-o i18n/$$l/LC_MESSAGES/validation.mo; \
@@ -83,7 +101,7 @@ benchmark:
 profile:
 	echo $(TEMPLATE_ENGINE) ; export TEMPLATE_ENGINE=$(TEMPLATE_ENGINE) ; \
 	$(NOSE) -qs -m benchmark --with-profile \
-		--profile-stats-file=public.pstats src/membership
+		--profile-stats-file=profile.pstats src/public
 
 gropf:
-	gprof2dot.py -f pstats public.pstats | dot -Tpng -o public.png
+	gprof2dot.py -f pstats profile.pstats | dot -Tpng -o profile.png
