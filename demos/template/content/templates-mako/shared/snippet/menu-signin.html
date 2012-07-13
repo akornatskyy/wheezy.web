@@ -2,9 +2,9 @@
     cache_key="${route_args.locale + 'menu-signin' + (principal and principal.alias or '')}">
 
 % if principal:
-Welcome <b>${principal.alias | h}</b>!
-[<a href="${path_for('signout')}">Sign out</a>]
+${_('Welcome')} <b>${principal.alias | h}</b>!
+[<a href="${path_for('signout')}">${_('Sign out')}</a>]
 % else:
-[<a href="${path_for('signin')}">Sign in</a>]
+[<a href="${path_for('signin')}">${_('Sign in')}</a>]
 % endif
 </%block>
