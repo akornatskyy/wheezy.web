@@ -469,6 +469,23 @@ code 401 (Unauthorized). It is recommended to use
 :py:class:`~wheezy.web.middleware.errors.HTTPErrorMiddleware` to route 401
 status code to signin page. Read more in :ref:`httperrormiddleware` section.
 
+@secure
+~~~~~~~
+
+Decorator :py:class:`~wheezy.web.authorization.secure` accepts only secure
+requests (those that are communication via SSL) and if incoming
+request is not secure, issue permanent redirect to HTTPS location::
+
+    class MyHandler(BaseHandler):
+        @secure
+        def get(self):
+            ...
+            return response
+
+The behavior can be controlled via ``enabled`` (in case it is
+``False`` no checks performed, defaults to ``True``).
+
+
 XSRF/Resubmission
 ^^^^^^^^^^^^^^^^^
 
