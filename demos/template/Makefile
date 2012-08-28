@@ -60,7 +60,7 @@ po:
 		content/templates-wheezy/preprocessor/membership/*.html \
 		content/templates-wheezy/membership/*.html
 	cp i18n/*.po i18n/en/LC_MESSAGES
-	for l in `ls --hide *.po i18n`; do \
+	for l in `ls -d i18n/*/ | cut -d / -f 2`; do \
 		echo -n "$$l => "; \
 		msgfmt -v i18n/$$l/LC_MESSAGES/public.po \
 			i18n/$$l/LC_MESSAGES/shared.po \
