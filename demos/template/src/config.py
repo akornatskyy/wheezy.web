@@ -80,7 +80,7 @@ options.update({
     'CRYPTO_VALIDATION_KEY': config.get('crypto', 'validation-key')
 })
 
-template_engine = os.getenv('TEMPLATE_ENGINE', 'tenjin')
+template_engine = os.getenv('TEMPLATE_ENGINE', 'wheezy.preprocessor')
 if template_engine == 'mako':
     from wheezy.html.ext.mako import inline_preprocessor
     from wheezy.html.ext.mako import whitespace_preprocessor
