@@ -7,7 +7,7 @@ Sign Up
 @def content():
 @require(credential, account, registration, account_types, questions)
 @require(model, errors, resubmission)
-#require(_)
+#require(_, path_for)
 <div id="signup">
     <h2>
         Create a New Account</h2>
@@ -19,7 +19,7 @@ Sign Up
     in length.
     </p>
     @model.error()
-    <form action="@path_for('signup')" method="post">
+    <form action="#path_for('signup')" method="post">
         @resubmission()
         <div>
             <fieldset>
