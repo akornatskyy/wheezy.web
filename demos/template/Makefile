@@ -89,6 +89,10 @@ test:
 	echo $(TEMPLATE_ENGINE) ; export TEMPLATE_ENGINE=$(TEMPLATE_ENGINE) ; \
 	$(PYTEST) -q -x --pep8 --doctest-modules src/
 
+nose-cover:
+	$(NOSE) --stop --with-doctest --detailed-errors \
+		--with-coverage --cover-package=public --cover-package=membership
+
 test-cover:
 	$(PYTEST) -q -x --cov membership --cov public \
 		--cov-report term-missing \
