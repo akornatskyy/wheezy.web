@@ -79,7 +79,12 @@ class TenjinTemplate(object):
             encoding='UTF-8', postfix='.html', cache=None, **kwargs):
         import tenjin
         tenjin.set_template_encoding(encoding)
-        from tenjin.helpers import capture_as, escape, captured_as, cache_as
+        from tenjin.helpers import capture_as, captured_as, cache_as
+        try:  # pragma: nocover
+            from webext import escape_html as escape
+        except ImportError:  # pragma: nocover
+            from tenjin.helpers import escape
+
         from wheezy.core.comp import str_type
         self.helpers = {
             'to_str': str_type,
