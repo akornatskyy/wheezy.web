@@ -677,6 +677,18 @@ HTTP request header::
 Notice we added ``vary_environ`` and used WSGI environment variable
 ``HTTP_ACCEPT_ENCODING`` to be included into cache key used by content cache.
 
+We can apply more permissive content caching to ``AddHandler``::
+
+    class AddHandler(BaseHandler):
+
+        @handler_cache(CacheProfile('both', duration=timedelta(hours=1),
+                vary_environ=['HTTP_ACCEPT_ENCODING']))
+        @handler_transforms(gzip_transform(compress_level=9, min_length=500))
+        def get(self, greeting=None):
+            ...
+
+
+
 Try run application by issuing the following command::
 
     $ env/bin/python app.py
