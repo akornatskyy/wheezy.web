@@ -3,10 +3,10 @@
 
 VERSION=2.7
 PYPI=http://pypi.python.org/simple
-ENV=env
+ENV=../../env
 
 PYTHON=$(ENV)/bin/python$(VERSION)
-PYPY=pypy-1.9
+PYPY=../../pypy-1.9
 
 SERVER=uwsgi
 
