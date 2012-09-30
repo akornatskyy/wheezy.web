@@ -27,7 +27,8 @@ except:
 setup(
     name='wheezy.web',
     version='0.1',
-    description='A lightweight WSGI web framework',
+    description='A lightweight, high performance, high concurrency WSGI '
+    'web framework with the key features to build modern, efficient web',
     long_description=README,
     url='https://bitbucket.org/akorn/wheezy.web',
 
@@ -50,6 +51,7 @@ setup(
         'Programming Language :: Python :: 2.7',
         'Programming Language :: Python :: 3',
         'Programming Language :: Python :: 3.2',
+        'Programming Language :: Python :: 3.3',
         'Programming Language :: Python :: Implementation :: CPython',
         'Programming Language :: Python :: Implementation :: PyPy',
         'Topic :: Internet :: WWW/HTTP',

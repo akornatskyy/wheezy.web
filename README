@@ -1,17 +1,24 @@
-`wheezy.web`_ is a `python`_ package written in pure Python code.
-It is a lightweight `WSGI`_ web framework. The framework aims to alleviate the
-overhead associated with common activities performed in Web application
-development. `wheezy.web`_ framework follows the model–view–controller
-(MVC) architectural pattern (push-based) to separate the data model from
-the user interface.
+`wheezy.web`_ is a lightweight,
+`high performance <http://mindref.blogspot.com/2012/09/python-fastest-web-framework.html>`_,
+high concurrency `WSGI`_ web framework with the key features to
+*build modern, efficient web*:
 
-The framework is template engine agnostic and provides integration with
-the following template systems:
-
-* `Jinja2 Templates <http://jinja.pocoo.org>`_
-* `Mako Templates <http://www.makotemplates.org>`_
-* `Tenjin Templates <http://www.kuwata-lab.com/tenjin/>`_
-* `Wheezy Templates <http://pypi.python.org/pypi/wheezy.template/>`_
+* Requires Python 2.4-2.7 or 3.2+.
+* MVC architectural pattern (`push <http://en.wikipedia.org/wiki/Web_application_framework#Push-based_vs._pull-based>`_-based).
+* Functionality includes `routing <http://bitbucket.org/akorn/wheezy.routing>`_,
+  `model update/validation <http://bitbucket.org/akorn/wheezy.validation>`_,
+  `authentication/authorization <http://bitbucket.org/akorn/wheezy.security>`_,
+  `content <http://packages.python.org/wheezy.http/userguide.html#content-cache>`_
+  `caching <http://bitbucket.org/akorn/wheezy.caching>`_ with
+  `dependency <http://packages.python.org/wheezy.caching/userguide.html#cachedependency>`_,
+  xsrf/resubmission protection, AJAX+JSON, i18n (gettext),
+  middlewares, and more.
+* Template engine agnostic (integration with
+  `jinja2 <http://jinja.pocoo.org>`_,
+  `mako <http://www.makotemplates.org>`_,
+  `tenjin <http://www.kuwata-lab.com/tenjin/>`_ and
+  `wheezy.template <http://bitbucket.org/akorn/wheezy.template/>`_)
+  plus `html widgets <http://bitbucket.org/akorn/wheezy.html>`_.
 
 It is optimized for performance, well tested and documented.
 
@@ -25,7 +32,7 @@ Resources:
 Install
 -------
 
-`wheezy.web`_ requires `python`_ version 2.4 to 2.7 or 3.2.
+`wheezy.web`_ requires `python`_ version 2.4 to 2.7 or 3.2+.
 It is independent of operating system. You can install it from `pypi`_
 site using `setuptools`_::
 
@@ -52,4 +59,3 @@ If you run into any issue or have comments, go ahead and add on
 .. _`virtualenv`: http://pypi.python.org/pypi/virtualenv
 .. _`wheezy.web`: http://pypi.python.org/pypi/wheezy.web
 .. _`WSGI`: http://www.python.org/dev/peps/pep-3333
-
