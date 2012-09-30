@@ -38,12 +38,16 @@ env:
 		echo 'done.'; \
 	fi
 	$(EASY_INSTALL) -i $(PYPI) -O2 coverage nose pytest \
-		pytest-pep8 pytest-cov mock wsgiref mako tenjin jinja2 \
-		wheezy.template lxml
-	# The following packages available for python < 3.0
-	#if [ "$$(echo $(VERSION) | sed 's/\.//')" -lt 30 ]; then \
-	#	$(EASY_INSTALL) sphinx; \
-	#fi
+		pytest-pep8 pytest-cov mock mako tenjin jinja2 \
+		wheezy.template
+	# The following packages available for python == 2.4
+	if [ "$$(echo $(VERSION) | sed 's/\.//')" -eq 24 ]; then \
+		$(EASY_INSTALL) -i $(PYPI) -O2 wsgiref; \
+	fi
+	# The following packages available for python < 3.3
+	if [ "$$(echo $(VERSION) | sed 's/\.//')" -lt 33 ]; then \
+		$(EASY_INSTALL) -i $(PYPI) -O2 lxml; \
+	fi
 	$(PYTHON) setup.py develop -i $(PYPI)
 
 clean:
