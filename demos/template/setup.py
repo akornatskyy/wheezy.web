@@ -20,10 +20,30 @@ install_requires = [
     'wheezy.web>=0.1.262',
 ]
 
+install_optional = [
+    'pylibmc>=1.2.3',
+    #'PIL>=1.1.7',
+    'lxml>=2.3.6',
+    'pycrypto>=2.6',
+]
+
+install_requires += install_optional
+
 try:
     import uuid
 except:
     install_requires.append('uuid')
+
+dependency_links=[
+    # pylibmc
+    'https://bitbucket.org/akorn/wheezy.caching/downloads',
+    # PIL
+    #'https://bitbucket.org/akorn/wheezy.captcha/downloads',
+    # lxml
+    'https://bitbucket.org/akorn/wheezy.http/downloads',
+    # pycrypto
+    'https://bitbucket.org/akorn/wheezy.security/downloads'
+]
 
 setup(
     name='mysite',
@@ -59,6 +79,7 @@ setup(
 
     zip_safe=False,
     install_requires=install_requires,
+    dependency_links=dependency_links,
     extras_require={
         'dev': [
             'coverage',
