@@ -43,8 +43,12 @@ class BaseHandler(MethodHandler, ValidationMixin):
     # region: routing
 
     def path_for(self, name, **kwargs):
-        return self.request.root_path + self.options['path_for'](
-            name, **dict(self.route_args, **kwargs))
+        if kwargs:
+            return self.request.root_path + self.options['path_for'](
+                name, **dict(self.route_args, **kwargs))
+        else:
+            return self.request.root_path + self.options['path_for'](
+                name, **self.route_args)
 
     def absolute_url_for(self, name, **kwargs):
         parts = self.request.urlparts
