@@ -25,7 +25,7 @@ static_files = response_cache(static_cache_profile)(
             age=timedelta(hours=1))))
 
 locale_urls = public_urls + membership_urls
-locale_urls.append(('error/', error_urls, locale_defaults))
+locale_urls.append(('error/', error_urls))
 all_urls = [
     url('', home, locale_defaults, name='default'),
     (locale_pattern, locale_urls, locale_defaults),
