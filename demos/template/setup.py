@@ -10,7 +10,7 @@ except:
 README = open(os.path.join(os.path.dirname(__file__), 'README')).read()
 
 install_requires = [
-    'wheezy.core>=0.1.70',
+    'wheezy.core>=0.1.80',
     'wheezy.caching>=0.1.54',
     'wheezy.html>=0.1.109',
     'wheezy.http>=0.1.236',
@@ -34,7 +34,7 @@ try:
 except:
     install_requires.append('uuid')
 
-dependency_links=[
+dependency_links = [
     # pylibmc
     'https://bitbucket.org/akorn/wheezy.caching/downloads',
     # PIL
@@ -52,7 +52,7 @@ setup(
     long_description=README,
     url='https://scm.dev.local/svn/mysite/trunk',
 
-	author='MySite Team',
+    author='MySite Team',
     author_email='mysite at dev.local',
 
     license='COMMERCIAL',

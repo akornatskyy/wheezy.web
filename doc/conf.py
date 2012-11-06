@@ -11,7 +11,8 @@
 # All configuration values have a default; values that are commented out
 # serve to show the default.
 
-import sys, os
+import os
+import sys
 
 # If extensions (or modules to document with autodoc) are in another directory,
 # add these directories to sys.path here. If the directory is relative to the
@@ -25,7 +26,7 @@ sys.path.extend([
     os.path.abspath(os.path.join('..', '..', 'wheezy.routing', 'src')),
     os.path.abspath(os.path.join('..', '..', 'wheezy.security', 'src')),
     os.path.abspath(os.path.join('..', '..', 'wheezy.validation', 'src')),
-	os.path.abspath(os.path.join('..', 'src'))
+    os.path.abspath(os.path.join('..', 'src'))
 ])
 
 # -- General configuration -----------------------------------------------------
@@ -131,8 +132,8 @@ html_theme_options = {
     'codetextcolor': '#060',
     'bodyfont': 'Georgia, serif',
     'headfont': 'Calibri, sans-serif',
-	'stickysidebar': True,
-	'externalrefs': True
+    'stickysidebar': True,
+    'externalrefs': True
 }
 
 # Add any paths that contain custom themes here, relative to this directory.

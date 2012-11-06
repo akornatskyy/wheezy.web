@@ -2,5 +2,5 @@
 """
 
 
-def authenticate(username):
-    return 'MV:' + username
+def has_account(username):
+    return 'MHA:' + username

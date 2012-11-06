@@ -23,17 +23,15 @@ from wheezy.security.crypto.comp import ripemd160
 from wheezy.security.crypto.comp import sha1
 from wheezy.security.crypto.comp import sha256
 
-from membership.repository.mock import MembershipRepository
-
 
 config.read('development.ini')
+mode = config.get('runtime', 'mode')
 
-cache = MemoryCache()
-cache_factory = lambda: cache
-
-
-# Custom
-MembershipPersistence = MembershipRepository
+if mode == 'mock':
+    cache = MemoryCache()
+    cache_factory = lambda: cache
+else:
+    raise NotImplementedError(mode)
 
 options = {}
 

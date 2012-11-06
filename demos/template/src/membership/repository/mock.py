@@ -27,7 +27,7 @@ class MembershipRepository(IMembershipRepository):
         return username in self.credentials
 
     def user_roles(self, username):
-        return self.roles.get(username, None)
+        return tuple(self.roles.get(username, None))
 
     def create_account(self, registration):
         credential = registration.credential

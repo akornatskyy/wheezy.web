@@ -1,8 +1,6 @@
 """
 """
 
-from operator import itemgetter
-
 from wheezy.core.collections import attrdict
 from wheezy.core.comp import u
 from wheezy.core.descriptors import attribute
@@ -52,7 +50,7 @@ class SignInHandler(BaseHandler):
         if (not self.try_update_model(credential)
                 & self.try_update_model(self.model)
                 or not self.validate(credential, credential_validator)
-                or not self.factory.membership.authenticate(credential)):
+                or not self.authenticate(credential)):
             if self.request.ajax:
                 return self.json_response({'errors': self.errors})
             credential.password = u('')
@@ -64,6 +62,14 @@ class SignInHandler(BaseHandler):
                 credential.username)))
         del self.xsrf_token
         return self.see_other_for('default')
+
+    def authenticate(self, credential):
+        #with self.factory as f:
+        f = self.factory.__enter__()
+        try:
+            return f.membership.authenticate(credential)
+        finally:
+            f.__exit__(None, None, None)
 
 
 class SignOutHandler(BaseHandler):
@@ -87,27 +93,32 @@ class SignUpHandler(BaseHandler):
     def translation(self):
         return self.translations['membership']
 
-    @attribute
-    def factory(self):
-        return Factory(self.context)
+    def factory(self, session_name):
+        return Factory(self.context, session_name)
 
     @handler_cache(profile=none_cache_profile)
     def get(self, registration=None):
         if self.principal:
             return self.redirect_for('default')
         registration = registration or Registration()
+
+        #with self.factory('ro') as f:
+        f = self.factory('ro')
+        try:
+            f.__enter__()
+            questions = f.membership.list_password_questions
+            account_types = f.membership.list_account_types
+        finally:
+            f.__exit__(None, None, None)
+
         return self.render_response(
             'membership/signup.html',
             model=self.model,
             registration=registration,
             account=registration.account,
             credential=registration.credential,
-            questions=sorted(
-                self.factory.membership.password_questions.items(),
-                key=itemgetter(1)),
-            account_types=sorted(
-                self.factory.membership.account_types.items(),
-                key=itemgetter(1)))
+            questions=questions,
+            account_types=account_types)
 
     def post(self):
         if not self.validate_resubmission():
@@ -123,16 +134,33 @@ class SignUpHandler(BaseHandler):
                 & self.try_update_model(registration.credential)
                 or not self.validate(self.model, password_match_validator)
                 & self.validate(registration, registration_validator)
-                or not self.factory.membership.create_account(registration)):
+                or not self.create_account(registration)):
             if self.request.ajax:
                 return self.json_response({'errors': self.errors})
             registration.credential.password = u('')
             self.model.confirm_password = u('')
             return self.get(registration)
+
+        #with self.factory('ro') as f:
+        f = self.factory('ro')
+        try:
+            f.__enter__()
+            roles = f.membership.roles(registration.credential.username)
+        finally:
+            f.__exit__(None, None, None)
+
         self.principal = Principal(
             id=registration.credential.username,
             alias=registration.account.display_name,
-            roles=tuple(self.factory.membership.roles(
-                registration.credential.username)))
+            roles=roles)
         del self.resubmission
         return self.see_other_for('default')
+
+    def create_account(self, registration):
+        #with self.factory('rw') as f:
+        f = self.factory('rw')
+        try:
+            f.__enter__()
+            return f.membership.create_account(registration)
+        finally:
+            f.__exit__(None, None, None)

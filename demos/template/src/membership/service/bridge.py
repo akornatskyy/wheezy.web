@@ -1,6 +1,8 @@
 """
 """
 
+from operator import itemgetter
+
 from wheezy.core.descriptors import attribute
 from wheezy.core.i18n import ref_gettext
 from wheezy.validation.mixin import ValidationMixin
@@ -32,11 +34,19 @@ class MembershipService(IMembershipService, ValidationMixin):
         }
 
     @attribute
+    def list_password_questions(self):
+        return sorted(self.password_questions.items(), key=itemgetter(1))
+
+    @attribute
     def account_types(self):
         return {
             'user': self.gettext('User'),
             'business': self.gettext('Business')
         }
+
+    @attribute
+    def list_account_types(self):
+        return sorted(self.account_types.items(), key=itemgetter(1))
 
     def authenticate(self, credential):
         assert isinstance(credential, Credential)

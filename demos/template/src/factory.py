@@ -3,25 +3,24 @@
 
 from wheezy.core.descriptors import attribute
 
-from config import MembershipPersistence
 from membership.repository.caching import MembershipRepository
 from membership.service.bridge import MembershipService
 
 
 class Factory(object):
 
-    def __init__(self, context):
-        self.repository = RepositoryFactory(self.session, self.cache)
+    def __init__(self, context, session_name='ro'):
         self.translations = context['translations']
         self.errors = context['errors']
+        self.session = sessions[session_name]
+        self.repository = RepositoryFactory(self.session)
 
-    @property
-    def session(self):
-        return None
+    def __enter__(self):
+        self.session.__enter__()
+        return self
 
-    @property
-    def cache(self):
-        return None
+    def __exit__(self, exc_type, exc_value, traceback):
+        self.session.__exit__(exc_value, exc_value, traceback)
 
     @attribute
     def membership(self):
@@ -33,12 +32,23 @@ class Factory(object):
 
 class RepositoryFactory(object):
 
-    def __init__(self, session, cache):
+    def __init__(self, session):
         self.session = session
-        self.cache = cache
 
     @attribute
     def membership(self):
-        return MembershipRepository(
-            MembershipPersistence(self.session),
-            self.cache)
+        return MembershipRepository(MembershipPersistence(self.session))
+
+
+# region: configuration details
+
+from config import mode
+
+if mode == 'mock':
+    from wheezy.core.db import NullSession
+    from membership.repository.mock import MembershipRepository \
+        as MembershipPersistence
+    sessions = {'ro': NullSession(), 'rw': NullSession()}
+else:
+    raise NotImplementedError(mode)
+del mode
