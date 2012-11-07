@@ -161,6 +161,8 @@ class SignUpHandler(BaseHandler):
         f = self.factory('rw')
         try:
             f.__enter__()
-            return f.membership.create_account(registration)
+            succeed = f.membership.create_account(registration)
+            f.session.commit()
+            return succeed
         finally:
             f.__exit__(None, None, None)

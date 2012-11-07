@@ -12,12 +12,13 @@ class MembershipRepository(IMembershipRepository):
         'biz': u('P@ssw0rd')
     }
     roles = {
-        'demo': tuple(['user']),
-        'biz': tuple(['business'])
+        'demo': ['user'],
+        'biz': ['business']
     }
 
     def __init__(self, session):
-        pass
+        # ensure session is entered
+        session.cursor()
 
     def authenticate(self, credential):
         return credential.password == self.credentials.get(
