@@ -27,14 +27,15 @@ class MembershipRepository(IMembershipRepository):
         finally:
             c.__exit__(None, None, None)
         if result is None:
-            #with cache_factory() as c:
-            c = cache_factory()
-            try:
-                c.__enter__()
-                result = self.inner.has_account(username)
-                c.set(key, result, time=600, namespace='membership')
-            finally:
-                c.__exit__(None, None, None)
+            result = self.inner.has_account(username)
+            if result is not None:
+                #with cache_factory() as c:
+                c = cache_factory()
+                try:
+                    c.__enter__()
+                    c.set(key, result, time=600, namespace='membership')
+                finally:
+                    c.__exit__(None, None, None)
         return result
 
     def user_roles(self, username):
