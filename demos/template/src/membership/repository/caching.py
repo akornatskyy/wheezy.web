@@ -2,8 +2,6 @@
 """
 """
 
-from wheezy.core.introspection import looks
-
 from config import cache
 from membership.repository import keys
 from membership.repository.contract import IMembershipRepository
@@ -37,4 +35,9 @@ class MembershipRepository(object):
         return self.inner.create_account(registration)
 
 
+# region: internal details
+
+from wheezy.core.introspection import looks
+assert looks(MembershipRepository).like(IMembershipRepository)
 assert looks(IMembershipRepository).like(MembershipRepository)
+del looks
