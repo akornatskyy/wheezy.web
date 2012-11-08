@@ -11,10 +11,9 @@ from membership.models import Credential
 from membership.models import Registration
 from membership.validation import credential_validator
 from membership.validation import registration_validator
-from membership.service.contract import IMembershipService
 
 
-class MembershipService(IMembershipService, ValidationMixin):
+class MembershipService(ValidationMixin):
 
     def __init__(self, repository, errors, translations):
         self.repository = repository

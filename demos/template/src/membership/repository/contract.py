@@ -4,7 +4,7 @@
 
 class IMembershipRepository(object):  # pragma: nocover
 
-    def authenticate(credential):
+    def authenticate(self, credential):
         assert isinstance(credential, Credential)
         return False
 
