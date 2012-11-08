@@ -10,7 +10,7 @@ from wheezy.web import handler_cache
 from wheezy.web.handlers import BaseHandler
 from wheezy.web.transforms import handler_transforms
 
-from config import cache_factory
+from config import cache
 from config import session
 from models import Greeting
 from repository import Repository
@@ -23,14 +23,14 @@ list_cache_dependency = CacheDependency('list', time=15 * 60)
 class ListHandler(BaseHandler):
 
     @handler_cache(CacheProfile('server', duration=timedelta(minutes=15),
-            vary_environ=['HTTP_ACCEPT_ENCODING']))
+                                vary_environ=['HTTP_ACCEPT_ENCODING']))
     @handler_transforms(gzip_transform(compress_level=9, min_length=250))
     def get(self):
         with session() as db:
             repo = Repository(db)
             greetings = repo.list_greetings()
         response = self.render_response('list.html',
-                greetings=greetings)
+                                        greetings=greetings)
         response.dependency = list_cache_dependency
         return response
 
@@ -38,7 +38,7 @@ class ListHandler(BaseHandler):
 class AddHandler(BaseHandler):
 
     @handler_cache(CacheProfile('both', duration=timedelta(hours=1),
-            vary_environ=['HTTP_ACCEPT_ENCODING']))
+                                vary_environ=['HTTP_ACCEPT_ENCODING']))
     @handler_transforms(gzip_transform(compress_level=9, min_length=250))
     def get(self, greeting=None):
         greeting = greeting or Greeting()
@@ -57,6 +57,5 @@ class AddHandler(BaseHandler):
                 self.error('Sorry, can not add your greeting.')
                 return self.get(greeting)
             db.commit()
-        with cache_factory() as cache:
-            list_cache_dependency.delete(cache)
+        list_cache_dependency.delete(cache)
         return self.see_other_for('list')

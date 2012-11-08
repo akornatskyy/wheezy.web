@@ -9,9 +9,9 @@ from views import ListHandler
 
 
 all_urls = [
-        url('', ListHandler, name='list'),
-        url('add', AddHandler, name='add'),
-        url('static/{path:any}',
-            file_handler(root='static/'),
-            name='static')
+    url('', ListHandler, name='list'),
+    url('add', AddHandler, name='add'),
+    url('static/{path:any}',
+        file_handler(root='static/'),
+        name='static')
 ]

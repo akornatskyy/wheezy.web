@@ -11,9 +11,9 @@ from urls import all_urls
 
 
 main = WSGIApplication([
-            bootstrap_defaults(url_mapping=all_urls),
-            http_cache_middleware_factory,
-            path_routing_middleware_factory
+    bootstrap_defaults(url_mapping=all_urls),
+    http_cache_middleware_factory,
+    path_routing_middleware_factory
 ], options)
 
 

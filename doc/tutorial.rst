@@ -141,7 +141,7 @@ Let add configuration file where we can store some settings (file
 
     def session():
         return sqlite3.connect('guestbook.db',
-            detect_types=sqlite3.PARSE_DECLTYPES)
+                               detect_types=sqlite3.PARSE_DECLTYPES)
 
 We have defined function ``session()`` that returns an object valid to
 issue some database related operations including query for data,
@@ -287,11 +287,11 @@ Let add Mako template configuration (file ``config.py``)::
     from wheezy.web.templates import MakoTemplate
 
     options = {
-            'render_template': MakoTemplate(
-                directories=['templates'],
-                filesystem_checks=False,
-                preprocessor=[widget_preprocessor]
-            )
+        'render_template': MakoTemplate(
+            directories=['templates'],
+            filesystem_checks=False,
+            preprocessor=[widget_preprocessor]
+        )
     }
 
 Above configuration says that templates can be found in ``templates``
@@ -398,11 +398,11 @@ Let map the root path to list handler and ``add`` path to add handler
     from views import ListHandler
 
     all_urls = [
-            url('', ListHandler, name='list'),
-            url('add', AddHandler, name='add'),
-            url('static/{path:any}',
-                file_handler(root='static/'),
-                name='static')
+        url('', ListHandler, name='list'),
+        url('add', AddHandler, name='add'),
+        url('static/{path:any}',
+            file_handler(root='static/'),
+            name='static')
     ]
 
 Note each url mapping has unique name so it can be easily referenced by
@@ -423,8 +423,8 @@ together (file ``app.py``)::
 
 
     main = WSGIApplication([
-                bootstrap_defaults(url_mapping=all_urls),
-                path_routing_middleware_factory
+        bootstrap_defaults(url_mapping=all_urls),
+        path_routing_middleware_factory
     ], options)
 
     if __name__ == '__main__':
@@ -515,17 +515,16 @@ this use case with `wheezy.caching`_ package.
 
 Open ``config.py`` and add import for MemoryCache::
 
-    from wheezy.caching import MemoryCache
+    from wheezy.caching.memory import MemoryCache
 
 At the end of ``config.py`` add initialization logic for cache, cache factory
 and configuration options for HTTP cache middleware)::
 
     cache = MemoryCache()
-    cache_factory = lambda: cache
 
     # HTTPCacheMiddleware
     options.update({
-            'http_cache_factory': cache_factory
+        'http_cache': cache
     })
 
 Since we are going to use HTTP cache middleware we need instruct application
@@ -538,9 +537,9 @@ To the list of ``WSGIApplication`` middleware add HTTP cache middleware
 factory::
 
     main = WSGIApplication([
-                bootstrap_defaults(url_mapping=all_urls),
-                http_cache_middleware_factory,
-                path_routing_middleware_factory
+        bootstrap_defaults(url_mapping=all_urls),
+        http_cache_middleware_factory,
+        path_routing_middleware_factory
     ], options)
 
 Finally let apply cache profile to the ListHandler. Few imports
@@ -602,7 +601,7 @@ Modify ``ListHandler`` so it is aware about the list cache dependency::
 Finally let add a trigger that cause the invalidation to occur in cache.
 Import cache factory from config module::
 
-    from config import cache_factory
+    from config import cache
 
 Modify ``AddHandler`` so on successful commit the content cache for
 ``ListHandler`` response is invalidated::
@@ -612,8 +611,7 @@ Modify ``AddHandler`` so on successful commit the content cache for
         def post(self):
             ...
                 db.commit()
-            with cache_factory() as cache:
-                list_cache_dependency.delete(cache)
+            list_cache_dependency.delete(cache)
             return self.see_other_for('list')
 
 Try run application by issuing the following command::

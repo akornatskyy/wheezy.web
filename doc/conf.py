@@ -219,8 +219,8 @@ htmlhelp_basename = 'wheezy.webdoc'
 # (source start file, target name, title, author, documentclass
 # [howto/manual]).
 latex_documents = [
-  ('index', 'wheezy.web.tex', u'wheezy.web Documentation',
-   u'Andriy Kornatskyy', 'manual'),
+    ('index', 'wheezy.web.tex', u'wheezy.web Documentation',
+     u'Andriy Kornatskyy', 'manual'),
 ]
 
 # The name of an image file (relative to this directory) to place at the top
