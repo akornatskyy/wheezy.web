@@ -19,7 +19,7 @@ from wheezy.web.middleware import path_routing_middleware_factory
 
 
 cache = MemoryCache()
-cache_factory = lambda: cache
+
 public_cache_profile = CacheProfile(
     'public', duration=timedelta(minutes=15), enabled=True)
 no_cache_profile = CacheProfile(
@@ -68,7 +68,7 @@ all_urls = [
 ]
 
 options = {
-    'http_cache_factory': cache_factory
+    'http_cache': cache
 }
 
 main = WSGIApplication(

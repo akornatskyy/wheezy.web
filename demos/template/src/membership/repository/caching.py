@@ -1,9 +1,8 @@
+
 """
 """
 
-from wheezy.caching import CacheDependency
-
-from config import cache_factory
+from config import cache
 from membership.repository import keys
 from membership.repository.contract import IMembershipRepository
 
@@ -19,23 +18,11 @@ class MembershipRepository(IMembershipRepository):
 
     def has_account(self, username):
         key = keys.has_account(username)
-        #with cache_factory() as c:
-        c = cache_factory()
-        try:
-            c.__enter__()
-            result = c.get(key)
-        finally:
-            c.__exit__(None, None, None)
+        result = cache.get(key)
         if result is None:
             result = self.inner.has_account(username)
             if result is not None:
-                #with cache_factory() as c:
-                c = cache_factory()
-                try:
-                    c.__enter__()
-                    c.set(key, result, time=600, namespace='membership')
-                finally:
-                    c.__exit__(None, None, None)
+                cache.set(key, result, time=600, namespace='membership')
         return result
 
     def user_roles(self, username):
@@ -44,11 +31,5 @@ class MembershipRepository(IMembershipRepository):
 
     def create_account(self, registration):
         key = keys.has_account(registration.credential.username)
-        #with cache_factory() as c:
-        c = cache_factory()
-        try:
-            c.__enter__()
-            c.delete(key, namespace='membership')
-        finally:
-            c.__exit__(None, None, None)
+        cache.delete(key, namespace='membership')
         return self.inner.create_account(registration)

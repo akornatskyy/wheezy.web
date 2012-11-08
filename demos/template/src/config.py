@@ -29,7 +29,6 @@ mode = config.get('runtime', 'mode')
 
 if mode == 'mock':
     cache = MemoryCache()
-    cache_factory = lambda: cache
 else:
     raise NotImplementedError(mode)
 
@@ -37,7 +36,7 @@ options = {}
 
 # HTTPCacheMiddleware
 options.update({
-    'http_cache_factory': cache_factory
+    'http_cache': cache
 })
 
 # Cache Profiles
@@ -90,7 +89,7 @@ if template_engine == 'mako':
         module_directory=config.get('mako', 'module-directory'),
         filesystem_checks=config.getboolean('mako', 'filesystem-checks'),
         directories=directories,
-        cache_factory=cache_factory,
+        cache=cache,
         preprocessor=[
             inline_preprocessor(directories, config.getboolean(
                 'mako', 'inline-preprocessor-fallback')),

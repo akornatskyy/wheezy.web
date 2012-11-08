@@ -10,10 +10,10 @@ class MakoTemplate(object):
     def __init__(
             self, directories=None,
             module_directory='/tmp/mako_modules',
-            cache_factory=None,
+            cache=None,
             **kwargs):
         from mako.lookup import TemplateLookup
-        if cache_factory is None:
+        if cache is None:
             self.template_lookup = TemplateLookup(
                 directories=directories or ['content/templates'],
                 module_directory=module_directory,
@@ -25,7 +25,7 @@ class MakoTemplate(object):
                 directories=directories or ['content/templates'],
                 module_directory=module_directory,
                 cache_impl='wheezy',
-                cache_args={'cache_factory': cache_factory},
+                cache_args={'cache': cache},
                 **kwargs)
 
     def __call__(self, template_name, kwargs):
@@ -34,30 +34,22 @@ class MakoTemplate(object):
 
 
 class MakoCacheImpl(object):
-    __slots__ = ('cache_factory', 'prefix')
+    __slots__ = ('cache', 'prefix')
 
     pass_context = False
 
     def __init__(self, cache):
-        self.cache_factory = cache.template.cache_args['cache_factory']
+        self.cache = cache.template.cache_args['cache']
         self.prefix = cache.id
 
     def get_or_create(self, key, creation_function, **kwargs):
         namespace = kwargs.get('namespace', None)
-        context = self.cache_factory()
-        cache = context.__enter__()
-        try:
-            value = cache.get(self.prefix + key, namespace)
-            if value is None:
-                value = creation_function()
-                cache.add(
-                    self.prefix + key,
-                    value,
-                    int(kwargs.get('time', 0)),
-                    namespace)
-            return value
-        finally:
-            context.__exit__(None, None, None)
+        value = self.cache.get(self.prefix + key, namespace)
+        if value is None:
+            value = creation_function()
+            self.cache.add(self.prefix + key, value,
+                           int(kwargs.get('time', 0)), namespace)
+        return value
 
     def set(self, key, value, **kw):
         raise NotImplementedError()
