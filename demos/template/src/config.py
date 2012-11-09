@@ -214,11 +214,11 @@ elif template_engine == 'wheezy.preprocessor':
     render_template = WheezyTemplate(engine)
 
 # BaseHandler
+translations = TranslationsManager(
+    directories=['i18n'],
+    default_lang='en')
 options.update({
-    'translations_manager': TranslationsManager(
-        directories=['i18n'],
-        default_lang='en'),
-
+    'translations_manager': translations,
     'render_template': render_template,
 
     'ticket': Ticket(

@@ -12,6 +12,22 @@ class MembershipRepository(object):
     def __init__(self, inner):
         self.inner = inner
 
+    def password_questions(self, locale):
+        # TODO:
+        return self.inner.password_questions(locale)
+
+    def list_password_questions(self, locale):
+        # TODO:
+        return self.inner.list_password_questions(locale)
+
+    def account_types(self, locale):
+        # TODO:
+        return self.inner.account_types(locale)
+
+    def list_account_types(self, locale):
+        # TODO:
+        return self.inner.list_account_types(locale)
+
     def authenticate(self, credential):
         # TODO:
         return self.inner.authenticate(credential)

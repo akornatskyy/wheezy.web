@@ -1,8 +1,6 @@
 """
 """
 
-from operator import itemgetter
-
 from wheezy.core.descriptors import attribute
 from wheezy.core.i18n import ref_gettext
 from wheezy.validation.mixin import ValidationMixin
@@ -15,10 +13,11 @@ from membership.validation import registration_validator
 
 class MembershipService(ValidationMixin):
 
-    def __init__(self, repository, errors, translations):
+    def __init__(self, repository, errors, translations, locale):
         self.repository = repository
         self.errors = errors
         self.translations = translations
+        self.locale = locale
 
     @attribute
     def gettext(self):
@@ -26,26 +25,19 @@ class MembershipService(ValidationMixin):
 
     @attribute
     def password_questions(self):
-        return {
-            '1': self.gettext('Favorite number'),
-            '2': self.gettext('City of birth'),
-            '3': self.gettext('Favorite color')
-        }
+        return self.repository.membership.password_questions(self.locale)
 
     @attribute
     def list_password_questions(self):
-        return sorted(self.password_questions.items(), key=itemgetter(1))
+        return self.repository.membership.list_password_questions(self.locale)
 
     @attribute
     def account_types(self):
-        return {
-            'user': self.gettext('User'),
-            'business': self.gettext('Business')
-        }
+        return self.repository.membership.account_types(self.locale)
 
     @attribute
     def list_account_types(self):
-        return sorted(self.account_types.items(), key=itemgetter(1))
+        return self.repository.membership.list_account_types(self.locale)
 
     def authenticate(self, credential):
         assert isinstance(credential, Credential)

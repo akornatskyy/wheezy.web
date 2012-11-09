@@ -10,8 +10,7 @@ from membership.service.bridge import MembershipService
 class Factory(object):
 
     def __init__(self, context, session_name='ro'):
-        self.translations = context['translations']
-        self.errors = context['errors']
+        self.context = context
         self.session = sessions[session_name]
         self.repository = RepositoryFactory(self.session)
 
@@ -24,10 +23,12 @@ class Factory(object):
 
     @attribute
     def membership(self):
+        context = self.context
         return MembershipService(
             self.repository,
-            self.errors,
-            self.translations)
+            context['errors'],
+            context['translations'],
+            context['locale'])
 
 
 class RepositoryFactory(object):
