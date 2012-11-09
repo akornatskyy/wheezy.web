@@ -2,8 +2,9 @@
 """
 """
 
-from operator import itemgetter
 
+from wheezy.core.collections import map_values
+from wheezy.core.collections import sorted_items
 from wheezy.core.comp import u
 from wheezy.core.i18n import ref_gettext
 
@@ -21,22 +22,18 @@ class MembershipRepository(object):
         session.cursor()
 
     def password_questions(self, locale):
-        gettext = ref_gettext(translations[locale])
-        return dict([(key, gettext(value))
-                     for key, value in db['password_question'].items()])
+        return map_values(ref_gettext(translations[locale]),
+                          db['password_question'])
 
     def list_password_questions(self, locale):
-        return sorted(self.password_questions(locale).items(),
-                      key=itemgetter(1))
+        return tuple(sorted_items(self.password_questions(locale)))
 
     def account_types(self, locale):
-        gettext = ref_gettext(translations[locale])
-        return dict([(key, gettext(value))
-                     for key, value in db['account_type'].items()])
+        return map_values(ref_gettext(translations[locale]),
+                          db['account_type'])
 
     def list_account_types(self, locale):
-        return sorted(self.account_types(locale).items(),
-                      key=itemgetter(1))
+        return tuple(sorted_items(self.account_types(locale)))
 
     def authenticate(self, credential):
         return credential.password == db['user'].get(
@@ -46,12 +43,12 @@ class MembershipRepository(object):
         return username in db['user']
 
     def user_roles(self, username):
-        return tuple(db['role'].get(username, None))
+        return tuple(db['user_role'].get(username, None))
 
     def create_account(self, registration):
         credential = registration.credential
         db['user'][credential.username] = credential.password
-        db['role'][credential.username] = tuple(
+        db['user_role'][credential.username] = tuple(
             [registration.account.account_type])
         return True
 
@@ -63,7 +60,7 @@ db = {
         'demo': u('P@ssw0rd'),
         'biz': u('P@ssw0rd')
     },
-    'role': {
+    'user_role': {
         'demo': ['user'],
         'biz': ['business']
     },
@@ -81,4 +78,4 @@ db = {
 from wheezy.core.introspection import looks
 assert looks(MembershipRepository).like(IMembershipRepository)
 assert looks(IMembershipRepository).like(MembershipRepository)
-del looks
+del looks, IMembershipRepository

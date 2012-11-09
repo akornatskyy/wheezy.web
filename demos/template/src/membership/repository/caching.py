@@ -56,4 +56,4 @@ class MembershipRepository(object):
 from wheezy.core.introspection import looks
 assert looks(MembershipRepository).like(IMembershipRepository)
 assert looks(IMembershipRepository).like(MembershipRepository)
-del looks
+del looks, IMembershipRepository
