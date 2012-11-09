@@ -2,8 +2,6 @@
 """
 """
 
-from wheezy.core.descriptors import attribute
-
 
 class IMembershipRepository(object):  # pragma: nocover
 
@@ -20,7 +18,6 @@ class IMembershipRepository(object):  # pragma: nocover
         return sorted([])
 
     def authenticate(self, credential):
-        assert isinstance(credential, Credential)
         return False
 
     def has_account(self, username):

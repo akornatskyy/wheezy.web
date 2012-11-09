@@ -88,6 +88,12 @@ gunicorn:
 	export PYTHONPATH=$$PYTHONPATH:./src ; \
 		$(ENV)/bin/gunicorn -b 0.0.0.0:8080 -w 1 app:main
 
+qa:
+	if [ "$$(echo $(VERSION) | sed 's/\.//')" -eq 27 ]; then \
+		flake8 --max-complexity 6 src setup.py && \
+		pep8 src setup.py ; \
+	fi
+
 test:
 	echo $(TEMPLATE_ENGINE) ; export TEMPLATE_ENGINE=$(TEMPLATE_ENGINE) ; \
 	$(PYTEST) -q -x --pep8 --doctest-modules src/

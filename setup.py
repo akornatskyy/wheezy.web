@@ -5,7 +5,7 @@ import os
 try:
     from setuptools import setup
 except:
-    from distutils.core import setup
+    from distutils.core import setup  # noqa
 
 README = open(os.path.join(os.path.dirname(__file__), 'README')).read()
 
@@ -20,8 +20,8 @@ install_requires = [
 ]
 
 try:
-    import uuid
-except:
+    import uuid  # noqa
+except ImportError:
     install_requires.append('uuid')
 
 setup(

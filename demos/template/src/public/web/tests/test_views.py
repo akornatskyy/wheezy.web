@@ -7,7 +7,7 @@ import unittest
 try:
     import json
 except ImportError:  # pragma: nocover
-    json = None
+    json = None  # noqa
 
 
 from wheezy.http.functional import WSGIClient

@@ -2,6 +2,8 @@
 """ ``handlers`` package.
 """
 
+# flake8: noqa
+
 from wheezy.web.handlers.base import BaseHandler
 from wheezy.web.handlers.base import RedirectRouteHandler
 from wheezy.web.handlers.base import permanent_redirect_handler

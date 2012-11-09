@@ -75,7 +75,7 @@ class TenjinTemplate(object):
         try:  # pragma: nocover
             from webext import escape_html as escape
         except ImportError:  # pragma: nocover
-            from tenjin.helpers import escape
+            from tenjin.helpers import escape  # noqa
 
         from wheezy.core.comp import str_type
         self.helpers = {
