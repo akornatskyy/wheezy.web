@@ -11,7 +11,7 @@ from config import translations
 from membership.repository.contract import IMembershipRepository
 
 
-translations = translations['membership']
+translations = translations.domains['membership']
 
 
 class MembershipRepository(object):
