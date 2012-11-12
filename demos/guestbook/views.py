@@ -17,7 +17,7 @@ from repository import Repository
 from validation import greeting_validator
 
 
-list_cache_dependency = CacheDependency('list', time=15 * 60)
+list_cache_dependency = CacheDependency(cache, 'list', time=15 * 60)
 
 
 class ListHandler(BaseHandler):
@@ -57,5 +57,5 @@ class AddHandler(BaseHandler):
                 self.error('Sorry, can not add your greeting.')
                 return self.get(greeting)
             db.commit()
-        list_cache_dependency.delete(cache)
+        list_cache_dependency.delete()
         return self.see_other_for('list')
