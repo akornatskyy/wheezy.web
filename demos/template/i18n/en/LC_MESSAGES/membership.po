@@ -13,45 +13,41 @@ msgstr "Date of birth (YYYY/MM/DD):"
 msgid "YYYY/MM/DD"
 msgstr "%Y/%m/%d"
 
-#: src/membership/service/bridge.py:29 src/membership/service/bridge.py:30
-#: src/membership/service/bridge.py:31
+#: src/membership/repository/mock.py:69
 msgid "Favorite number"
 msgstr "Favorite number"
 
-#: src/membership/service/bridge.py:30 src/membership/service/bridge.py:31
-#: src/membership/service/bridge.py:32
+#: src/membership/repository/mock.py:70
 msgid "City of birth"
 msgstr "City of birth"
 
-#: src/membership/service/bridge.py:31 src/membership/service/bridge.py:32
-#: src/membership/service/bridge.py:33
+#: src/membership/repository/mock.py:71
 msgid "Favorite color"
 msgstr "Favorite color"
 
-#: src/membership/service/bridge.py:37 src/membership/service/bridge.py:43
+#: src/membership/repository/mock.py:74
 msgid "User"
 msgstr "User"
 
-#: src/membership/service/bridge.py:38 src/membership/service/bridge.py:44
+#: src/membership/repository/mock.py:75
 msgid "Business"
 msgstr "Business"
 
-#: src/membership/service/bridge.py:47 src/membership/service/bridge.py:57
+#: src/membership/service/bridge.py:47 src/membership/service/bridge.py:48
 msgid "The username or password provided is incorrect."
 msgstr "The username or password provided is incorrect."
 
-#: src/membership/service/bridge.py:61 src/membership/service/bridge.py:71
+#: src/membership/service/bridge.py:61 src/membership/service/bridge.py:62
 msgid "The user with such username is already registered. Please try another."
 msgstr "The user with such username is already registered. Please try another."
 
-#: src/membership/service/bridge.py:66 src/membership/service/bridge.py:76
+#: src/membership/service/bridge.py:66 src/membership/service/bridge.py:67
 msgid ""
 "The system was unable to create an account for you. Please try again later."
 msgstr ""
 "The system was unable to create an account for you. Please try again later."
 
-#: src/membership/web/views.py:107 src/membership/web/views.py:112
-#: src/membership/web/views.py:114 src/membership/web/views.py:125
+#: src/membership/web/views.py:107 src/membership/web/views.py:125
 msgid ""
 "Your registration request has been queued. Please wait while your request "
 "will be processed. If your request fails please try again."

@@ -55,6 +55,7 @@ class MembershipRepository(object):
 
 # region: internal details
 
+_ = lambda s: s
 db = {
     'user': {
         'demo': u('P@ssw0rd'),
@@ -65,13 +66,13 @@ db = {
         'biz': ['business']
     },
     'password_question': {
-        '1': 'Favorite number',
-        '2': 'City of birth',
-        '3': 'Favorite color'
+        '1': _('Favorite number'),
+        '2': _('City of birth'),
+        '3': _('Favorite color')
     },
     'account_type': {
-        'user': 'User',
-        'business': 'Business'
+        'user': _('User'),
+        'business': _('Business')
     }
 }
 
