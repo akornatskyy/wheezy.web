@@ -5,11 +5,10 @@
 
 from wheezy.core.collections import map_values
 from wheezy.core.collections import sorted_items
-from wheezy.core.comp import u
 from wheezy.core.i18n import ref_gettext
 
 from config import translations
-from membership.repository.contract import IMembershipRepository
+from membership.repository.samples import db
 
 
 translations = translations.domains['membership']
@@ -55,28 +54,8 @@ class MembershipRepository(object):
 
 # region: internal details
 
-_ = lambda s: s
-db = {
-    'user': {
-        'demo': u('P@ssw0rd'),
-        'biz': u('P@ssw0rd')
-    },
-    'user_role': {
-        'demo': ['user'],
-        'biz': ['business']
-    },
-    'password_question': {
-        '1': _('Favorite number'),
-        '2': _('City of birth'),
-        '3': _('Favorite color')
-    },
-    'account_type': {
-        'user': _('User'),
-        'business': _('Business')
-    }
-}
-
 from wheezy.core.introspection import looks
+from membership.repository.contract import IMembershipRepository
 assert looks(MembershipRepository).like(IMembershipRepository)
 assert looks(IMembershipRepository).like(MembershipRepository)
 del looks, IMembershipRepository
