@@ -2,9 +2,17 @@
 """
 """
 
+from wheezy.caching.patterns import key_builder
+from wheezy.caching.patterns import partial_get_or_set
+from wheezy.caching.patterns import wraps_get_or_set
+
 from config import cache
 from membership.repository import keys
-from membership.repository.contract import IMembershipRepository
+
+
+kb = key_builder(key_prefix='mbr')
+cached = wraps_get_or_set(cache, kb, 3600 * 24)
+cached_long_gs = partial_get_or_set(cache, 3600, namespace='membership')
 
 
 class MembershipRepository(object):
@@ -12,20 +20,20 @@ class MembershipRepository(object):
     def __init__(self, inner):
         self.inner = inner
 
+    @cached
     def password_questions(self, locale):
-        # TODO:
         return self.inner.password_questions(locale)
 
+    @cached
     def list_password_questions(self, locale):
-        # TODO:
         return self.inner.list_password_questions(locale)
 
+    @cached
     def account_types(self, locale):
-        # TODO:
         return self.inner.account_types(locale)
 
+    @cached
     def list_account_types(self, locale):
-        # TODO:
         return self.inner.list_account_types(locale)
 
     def authenticate(self, credential):
@@ -33,13 +41,16 @@ class MembershipRepository(object):
         return self.inner.authenticate(credential)
 
     def has_account(self, username):
-        key = keys.has_account(username)
-        result = cache.get(key)
-        if result is None:
-            result = self.inner.has_account(username)
-            if result is not None:
-                cache.set(key, result, time=600, namespace='membership')
-        return result
+        #key = keys.has_account(username)
+        #result = cache.get(key)
+        #if result is None:
+        #    result = self.inner.has_account(username)
+        #    if result is not None:
+        #        cache.set(key, result, time=600, namespace='membership')
+        #return result
+        return cached_long_gs(
+            keys.has_account(username),
+            lambda: self.inner.has_account(username))
 
     def user_roles(self, username):
         # TODO:
@@ -54,6 +65,12 @@ class MembershipRepository(object):
 # region: internal details
 
 from wheezy.core.introspection import looks
-assert looks(MembershipRepository).like(IMembershipRepository)
-assert looks(IMembershipRepository).like(MembershipRepository)
-del looks, IMembershipRepository
+from membership.repository.contract import IMembershipRepository
+ignore_argspec = [
+    'password_questions', 'list_password_questions',
+    'account_types', 'list_account_types']
+assert looks(MembershipRepository).like(
+    IMembershipRepository, ignore_argspec=ignore_argspec)
+assert looks(IMembershipRepository).like(
+    MembershipRepository, ignore_argspec=ignore_argspec)
+del looks, IMembershipRepository, ignore_argspec
