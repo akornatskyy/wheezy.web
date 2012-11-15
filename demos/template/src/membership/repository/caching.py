@@ -2,17 +2,16 @@
 """
 """
 
+from wheezy.caching.patterns import Cached
 from wheezy.caching.patterns import key_builder
-from wheezy.caching.patterns import partial_get_or_set
-from wheezy.caching.patterns import wraps_get_or_set
 
 from config import cache
 from membership.repository import keys
 
 
 kb = key_builder(key_prefix='mbr')
-cached = wraps_get_or_set(cache, kb, 3600 * 24)
-cached_long_gs = partial_get_or_set(cache, 3600, namespace='membership')
+cached = Cached(cache, kb, time=3600 * 24, namespace='membership')
+cached_long = Cached(cache, kb, time=3600, namespace='membership')
 
 
 class MembershipRepository(object):
@@ -46,9 +45,9 @@ class MembershipRepository(object):
         #if result is None:
         #    result = self.inner.has_account(username)
         #    if result is not None:
-        #        cache.set(key, result, time=600, namespace='membership')
+        #        cache.set(key, result, time=3600, namespace='membership')
         #return result
-        return cached_long_gs(
+        return cached_long.get_or_set(
             keys.has_account(username),
             lambda: self.inner.has_account(username))
 
@@ -57,8 +56,7 @@ class MembershipRepository(object):
         return self.inner.user_roles(username)
 
     def create_account(self, registration):
-        key = keys.has_account(registration.credential.username)
-        cache.delete(key, namespace='membership')
+        cached.delete(keys.has_account(registration.credential.username))
         return self.inner.create_account(registration)
 
 
