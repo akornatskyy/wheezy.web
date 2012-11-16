@@ -40,10 +40,6 @@ options.update({
 })
 
 # Cache Profiles
-none_cache_profile = CacheProfile(
-    'none',
-    no_store=True,
-    enabled=True)
 static_cache_profile = CacheProfile(
     'public',
     duration=timedelta(minutes=15),

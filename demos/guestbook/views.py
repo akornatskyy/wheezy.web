@@ -3,21 +3,17 @@
 
 from datetime import timedelta
 
-from wheezy.caching import CacheDependency
 from wheezy.http import CacheProfile
 from wheezy.http.transforms import gzip_transform
 from wheezy.web import handler_cache
 from wheezy.web.handlers import BaseHandler
 from wheezy.web.transforms import handler_transforms
 
-from config import cache
+from config import cached
 from config import session
 from models import Greeting
 from repository import Repository
 from validation import greeting_validator
-
-
-list_cache_dependency = CacheDependency(cache, 'list', time=15 * 60)
 
 
 class ListHandler(BaseHandler):
@@ -31,7 +27,7 @@ class ListHandler(BaseHandler):
             greetings = repo.list_greetings()
         response = self.render_response('list.html',
                                         greetings=greetings)
-        response.dependency = list_cache_dependency
+        response.dependency_key = 'd_list'
         return response
 
 
@@ -57,5 +53,5 @@ class AddHandler(BaseHandler):
                 self.error('Sorry, can not add your greeting.')
                 return self.get(greeting)
             db.commit()
-        list_cache_dependency.delete()
+        cached.dependency.delete('d_list')
         return self.see_other_for('list')

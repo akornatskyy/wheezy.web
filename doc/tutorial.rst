@@ -513,7 +513,7 @@ displayed to user? What if we can cache that page for some period of time
 and regenerate only when someone added another greeting? Let implement
 this use case with `wheezy.caching`_ package.
 
-Open ``config.py`` and add import for MemoryCache::
+Open ``config.py`` and add import for MemoryCache and Cached::
 
     from wheezy.caching.memory import MemoryCache
 
@@ -521,6 +521,7 @@ At the end of ``config.py`` add initialization logic for cache, cache factory
 and configuration options for HTTP cache middleware)::
 
     cache = MemoryCache()
+    cached = Cached(cache, time=15 * 60)
 
     # HTTPCacheMiddleware
     options.update({
@@ -577,15 +578,16 @@ Cache Dependency
 Let add cache invalidation logic so once user enters a new greeting it cause
 the list page to be refreshed.
 
-In file ``views.py`` add import for ``CacheDependency``::
+In file ``config.py`` add import for ``Cached``::
 
-    from wheezy.caching import CacheDependency
+    from wheezy.caching.patterns import Cached
 
-Declare cache dependency (right after all imports)::
+Declare cached (right after created cache instance)::
 
-    list_cache_dependency = CacheDependency('list', time=15 * 60)
+    cache = MemoryCache()
+    cached = Cached(cache, time=15 * 60)
 
-Modify ``ListHandler`` so it is aware about the list cache dependency::
+Modify ``ListHandler`` so it is aware about the list cache dependency key::
 
     class ListHandler(BaseHandler):
 
@@ -595,13 +597,13 @@ Modify ``ListHandler`` so it is aware about the list cache dependency::
                 greetings = repo.list_greetings()
             response = self.render_response('list.html',
                     greetings=greetings)
-            response.dependency = list_cache_dependency
+            response.dependency_key = 'd_list'
             return response
 
 Finally let add a trigger that cause the invalidation to occur in cache.
-Import cache factory from config module::
+Import cached from config module::
 
-    from config import cache
+    from config import cached
 
 Modify ``AddHandler`` so on successful commit the content cache for
 ``ListHandler`` response is invalidated::
@@ -611,7 +613,7 @@ Modify ``AddHandler`` so on successful commit the content cache for
         def post(self):
             ...
                 db.commit()
-            list_cache_dependency.delete(cache)
+            cached.dependency.delete('d_list')
             return self.see_other_for('list')
 
 Try run application by issuing the following command::
