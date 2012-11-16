@@ -3,9 +3,6 @@
 
 import os
 
-from datetime import timedelta
-
-
 try:  # pragma: nocover
     from ConfigParser import ConfigParser
     config = ConfigParser()
@@ -16,7 +13,6 @@ except ImportError:  # pragma: nocover
 from wheezy.caching import MemoryCache
 from wheezy.core.collections import defaultdict
 from wheezy.core.i18n import TranslationsManager
-from wheezy.http import CacheProfile
 from wheezy.security.crypto import Ticket
 from wheezy.security.crypto.comp import aes128
 from wheezy.security.crypto.comp import ripemd160
@@ -38,21 +34,6 @@ options = {}
 options.update({
     'http_cache': cache
 })
-
-# Cache Profiles
-static_cache_profile = CacheProfile(
-    'public',
-    duration=timedelta(minutes=15),
-    vary_environ=['HTTP_ACCEPT_ENCODING'],
-    namespace='static',
-    enabled=config.getboolean('cache-profile', 'static-enabled'))
-public_cache_profile = CacheProfile(
-    'server',
-    duration=timedelta(minutes=15),
-    vary_environ=['HTTP_ACCEPT_ENCODING'],
-    vary_cookies=['_a'],
-    no_store=True,
-    enabled=config.getboolean('cache-profile', 'public-enabled'))
 
 # HTTPErrorMiddleware
 options.update({
