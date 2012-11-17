@@ -1,0 +1,8 @@
+#require(_, path_for)
+@require(principal)
+@if principal:
+#_('Welcome') <b>@principal.alias!h</b>! [
+<a href="#path_for('signout')">#_('Sign out')</a>]
+@else:
+[<a href="#path_for('signin')">#_('Sign in')</a>]
+@end

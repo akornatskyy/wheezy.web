@@ -45,7 +45,7 @@ po:
 		content/templates-jinja2/shared/**/*.html \
 		content/templates-mako/shared/**/*.html \
 		content/templates-tenjin/shared/**/*.html \
-		content/templates-wheezy/preprocessor/shared/**/*.html \
+		content/templates-preprocessor/shared/**/*.html \
 		content/templates-wheezy/shared/**/*.html
 	xgettext --join-existing --sort-by-file --omit-header \
 		--language=Python \
@@ -53,6 +53,7 @@ po:
 		content/templates-jinja2/public/*.html \
 		content/templates-mako/public/*.html \
 		content/templates-tenjin/public/*.html \
+		content/templates-preprocessor/public/*.html \
 		content/templates-wheezy/public/*.html
 	xgettext --join-existing --sort-by-file --omit-header \
 		--language=Python \
@@ -60,7 +61,7 @@ po:
 		content/templates-jinja2/membership/*.html \
 		content/templates-mako/membership/*.html \
 		content/templates-tenjin/membership/*.html \
-		content/templates-wheezy/preprocessor/membership/*.html \
+		content/templates-preprocessor/membership/*.html \
 		content/templates-wheezy/membership/*.html
 	cp i18n/*.po i18n/en/LC_MESSAGES
 	for l in `ls -d i18n/*/ | cut -d / -f 2`; do \

@@ -3,9 +3,9 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
     <head>
         <title>#_('My Site') - \
-        @def title():
-        @end
-        @title()</title>
+        #def title():
+        #end
+        #title()</title>
         <link href="#path_for('static', path='css/site.css')" \
             type="text/css" rel="stylesheet" />
     </head>
@@ -25,16 +25,16 @@
             </div>
             <div id="main">
                 <div id="placeholder">
-                    @def content():
-                    @end
-                    @content()\
+                    #def content():
+                    #end
+                    #content()\
                 </div>
                 <div id="footer">#_('Version') #__version__</div>
             </div>
         </div>
         #include("shared/snippet/script.html")
-        @def script():
-        @end
-        @script()\
+        #def script():
+        #end
+        #script()\
     </body>
 </html>

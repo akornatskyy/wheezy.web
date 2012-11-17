@@ -151,7 +151,6 @@ elif template_engine == 'wheezy.preprocessor':
     from wheezy.html.utils import html_escape
     from wheezy.template.engine import Engine
     from wheezy.template.ext.core import CoreExtension
-    from wheezy.template.ext.determined import DeterminedExtension
     from wheezy.template.loader import autoreload
     from wheezy.template.loader import FileLoader
     from wheezy.template.preprocessor import Preprocessor
@@ -172,14 +171,11 @@ elif template_engine == 'wheezy.preprocessor':
         })
         return engine
 
-    searchpath = [
-        'content/templates-wheezy/preprocessor',
-        'content/templates-wheezy']
+    searchpath = ['content/templates-preprocessor']
     engine = Engine(
         loader=FileLoader(searchpath),
         extensions=[
-            CoreExtension('#', line_join=None),
-            DeterminedExtension(['path_for', '_']),
+            CoreExtension('#', line_join=None)
         ])
     engine.global_vars.update({
         '__version__': __version__

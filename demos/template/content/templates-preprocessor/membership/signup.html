@@ -1,10 +1,10 @@
-@extends("shared/master.html")
+#extends("shared/master.html")
 
-@def title():
+#def title():
 Sign Up
-@end
+#end
 
-@def content():
+#def content():
 @require(credential, account, registration, account_types, questions)
 @require(model, errors, resubmission)
 #require(_, path_for)
@@ -76,9 +76,9 @@ Sign Up
         </div>
     </form>
 </div>
-@end
+#end
 
-@def script():
+#def script():
 <script type="text/javascript">
 </script>
-@end
+#end
