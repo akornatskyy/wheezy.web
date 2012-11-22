@@ -11,7 +11,7 @@ class Factory(object):
 
     def __init__(self, context, session_name='ro'):
         self.context = context
-        self.session = sessions[session_name]
+        self.session = sessions[session_name]()
         self.repository = RepositoryFactory(self.session)
 
     def __enter__(self):
@@ -49,7 +49,7 @@ if mode == 'mock':
     from wheezy.core.db import NullSession
     from membership.repository.mock import MembershipRepository \
         as MembershipPersistence
-    sessions = {'ro': NullSession(), 'rw': NullSession()}
+    sessions = {'ro': NullSession, 'rw': NullSession}
 else:
     raise NotImplementedError(mode)
 del mode
