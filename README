@@ -24,7 +24,7 @@ It is optimized for performance, well tested and documented.
 
 Resources:
 
-* `source code`_, `examples`_ and `issues`_ tracker are available
+* `source code`_, `examples`_ (`live`_) and `issues`_ tracker are available
   on `bitbucket`_
 * `documentation`_, `readthedocs`_
 * `eggs`_ on `pypi`_
@@ -46,11 +46,13 @@ If you are using `virtualenv`_::
 If you run into any issue or have comments, go ahead and add on
 `bitbucket`_.
 
+.. _`WSGI`: http://www.python.org/dev/peps/pep-3333
 .. _`bitbucket`: http://bitbucket.org/akorn/wheezy.web
 .. _`documentation`: http://packages.python.org/wheezy.web
 .. _`eggs`: http://pypi.python.org/pypi/wheezy.web
 .. _`examples`: http://bitbucket.org/akorn/wheezy.web/src/tip/demos
 .. _`issues`: http://bitbucket.org/akorn/wheezy.web/issues
+.. _`live`: http://wheezy.pythonanywhere.com
 .. _`pypi`: http://pypi.python.org
 .. _`python`: http://www.python.org
 .. _`readthedocs`: http://readthedocs.org/builds/wheezyweb
@@ -58,4 +60,3 @@ If you run into any issue or have comments, go ahead and add on
 .. _`source code`: http://bitbucket.org/akorn/wheezy.web/src
 .. _`virtualenv`: http://pypi.python.org/pypi/virtualenv
 .. _`wheezy.web`: http://pypi.python.org/pypi/wheezy.web
-.. _`WSGI`: http://www.python.org/dev/peps/pep-3333
