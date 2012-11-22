@@ -15,13 +15,15 @@ db = {
         'demo': ['user'],
         'biz': ['business']
     },
+    # the order is set by key
     'password_question': {
         '1': _('Favorite number'),
         '2': _('City of birth'),
         '3': _('Favorite color')
     },
-    'account_type': {
-        'user': _('User'),
-        'business': _('Business')
-    }
+    # honor custom order
+    'account_type': (
+        ('user', _('User')),
+        ('business', _('Business'))
+    )
 }

@@ -28,11 +28,11 @@ class MembershipRepository(object):
         return tuple(sorted_items(self.password_questions(locale)))
 
     def account_types(self, locale):
-        return map_values(ref_gettext(translations[locale]),
-                          db['account_type'])
+        return dict(self.list_account_types(locale))
 
     def list_account_types(self, locale):
-        return tuple(sorted_items(self.account_types(locale)))
+        gettext = ref_gettext(translations[locale])
+        return tuple((k, gettext(v)) for k, v in db['account_type'])
 
     def authenticate(self, credential):
         return credential.password == db['user'].get(
