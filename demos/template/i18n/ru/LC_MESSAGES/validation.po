@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: wheezy.validation\n"
 "Report-Msgid-Bugs-To: Andriy Kornatskyy <andriy.kornatskyy@live.com>\n"
 "POT-Creation-Date: 2011-11-02 14:13+0200\n"
-"PO-Revision-Date: 2012-02-04 18:52+0200\n"
+"PO-Revision-Date: 2012-04-29 10:49+0200\n"
 "Last-Translator: Andriy Kornatskyy <andriy.kornatskyy@live.com>\n"
 "Language: Russian\n"
 "MIME-Version: 1.0\n"
@@ -61,17 +61,6 @@ msgstr ""
 "%d.%m.%Y %H:%M:%S|%d.%m.%y %H:%M|%d.%m.%y %H:%M:%S|%Y-%m-%d %H:%M|"
 "%Y-%m-%d %H:%M:%S"
 
-
-#: src/wheezy/validation/model.py:70
-#, python-format
-msgid "The value '%s' is invalid."
-msgstr "Значение '%s' является неверным."
-
-#: src/wheezy/validation/model.py:108
-#, python-format
-msgid "The value '%s' is not in one of supported formats."
-msgstr "Значение '%s' не соответсвует ни одному из поддеживаемых форматов."
-
 #: src/wheezy/validation/model.py:112
 msgid "Input was not in a correct format."
 msgstr "Ввод не в правильном формате."
@@ -84,10 +73,19 @@ msgstr "Ввод с несколькими значениями был не в �
 msgid "Required field cannot be left blank."
 msgstr "Обязательное поле не может быть пустым."
 
+#: src/wheezy/validation/rules.py:77
+msgid "Field cannot have a value."
+msgstr "Поле не может иметь значения."
+
 #: src/wheezy/validation/rules.py:79
 #, python-format
 msgid "Required to be a minimum of %(min)d characters in length."
 msgstr "Должно содержать, как минимум, %(min)d символов в длинну."
+
+#: src/wheezy/validation/rules.py:155
+#, python-format
+msgid "The length must be exactly %(len)d characters."
+msgstr "Должно содержать, ровно, %(len)d символов в длинну."
 
 #: src/wheezy/validation/rules.py:84
 #, python-format
@@ -104,9 +102,22 @@ msgstr "Превышена максимально допустимая длин�
 msgid "The value failed equality comparison with \"%(comparand)s\"."
 msgstr "Значение не равно в сравнении с \"%(comparand)s\"."
 
+#: src/wheezy/validation/rules.py:238
+#, python-format
+msgid "The value failed not equal comparison with \"%(comparand)s\"."
+msgstr "Значение равно в сравнении с \"%(comparand)s\"."
+
+#: src/wheezy/validation/rules.py:389
+msgid "Required to satisfy validation predicate condition."
+msgstr "Должно удовлетворять условие проверки предиката."
+
 #: src/wheezy/validation/rules.py:290
 msgid "Required to match validation pattern."
 msgstr "Обязательно должно соответствовать проверяемому шаблону."
+
+#: src/wheezy/validation/rules.py:290
+msgid "Required to not match validation pattern."
+msgstr "Обязательно не должно соответствовать проверяемому шаблону."
 
 #: src/wheezy/validation/rules.py:322
 msgid ""
@@ -151,6 +162,3 @@ msgstr "Должно находиться в пределах допустимо
 #: src/wheezy/validation/rules.py:665
 msgid "Exceeds maximum allowed."
 msgstr "Превышает допустимый максимум."
-
-msgid "Passwords do not match."
-msgstr "Пароли не совпадают."

@@ -13,23 +13,23 @@ msgstr "Date of birth (YYYY/MM/DD):"
 msgid "YYYY/MM/DD"
 msgstr "%Y/%m/%d"
 
-#: src/membership/repository/samples.py:19
+#: src/membership/repository/samples.py:20
 msgid "Favorite number"
 msgstr "Favorite number"
 
-#: src/membership/repository/samples.py:20
+#: src/membership/repository/samples.py:21
 msgid "City of birth"
 msgstr "City of birth"
 
-#: src/membership/repository/samples.py:21
+#: src/membership/repository/samples.py:22
 msgid "Favorite color"
 msgstr "Favorite color"
 
-#: src/membership/repository/samples.py:24
+#: src/membership/repository/samples.py:26
 msgid "User"
 msgstr "User"
 
-#: src/membership/repository/samples.py:25
+#: src/membership/repository/samples.py:27
 msgid "Business"
 msgstr "Business"
 
