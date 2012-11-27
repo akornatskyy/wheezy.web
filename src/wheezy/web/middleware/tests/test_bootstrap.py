@@ -16,9 +16,22 @@ class BootstrapWebDefaultsTestCase(unittest.TestCase):
         from wheezy.web.middleware import bootstrap
         self.patcher = patch.object(bootstrap, 'bootstrap_http_defaults')
         self.patcher.start()
+        try:
+            from warnings import catch_warnings
+            self.ctx = catch_warnings(record=True)
+            self.w = self.ctx.__enter__()
+        except ImportError:
+            self.ctx = None
 
     def tearDown(self):
         self.patcher.stop()
+        if self.ctx:
+            self.ctx.__exit__(None, None, None)
+
+    def assert_warning(self, msg):
+        if self.ctx:
+            assert len(self.w) == 1
+            self.assertEquals(msg, str(self.w[-1].message))
 
     def test_default_options(self):
         """ Ensure required keys exist.
@@ -49,3 +62,14 @@ class BootstrapWebDefaultsTestCase(unittest.TestCase):
         })(options)
 
         assert tuple(options.keys())
+
+    def test_warnings(self):
+        """ Ensure warnings are issued.
+        """
+        from wheezy.web.middleware.bootstrap import bootstrap_defaults
+        options = {
+            'ticket': None
+        }
+
+        assert None == bootstrap_defaults({})(options)
+        self.assert_warning('Bootstrap: render_template is not defined')
