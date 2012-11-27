@@ -2,7 +2,9 @@
 """ ``errors`` module.
 """
 
-from traceback import print_exc
+import sys
+
+from traceback import format_exception_only
 
 from wheezy.core.collections import defaultdict
 from wheezy.http.response import internal_error
@@ -13,11 +15,12 @@ from wheezy.web.handlers.base import RedirectRouteHandler
 class HTTPErrorMiddleware(object):
     """ http error middleware
     """
-    __slots__ = ('error_mapping')
 
-    def __init__(self, error_mapping):
+    def __init__(self, error_mapping, logger, extra_provider=None):
         assert error_mapping is not None
         self.error_mapping = error_mapping
+        self.logger = logger
+        self.extra_provider = extra_provider
 
     def __call__(self, request, following):
         assert following is not None
@@ -28,7 +31,13 @@ class HTTPErrorMiddleware(object):
         except (KeyboardInterrupt, SystemExit, MemoryError):
             raise
         except Exception:
-            print_exc()
+            exc_info = sys.exc_info()
+            extra = self.extra_provider and self.extra_provider(request) or {}
+            self.logger.error(
+                ''.join(format_exception_only(*exc_info[:2])).strip('\n'),
+                exc_info=exc_info,
+                extra=extra)
+            sys.exc_clear()
             response = internal_error()
         status_code = response.status_code
         if status_code >= 400:
@@ -42,8 +51,9 @@ class HTTPErrorMiddleware(object):
 def http_error_middleware_factory(options):
     """ HTTP error middleware factory.
     """
-    path_for = options['path_for']
+    import logging
     if 'http_errors' in options:
+        path_for = options['path_for']
         error_mapping = options['http_errors']
         assert isinstance(error_mapping, defaultdict)
         assert path_for(error_mapping.default_factory()) is not None
@@ -51,4 +61,15 @@ def http_error_middleware_factory(options):
             assert path_for(route_name) is not None
     else:
         error_mapping = defaultdict(str)
-    return HTTPErrorMiddleware(error_mapping=error_mapping)
+    if 'http_errors_logger' in options:
+        logger = options['http_errors_logger']
+    else:
+        logger = logging.getLogger('unhandled')
+        if not logger.handlers:
+            logger.setLevel(logging.ERROR)
+            logger.addHandler(logging.StreamHandler(sys.stderr))
+    return HTTPErrorMiddleware(
+        error_mapping,
+        logger,
+        options.get('http_errors_extra_provider', None),
+    )
