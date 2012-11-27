@@ -37,7 +37,6 @@ class HTTPErrorMiddleware(object):
                 ''.join(format_exception_only(*exc_info[:2])).strip('\n'),
                 exc_info=exc_info,
                 extra=extra)
-            sys.exc_clear()
             response = internal_error()
         status_code = response.status_code
         if status_code >= 400:
