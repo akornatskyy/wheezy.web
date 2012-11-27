@@ -1,7 +1,9 @@
 """
 """
 
+import logging
 import os
+import sys
 
 try:  # pragma: nocover
     from ConfigParser import ConfigParser
@@ -19,10 +21,13 @@ from wheezy.security.crypto.comp import ripemd160
 from wheezy.security.crypto.comp import sha1
 from wheezy.security.crypto.comp import sha256
 
+from tracing import ERROR_REPORT_FORMAT
+from tracing import error_report_extra_provider
+
 
 config.read('development.ini')
-mode = config.get('runtime', 'mode')
 
+mode = config.get('runtime', 'mode')
 if mode == 'mock':
     cache = MemoryCache()
 else:
@@ -36,6 +41,15 @@ options.update({
 })
 
 # HTTPErrorMiddleware
+if mode == 'mock':
+    handler = logging.StreamHandler(sys.stderr)
+else:
+    raise NotImplementedError(mode)
+handler.setFormatter(logging.Formatter(ERROR_REPORT_FORMAT))
+handler.setLevel(logging.ERROR)
+unhandled_logger = logging.getLogger('unhandled')
+unhandled_logger.setLevel(logging.ERROR)
+unhandled_logger.addHandler(handler)
 options.update({
     'http_errors': defaultdict(lambda: 'http500', {
         # HTTP status code: route name
@@ -46,6 +60,8 @@ options.update({
         405: 'default',
         500: 'http500',
     }),
+    'http_errors_logger': unhandled_logger,
+    'http_errors_extra_provider': error_report_extra_provider
 })
 
 # wheezy.security.crypto.Ticket
