@@ -41,7 +41,7 @@ options.update({
 })
 
 # HTTPErrorMiddleware
-if mode == 'mock':
+if config.get('runtime', 'unhandled') == 'stderr':
     handler = logging.StreamHandler(sys.stderr)
 else:
     raise NotImplementedError(mode)
