@@ -19,7 +19,7 @@ def error_report_extra_provider(request):
     ts = os.times()
     e = request.environ
     r = resource.getrusage(resource.RUSAGE_SELF)
-    if 'CONTENT_LENGTH' in e:
+    if 'CONTENT_LENGTH' in e and e['CONTENT_LENGTH']:
         form = filter_names(request.form, ignore=(
             'password',
             'confirm_password'
