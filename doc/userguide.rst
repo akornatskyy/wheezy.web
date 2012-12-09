@@ -909,9 +909,9 @@ application (see `config.py`_ for details)::
     engine = Engine(
             loader=FileLoader(searchpath),
             extensions=[
-                CoreExtension,
-                WhitespaceExtension,
-                WidgetExtension,
+                CoreExtension(),
+                WhitespaceExtension(),
+                WidgetExtension(),
     ])
     engine.global_vars.update({
         'format_value': format_value,
