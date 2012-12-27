@@ -7,7 +7,7 @@ try:
 except:
     from distutils.core import setup  # noqa
 
-README = open(os.path.join(os.path.dirname(__file__), 'README')).read()
+README = open(os.path.join(os.path.dirname(__file__), 'README.rst')).read()
 
 install_requires = [
     'wheezy.core>=0.1.87',
