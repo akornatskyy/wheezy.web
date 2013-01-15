@@ -14,7 +14,7 @@ NOSE=$(ENV)/bin/nosetests-$(VERSION)
 all: clean nose-cover release
 
 env:
-	PYTHON_EXE=/usr/local2/bin/python$(VERSION); \
+	PYTHON_EXE=/usr/local/bin/python$(VERSION); \
 	if [ ! -x $$PYTHON_EXE ]; then \
 		    PYTHON_EXE=/usr/bin/python$(VERSION); \
 	fi;\
