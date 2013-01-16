@@ -1,15 +1,15 @@
 @extends("shared/master.html")
+@require(_)
 
 @def title():
-Access Denied
+@_('Access Denied')
 @end
 
 @def content():
 <div id="error">
-    <h2>Oops! Code 403. Access is denied.</h2>
+    <h2>@_('Oops! Code 403. Access is denied.')</h2>
     <p>
-    You do not have permission to view this directory or page
-    using the credentials that you supplied.
+    Lorem ipsum dolor sit amet, consectetur adipiscing elit.
     </p>
 </div>
 @end

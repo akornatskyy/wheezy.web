@@ -1,0 +1,5 @@
+@require(_, path_for, route_args)
+<i>
+    <a href="@path_for(route_args.route_name, locale='en')">@_('English')</a> | \
+    <a href="@path_for(route_args.route_name, locale='ru')">@_('Russian')</a>
+</i>

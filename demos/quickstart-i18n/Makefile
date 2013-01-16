@@ -1,5 +1,5 @@
-.SILENT: env clean release run uwsgi gunicorn qa test nose-cover test-cover benchmark profile gropf
-.PHONY: env clean release run uwsgi gunicorn qa test nose-cover test-cover benchmark profile gropf
+.SILENT: env clean release po run uwsgi gunicorn qa test nose-cover test-cover benchmark profile gropf
+.PHONY: env clean release po run uwsgi gunicorn qa test nose-cover test-cover benchmark profile gropf
 
 VERSION=2.7
 PYPI=http://pypi.python.org/simple
@@ -11,7 +11,7 @@ PYTEST=$(ENV)/bin/py.test-$(VERSION)
 NOSE=$(ENV)/bin/nosetests-$(VERSION)
 
 
-all: clean nose-cover release
+all: clean po nose-cover release
 
 env:
 	PYTHON_EXE=/usr/local/bin/python$(VERSION); \
@@ -37,6 +37,32 @@ clean:
 release:
 	rm -rf src/*.egg-info/
 	$(PYTHON) setup.py -q egg_info sdist
+
+po:
+define FIX
+xargs grep -E "_\(['\"]" \
+		| sed -r "s/[u]?'#_\('([^']*)'\)'/_('\1')/g" \
+		| sed -r "s/[u]?'#_\(\"([^\"]*)\"\)'/_(\"\1\")/g" \
+		| sed -r "s/[u]?\"#_\('([^']*)'\)\"/_('\1')/g" \
+		| sed -r "s/[u]?\"#_\(\"([^\"]*)\"\)\"/_(\"\1\")/g" \
+		| sed -r "s/#_\('([^']*)'\)/_('\1')/g" \
+		| sed -r "s/#_\(\"([^\"]*)\"\)/_(\"\1\")/g"
+endef
+	find content/templates/shared -name '*.html' | $(FIX) \
+		| xgettext --join-existing --no-location --omit-header \
+		--language=Python -o i18n/en/LC_MESSAGES/shared.po - ; \
+	(find content/templates/public -name '*.html' ; \
+		find src/public -name '*.py') | $(FIX) \
+		| xgettext --join-existing --no-location --omit-header \
+		--language=Python -o i18n/en/LC_MESSAGES/public.po - ; \
+	for l in `ls -d i18n/*/ | cut -d / -f 2`; do \
+		echo -n "$$l => "; \
+		msgfmt -v i18n/$$l/LC_MESSAGES/public.po \
+			i18n/$$l/LC_MESSAGES/shared.po \
+			-o i18n/$$l/LC_MESSAGES/public.mo; \
+		msgfmt -v i18n/$$l/LC_MESSAGES/validation.po \
+			-o i18n/$$l/LC_MESSAGES/validation.mo; \
+	done
 
 run:
 	$(PYTHON) src/app.py

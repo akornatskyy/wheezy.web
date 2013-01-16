@@ -33,7 +33,7 @@ class PublicTestCase(unittest.TestCase):
     def test_home(self):
         """ Ensure home page is rendered.
         """
-        assert 200 == self.client.get('/home')
+        assert 200 == self.client.get('/en/home')
         assert '- Home</title>' in self.client.content
 
     def test_static_files(self):
@@ -73,19 +73,19 @@ class ErrorTestCase(unittest.TestCase):
     def test_error_400(self):
         """ Ensure bad request page is rendered.
         """
-        assert 400 == self.client.get('/error/400')
+        assert 400 == self.client.get('/en/error/400')
         assert 'Code 400' in self.client.content
 
     def test_error_403(self):
         """ Ensure forbidden page is rendered.
         """
-        assert 403 == self.client.get('/error/403')
+        assert 403 == self.client.get('/en/error/403')
         assert 'Code 403' in self.client.content
 
     def test_error_404(self):
         """ Ensure not found page is rendered.
         """
-        assert 404 == self.client.get('/error/404')
+        assert 404 == self.client.get('/en/error/404')
         assert 'Code 404' in self.client.content
 
     def test_route_not_found(self):
@@ -98,5 +98,5 @@ class ErrorTestCase(unittest.TestCase):
     def test_error_500(self):
         """ Ensure internal error page is rendered.
         """
-        assert 500 == self.client.get('/error/500')
+        assert 500 == self.client.get('/en/error/500')
         assert 'Code 500' in self.client.content

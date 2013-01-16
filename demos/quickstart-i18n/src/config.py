@@ -13,6 +13,7 @@ except ImportError:  # pragma: nocover
 
 from wheezy.caching import MemoryCache
 from wheezy.core.collections import defaultdict
+from wheezy.core.i18n import TranslationsManager
 from wheezy.html.ext.template import WhitespaceExtension
 from wheezy.html.ext.template import WidgetExtension
 from wheezy.html.utils import format_value
@@ -114,4 +115,11 @@ options.update({
 
     'XSRF_NAME': '_x',
     'RESUBMISSION_NAME': '_c'
+})
+
+translations = TranslationsManager(
+    directories=['i18n'],
+    default_lang='en')
+options.update({
+    'translations_manager': translations
 })

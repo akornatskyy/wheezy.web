@@ -1,12 +1,13 @@
 @extends("shared/master.html")
+@require(_)
 
 @def title():
-Home
+@_('Home')
 @end
 
 @def content():
 <div id="welcome">
-    <h2>Welcome!</h2>
+    <h2>@_('Welcome!')</h2>
     <p>
     Lorem ipsum dolor sit amet, consectetur adipiscing elit.
     </p>

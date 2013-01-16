@@ -1,16 +1,15 @@
 @extends("shared/master.html")
+@require(_)
 
 @def title():
-We are sorry, we can not process your request.
+@_('We are sorry, we can not process your request.')
 @end
 
 @def content():
 <div id="error">
-    <h2>Oops! Code 500. Sorry, we can not process your request.</h2>
+    <h2>@_('Oops! Code 500. Sorry, we can not process your request.')</h2>
     <p>
-    The web server encountered an unexpected condition that
-    prevented it from fulfilling the request by the client for
-    access to the requested URL.
+    Lorem ipsum dolor sit amet, consectetur adipiscing elit.
     </p>
 </div>
 @end

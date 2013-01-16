@@ -1,0 +1,29 @@
+msgid "Home"
+msgstr "Домашняя"
+
+msgid "Welcome!"
+msgstr "Добро пожаловать!"
+
+msgid "We are sorry, we can not process your request."
+msgstr "Извените, к сожалению, мы не можем обработать ваш запрос."
+
+msgid "Oops! Code 500. Sorry, we can not process your request."
+msgstr "Oops! Code 500. К сожалению, мы не можем обработать ваш запрос."
+
+msgid "Bad Request"
+msgstr "Неверный запрос"
+
+msgid "Oops! Code 400. Sorry, we can't process your request."
+msgstr "Oops! Code 400. К сожалению, мы не можем обработать ваш запрос."
+
+msgid "We are sorry, the page you requested cannot be found."
+msgstr "К сожалению, запрашиваемая страница не найдена."
+
+msgid "Oops! Code 404. Sorry, we can't find that page."
+msgstr "Oops! Ошибка 404. К сожалению, мы не можем найти эту страницу."
+
+msgid "Access Denied"
+msgstr "Доступ запрещен"
+
+msgid "Oops! Code 403. Access is denied."
+msgstr "Oops! Code 403. Доступ запрещен."

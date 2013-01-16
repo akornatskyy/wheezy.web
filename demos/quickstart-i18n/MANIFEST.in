@@ -5,3 +5,4 @@ recursive-include content/static/css *.css
 recursive-include content/static/img *.ico *.jpg *.gif *.png
 recursive-include content/static/js *.js
 recursive-include content/templates *.html
+recursive-include i18n *.po
