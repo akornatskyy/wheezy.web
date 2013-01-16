@@ -1,15 +1,15 @@
-@extends("shared/master.html")
-@require(_)
+#extends("shared/master.html")
+#require(_)
 
-@def title():
-@_('Access Denied')
-@end
+#def title():
+#_('Access Denied')
+#end
 
-@def content():
+#def content():
 <div id="error">
-    <h2>@_('Oops! Code 403. Access is denied.')</h2>
+    <h2>#_('Oops! Code 403. Access is denied.')</h2>
     <p>
     Lorem ipsum dolor sit amet, consectetur adipiscing elit.
     </p>
 </div>
-@end
+#end

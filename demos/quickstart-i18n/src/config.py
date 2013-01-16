@@ -26,7 +26,7 @@ from wheezy.security.crypto.comp import sha256
 from wheezy.template.engine import Engine
 from wheezy.template.ext.core import CoreExtension
 from wheezy.template.loader import FileLoader
-from wheezy.template.loader import PreprocessLoader
+from wheezy.template.preprocessor import Preprocessor
 from wheezy.web.templates import WheezyTemplate
 from public import __version__
 from tracing import ERROR_REPORT_FORMAT
@@ -70,28 +70,33 @@ options.update({
     'http_errors_extra_provider': error_report_extra_provider
 })
 
+
 # Template Engine
+def runtime_engine_factory(loader):
+    engine = Engine(
+        loader=loader,
+        extensions=[
+            CoreExtension(),
+            WidgetExtension(),
+            WhitespaceExtension(),
+        ])
+    engine.global_vars.update({
+        'format_value': format_value,
+        'h': html_escape,
+    })
+    return engine
+
 searchpath = ['content/templates']
 engine = Engine(
     loader=FileLoader(searchpath),
     extensions=[
-        CoreExtension(token_start='#')
-    ]
-)
+        CoreExtension(token_start='#', line_join=None)
+    ])
 engine.global_vars.update({
     '__version__': __version__
 })
-engine = Engine(
-    loader=PreprocessLoader(engine),
-    extensions=[
-        CoreExtension(),
-        WidgetExtension(),
-        WhitespaceExtension(),
-    ])
-engine.global_vars.update({
-    'format_value': format_value,
-    'h': html_escape
-})
+engine = Preprocessor(runtime_engine_factory, engine,
+                      key_factory=lambda ctx: ctx['locale'])
 options.update({
     'render_template': WheezyTemplate(engine)
 })

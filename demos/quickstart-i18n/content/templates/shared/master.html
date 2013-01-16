@@ -1,30 +1,30 @@
-@require(_, path_for)
+#require(_, path_for)
 <!DOCTYPE html>
 <html>
     <head>
-        @def title():
-        @end
-        <title>@_('My Site') - @title()</title>
-        <link href="@path_for('static', path='css/site.css')" type="text/css" rel="stylesheet" />
+        #def title():
+        #end
+        <title>#_('My Site') - #title()</title>
+        <link href="#path_for('static', path='css/site.css')" type="text/css" rel="stylesheet" />
     </head>
     <body>
         <div class="page">
             <div id="header">
-                <h1><a href="@path_for('default')">@_('My Site')</a></h1>
+                <h1><a href="#path_for('default')">#_('My Site')</a></h1>
                 #include("shared/snippet/menu-locale.html")
             </div>
             <div id="main">
                 <div id="placeholder">
-                    @def content():
-                    @end
-                    @content()\
+                    #def content():
+                    #end
+                    #content()\
                 </div>
             </div>
-            <div id="footer">@_('Version') #__version__</div>
+            <div id="footer">#_('Version') #__version__</div>
         </div>
         #include("shared/snippet/script.html")
-        @def script():
-        @end
-        @script()\
+        #def script():
+        #end
+        #script()\
     </body>
 </html>

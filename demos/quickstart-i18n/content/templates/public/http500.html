@@ -1,15 +1,15 @@
-@extends("shared/master.html")
-@require(_)
+#extends("shared/master.html")
+#require(_)
 
-@def title():
-@_('We are sorry, we can not process your request.')
-@end
+#def title():
+#_('We are sorry, we can not process your request.')
+#end
 
-@def content():
+#def content():
 <div id="error">
-    <h2>@_('Oops! Code 500. Sorry, we can not process your request.')</h2>
+    <h2>#_('Oops! Code 500. Sorry, we can not process your request.')</h2>
     <p>
     Lorem ipsum dolor sit amet, consectetur adipiscing elit.
     </p>
 </div>
-@end
+#end
