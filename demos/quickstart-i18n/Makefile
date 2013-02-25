@@ -16,7 +16,7 @@ all: clean po nose-cover release
 env:
 	PYTHON_EXE=/usr/local/bin/python$(VERSION); \
 	if [ ! -x $$PYTHON_EXE ]; then \
-		    PYTHON_EXE=/usr/bin/python$(VERSION); \
+	    PYTHON_EXE=/usr/bin/python$(VERSION); \
 	fi;\
 	virtualenv --python=$$PYTHON_EXE env
 	$(EASY_INSTALL) -i $(PYPI) -O2 coverage nose pytest \
@@ -25,6 +25,9 @@ env:
 	if [ "$$(echo $(VERSION) | sed 's/\.//')" -eq 24 ]; then \
 		$(EASY_INSTALL) -i $(PYPI) -O2 wsgiref; \
 	fi
+	if [ `uname` = 'FreeBSD' ]; then \
+	    export LIBMEMCACHED=/usr/local; \
+	fi;\
 	$(PYTHON) setup.py develop -O2 -U -i $(PYPI)
 
 clean:
@@ -39,22 +42,22 @@ release:
 	$(PYTHON) setup.py -q egg_info sdist
 
 po:
-define FIX
-xargs grep -E "_\(['\"]" \
-		| sed -r "s/[u]?'#_\('([^']*)'\)'/_('\1')/g" \
-		| sed -r "s/[u]?'#_\(\"([^\"]*)\"\)'/_(\"\1\")/g" \
-		| sed -r "s/[u]?\"#_\('([^']*)'\)\"/_('\1')/g" \
-		| sed -r "s/[u]?\"#_\(\"([^\"]*)\"\)\"/_(\"\1\")/g" \
-		| sed -r "s/#_\('([^']*)'\)/_('\1')/g" \
-		| sed -r "s/#_\(\"([^\"]*)\"\)/_(\"\1\")/g"
-endef
-	find content/templates/shared -name '*.html' | $(FIX) \
-		| xgettext --join-existing --no-location --omit-header \
-		--language=Python -o i18n/en/LC_MESSAGES/shared.po - ; \
-	(find content/templates/public -name '*.html' ; \
-		find src/public -name '*.py') | $(FIX) \
-		| xgettext --join-existing --no-location --omit-header \
-		--language=Python -o i18n/en/LC_MESSAGES/public.po - ; \
+	get_text() { \
+		for f in $$@; do \
+			(find content/templates/$$f -name '*.html' ; \
+		     find src/$$f -name '*.py' 2>/dev/null) \
+		        | xargs grep -E "_\(['\"]" \
+			    | sed -r "s/[u]?'#_\('([^']*)'\)'/_('\1')/g" \
+			    | sed -r "s/[u]?'#_\(\"([^\"]*)\"\)'/_(\"\1\")/g" \
+			    | sed -r "s/[u]?\"#_\('([^']*)'\)\"/_('\1')/g" \
+			    | sed -r "s/[u]?\"#_\(\"([^\"]*)\"\)\"/_(\"\1\")/g" \
+			    | sed -r "s/#_\('([^']*)'\)/_('\1')/g" \
+			    | sed -r "s/#_\(\"([^\"]*)\"\)/_(\"\1\")/g" \
+			    | xgettext --join-existing --no-location --omit-header \
+				    --language=Python -o i18n/en/LC_MESSAGES/$$f.po - ; \
+		done \
+	} ; \
+	get_text shared public
 	for l in `ls -d i18n/*/ | cut -d / -f 2`; do \
 		echo -n "$$l => "; \
 		msgfmt -v i18n/$$l/LC_MESSAGES/public.po \
