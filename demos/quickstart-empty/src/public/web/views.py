@@ -9,6 +9,7 @@ from wheezy.http.transforms import response_transforms
 from wheezy.web.handlers import BaseHandler
 from wheezy.web.handlers import file_handler
 from wheezy.web.handlers import template_handler
+from wheezy.web.transforms import handler_transforms
 
 from public.web.profile import public_cache_profile
 from public.web.profile import static_cache_profile
@@ -17,7 +18,7 @@ from public.web.profile import static_cache_profile
 class WelcomeHandler(BaseHandler):
 
     @response_cache(public_cache_profile)
-    @response_transforms(gzip_transform())
+    @handler_transforms(gzip_transform())
     def get(self):
         return self.render_response('public/home.html')
 
