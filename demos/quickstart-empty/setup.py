@@ -2,10 +2,8 @@
 
 import os
 
-#try:
 from setuptools import setup
-#except:
-#    from distutils.core import setup  # noqa
+
 
 README = open(os.path.join(os.path.dirname(__file__), 'README.rst')).read()
 
@@ -74,6 +72,7 @@ setup(
     ],
     packages=[
         'public',
+        'public.web'
     ],
     package_dir={'': 'src'},
 
