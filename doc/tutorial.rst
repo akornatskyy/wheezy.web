@@ -597,7 +597,8 @@ Modify ``ListHandler`` so it is aware about the list cache dependency key::
                 greetings = repo.list_greetings()
             response = self.render_response('list.html',
                     greetings=greetings)
-            response.dependency_key = 'd_list'
+            response.cache_dependency = ('d_list', )
+            #response.cache_dependency.append('d_list')
             return response
 
 Finally let add a trigger that cause the invalidation to occur in cache.
