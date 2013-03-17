@@ -2,19 +2,19 @@
 """ ``benchmark_views`` module.
 """
 
-from wheezy.core.benchmark import Benchmark
+from wheezy.http.functional import BenchmarkMixin
 
 from membership.web.tests.test_views import MembershipTestCase
 from membership.web.tests.test_views import SignInTestCase
 from membership.web.tests.test_views import SignUpTestCase
 
 
-class MembershipBenchmarkTestCase(MembershipTestCase):
+class MembershipBenchmarkTestCase(MembershipTestCase, BenchmarkMixin):
 
     def runTest(self):
         """ Perform benchmark and print results.
         """
-        b = Benchmark((
+        b = self.benchmark((
             self.test_signin,
             self.test_signup,
             self.test_signout,
@@ -26,12 +26,12 @@ class MembershipBenchmarkTestCase(MembershipTestCase):
         })
 
 
-class SigninBenchmarkTestCase(SignInTestCase):
+class SigninBenchmarkTestCase(SignInTestCase, BenchmarkMixin):
 
     def runTest(self):
         """ Perform benchmark and print results.
         """
-        b = Benchmark((
+        b = self.benchmark((
             self.test_validation_error,
             self.test_unknown_user,
             self.test_xrsf_token_invalid
@@ -43,12 +43,12 @@ class SigninBenchmarkTestCase(SignInTestCase):
         })
 
 
-class SignupBenchmarkTestCase(SignUpTestCase):
+class SignupBenchmarkTestCase(SignUpTestCase, BenchmarkMixin):
 
     def runTest(self):
         """ Perform benchmark and print results.
         """
-        b = Benchmark((
+        b = self.benchmark((
             self.test_validation_error,
             self.test_already_registered,
             self.test_resubmission_token_invalid,
