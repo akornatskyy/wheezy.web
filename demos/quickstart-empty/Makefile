@@ -64,10 +64,10 @@ test-cover:
 		--cov public
 
 benchmark:
-	$(NOSE) -qs -m benchmark src/
+	$(NOSE) -qs -m benchmark_views src/
 
 profile:
-	$(NOSE) -qs -m benchmark --with-profile \
+	$(NOSE) -qs -m benchmark_views --with-profile \
 		--profile-stats-file=profile.pstats src/public
 
 gropf:

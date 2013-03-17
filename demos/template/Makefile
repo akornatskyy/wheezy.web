@@ -110,11 +110,11 @@ test-cover:
 
 benchmark:
 	echo $(TEMPLATE_ENGINE) ; export TEMPLATE_ENGINE=$(TEMPLATE_ENGINE) ; \
-	$(NOSE) -qs -m benchmark src/
+	$(NOSE) -qs -m benchmark_views src/
 
 profile:
 	echo $(TEMPLATE_ENGINE) ; export TEMPLATE_ENGINE=$(TEMPLATE_ENGINE) ; \
-	$(NOSE) -qs -m benchmark --with-profile \
+	$(NOSE) -qs -m benchmark_views --with-profile \
 		--profile-stats-file=profile.pstats src/public
 
 gropf:
