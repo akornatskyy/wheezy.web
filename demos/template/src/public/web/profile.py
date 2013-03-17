@@ -4,6 +4,7 @@
 from datetime import timedelta
 
 from wheezy.http import CacheProfile
+from wheezy.http.cache import etag_md5crc32
 
 from config import config
 
@@ -15,9 +16,10 @@ static_cache_profile = CacheProfile(
     namespace='static',
     enabled=config.getboolean('cache-profile', 'static-enabled'))
 public_cache_profile = CacheProfile(
-    'server',
+    'both',
     duration=timedelta(minutes=15),
     vary_environ=['HTTP_ACCEPT_ENCODING'],
     vary_cookies=['_a'],
-    no_store=True,
+    http_vary=['Cookie'],
+    etag_func=etag_md5crc32,
     enabled=config.getboolean('cache-profile', 'public-enabled'))
