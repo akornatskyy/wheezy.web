@@ -75,7 +75,6 @@ class FileHandlerTestCase(unittest.TestCase):
         self.mock_request.environ['HTTP_IF_NONE_MATCH'] = etag
         response = self.handler.get()
         assert 304 == response.status_code
-        assert response.skip_body
         assert not response.buffer
 
     def test_get_if_modified_since(self):
@@ -87,7 +86,6 @@ class FileHandlerTestCase(unittest.TestCase):
         self.mock_request.environ['HTTP_IF_MODIFIED_SINCE'] = last_modified
         response = self.handler.get()
         assert 304 == response.status_code
-        assert response.skip_body
         assert not response.buffer
 
     def test_get_age(self):
@@ -105,7 +103,6 @@ class FileHandlerTestCase(unittest.TestCase):
         self.route_args['path'] = 'tests/test_file.py'
         response = self.handler.head()
         assert 200 == response.status_code
-        assert response.skip_body
         assert not response.buffer
 
 
