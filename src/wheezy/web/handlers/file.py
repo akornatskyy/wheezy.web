@@ -66,7 +66,6 @@ class FileHandler(MethodHandler):
         none_match = environ.get('HTTP_IF_NONE_MATCH', None)
         if none_match and etag in none_match:
             response.status_code = 304
-            response.skip_body = True
             return response
 
         last_modified = datetime.utcfromtimestamp(last_modified_stamp)
@@ -75,7 +74,6 @@ class FileHandler(MethodHandler):
             modified_since = parse_http_datetime(modified_since)
             if modified_since >= last_modified:
                 response.status_code = 304
-                response.skip_body = True
                 return response
 
         response.cache_policy = cache_policy = HTTPCachePolicy('public')
@@ -93,6 +91,4 @@ class FileHandler(MethodHandler):
                 response.write_bytes(file.read())
             finally:
                 file.close()
-        else:
-            response.skip_body = True
         return response
