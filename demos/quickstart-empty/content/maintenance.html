@@ -1,0 +1,23 @@
+<html>
+<head>
+    <title>Maintenance</title>
+    <meta http-equiv="refresh" content="120" url="/" />
+    <style>
+    html, body { height: 50%; }
+    html { display: table; margin: auto; }
+    body { display: table-cell; vertical-align: middle; font-family: monospace;}
+    #t { color: grey; }
+    </style>
+</head>
+<body>
+    <h1>
+        Scheduled Maintenance
+    </h1>
+    <p>
+        <span id="t"></span> Visit us later, please.
+    </p>
+    <script>
+    document.getElementById('t').innerHTML = new Date().toLocaleTimeString() + ':';
+    </script>
+</body>    
+</html>
