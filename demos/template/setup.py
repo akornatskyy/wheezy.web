@@ -10,14 +10,14 @@ except:
 README = open(os.path.join(os.path.dirname(__file__), 'README.rst')).read()
 
 install_requires = [
-    'wheezy.core>=0.1.87',
+    'wheezy.core>=0.1.104',
     'wheezy.caching>=0.1.80',
     'wheezy.html>=0.1.109',
-    'wheezy.http>=0.1.259',
+    'wheezy.http>=0.1.285',
     'wheezy.routing>=0.1.124',
     'wheezy.security>=0.1.44',
     'wheezy.validation>=0.1.74',
-    'wheezy.web>=0.1.315',
+    'wheezy.web>=0.1.365',
 ]
 
 install_optional = [
