@@ -41,12 +41,10 @@ class SigninBenchmarkTestCase(SignInTestCase, BenchmarkMixin):
         """
         b = self.benchmark([
             self.test_validation_errors,
-            self.test_unknown_user,
             self.test_xrsf_token_invalid
         ], 200)
         b.report('signin', baselines={
             'test_validation_errors': 1.0,
-            'test_unknown_user': 1.0,
             'test_xrsf_token_invalid': 0.94
         })
 
@@ -78,12 +76,10 @@ try:
             """
             b = self.benchmark([
                 self.test_ajax_validation_errors,
-                self.test_ajax_unknown_user,
                 self.test_ajax_xrsf_token_invalid
             ], 200)
             b.report('ajax-signin', baselines={
                 'test_ajax_validation_errors': 1.0,
-                'test_ajax_unknown_user': 1.0,
                 'test_ajax_xrsf_token_invalid': 0.94
             })
 

@@ -142,6 +142,24 @@ class SignInTestCase(unittest.TestCase, SignInMixin):
         assert AUTH_COOKIE not in self.client.cookies
         assert 'class="error-message"' in self.client.content
 
+    def test_lockout(self):
+        """ Ensure sigin page displays general error message.
+        """
+        self.client.environ['REMOTE_ADDR'] = '192.168.10.101'
+        errors = self.signin('test', 'password')
+        assert not errors
+        assert AUTH_COOKIE not in self.client.cookies
+        assert 'class="error-message"' in self.client.content
+
+        self.signin('test', 'password')
+
+        self.signin('test', 'password')
+        assert 'class="error-message"' in self.client.content
+
+        # after 3rd attempt the access is forbidden
+        self.signin('test', 'password')
+        assert 403 == self.client.follow()
+
     def test_valid_user(self):
         """ Ensure sigin is successful.
         """
