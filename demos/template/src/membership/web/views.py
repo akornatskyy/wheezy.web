@@ -9,6 +9,7 @@ from wheezy.security import Principal
 from wheezy.web import handler_cache
 from wheezy.web.handlers import BaseHandler
 
+from lockout import locker
 from factory import Factory
 from membership.models import Credential
 from membership.models import Registration
@@ -18,6 +19,11 @@ from membership.validation import registration_validator
 
 
 class SignInHandler(BaseHandler):
+
+    lockout = locker.define(
+        name='signin attempts',
+        by_ip=dict(count=3, duration=60)
+    )
 
     @attribute
     def model(self):
@@ -43,6 +49,7 @@ class SignInHandler(BaseHandler):
             credential=credential,
             model=self.model)
 
+    @lockout.forbid_locked
     def post(self):
         if not self.validate_xsrf_token():
             return self.redirect_for(self.route_args.route_name)
@@ -63,6 +70,7 @@ class SignInHandler(BaseHandler):
         del self.xsrf_token
         return self.see_other_for('default')
 
+    @lockout.guard
     def authenticate(self, credential):
         #with self.factory as f:
         f = self.factory.__enter__()

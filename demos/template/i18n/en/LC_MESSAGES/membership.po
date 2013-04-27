@@ -47,7 +47,7 @@ msgid ""
 msgstr ""
 "The system was unable to create an account for you. Please try again later."
 
-#: src/membership/web/views.py:125
+#: src/membership/web/views.py:133
 msgid ""
 "Your registration request has been queued. Please wait while your request "
 "will be processed. If your request fails please try again."
