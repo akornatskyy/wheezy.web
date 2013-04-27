@@ -83,7 +83,7 @@ class PublicTestCase(unittest.TestCase):
         """
         assert 200 == self.client.get('/static/css/site.css')
         last_modified = self.client.headers['Last-Modified'][0]
-        assert 304 == self.client.get('/static/css/site.css', environ={
+        assert 200 == self.client.get('/static/css/site.css', environ={
             'HTTP_IF_MODIFIED_SINCE': last_modified
         })
 
