@@ -41,7 +41,7 @@ release:
 po:
 	xgettext --join-existing --sort-by-file --omit-header \
 		--language=Python \
-		-o i18n/shared.po \
+		-o i18n/en/LC_MESSAGES/shared.po \
 		content/templates-jinja2/shared/**/*.html \
 		content/templates-mako/shared/**/*.html \
 		content/templates-tenjin/shared/**/*.html \
@@ -49,7 +49,7 @@ po:
 		content/templates-wheezy/shared/**/*.html
 	xgettext --join-existing --sort-by-file --omit-header \
 		--language=Python \
-		-o i18n/public.po src/public/**/*.py \
+		-o i18n/en/LC_MESSAGES/public.po src/public/**/*.py \
 		content/templates-jinja2/public/*.html \
 		content/templates-mako/public/*.html \
 		content/templates-tenjin/public/*.html \
@@ -57,13 +57,12 @@ po:
 		content/templates-wheezy/public/*.html
 	xgettext --join-existing --sort-by-file --omit-header \
 		--language=Python \
-		-o i18n/membership.po src/membership/**/*.py \
+		-o i18n/en/LC_MESSAGES/membership.po src/membership/**/*.py \
 		content/templates-jinja2/membership/*.html \
 		content/templates-mako/membership/*.html \
 		content/templates-tenjin/membership/*.html \
 		content/templates-preprocessor/membership/*.html \
 		content/templates-wheezy/membership/*.html
-	cp i18n/*.po i18n/en/LC_MESSAGES
 	for l in `ls -d i18n/*/ | cut -d / -f 2`; do \
 		echo -n "$$l => "; \
 		msgfmt -v i18n/$$l/LC_MESSAGES/public.po \
