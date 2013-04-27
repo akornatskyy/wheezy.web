@@ -41,7 +41,7 @@ class HTTPErrorMiddleware(object):
         status_code = response.status_code
         if status_code >= 400:
             error_route_name = self.error_mapping[status_code]
-            route_name = request.environ['route_args']['route_name']
+            route_name = request.environ['route_args'].get('route_name')
             if error_route_name != route_name:
                 response = RedirectRouteHandler(request, error_route_name)
         return response

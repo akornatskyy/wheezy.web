@@ -2,7 +2,7 @@
 """ ``routing`` module.
 """
 
-from wheezy.core.collections import defaultattrdict
+from wheezy.core.collections import attrdict
 
 
 class PathRoutingMiddleware(object):
@@ -17,7 +17,7 @@ class PathRoutingMiddleware(object):
     def __call__(self, request, following):
         environ = request.environ
         handler, route_args = self.match(environ['PATH_INFO'].lstrip('/'))
-        environ['route_args'] = defaultattrdict(str, route_args)
+        environ['route_args'] = attrdict(route_args)
         if handler is None:
             if following is not None:
                 return following(request)
