@@ -9,20 +9,20 @@ README = open(os.path.join(os.path.dirname(__file__), 'README.rst')).read()
 
 install_requires = [
     'wheezy.core>=0.1.104',
-    'wheezy.caching>=0.1.83',
-    'wheezy.html>=0.1.125',
-    'wheezy.http>=0.1.285',
+    'wheezy.caching>=0.1.90',
+    'wheezy.html>=0.1.130',
+    'wheezy.http>=0.1.287',
     'wheezy.routing>=0.1.145',
     'wheezy.security>=0.1.46',
-    'wheezy.template>=0.1.132',
-    'wheezy.validation>=0.1.84',
-    'wheezy.web>=0.1.365',
+    'wheezy.template>=0.1.135',
+    'wheezy.validation>=0.1.91',
+    'wheezy.web>=0.1.373',
 ]
 
 install_optional = [
     'pylibmc>=1.2.3',
     #'PIL>=1.1.7',
-    'lxml>=2.3.6',
+    'lxml>=3.2.0',
     'pycrypto>=2.6',
 ]
 
