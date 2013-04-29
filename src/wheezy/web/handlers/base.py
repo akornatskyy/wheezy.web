@@ -74,7 +74,7 @@ class BaseHandler(MethodHandler, ValidationMixin):
 
     @attribute
     def locale(self):
-        return self.route_args['locale']
+        return self.route_args.get('locale', '')
 
     @attribute
     def translations(self):

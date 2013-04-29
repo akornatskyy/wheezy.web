@@ -137,6 +137,11 @@ class BaseHandlerI18NTestCase(unittest.TestCase):
         self.handler.route_args['locale'] = 'en'
         assert 'en' == self.handler.locale
 
+    def test_no_locale(self):
+        """ Ensure default implemenation takes locale from route_args.
+        """
+        assert '' == self.handler.locale
+
     def test_translations(self):
         """ Translations returned per current locale.
         """
