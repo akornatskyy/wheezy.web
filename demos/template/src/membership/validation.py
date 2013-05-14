@@ -5,6 +5,7 @@ from datetime import timedelta
 
 from wheezy.validation import Validator
 from wheezy.validation.rules import compare
+from wheezy.validation.rules import email
 from wheezy.validation.rules import length
 from wheezy.validation.rules import one_of
 from wheezy.validation.rules import range
@@ -15,12 +16,12 @@ from wheezy.validation.rules import required
 _ = lambda s: s
 
 credential_validator = Validator({
-    'username': [required, length(min=2, max=20)],
+    'username': [required, length(min=2), length(max=20)],
     'password': [required, length(min=8, max=12)]
 })
 
 account_validator = Validator({
-    'email': [required, length(min=6, max=30)],
+    'email': [required, length(min=6), length(max=30), email],
     'display_name': [required, length(max=30)],
     'account_type': [required, one_of(('user', 'business'))]
 })
