@@ -142,8 +142,8 @@ class SignInTestCase(unittest.TestCase, SignInMixin):
         assert AUTH_COOKIE not in self.client.cookies
         assert 'class="error-message"' in self.client.content
 
-    def test_lockout(self):
-        """ Ensure sigin page displays general error message.
+    def test_lockout_guard(self):
+        """ Ensure sigin lockout guard is reached.
         """
         self.client.environ['REMOTE_ADDR'] = '192.168.10.101'
         errors = self.signin('test', 'password')
@@ -236,7 +236,7 @@ try:
             assert 200 == client.follow()
             SignInPage(client)
 
-except NotImplementedError:
+except NotImplementedError:  # pragma: nocover
     pass
 
 
@@ -257,7 +257,8 @@ class SignOutTestCase(unittest.TestCase, SignInMixin, SignOutMixin):
         self.signout()
 
 
-class SignUpTestCase(unittest.TestCase, SignInMixin, SignUpMixin):
+class SignUpTestCase(unittest.TestCase, SignInMixin, SignUpMixin,
+                     SignOutMixin):
 
     def setUp(self):
         self.client = WSGIClient(main)
@@ -307,6 +308,48 @@ class SignUpTestCase(unittest.TestCase, SignInMixin, SignUpMixin):
         assert RESUBMISSION_NAME not in self.client.cookies
         assert 'Welcome <b>John Smith' in self.client.content
 
+    def test_lockout_quota(self):
+        """ Ensure signup quata is reached.
+        """
+        self.client.environ['REMOTE_ADDR'] = '192.168.10.101'
+
+        errors = self.signup(
+            username='joe',
+            display_name='Joe Smith',
+            email='joe@somewhere.com',
+            date_of_birth='1980/4/5',
+            password='P@ssw0rd',
+            confirm_password='P@ssw0rd',
+            answer='7')
+        assert not errors
+        assert 200 == self.client.follow()
+        assert AUTH_COOKIE in self.client.cookies
+        self.signout()
+
+        errors = self.signup(
+            username='jassy',
+            display_name='Jassy Smith',
+            email='jassy@somewhere.com',
+            date_of_birth='1982/7/17',
+            password='P@ssw0rd',
+            confirm_password='P@ssw0rd',
+            answer='7')
+        assert not errors
+        assert 200 == self.client.follow()
+        assert AUTH_COOKIE in self.client.cookies
+        self.signout()
+
+        self.signup(
+            username='jack',
+            display_name='Jack Smith',
+            email='jack@somewhere.com',
+            date_of_birth='1981/3/18',
+            password='P@ssw0rd',
+            confirm_password='P@ssw0rd',
+            answer='7')
+        # after 2nd attempt the access is forbidden
+        assert 403 == self.client.follow()
+
     def test_if_authenticated_redirect(self):
         """ If user is already authenticated redirect
             to default page.
@@ -346,5 +389,5 @@ try:
             assert 6 == len(errors)
             assert AUTH_COOKIE not in self.client.cookies
 
-except NotImplementedError:
+except NotImplementedError:  # pragma: nocover
     pass

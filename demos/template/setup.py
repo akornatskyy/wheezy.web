@@ -11,7 +11,7 @@ README = open(os.path.join(os.path.dirname(__file__), 'README.rst')).read()
 
 install_requires = [
     'wheezy.core>=0.1.104',
-    'wheezy.caching>=0.1.90',
+    'wheezy.caching>=0.1.91',
     'wheezy.html>=0.1.130',
     'wheezy.http>=0.1.287',
     'wheezy.routing>=0.1.145',

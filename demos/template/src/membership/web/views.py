@@ -89,6 +89,11 @@ class SignOutHandler(BaseHandler):
 
 class SignUpHandler(BaseHandler):
 
+    lockout = locker.define(
+        name='signup attempts',
+        by_ip=dict(count=2, duration=60)
+    )
+
     @attribute
     def model(self):
         return attrdict({
@@ -128,6 +133,7 @@ class SignUpHandler(BaseHandler):
             questions=questions,
             account_types=account_types)
 
+    @lockout.forbid_locked
     def post(self):
         if not self.validate_resubmission():
             self.error(self._('Your registration request has been queued. '
@@ -164,6 +170,7 @@ class SignUpHandler(BaseHandler):
         del self.resubmission
         return self.see_other_for('default')
 
+    @lockout.quota
     def create_account(self, registration):
         #with self.factory('rw') as f:
         f = self.factory('rw')
