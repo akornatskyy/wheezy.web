@@ -35,7 +35,8 @@ class ListHandler(BaseHandler):
 class AddHandler(BaseHandler):
 
     @handler_cache(CacheProfile('both', duration=timedelta(hours=1),
-                                vary_environ=['HTTP_ACCEPT_ENCODING']))
+                                vary_environ=['HTTP_ACCEPT_ENCODING'],
+                                http_vary=['Accept-Encoding']))
     @handler_transforms(gzip_transform(compress_level=9, min_length=250))
     def get(self, greeting=None):
         greeting = greeting or Greeting()

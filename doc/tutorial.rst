@@ -17,7 +17,7 @@ Before you start, make sure you've installed the prerequisites listed below.
 * Check python version::
 
     $ python -V
-    Python 2.7.2+
+    Python 2.7.3
 
 * Create virtual environment::
 
@@ -120,7 +120,7 @@ This creates SQLite database ``guestbook.db`` with table ``greeting``.
 Let try add some data from sqlite3 command prompt::
 
     $ sqlite3 guestbook.db
-    SQLite version 3.7.10 2012-01-16 13:28:40
+    SQLite version 3.7.16.2 2013-04-12 11:52:43
     Enter ".help" for instructions
     Enter SQL statements terminated with a ";"
     sqlite> INSERT INTO greeting (created_on, author, message)
@@ -191,8 +191,8 @@ repository (file ``repository.py``)::
 Let see how it works from python command prompt::
 
     $ env/bin/python
-    Python 2.7.2+ (default, Dec  1 2011, 01:55:02)
-    [GCC 4.6.2] on linux2
+    Python 2.7.3 (default, Mar  5 2013, 01:19:40)
+    [GCC 4.7.2] on linux2
     Type "help", "copyright", "credits" or "license" for more information.
     >>> from config import session
     >>> from repository import Repository
@@ -278,24 +278,40 @@ user to list handler.
 Configuration
 ^^^^^^^^^^^^^
 
-:ref:`wheezy.web` is agnostic to template render. However it comes with
-support for Mako templates.
+:ref:`wheezy.web` is agnostic to template render. However it integrates
+with jinja2, mako, tenjin and wheezy.template. For purpose of
+this tutorial `wheezy.template`_ has been selected::
 
-Let add Mako template configuration (file ``config.py``)::
+    $ env/bin/easy_install wheezy.template
 
-    from wheezy.html.ext.mako import widget_preprocessor
-    from wheezy.web.templates import MakoTemplate
+Let add wheezy.template configuration (file ``config.py``)::
 
-    options = {
-        'render_template': MakoTemplate(
-            directories=['templates'],
-            filesystem_checks=False,
-            preprocessor=[widget_preprocessor]
-        )
-    }
+    from wheezy.html.ext.template import WidgetExtension
+    from wheezy.html.utils import html_escape
+    from wheezy.template.engine import Engine
+    from wheezy.template.ext.core import CoreExtension
+    from wheezy.template.loader import FileLoader
+    from wheezy.web.templates import WheezyTemplate
+
+    options = {}
+
+    # Template Engine
+    searchpath = ['templates']
+    engine = Engine(
+        loader=FileLoader(searchpath),
+        extensions=[
+            CoreExtension(),
+            WidgetExtension(),
+        ])
+    engine.global_vars.update({
+        'h': html_escape
+    })
+    options.update({
+        'render_template': WheezyTemplate(engine)
+    })
 
 Above configuration says that templates can be found in ``templates``
-directory and we are using ``widget_preprocessor`` from `wheezy.html`_.
+directory and we are using several extensions and helpers from `wheezy.html`_.
 
 Layout
 ^^^^^^
@@ -304,18 +320,24 @@ Since templates usually have many things in common let define layout used
 by both pages we are going to create (create directory ``templates`` and
 add file ``layout.html``)::
 
+    @require(path_for)
     <html>
         <head>
             <title>Guestbook</title>
-            <link href="${path_for('static', path='site.css')}"
+            <link href="@path_for('static', path='site.css')"
                 type="text/css" rel="stylesheet" />
         </head>
         <body>
             <div id="main">
-                ${self.body()}
+                @def content():
+                @end
+                @content()
             </div>
         </body>
     </html>
+
+You need to be explicit about any context variable used in
+template by specifing them in ``@require`` directive.
 
 Templates
 ^^^^^^^^^
@@ -323,47 +345,53 @@ Templates
 Define template for list handler (in directory ``templates`` add file
 ``list.html``)::
 
-    <%inherit file="/layout.html"/>
+    @extends("layout.html")
 
+    @def content():
+    @require(path_for, greetings)
     <h1>Guestbook</h1>
-    <a href="${path_for('add')}">Sign guestbook</a>
-    %for g in greetings:
+    <a href="@path_for('add')">Sign guestbook</a>
+    @for g in greetings:
     <p>
-        ${g.id}. On ${g.created_on.strftime('%m/%d/%Y %I:%M %p')},
-        <b>${g.author or 'anonymous'}</b> wrote:
-        <blockquote>${g.message.replace('\n', '<br/>')}</blockquote>
+        @g.id!s. On @g.created_on.strftime('%m/%d/%Y %I:%M %p'),
+        <b>@str(g.author or 'anonymous')</b> wrote:
+        <blockquote>@g.message.replace('\n', '<br/>')</blockquote>
     </p>
-    %endfor
+    @end
+    @end
 
 What is interesting here is ``path_for()`` function that can build reverse
-path for given route name. So when someone click on ``Sign guestbook``
+path for given route name. So when someone clicks on ``Sign guestbook``
 link browser navigates to url that let add a greeting.
 
 Define template for add handler (in directory ``templates`` add file
 ``add.html``)::
 
-    <%inherit file="/layout.html"/>
+    @extends("layout.html")
 
+    @def content():
+    @require(greeting, path_for, errors)
     <h1>Sign Guestbook</h1>
-    ${greeting.error()}
-    <form action="${path_for('add')}" method='post'>
+    @greeting.error()
+    <form action="@path_for('add')" method='post'>
         <p>
-            ${greeting.author.label('Author:')}
-            ${greeting.author.textbox()}
-            ${greeting.author.error()}
+            @greeting.author.label('Author:')
+            @greeting.author.textbox()
+            @greeting.author.error()
         </p>
         <p>
-            ${greeting.message.textarea()}
-            ${greeting.message.error()}
+            @greeting.message.textarea()
+            @greeting.message.error()
         </p>
         <p>
         <input type='submit' value='Leave Message'>
         </p>
     </form>
-    <a href="${path_for('list')}">Back</a>
+    <a href="@path_for('list')">Back</a>
 
 Here you can see syntax provided by `wheezy.html`_ for HTML rendering: label,
-textbox, error, etc. Please refer to `wheezy.html`_ documentation.
+textbox, error, etc. HTML widgets require context variable ``errors``. Please
+refer to `wheezy.html`_ documentation.
 
 Style
 ^^^^^
@@ -428,9 +456,11 @@ together (file ``app.py``)::
     ], options)
 
     if __name__ == '__main__':
+        from wsgiref.handlers import BaseHandler
         from wsgiref.simple_server import make_server
         try:
             print('Visit http://localhost:8080/')
+            BaseHandler.http_version = '1.1'
             make_server('', 8080, main).serve_forever()
         except KeyboardInterrupt:
             pass
@@ -494,9 +524,18 @@ somewhere within head HTML tag::
         src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js">
         </script>
         <script type="text/javascript"
-        src="${path_for('static', path='site.js')}">
+        src="@path_for('static', path='site.js')">
         </script>
     </head>
+
+Add the following to ``add.html`` to create a javascript AJAX
+form::
+
+    <script type="text/javascript">
+        $(document).ready(function() {
+            ajaxForm();
+        })
+    </script>
 
 Try run application by issuing the following command::
 
@@ -521,7 +560,6 @@ At the end of ``config.py`` add initialization logic for cache, cache factory
 and configuration options for HTTP cache middleware)::
 
     cache = MemoryCache()
-    cached = Cached(cache, time=15 * 60)
 
     # HTTPCacheMiddleware
     options.update({
@@ -683,12 +721,14 @@ We can apply more permissive content caching to ``AddHandler``::
     class AddHandler(BaseHandler):
 
         @handler_cache(CacheProfile('both', duration=timedelta(hours=1),
-                vary_environ=['HTTP_ACCEPT_ENCODING']))
+                vary_environ=['HTTP_ACCEPT_ENCODING'],
+                http_vary=['Accept-Encoding']))
         @handler_transforms(gzip_transform(compress_level=9, min_length=500))
         def get(self, greeting=None):
             ...
 
-
+Notice that for HTTP caching we added ``http_vary`` directive so
+intermediate proxies can properly serve cached content.
 
 Try run application by issuing the following command::
 
@@ -699,6 +739,30 @@ Visit http://localhost:8080/ to see your site in browser.
 Take a look at `wheezy.http`_ for various options available for content
 caching.
 
+Exercises
+---------
+
+#. Refactor views by moving cache profiles definition to a separate
+   file (e.g. profile.py)
+#. Refactor repository by enforcing contract with duck typing asserts. See
+   `post <http://mindref.blogspot.com/2012/11/python-duck-typing-assert.html>`_
+   and `example
+   <https://bitbucket.org/akorn/wheezy.web/src/tip/demos/template/src/membership/repository/mock.py>`_.
+#. Refactor repository by introducing caching repository
+   implementation (use factory to provide repository, see
+   `caching.py <https://bitbucket.org/akorn/wheezy.web/src/tip/demos/template/src/membership/repository/caching.py>`_
+   and
+   `factory.py <https://bitbucket.org/akorn/wheezy.web/src/tip/demos/template/src/factory.py>`_).
+#. Enhance content caching for list handler by utilizing HTTP ETag browser caching (see
+   membership cache profile in
+   `profile.py <https://bitbucket.org/akorn/wheezy.web/src/tip/demos/template/src/membership/web/profile.py>`_).
+#. Improve templates with prerocessor (see examples for
+   `preprocessor <https://bitbucket.org/akorn/wheezy.web/src/tip/demos/template/content/templates-preprocessor>`_
+   and
+   `config.py <https://bitbucket.org/akorn/wheezy.web/src/tip/demos/template/src/config.py>`_).
+
+
+.. _`wheezy.template`: http://packages.python.org/wheezy.template
 .. _`wheezy.caching`: http://packages.python.org/wheezy.caching
 .. _`wheezy.html`: http://packages.python.org/wheezy.html
 .. _`wheezy.http`: http://packages.python.org/wheezy.http

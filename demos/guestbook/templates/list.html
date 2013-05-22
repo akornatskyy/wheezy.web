@@ -1,11 +1,14 @@
-<%inherit file="/layout.html"/>
+@extends("layout.html")
 
+@def content():
+@require(path_for, greetings)
 <h1>Guestbook</h1>
-<a href="${path_for('add')}">Sign guestbook</a>
-%for g in greetings:
-    <p>
-    ${g.id}. On ${g.created_on.strftime('%m/%d/%Y %I:%M %p')},
-    <b>${g.author or 'anonymous'}</b> wrote:
-    <blockquote>${g.message.replace('\n', '<br/>')}</blockquote>
+<a href="@path_for('add')">Sign guestbook</a>
+@for g in greetings:
+<p>
+    @g.id!s. On @g.created_on.strftime('%m/%d/%Y %I:%M %p'),
+    <b>@str(g.author or 'anonymous')</b> wrote:
+    <blockquote>@g.message.replace('\n', '<br/>')</blockquote>
 </p>
-%endfor
+@end
+@end

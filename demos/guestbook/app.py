@@ -18,9 +18,11 @@ main = WSGIApplication([
 
 
 if __name__ == '__main__':
+    from wsgiref.handlers import BaseHandler
     from wsgiref.simple_server import make_server
     try:
         print('Visit http://localhost:8080/')
+        BaseHandler.http_version = '1.1'
         make_server('', 8080, main).serve_forever()
     except KeyboardInterrupt:
         pass

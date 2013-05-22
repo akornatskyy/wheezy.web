@@ -1,23 +1,27 @@
-<%inherit file="/layout.html"/>
+@extends("layout.html")
+
+@def content():
+@require(greeting, path_for, errors)
 <h1>Sign Guestbook</h1>
-${greeting.error()}
-<form action="${path_for('add')}" method='post'>
+@greeting.error()
+<form action="@path_for('add')" method='post'>
     <p>
-    ${greeting.author.label('Author:')}
-    ${greeting.author.textbox()}
-    ${greeting.author.error()}
+        @greeting.author.label('Author:')
+        @greeting.author.textbox()
+        @greeting.author.error()
     </p>
     <p>
-    ${greeting.message.textarea()}
-    ${greeting.message.error()}
+        @greeting.message.textarea()
+        @greeting.message.error()
     </p>
     <p>
     <input type='submit' value='Leave Message'>
     </p>
 </form>
-<a href="${path_for('list')}">Back</a>
+<a href="@path_for('list')">Back</a>
 <script type="text/javascript">
     $(document).ready(function() {
         ajaxForm();
     })
 </script>
+@end
