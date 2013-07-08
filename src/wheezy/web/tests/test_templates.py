@@ -151,7 +151,7 @@ class TenjinTemplateTestCase(unittest.TestCase):
         template = TenjinTemplate()
         assert ['cache_as', 'capture_as', 'captured_as',
                 'escape', 'tenjin', 'to_str'] == sorted(
-                    template.helpers.keys())
+            template.helpers.keys())
         self.mock_encoding.assert_called_once_with('UTF-8')
         self.mock_cache.assert_called_once_with()
         self.mock_engine.assert_called_once_with(
