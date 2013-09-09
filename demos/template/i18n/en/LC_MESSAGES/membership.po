@@ -13,23 +13,23 @@ msgstr "Date of birth (YYYY/MM/DD):"
 msgid "YYYY/MM/DD"
 msgstr "%Y/%m/%d"
 
-#: src/membership/repository/samples.py:20
+#: src/membership/repository/samples.py:57
 msgid "Favorite number"
 msgstr "Favorite number"
 
-#: src/membership/repository/samples.py:21
+#: src/membership/repository/samples.py:58
 msgid "City of birth"
 msgstr "City of birth"
 
-#: src/membership/repository/samples.py:22
+#: src/membership/repository/samples.py:59
 msgid "Favorite color"
 msgstr "Favorite color"
 
-#: src/membership/repository/samples.py:26
+#: src/membership/repository/samples.py:63
 msgid "User"
 msgstr "User"
 
-#: src/membership/repository/samples.py:27
+#: src/membership/repository/samples.py:64
 msgid "Business"
 msgstr "Business"
 
@@ -47,7 +47,7 @@ msgid ""
 msgstr ""
 "The system was unable to create an account for you. Please try again later."
 
-#: src/membership/web/views.py:133
+#: src/membership/web/views.py:139
 msgid ""
 "Your registration request has been queued. Please wait while your request "
 "will be processed. If your request fails please try again."
