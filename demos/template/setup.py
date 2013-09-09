@@ -86,7 +86,8 @@ setup(
             'nose',
             'pytest',
             'pytest-pep8',
-            'pytest-cov'
+            'pytest-cov',
+            'mock'
         ],
         'mako': [
             'mako>=0.7.0'
