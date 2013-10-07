@@ -42,18 +42,18 @@ Sign guestbook:
 .. image:: static/screenshot2.png
 
 For the purpose of this tutorial we store each of identified software
-actor in own file so at the end you will get a project structure with well
+actor in its own file so at the end you will get a project structure with well
 defined roles.
 
 Domain Model
 ------------
 
-Domain model represents key concepts of entities within a scope of the
+The domain model represents key concepts of entities within a scope of the
 application. Our primary entity is a greeting that visitor leave in
 guestbook, it can be characterized by the following: a time stamp
-when it was added (current time), author and a message.
+when it was added (current time), an author and a message.
 
-Let model what we figured so far (file ``models.py``)::
+Let's model what we figured so far (file ``models.py``)::
 
     from datetime import datetime
     from wheezy.core.comp import u
@@ -66,8 +66,8 @@ Let model what we figured so far (file ``models.py``)::
             self.author = author
             self.message = message
 
-The function ``u()`` is a compatibility function that always return unicode
-version of string regardless of python version. If you are using python 3
+The function ``u()`` is a compatibility function that always returns the unicode
+version of a string regardless of python version. If you are using python 3
 you can eliminate it completely since any string is natively unicode in
 python 3 (vs byte string in python 2).
 
@@ -82,7 +82,7 @@ apply some validation rules:
 * ``message`` is required and let take that anything meaningful can be
   expressed in a text between 5 to 512 characters.
 
-So far so good let define our application domain validation constraints
+So far so good, let's define our application domain validation constraints
 (file ``validation.py``)::
 
     from wheezy.validation import Validator
@@ -94,7 +94,7 @@ So far so good let define our application domain validation constraints
         'message': [required, length(min=5, max=512)],
     })
 
-For the complete list of validation rules available please refer to
+For the complete list of validation rules available, please refer to
 `wheezy.validation`_ documentation.
 
 Database
@@ -111,13 +111,13 @@ persistence layer so let define SQL schema for our domain (file
         message TEXT NOT NULL
     );
 
-Issue the following command from terminal::
+Issue the following command from the terminal::
 
     $ cat schema.sql | sqlite3 guestbook.db
 
-This creates SQLite database ``guestbook.db`` with table ``greeting``.
+This creates an SQLite database ``guestbook.db`` with table ``greeting``.
 
-Let try add some data from sqlite3 command prompt::
+Let's try to add some data from the sqlite3 command prompt::
 
     $ sqlite3 guestbook.db
     SQLite version 3.7.16.2 2013-04-12 11:52:43
@@ -145,7 +145,7 @@ Let add configuration file where we can store some settings (file
 
 We have defined function ``session()`` that returns an object valid to
 issue some database related operations including query for data,
-transaction commit, etc. This object serves *unit of work* purpose and is
+transaction commit, etc. This object serves the *unit of work* purpose and is
 suitable to be used with python context manager.
 
 Repository
@@ -155,10 +155,10 @@ A Repository mediates between the domain and persistence layers (database,
 file, in-memory storage, etc.), it encapsulates operations performed and
 provides object-oriented view of the persistence layer.
 
-Accordingly to problem statement, we need two things here: a way to get a
+Accordingly to the problem statement, we need two things here: a way to get a
 list of greetings and ability to add a greeting.
 
-Since we have database and a way to obtain database object we can add
+Since we have a database and a way to obtain database objects we can add
 repository (file ``repository.py``)::
 
     from models import Greeting
@@ -188,7 +188,7 @@ repository (file ``repository.py``)::
             """, (greeting.created_on, greeting.author, greeting.message))
             return True
 
-Let see how it works from python command prompt::
+Let's see how it works from python command prompt::
 
     $ env/bin/python
     Python 2.7.3 (default, Mar  5 2013, 01:19:40)
@@ -212,7 +212,7 @@ View
 Handlers
 ^^^^^^^^
 
-Views contain handlers that respond to requests sent by browser. We need two
+Views contain handlers that respond to requests sent by a browser. We need two
 handlers: one for list and the other one to add a greeting.
 
 List handler returns a list of greeting stored (file ``views.py``)::
@@ -260,9 +260,9 @@ Add handler store visitor greeting (file ``views.py``)::
 
 The respond to browser request to add handler is simply render ``add.html``
 template with some defaults passed with greeting model. However when
-visitor submits add page we try update model ``greeting`` with HTML form
-data if it fails for any reason we display user error messages
-(those returned by ``try_update_model()``). If update model succeed it
+visitor submits 'add page' we try update model ``greeting`` with HTML form
+data. If it fails for any reason we display user error messages
+(those returned by ``try_update_model()``). If update model succeeds it
 holds data entered by user that we can validate with ``greeting_validator``.
 Note ``BaseHandler`` keeps a dictionary of all errors reported in ``errors``
 attribute. Again if validation fails we redisplay ``add`` page with any
@@ -316,7 +316,7 @@ directory and we are using several extensions and helpers from `wheezy.html`_.
 Layout
 ^^^^^^
 
-Since templates usually have many things in common let define layout used
+Since templates usually have many things in common let's define common layout used
 by both pages we are going to create (create directory ``templates`` and
 add file ``layout.html``)::
 
@@ -337,7 +337,7 @@ add file ``layout.html``)::
     </html>
 
 You need to be explicit about any context variable used in
-template by specifing them in ``@require`` directive.
+the template by specifying them in a ``@require`` directive.
 
 Templates
 ^^^^^^^^^
@@ -362,7 +362,7 @@ Define template for list handler (in directory ``templates`` add file
 
 What is interesting here is ``path_for()`` function that can build reverse
 path for given route name. So when someone clicks on ``Sign guestbook``
-link browser navigates to url that let add a greeting.
+link the browser navigates to a url that lets add a greeting.
 
 Define template for add handler (in directory ``templates`` add file
 ``add.html``)::
@@ -391,12 +391,12 @@ Define template for add handler (in directory ``templates`` add file
 
 Here you can see syntax provided by `wheezy.html`_ for HTML rendering: label,
 textbox, error, etc. HTML widgets require context variable ``errors``. Please
-refer to `wheezy.html`_ documentation.
+refer to the `wheezy.html`_ documentation.
 
 Style
 ^^^^^
 
-Let add some style (create directory ``static`` and add file ``site.css``)::
+Let's add some style (create directory ``static`` and add file ``site.css``)::
 
     input[type="text"], textarea {
         border: 1px solid #BBB; border-radius: 3px; }
@@ -433,13 +433,13 @@ Let map the root path to list handler and ``add`` path to add handler
             name='static')
     ]
 
-Note each url mapping has unique name so it can be easily referenced by
+Note each url mapping has a unique name, so it can be easily referenced by
 function that build reverse path for given name or perform request redirect.
 
 Application
 -----------
 
-Let define an entry point for guestbook application and combines all
+Let's define an entry point for guestbook application that combines all
 together (file ``app.py``)::
 
     from wheezy.http import WSGIApplication
@@ -466,11 +466,11 @@ together (file ``app.py``)::
             pass
         print('\nThanks!')
 
-Try run application by issuing the following command::
+Try to run the application by issuing the following command::
 
     $ env/bin/python app.py
 
-Visit http://localhost:8080/ to see your site in browser.
+Visit http://localhost:8080/ to see your site in a browser.
 
 AJAX and JSON
 -------------
@@ -537,27 +537,27 @@ form::
         })
     </script>
 
-Try run application by issuing the following command::
+Try to run the application by issuing the following command::
 
     $ env/bin/python app.py
 
-Visit http://localhost:8080/ to see your site in browser (try both with
+Visit http://localhost:8080/ to see your site in a browser (try both with
 JavaScript enabled and disabled).
 
 Content Cache
 -------------
 
-Why would be make a call to database every time the list of greetings is
+Why would we be making a call to database every time the list of greetings is
 displayed to user? What if we can cache that page for some period of time
-and regenerate only when someone added another greeting? Let implement
-this use case with `wheezy.caching`_ package.
+and regenerate it only when someone added another greeting? Let's implement
+this use case with the `wheezy.caching`_ package.
 
 Open ``config.py`` and add import for MemoryCache and Cached::
 
     from wheezy.caching.memory import MemoryCache
 
 At the end of ``config.py`` add initialization logic for cache, cache factory
-and configuration options for HTTP cache middleware)::
+and configuration options for HTTP cache middleware::
 
     cache = MemoryCache()
 
@@ -566,13 +566,13 @@ and configuration options for HTTP cache middleware)::
         'http_cache': cache
     })
 
-Since we are going to use HTTP cache middleware we need instruct application
-bootstrap process about middleware we are going to use. Open file ``app.py``
+Since we are going to use HTTP cache middleware we need to instruct the application
+bootstrap process about the middleware we are going to use. Open file ``app.py``
 and import ``http_cache_middleware_factory``::
 
     from wheezy.http.middleware import http_cache_middleware_factory
 
-To the list of ``WSGIApplication`` middleware add HTTP cache middleware
+To the list of ``WSGIApplication`` middleware, add a HTTP cache middleware
 factory::
 
     main = WSGIApplication([
@@ -581,7 +581,7 @@ factory::
         path_routing_middleware_factory
     ], options)
 
-Finally let apply cache profile to the ListHandler. Few imports
+Finally let's apply cache profile to the ListHandler. Add a few imports
 (``views.py``)::
 
     from datetime import timedelta
@@ -589,7 +589,7 @@ Finally let apply cache profile to the ListHandler. Few imports
     from wheezy.http import CacheProfile
     from wheezy.web import handler_cache
 
-Use ``handler_cache`` decorator to apply cache profile to handler response::
+Use the ``handler_cache`` decorator to apply cache profile to the handler response::
 
     class ListHandler(BaseHandler):
 
@@ -599,12 +599,12 @@ Use ``handler_cache`` decorator to apply cache profile to handler response::
 
 The ``ListHandler`` response is cached by server for 15 minutes.
 
-Try run application by issuing the following command::
+Try to run the application by issuing the following command::
 
     $ env/bin/python app.py
 
-Visit http://localhost:8080/ to see your site in browser. Try add a greeting
-and notice that list page is not updated (it is being cached by server). Next
+Visit http://localhost:8080/ to see your site in a browser. Try to add a greeting,
+and notice that the list page is not updated (it is being cached by server). Next
 we will use cache dependency to invalidate content cache.
 
 Take a look at `wheezy.http`_ for various options available for content
@@ -613,14 +613,14 @@ caching.
 Cache Dependency
 ----------------
 
-Let add cache invalidation logic so once user enters a new greeting it cause
+Let's add cache invalidation logic, so once user enters a new greeting it causes
 the list page to be refreshed.
 
 In file ``config.py`` add import for ``Cached``::
 
     from wheezy.caching.patterns import Cached
 
-Declare cached (right after created cache instance)::
+Declare cached (right after the created cache instance)::
 
     cache = MemoryCache()
     cached = Cached(cache, time=15 * 60)
@@ -639,12 +639,12 @@ Modify ``ListHandler`` so it is aware about the list cache dependency key::
             #response.cache_dependency.append('d_list')
             return response
 
-Finally let add a trigger that cause the invalidation to occur in cache.
+Finally let's add a trigger, that causes the invalidation to occur in cache.
 Import cached from config module::
 
     from config import cached
 
-Modify ``AddHandler`` so on successful commit the content cache for
+Modify ``AddHandler`` so that, on successful commit, the content cache for
 ``ListHandler`` response is invalidated::
 
     class AddHandler(BaseHandler):
@@ -655,11 +655,11 @@ Modify ``AddHandler`` so on successful commit the content cache for
             cached.dependency.delete('d_list')
             return self.see_other_for('list')
 
-Try run application by issuing the following command::
+Try to run the application by issuing the following command::
 
     $ env/bin/python app.py
 
-Visit http://localhost:8080/ to see your site in browser. Try add a greeting
+Visit http://localhost:8080/ to see your site in a browser. Try add a greeting
 and notice that list page is refreshed this time.
 
 Take a look at `wheezy.caching`_ for various cache implementations including
@@ -682,7 +682,7 @@ Add imports in file ``views.py``::
     from wheezy.http.transforms import gzip_transform
     from wheezy.web.transforms import handler_transforms
 
-Let apply compression to ``ListHandler``::
+Let's apply compression to ``ListHandler``::
 
     class ListHandler(BaseHandler):
 
@@ -692,13 +692,13 @@ Let apply compression to ``ListHandler``::
             ...
 
 Notice :py:meth:`~wheezy.web.transforms.handler_transforms` decorator
-is after handler cache, this way it able compress response before it goes to
-cache.
+is after handler cache, this way it is able to compress response before it goes to
+the cache.
 
 At this point we have a single version of the cached page - compressed. What
-about browsers that do not accept gzip content encoding? Would be good somehow
-distinguish web requests that support compression and some that do not.
-Fortunately browser sends HTTP header ``Accept-Encoding`` that serves exactly
+about browsers that do not accept gzip content encoding? It would be good somehow
+to distinguish between web requests that support compression and those that do not.
+Fortunately browsers send an HTTP header ``Accept-Encoding`` that serves exactly
 this purpose. All we need is instruct content cache to *vary* response
 depending on value in ``Accept-Encoding`` HTTP header.
 
@@ -727,14 +727,14 @@ We can apply more permissive content caching to ``AddHandler``::
         def get(self, greeting=None):
             ...
 
-Notice that for HTTP caching we added ``http_vary`` directive so
+Notice that for HTTP caching we added ``http_vary`` directive, so
 intermediate proxies can properly serve cached content.
 
-Try run application by issuing the following command::
+Try to run the application by issuing the following command::
 
     $ env/bin/python app.py
 
-Visit http://localhost:8080/ to see your site in browser.
+Visit http://localhost:8080/ to see your site in a browser.
 
 Take a look at `wheezy.http`_ for various options available for content
 caching.
@@ -742,7 +742,7 @@ caching.
 Exercises
 ---------
 
-#. Refactor views by moving cache profiles definition to a separate
+#. Refactor views by moving the cache profiles definition to a separate
    file (e.g. profile.py)
 #. Refactor repository by enforcing contract with duck typing asserts. See
    `post <http://mindref.blogspot.com/2012/11/python-duck-typing-assert.html>`_
@@ -756,7 +756,7 @@ Exercises
 #. Enhance content caching for list handler by utilizing HTTP ETag browser caching (see
    membership cache profile in
    `profile.py <https://bitbucket.org/akorn/wheezy.web/src/tip/demos/template/src/membership/web/profile.py>`_).
-#. Improve templates with prerocessor (see examples for
+#. Improve templates with preprocessor (see examples for
    `preprocessor <https://bitbucket.org/akorn/wheezy.web/src/tip/demos/template/content/templates-preprocessor>`_
    and
    `config.py <https://bitbucket.org/akorn/wheezy.web/src/tip/demos/template/src/config.py>`_).
