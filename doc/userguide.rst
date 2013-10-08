@@ -4,7 +4,7 @@ User Guide
 
 :ref:`wheezy.web` is a lightweight `WSGI`_ framework that aims take most
 benefits out of standard python library and serves a sort of glue with other
-libraries. It can be run from python 2.4 up to most cutting age python 3.
+libraries. It can be run from python 2.4 up to the most cutting edge python 3.
 The framework aims to alleviate the overhead associated with common activities
 performed in Web application development.
 
@@ -30,14 +30,14 @@ returns ``HTTPResponse``::
   generic handler. It serves dispatcher purpose for HTTP request method (GET,
   POST, etc). Base class for all handlers.
 * :py:class:`~wheezy.web.handlers.base.BaseHandler` - provides methods that
-  integartes such features like: routing, i18n, model binding, template
+  integrates such features as: routing, i18n, model binding, template
   rendering, authentication, xsrf/resubmission protection.
 * :py:class:`~wheezy.web.handlers.base.RedirectRouteHandler` - redirects to
   given route name.
 * :py:class:`~wheezy.web.handlers.file.FileHandler` - serves static files out
   of some directory.
 * :py:class:`~wheezy.web.handlers.template.TemplateHandler` - serves templates
-  that doesn't require up front data processing.
+  that don't require up front data processing.
 
 MethodHandler
 ~~~~~~~~~~~~~
@@ -50,13 +50,13 @@ MethodHandler
 
 You subclass from :py:class:`~wheezy.web.handlers.method.MethodHandler` or
 :py:class:`~wheezy.web.handlers.base.BaseHandler` and
-define methods ``get()`` or ``post()`` that handle HTTP request method ``GET``
+define methods ``get()`` or ``post()`` that handle HTTP request methods ``GET``
 or ``POST``.
 
 .. literalinclude:: ../demos/hello/hello.py
    :lines: 13-18
 
-This method must return ``HTTPResponse`` object.
+This method must return an ``HTTPResponse`` object.
 
 :py:class:`~wheezy.web.handlers.method.MethodHandler` has a number of useful
 attributes:
@@ -66,16 +66,16 @@ attributes:
 * ``route_args`` - a dictionary of arguments matched in url routing.
 * ``cookies`` - a list of cookies that extend ``HTTPResponse``.
 
-Please note that this handler automatically respond with HTTP status code 405
-(method not allowed) in case requested HTTP method is not overridden in your
+Please note that this handler automatically responds with HTTP status code 405
+(method not allowed) in case the requested HTTP method is not overridden in your
 handler, e.g. there is incoming POST request but your handler does not
-provide implementation.
+provide an implementation.
 
 BaseHandler
 ~~~~~~~~~~~
 
 :py:class:`~wheezy.web.handlers.base.BaseHandler` provides methods that
-integrate such features:
+integrates such features as:
 
 #. routing
 #. AJAX
@@ -88,16 +88,16 @@ integrate such features:
 #. xsrf/resubmission protection
 #. context sharing
 
-You need inherit this class and define get() and/or post() to be able
-respond to HTTP requests. This class inherit
-:py:class:`~wheezy.web.handlers.method.MethodHandler` so everything mentioned
+You need to inherit from this class and define get() and/or post() to be able
+respond to HTTP requests. This class inherits from
+:py:class:`~wheezy.web.handlers.method.MethodHandler`, so everything mentioned
 for :py:class:`~wheezy.web.handlers.method.MethodHandler` applies to
 :py:class:`~wheezy.web.handlers.base.BaseHandler` as well.
 
 Routing
 ^^^^^^^
 
-Routing feature is provided via integartation with `wheezy.routing`_ package.
+Routing feature is provided via integration with `wheezy.routing`_ package.
 There are the following methods:
 
 * ``path_for(name, **kwargs)`` - returns url path by route name. Any missing
@@ -147,7 +147,7 @@ Please refer to `wheezy.http`_ documentation for more information.
 Internationalization
 ^^^^^^^^^^^^^^^^^^^^
 
-Internationalization feature is provided via integartation with `wheezy.core`_
+Internationalization feature is provided via integration with `wheezy.core`_
 package (module ``i18n``). There are the following attributes:
 
 * ``locale`` - default implementation return a value resolved from route
@@ -181,8 +181,8 @@ See example in public demo application `config.py`_.
 Model Binding
 ^^^^^^^^^^^^^
 
-Once html form submitted, you need a way to bind these values to some domain
-model, validate, report errors, etc. This is where integartation with
+Once the html form is submitted, you need a way to bind these values to some domain
+model, validate, report errors, etc. This is where integration with
 `wheezy.validation`_ package happens.
 
 There are the following attributes and methods:
@@ -198,7 +198,7 @@ There are the following attributes and methods:
 * ``ValidationMixin::error(message)`` - adds a general error (this error
   is added with key *__ERROR__*).
 
-Here is example from `template`_ demo application (see file
+Here is an example from the `template`_ demo application (see file
 `membership/web/views.py`_)::
 
     class SignInHandler(BaseHandler):
@@ -217,12 +217,12 @@ Here is example from `template`_ demo application (see file
                 return self.get(credential)
             return self.redirect_for('default')
 
-This handler on post updates ``credential`` with values from html form
-submitted. In case ``try_update_model`` or ``valida`` fails we re-display
-sign in page with errors reported.
+On POST this handler updates ``credential`` with values from the html form
+submitted. In case ``try_update_model`` or ``valida`` fails. we re-display
+the sign-in page with errors reported.
 
-Here is example from `template`_ demo application that demonstrates
-how to use general error (see file `membership/web/views.py`_)::
+Here is an example from the `template`_ demo application that demonstrates
+how to use the general error (see file `membership/web/views.py`_)::
 
     class SignUpHandler(BaseHandler):
 
@@ -260,9 +260,9 @@ Here is an example::
             ...
             return self.see_other_for('default')
 
-In case of error, handler in ajax request returns JSON object with
-any errors reported, otherwise renders response template. This way you
-are able to serve both: browsers with javascript enabled and disabled.
+In case of error in ajax requests, the handler returns JSON object with
+any errors reported, otherwise it renders response the template. This way you
+are able to serve both: browsers with javascript enabled or disabled.
 
 See file `core.js`_ for an example of how errors are processed by browser.
 
@@ -369,12 +369,12 @@ Authentication
 ^^^^^^^^^^^^^^
 
 Authentication is a process of confirming the truth of security principal.
-In web application it usually relates to creating an encrypted cookie value
-so it can not be easily compromised by attacker. This is where integration
+In a web application it usually relates to creating an encrypted cookie value,
+which can not easily be compromised by attacker. This is where integration
 with `wheezy.security`_ happens.
 
 The process of creating authentication cookie is as simple as assiging
-instance of ``wheezy.security.Principal`` to attribute ``principal``. Let
+instance of ``wheezy.security.Principal`` to attribute ``principal``. Let's
 demonstrate this by example::
 
     from wheezy.security import Principal
@@ -551,13 +551,13 @@ Context
 
 :py:class:`~wheezy.web.handlers.base.BaseHandler` holds a number of useful
 features that other application layers (e.g. service layer, business logic)
-can benefit.
+can benefit from.
 
-There is ``context`` attribute available for this purpose. It is
+There ``context`` attribute is available for this purpose. It is
 a dictionary that extends ``options`` with the following information: errors,
 locale, principal and translations.
 
-Here is example from `template`_ demo application (see
+Here is example from the `template`_ demo application (see
 `membership/web/views.py`_)::
 
     class SignInHandler(BaseHandler):
@@ -571,7 +571,7 @@ Context is passed to service factory.
 Redirect Handler
 ~~~~~~~~~~~~~~~~
 
-:py:class:`~wheezy.web.handlers.base.RedirectRouteHandler` redirects to given
+:py:class:`~wheezy.web.handlers.base.RedirectRouteHandler` redirects to a given
 route name (HTTP status code 302). You can use
 :py:meth:`~wheezy.web.handlers.base.redirect_handler` in url mapping
 declaration::
@@ -581,16 +581,16 @@ declaration::
         ...
     ]
 
-The example above always redirect match for route `default` to route
+The example above always performs a redirect match for route `default` to route
 `welcome`. It asks browser to redirect it request to another page.
 
 Permanent Redirect
 ~~~~~~~~~~~~~~~~~~
 
 :py:class:`~wheezy.web.handlers.base.PermanentRedirectRouteHandler`
-performs permanent redirect (HTTP status code 301) to given route name.
+performs a permanent redirect (HTTP status code 301) to the given route name.
 You can use
-:py:meth:`~wheezy.web.handlers.base.permanent_redirect_handler` in url
+:py:meth:`~wheezy.web.handlers.base.permanent_redirect_handler` in the url
 mapping declaration::
 
     all_urls = [
@@ -598,7 +598,7 @@ mapping declaration::
         ...
     ]
 
-The example above issue permanent redirect for route `default` to route
+The example above results in a permanent redirect for route `default` to route
 `welcome`.
 
 FileHandler
@@ -621,7 +621,7 @@ arguments:
 
 * ``root`` - a root path of directory that holds static files, e.g.
   `.css`, `.js`, `.jpg`, etc. It is recommended that this directory be
-  isolated of any other part of application.
+  isolated from any other part of the application.
 * ``age`` - controls http browser cache policy period.
 
 Request Headers
@@ -629,8 +629,8 @@ Request Headers
 
 :py:class:`~wheezy.web.handlers.file.FileHandler` handles both GET and HEAD
 browser requests, provides `Last-Modified` and `ETag` HTTP response headers,
-as well as understands `If-Modified-Since` and `If-None-Match` request headers
-sent by browser for static content.
+as well as understands `If-Modified-Since` and `If-None-Match` request headers,
+as sent by browser for static content.
 
 GZip and Caching
 ^^^^^^^^^^^^^^^^
@@ -670,11 +670,11 @@ TemplateHandler
 ~~~~~~~~~~~~~~~
 
 :py:class:`~wheezy.web.handlers.template.TemplateHandler` serves templates
-that does not require up front data processing. This mostly relates to some
+that do not require up front data processing. This mostly relates to some
 static pages, e.g. about, help, error, etc.
 
 You can use
-:py:meth:`~wheezy.web.handlers.template.template_handler` in url mapping
+:py:meth:`~wheezy.web.handlers.template.template_handler` in the url mapping
 declaration::
 
     from wheezy.web.handlers import template_handler
@@ -702,12 +702,12 @@ the following:
 Bootstrap Defaults
 ~~~~~~~~~~~~~~~~~~
 :py:meth:`~wheezy.web.middleware.bootstrap_defaults` middleware factory does
-not provide any middleware instead it is used to check application options
+not provide any middleware, instead it is used to check application options
 and provide defaults.
 
 The following options are checked:
 
-* ``path_router`` - if it is not defined already and instance of
+* ``path_router`` - if it is not defined already an instance of
   ``wheezy.routing.PathRouter`` is created. Argument ``url_mapping`` is
   passed to ``PathRouter.add_routes`` method.
 * ``render_template`` - defaults to an instance of
@@ -720,7 +720,7 @@ PathRoutingMiddleware
 ~~~~~~~~~~~~~~~~~~~~~
 
 :py:class:`~wheezy.web.middleware.routing.PathRoutingMiddleware` provides
-integartation with `wheezy.routing`_ package. It is added to
+integration with `wheezy.routing`_ package. It is added to
 ``WSGIApplication`` via
 :py:meth:`~wheezy.web.middleware.path_routing_middleware_factory`.
 
@@ -738,7 +738,7 @@ HTTPErrorMiddleware
 custom error page in case http status code is above 400 (HTTP status codes
 from 400 and up relates to client error, 500 and up - server error). This
 middleware is initialized with ``error_mapping`` dictionary, where key
-corresponds to HTTP status code and value to route name. In case of status
+corresponds to HTTP status code and value to route name. In case of a status
 code match it redirects incoming request to route per ``error_mapping``.
 
 :py:class:`~wheezy.web.middleware.errors.HTTPErrorMiddleware` can be added to
@@ -777,8 +777,8 @@ These checks occur in
 Transforms
 ----------
 
-Transforms is a way to manipulate handler response accordingly to some
-algorithm. :ref:`wheezy.web` provide decorator
+Transforms are a way to manipulate handler response accordingly to some
+algorithm. :ref:`wheezy.web` provides decorator
 :py:meth:`~wheezy.web.transforms.handler_transforms` to adapt transforms
 available in `wheezy.http`_ to web handlers sub-classed from
 :py:class:`~wheezy.web.handlers.base.BaseHandler`::
@@ -798,7 +798,7 @@ Please refer to `wheezy.http`_ documentation for more information.
 Templates
 ---------
 
-:ref:`wheezy.web` does not provide own implementation for template rendering
+:ref:`wheezy.web` does not provide its own implementation for template rendering
 instead it offers integration with the following packages:
 
 * `Jinja2`_ Templates
@@ -817,8 +817,8 @@ Template contract is any callable of the following form::
 Jinja2 Templates
 ~~~~~~~~~~~~~~~~
 
-Here is configuration option to define how templates are rendered within
-application (see `config.py`_ for details)::
+Here is the configuration option to define that Jinja2 templates are rendered within
+the application (see `config.py`_ for details)::
 
     from jinja2 import Environment
     from jinja2 import FileSystemLoader
@@ -845,7 +845,7 @@ not explained here. Please refer to `Jinja2`_ documentation.
 Mako Templates
 ~~~~~~~~~~~~~~
 
-Here is configuration option to define how templates are rendered within
+Here is the configuration option to define that Mako templates are rendered within
 application (see `config.py`_ for details)::
 
     from wheezy.html.ext.mako import whitespace_preprocessor
@@ -869,7 +869,7 @@ not explained here. Please refer to `Mako`_ documentation.
 Tenjin Templates
 ~~~~~~~~~~~~~~~~
 
-Here is configuration option to define how templates are rendered within
+Here is configuration option to define that Tenjin templates are rendered within
 application (see `config.py`_ for details)::
 
     from wheezy.html.ext.tenjin import whitespace_preprocessor
@@ -893,7 +893,7 @@ and not explained here. Please refer to `Tenjin`_ documentation.
 Wheezy Template
 ~~~~~~~~~~~~~~~
 
-Here is configuration option to define how templates are rendered within
+Here is configuration option to define that Wheezy.Template templates are rendered within
 application (see `config.py`_ for details)::
 
     from wheezy.html.ext.template import WhitespaceExtension
@@ -925,7 +925,7 @@ and not explained here. Please refer to `Wheezy.Template`_ documentation.
 Caching
 -------
 
-:ref:`wheezy.web` provide decorator
+:ref:`wheezy.web` provides decorator
 :py:meth:`~wheezy.web.caching.handler_cache` to adapt cache interface
 available in `wheezy.http`_ to web handlers sub-classed from
 :py:class:`~wheezy.web.handlers.base.BaseHandler`::
