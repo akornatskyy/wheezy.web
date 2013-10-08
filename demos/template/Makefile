@@ -1,9 +1,9 @@
-.SILENT: env clean po run test benchmark
-.PHONY: env clean po run test benchmark
+.SILENT: virtualenv env clean release dep install po run uwsgi gunicorn qa test nose-cover test-cover benchmark profile gropf
+.PHONY: virtualenv env clean release dep install po run uwsgi gunicorn qa test nose-cover test-cover benchmark profile gropf
 
 VERSION=2.7
 PYPI=http://pypi.python.org/simple
-ENV=../../env
+ENV=env
 TEMPLATE_ENGINE=wheezy.preprocessor
 
 PYTHON=$(ENV)/bin/python$(VERSION)
@@ -12,32 +12,63 @@ PYTEST=$(ENV)/bin/py.test-$(VERSION)
 NOSE=$(ENV)/bin/nosetests-$(VERSION)
 
 
-all: clean po test-cover release
+all: clean po nose-cover release
 
-env:
-	PYTHON_EXE=/usr/local/bin/python$(VERSION); \
-	if [ ! -x $$PYTHON_EXE ]; then \
-		    PYTHON_EXE=/usr/bin/python$(VERSION); \
-	fi;\
-	virtualenv --python=$$PYTHON_EXE $(ENV)
+virtualenv:
+	PYTHON_EXE=/usr/local/bin/python$(VERSION) ; \
+    if [ ! -x $$PYTHON_EXE ]; then \
+		PYTHON_EXE=/opt/local/bin/python$(VERSION) ; \
+    	if [ ! -x $$PYTHON_EXE ]; then \
+    		PYTHON_EXE=/usr/bin/python$(VERSION) ; \
+    	fi ; \
+    fi ; \
+    virtualenv --python=$$PYTHON_EXE $(ENV)
+
+env: virtualenv
 	$(EASY_INSTALL) -i $(PYPI) -O2 coverage nose pytest \
-	        pytest-pep8 pytest-cov mock lxml mako tenjin jinja2 \
+	        pytest-pep8 pytest-cov mock mako tenjin jinja2 \
 			wheezy.template
 	# The following packages available for python == 2.4
 	if [ "$$(echo $(VERSION) | sed 's/\.//')" -eq 24 ]; then \
 		$(EASY_INSTALL) -i $(PYPI) -O2 wsgiref; \
 	fi
-	$(PYTHON) setup.py develop -i $(PYPI)
+	$(PYTHON) setup.py develop -O2 -U -i $(PYPI)
 
 clean:
 	find src/ -type d -name __pycache__ | xargs rm -rf
 	find src/ -name '*.py[co]' -delete
-	find src/ -name '*.mo' -delete
+	find i18n/ -name '*.mo' -delete
 	find src/ -name '*.cache' -delete
-	rm -rf /tmp/mako_modules/ .cache .coverage
+	rm -rf /tmp/mako_modules/ .cache .coverage src/*.egg-info/ build/ dist/
 
 release:
-	$(PYTHON) setup.py -q egg_info sdist
+	#$(PYTHON) setup.py -q egg_info sdist
+	rm -rf src/*.egg-info/ ; \
+	REV=$$(hg head --template '{rev}') ; \
+    $(PYTHON) setup.py -q egg_info --tag-build .$$REV sdist ; \
+	NAME=$$($(PYTHON) setup.py --fullname).$$REV ; \
+	rm -rf dist/$$NAME ; \
+	tar xzf dist/$$NAME.tar.gz -C dist/ ; \
+	rm dist/$$NAME.tar.gz ; \
+	sed -i '' "s/, 0)/, $$REV)/" dist/$$NAME/src/public/__init__.py ; \
+	tar cf - -C dist/ $$NAME | gzip -9 - > dist/$$NAME.tar.gz; \
+	rm -rf dist/$$NAME
+
+dep:
+	if [ -f /etc/debian_version ]; then \
+	    apt-get update ; \
+		apt-get install --no-install-recommends -y build-essential \
+			python$(VERSION) python$(VERSION)-dev python-setuptools \
+			python-virtualenv gettext libgmp-dev ; \
+	    apt-get clean ; \
+	else \
+		echo This OS is not supported yet. ; \
+		exit 1 ; \
+	fi
+
+install: virtualenv
+	$(PYTHON) setup.py develop -O2 -U -i $(PYPI) ; \
+	$(EASY_INSTALL) -i $(PYPI) -O2 wheezy.template
 
 po:
 	xgettext --join-existing --sort-by-file --omit-header \
@@ -65,7 +96,7 @@ po:
 		content/templates-preprocessor/membership/*.html \
 		content/templates-wheezy/membership/*.html
 	for l in `ls -d i18n/*/ | cut -d / -f 2`; do \
-		echo -n "$$l => "; \
+		/bin/echo -n "$$l => "; \
 		msgfmt -v i18n/$$l/LC_MESSAGES/public.po \
 			i18n/$$l/LC_MESSAGES/shared.po \
 			-o i18n/$$l/LC_MESSAGES/public.mo; \
@@ -78,7 +109,11 @@ po:
 
 run:
 	echo $(TEMPLATE_ENGINE) ; export TEMPLATE_ENGINE=$(TEMPLATE_ENGINE) ; \
-	$(PYTHON) src/app.py
+	if [ -f src/app.pyo ]; then \
+		$(PYTHON) -OO src/app.pyo ; \
+	else \
+		$(PYTHON) src/app.py ; \
+	fi
 
 uwsgi:
 	echo $(TEMPLATE_ENGINE) ; export TEMPLATE_ENGINE=$(TEMPLATE_ENGINE) ; \
@@ -117,5 +152,5 @@ profile:
 	$(NOSE) -qs -m benchmark_views --with-profile \
 		--profile-stats-file=profile.pstats src/public
 
-gropf:
+gprof:
 	gprof2dot.py -f pstats profile.pstats | dot -Tpng -o profile.png

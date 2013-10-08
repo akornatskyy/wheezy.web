@@ -1,6 +1,7 @@
 include *.ini
 include Makefile
 include README.rst
+include src/*.py
 recursive-include content/static/css *.css
 recursive-include content/static/img *.ico *.jpg *.gif *.png
 recursive-include content/static/js *.js

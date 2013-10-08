@@ -1,1 +1,13 @@
+include *.ini
+include Makefile
 include README.rst
+include src/*.py
+recursive-include content/static/css *.css
+recursive-include content/static/img *.ico *.jpg *.gif *.png
+recursive-include content/static/js *.js
+recursive-include content/templates-jinja2 *.html
+recursive-include content/templates-mako *.html
+recursive-include content/templates-preprocessor *.html
+recursive-include content/templates-tenjin *.html
+recursive-include content/templates-wheezy *.html
+recursive-include i18n *.po

@@ -1,15 +1,17 @@
-.SILENT: clean env doctest-cover qa test doc release upload
-.PHONY: clean env doctest-cover qa test doc release upload
+.SILENT: debian env clean release upload qa test doctest-cover nose-cover test-cover doc test-demos
+.PHONY: debian env clean release upload qa test doctest-cover nose-cover test-cover doc test-demos
 
 VERSION=2.7
 PYPI=http://pypi.python.org/simple
+ENV=env
 DIST_DIR=dist
 
-PYTHON=env/bin/python$(VERSION)
-EASY_INSTALL=env/bin/easy_install-$(VERSION)
-PYTEST=env/bin/py.test-$(VERSION)
-NOSE=env/bin/nosetests-$(VERSION)
+PYTHON=$(ENV)/bin/python$(VERSION)
+EASY_INSTALL=$(ENV)/bin/easy_install-$(VERSION)
+PYTEST=$(ENV)/bin/py.test-$(VERSION)
+NOSE=$(ENV)/bin/nosetests-$(VERSION)
 SPHINX=/usr/bin/python /usr/bin/sphinx-build
+
 
 all: clean doctest-cover test test-demos release
 
@@ -23,14 +25,16 @@ debian:
 		python-sphinx mercurial
 
 env:
-	PYTHON_EXE=/usr/local/bin/python$(VERSION); \
-	if [ ! -x $$PYTHON_EXE ]; then \
-		PYTHON_EXE=/usr/bin/python$(VERSION); \
-	fi;\
+	PYTHON_EXE=/usr/local/bin/python$(VERSION) ; \
+    if [ ! -x $$PYTHON_EXE ]; then \
+		PYTHON_EXE=/opt/local/bin/python$(VERSION) ; \
+    	if [ ! -x $$PYTHON_EXE ]; then \
+    		PYTHON_EXE=/usr/bin/python$(VERSION) ; \
+    	fi ; \
+    fi ; \
     VIRTUALENV_USE_SETUPTOOLS=1; \
     export VIRTUALENV_USE_SETUPTOOLS; \
-	virtualenv --python=$$PYTHON_EXE \
-		--no-site-packages env
+    virtualenv --python=$$PYTHON_EXE $(ENV)
 	if [ "$$(echo $(VERSION) | sed 's/\.//')" -ge 30 ]; then \
 		echo -n 'Upgrading distribute...'; \
 		$(EASY_INSTALL) -i $(PYPI) -U -O2 distribute \
@@ -38,7 +42,7 @@ env:
 		echo 'done.'; \
 	fi
 	$(EASY_INSTALL) -i $(PYPI) -O2 coverage nose pytest \
-		pytest-pep8 pytest-cov mock lxml mako tenjin jinja2 \
+		pytest-pep8 pytest-cov mock mako tenjin jinja2 \
 		wheezy.template
 	# The following packages available for python == 2.4
 	if [ "$$(echo $(VERSION) | sed 's/\.//')" -eq 24 ]; then \
@@ -48,8 +52,10 @@ env:
 
 clean:
 	find src/ demos/ -type d -name __pycache__ | xargs rm -rf
+	find demos/*/i18n/ -name '*.mo' -delete
 	find src/ demos/ -name '*.py[co]' -delete
-	rm -rf dist/ build/ MANIFEST src/*.egg-info .cache .coverage
+	rm -rf dist/ build/ MANIFEST src/*.egg-info .cache .coverage \
+		build/ dist/
 
 release:
 	$(PYTHON) setup.py -q bdist_egg
@@ -83,6 +89,10 @@ test:
 doctest-cover:
 	$(NOSE) --stop --with-doctest --detailed-errors \
 		--with-coverage --cover-package=wheezy.web
+
+nose-cover:
+	$(NOSE) --stop --with-doctest --detailed-errors --with-coverage \
+		--cover-package=wheezy.web
 
 test-cover:
 	$(PYTEST) -q --cov wheezy.web --cov wheezy.web.handlers \

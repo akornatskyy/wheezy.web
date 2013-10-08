@@ -1,5 +1,5 @@
-.SILENT: env clean release run uwsgi gunicorn qa test nose-cover test-cover benchmark profile gropf
-.PHONY: env clean release run uwsgi gunicorn qa test nose-cover test-cover benchmark profile gropf
+.SILENT: virtualenv env clean release dep install run uwsgi gunicorn qa test nose-cover test-cover benchmark profile gropf
+.PHONY: virtualenv env clean release dep install run uwsgi gunicorn qa test nose-cover test-cover benchmark profile gropf
 
 VERSION=2.7
 PYPI=http://pypi.python.org/simple
@@ -13,12 +13,17 @@ NOSE=$(ENV)/bin/nosetests-$(VERSION)
 
 all: clean nose-cover release
 
-env:
-	PYTHON_EXE=/usr/local/bin/python$(VERSION); \
-	if [ ! -x $$PYTHON_EXE ]; then \
-		    PYTHON_EXE=/usr/bin/python$(VERSION); \
-	fi;\
-	virtualenv --python=$$PYTHON_EXE env
+virtualenv:
+	PYTHON_EXE=/usr/local/bin/python$(VERSION) ; \
+    if [ ! -x $$PYTHON_EXE ]; then \
+		PYTHON_EXE=/opt/local/bin/python$(VERSION) ; \
+    	if [ ! -x $$PYTHON_EXE ]; then \
+    		PYTHON_EXE=/usr/bin/python$(VERSION) ; \
+    	fi ; \
+    fi ; \
+    virtualenv --python=$$PYTHON_EXE $(ENV)
+
+env: virtualenv
 	$(EASY_INSTALL) -i $(PYPI) -O2 coverage nose pytest \
 	        pytest-pep8 pytest-cov flake8
 	# The following packages available for python == 2.4
@@ -32,14 +37,43 @@ clean:
 	find src/ -name '*.py[co]' -delete
 	find src/ -name '*.mo' -delete
 	find src/ -name '*.cache' -delete
-	rm -rf .cache .coverage src/*.egg-info/
+	rm -rf .cache .coverage src/*.egg-info/ build/ dist/
 
 release:
-	rm -rf src/*.egg-info/
-	$(PYTHON) setup.py -q egg_info sdist
+	rm -rf src/*.egg-info/ ; \
+	REV=$$(hg head --template '{rev}') ; \
+    $(PYTHON) setup.py -q egg_info --tag-build .$$REV sdist ; \
+	NAME=$$($(PYTHON) setup.py --fullname).$$REV ; \
+	rm -rf dist/$$NAME ; \
+	tar xzf dist/$$NAME.tar.gz -C dist/ ; \
+	rm dist/$$NAME.tar.gz ; \
+	sed -i '' "s/, 0)/, $$REV)/" dist/$$NAME/src/public/__init__.py ; \
+	$(PYTHON) -OO -m compileall -q dist/$$NAME/src ; \
+    find dist/$$NAME/src/ -name '*.py' -delete ; \
+	tar cf - -C dist/ $$NAME | gzip -9 - > dist/$$NAME.tar.gz; \
+	rm -rf dist/$$NAME
+
+dep:
+	if [ -f /etc/debian_version ]; then \
+	    apt-get update ; \
+		apt-get install --no-install-recommends -y build-essential \
+			python$(VERSION) python$(VERSION)-dev python-setuptools \
+			python-virtualenv libgmp-dev ; \
+	    apt-get clean ; \
+	else \
+		echo This OS is not supported yet. ; \
+		exit 1 ; \
+	fi
+
+install: virtualenv
+	$(PYTHON) setup.py develop -O2 -U -i $(PYPI)
 
 run:
-	$(PYTHON) src/app.py
+	if [ -f src/app.pyo ]; then \
+		$(PYTHON) -OO src/app.pyo ; \
+	else \
+		$(PYTHON) src/app.py ; \
+	fi
 
 uwsgi:
 	$(ENV)/bin/uwsgi --ini development.ini
@@ -70,5 +104,5 @@ profile:
 	$(NOSE) -qs -m benchmark_views --with-profile \
 		--profile-stats-file=profile.pstats src/public
 
-gropf:
+gprof:
 	gprof2dot.py -f pstats profile.pstats | dot -Tpng -o profile.png
