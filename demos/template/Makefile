@@ -19,7 +19,7 @@ env:
 	if [ ! -x $$PYTHON_EXE ]; then \
 		    PYTHON_EXE=/usr/bin/python$(VERSION); \
 	fi;\
-	virtualenv --python=$$PYTHON_EXE env
+	virtualenv --python=$$PYTHON_EXE $(ENV)
 	$(EASY_INSTALL) -i $(PYPI) -O2 coverage nose pytest \
 	        pytest-pep8 pytest-cov mock lxml mako tenjin jinja2 \
 			wheezy.template
