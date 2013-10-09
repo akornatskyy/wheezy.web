@@ -4,8 +4,9 @@
 
 from wheezy.http.functional import BenchmarkMixin
 
-from public.web.tests.test_views import PublicTestCase
 from public.web.tests.test_views import ErrorTestCase
+from public.web.tests.test_views import PublicTestCase
+from public.web.tests.test_views import StaticFilesTestCase
 
 
 class PublicBenchmarkTestCase(PublicTestCase, ErrorTestCase, BenchmarkMixin):
@@ -20,6 +21,7 @@ class PublicBenchmarkTestCase(PublicTestCase, ErrorTestCase, BenchmarkMixin):
             self.test_error_400,
             self.test_error_403,
             self.test_error_404,
+            self.test_error_500,
         ), 1000)
         b.report('public', baselines={
             'test_root': 1.0,
@@ -28,10 +30,11 @@ class PublicBenchmarkTestCase(PublicTestCase, ErrorTestCase, BenchmarkMixin):
             'test_error_400': 0.75,
             'test_error_403': 0.75,
             'test_error_404': 0.75,
+            'test_error_500': 0.75,
         })
 
 
-class StaticFilesBenchmarkTestCase(PublicTestCase, ErrorTestCase,
+class StaticFilesBenchmarkTestCase(StaticFilesTestCase, ErrorTestCase,
                                    BenchmarkMixin):
 
     def runTest(self):

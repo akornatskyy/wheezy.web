@@ -2,6 +2,7 @@
 """ ``test_views`` module.
 """
 
+import re
 import unittest
 
 try:
@@ -13,6 +14,14 @@ except ImportError:  # pragma: nocover
 from wheezy.http.functional import WSGIClient
 
 from app import main
+from config import template_engine
+
+
+if template_engine.startswith('wheezy'):
+    re_ws = re.compile(' \s+', re.MULTILINE)
+    extra_whitespace = lambda s: re_ws.search(s)
+else:
+    extra_whitespace = lambda s: False
 
 
 class PublicTestCase(unittest.TestCase):
@@ -41,6 +50,33 @@ class PublicTestCase(unittest.TestCase):
         """
         assert 200 == self.client.get('/en/about')
         assert '- About</title>' in self.client.content
+
+    def test_space_around_newline(self):
+        """ space around newline in markup should not be removed
+        """
+        self.client.get('/en/home')
+        assert re.search('elit\.\s+Donec', self.client.content)
+        assert re.search('enim,\s+quis', self.client.content)
+        assert not re.search('"type', self.client.content)
+
+    def test_extra_whitespace(self):
+        for url in [
+            '/',
+            '/en/home',
+            '/en/about'
+        ]:
+            assert 200 == self.client.get(url)
+            assert not extra_whitespace(self.client.content)
+
+
+class StaticFilesTestCase(unittest.TestCase):
+
+    def setUp(self):
+        self.client = WSGIClient(main)
+
+    def tearDown(self):
+        del self.client
+        self.client = None
 
     def test_static_files(self):
         """ Ensure static content is served.
@@ -142,3 +178,20 @@ class ErrorTestCase(unittest.TestCase):
         """
         assert 500 == self.client.get('/en/error/500')
         assert 'Code 500' in self.client.content
+
+    def test_space_around_newline(self):
+        """ space around newline in markup should not be removed
+        """
+        self.client.get('/en/error/404')
+        r = re.compile('been\s+removed')
+        assert r.search(self.client.content)
+
+    def test_extra_whitespace(self):
+        for url in [
+            '/en/error/400',
+            '/en/error/403',
+            '/en/error/404',
+            '/en/error/500',
+        ]:
+            self.client.get(url)
+            assert not extra_whitespace(self.client.content)
