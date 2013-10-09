@@ -72,12 +72,12 @@ setup(
         'Topic :: Software Development :: Libraries :: Python Modules'
     ],
     packages=[
-            'membership',
-            'membership.repository',
-            'membership.service',
-            'membership.web',
-            'public',
-            'public.web'
+        'membership',
+        'membership.repository',
+        'membership.service',
+        'membership.web',
+        'public',
+        'public.web'
     ],
     package_dir={'': 'src'},
 
