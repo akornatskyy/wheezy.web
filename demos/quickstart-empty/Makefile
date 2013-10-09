@@ -25,10 +25,13 @@ virtualenv:
 
 env: virtualenv
 	$(EASY_INSTALL) -i $(PYPI) -O2 coverage nose pytest \
-	        pytest-pep8 pytest-cov flake8
-	# The following packages available for python == 2.4
+	        pytest-pep8 pytest-cov
 	if [ "$$(echo $(VERSION) | sed 's/\.//')" -eq 24 ]; then \
+		# The following packages available for python == 2.4
 		$(EASY_INSTALL) -i $(PYPI) -O2 wsgiref; \
+	else \
+		# The following packages available for python > 2.4
+		$(EASY_INSTALL) -i $(PYPI) -O2 flake8 ; \
 	fi ; \
 	if [ `uname` = 'FreeBSD' ]; then \
 	    export LIBMEMCACHED=/usr/local; \
