@@ -44,10 +44,11 @@ env:
 	$(EASY_INSTALL) -i $(PYPI) -O2 coverage nose pytest \
 		pytest-pep8 pytest-cov mock mako tenjin jinja2 \
 		wheezy.template
-	# The following packages available for python == 2.4
 	if [ "$$(echo $(VERSION) | sed 's/\.//')" -eq 24 ]; then \
 		$(EASY_INSTALL) -i $(PYPI) -O2 wsgiref; \
-	fi
+	else \
+		$(EASY_INSTALL) -i $(PYPI) -O2 flake8 ; \
+	fi ; \
 	$(PYTHON) setup.py develop -i $(PYPI)
 
 clean:
@@ -77,10 +78,9 @@ upload:
 		upload;
 
 qa:
-	if [ "$$(echo $(VERSION) | sed 's/\.//')" -eq 27 ]; then \
-		flake8 --max-complexity 10 demos doc src setup.py && \
-		pep8 demos doc src setup.py ; \
-	fi
+	$(ENV)/bin/flake8 --max-complexity 10 demos/hello demos/guestbook \
+			doc src setup.py && \
+	$(ENV)/bin/pep8 demos/hello demos/guestbook doc src setup.py ; \
 
 test:
 	$(PYTEST) -q -x --pep8 --doctest-modules \
@@ -110,11 +110,12 @@ env-demos:
 
 test-demos:
 	$(PYTEST) -q -x --pep8 demos/hello
-	make clean nose-cover -sC demos/quickstart-empty VERSION=$(VERSION)
-	make clean po nose-cover -sC demos/quickstart-i18n VERSION=$(VERSION)
+	make clean nose-cover qa -sC demos/quickstart-empty VERSION=$(VERSION)
+	make clean po nose-cover qa -sC demos/quickstart-i18n VERSION=$(VERSION)
 	make clean po -sC demos/template VERSION=$(VERSION)
 	make test -sC demos/template TEMPLATE_ENGINE=jinja2 VERSION=$(VERSION)
 	make test -sC demos/template TEMPLATE_ENGINE=mako VERSION=$(VERSION)
 	make test -sC demos/template TEMPLATE_ENGINE=tenjin VERSION=$(VERSION)
 	make test -sC demos/template TEMPLATE_ENGINE=wheezy.template VERSION=$(VERSION)
 	make test -sC demos/template TEMPLATE_ENGINE=wheezy.preprocessor VERSION=$(VERSION)
+	make qa -sC demos/template VERSION=$(VERSION)
