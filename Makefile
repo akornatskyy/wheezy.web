@@ -110,12 +110,16 @@ env-demos:
 
 test-demos:
 	$(PYTEST) -q -x --pep8 demos/hello
-	make clean nose-cover qa -sC demos/quickstart-empty VERSION=$(VERSION)
-	make clean po nose-cover qa -sC demos/quickstart-i18n VERSION=$(VERSION)
+	make clean nose-cover -sC demos/quickstart-empty VERSION=$(VERSION)
+	make clean po nose-cover -sC demos/quickstart-i18n VERSION=$(VERSION)
 	make clean po -sC demos/template VERSION=$(VERSION)
 	make test -sC demos/template TEMPLATE_ENGINE=jinja2 VERSION=$(VERSION)
 	make test -sC demos/template TEMPLATE_ENGINE=mako VERSION=$(VERSION)
 	make test -sC demos/template TEMPLATE_ENGINE=tenjin VERSION=$(VERSION)
 	make test -sC demos/template TEMPLATE_ENGINE=wheezy.template VERSION=$(VERSION)
 	make test -sC demos/template TEMPLATE_ENGINE=wheezy.preprocessor VERSION=$(VERSION)
-	make qa -sC demos/template VERSION=$(VERSION)
+	if [ "$$(echo $(VERSION) | sed 's/\.//')" -eq 27 ]; then \
+		make qa -sC demos/quickstart-empty VERSION=$(VERSION) ; \
+		make qa -sC demos/quickstart-i18n VERSION=$(VERSION) ; \
+		make qa -sC demos/template VERSION=$(VERSION) ; \
+	fi

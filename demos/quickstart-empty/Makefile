@@ -87,7 +87,7 @@ gunicorn:
 
 qa:
 	$(ENV)/bin/flake8 --max-complexity 6 src setup.py && \
-		$(ENV)/bin/pep8 src setup.py ; \
+	$(ENV)/bin/pep8 src setup.py ; \
 
 test:
 	$(PYTEST) -q -x --pep8 --doctest-modules src/
