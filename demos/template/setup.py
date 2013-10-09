@@ -21,7 +21,7 @@ install_requires = [
 ]
 
 install_optional = [
-    'pylibmc>=1.2.3',
+    #'pylibmc>=1.2.3',
     #'PIL>=1.1.7',
     'lxml>=3.2.0',
     'pycrypto>=2.6',
@@ -36,7 +36,7 @@ except ImportError:
 
 dependency_links = [
     # pylibmc
-    'https://bitbucket.org/akorn/wheezy.caching/downloads',
+    #'https://bitbucket.org/akorn/wheezy.caching/downloads',
     # PIL
     #'https://bitbucket.org/akorn/wheezy.captcha/downloads',
     # lxml
