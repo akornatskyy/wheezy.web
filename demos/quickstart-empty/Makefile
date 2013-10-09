@@ -29,13 +29,15 @@ env: virtualenv
 	# The following packages available for python == 2.4
 	if [ "$$(echo $(VERSION) | sed 's/\.//')" -eq 24 ]; then \
 		$(EASY_INSTALL) -i $(PYPI) -O2 wsgiref; \
-	fi
+	fi ; \
+	if [ `uname` = 'FreeBSD' ]; then \
+	    export LIBMEMCACHED=/usr/local; \
+	fi; \
 	$(PYTHON) setup.py develop -O2 -U -i $(PYPI)
 
 clean:
 	find src/ -type d -name __pycache__ | xargs rm -rf
 	find src/ -name '*.py[co]' -delete
-	find src/ -name '*.mo' -delete
 	find src/ -name '*.cache' -delete
 	rm -rf .cache .coverage src/*.egg-info/ build/ dist/
 
