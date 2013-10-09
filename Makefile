@@ -1,5 +1,5 @@
-.SILENT: debian env clean release upload qa test doctest-cover nose-cover test-cover doc test-demos
-.PHONY: debian env clean release upload qa test doctest-cover nose-cover test-cover doc test-demos
+.SILENT: debian env clean release upload qa test doctest-cover nose-cover test-cover doc env-demos test-demos
+.PHONY: debian env clean release upload qa test doctest-cover nose-cover test-cover doc env-demos test-demos
 
 VERSION=2.7
 PYPI=http://pypi.python.org/simple
@@ -13,7 +13,7 @@ NOSE=$(ENV)/bin/nosetests-$(VERSION)
 SPHINX=/usr/bin/python /usr/bin/sphinx-build
 
 
-all: clean doctest-cover test test-demos release
+all: clean doctest-cover test env-demos test-demos release
 
 debian:
 	apt-get -y update
@@ -103,8 +103,15 @@ test-cover:
 doc:
 	$(SPHINX) -a -b html doc/ doc/_build/
 
+env-demos:
+	make env -sC demos/quickstart-empty PYPI=$(PYPI) VERSION=$(VERSION)
+	make env -sC demos/quickstart-i18n PYPI=$(PYPI) VERSION=$(VERSION)
+	make env -sC demos/template PYPI=$(PYPI) VERSION=$(VERSION)
+
 test-demos:
 	$(PYTEST) -q -x --pep8 demos/hello
+	make clean nose-cover -sC demos/quickstart-empty VERSION=$(VERSION)
+	make clean po nose-cover -sC demos/quickstart-i18n VERSION=$(VERSION)
 	make clean po -sC demos/template VERSION=$(VERSION)
 	make test -sC demos/template TEMPLATE_ENGINE=jinja2 VERSION=$(VERSION)
 	make test -sC demos/template TEMPLATE_ENGINE=mako VERSION=$(VERSION)
