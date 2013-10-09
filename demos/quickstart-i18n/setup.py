@@ -20,7 +20,7 @@ install_requires = [
 ]
 
 install_optional = [
-    'pylibmc>=1.2.3',
+    #'pylibmc>=1.2.3',
     #'PIL>=1.1.7',
     'lxml>=3.2.0',
     'pycrypto>=2.6',
