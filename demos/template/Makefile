@@ -28,10 +28,11 @@ env: virtualenv
 	$(EASY_INSTALL) -i $(PYPI) -O2 coverage nose pytest \
 	        pytest-pep8 pytest-cov mock mako tenjin jinja2 \
 			wheezy.template
-	# The following packages available for python == 2.4
 	if [ "$$(echo $(VERSION) | sed 's/\.//')" -eq 24 ]; then \
 		$(EASY_INSTALL) -i $(PYPI) -O2 wsgiref; \
-	fi
+	else \
+		$(EASY_INSTALL) -i $(PYPI) -O2 flake8 ; \
+	fi ; \
 	$(PYTHON) setup.py develop -O2 -U -i $(PYPI)
 
 clean:
@@ -125,10 +126,8 @@ gunicorn:
 		$(ENV)/bin/gunicorn -b 0.0.0.0:8080 -w 1 app:main
 
 qa:
-	if [ "$$(echo $(VERSION) | sed 's/\.//')" -eq 27 ]; then \
-		flake8 --max-complexity 6 src setup.py && \
-		pep8 src setup.py ; \
-	fi
+	$(ENV)/bin/flake8 --max-complexity 6 src setup.py && \
+	$(ENV)/bin/pep8 src setup.py ; \
 
 test:
 	echo $(TEMPLATE_ENGINE) ; export TEMPLATE_ENGINE=$(TEMPLATE_ENGINE) ; \
