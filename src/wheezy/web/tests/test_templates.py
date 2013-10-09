@@ -149,9 +149,9 @@ class TenjinTemplateTestCase(unittest.TestCase):
         """
         from wheezy.web.templates import TenjinTemplate
         template = TenjinTemplate()
+        keys = sorted(template.helpers.keys())
         assert ['cache_as', 'capture_as', 'captured_as',
-                'escape', 'tenjin', 'to_str'] == sorted(
-            template.helpers.keys())
+                'escape', 'tenjin', 'to_str'] == keys
         self.mock_encoding.assert_called_once_with('UTF-8')
         self.mock_cache.assert_called_once_with()
         self.mock_engine.assert_called_once_with(
