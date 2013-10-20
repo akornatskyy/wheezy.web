@@ -29,7 +29,7 @@ env: virtualenv
 	        pytest-pep8 pytest-cov mock mako tenjin jinja2 \
 			wheezy.template
 	if [ "$$(echo $(VERSION) | sed 's/\.//')" -eq 24 ]; then \
-		$(EASY_INSTALL) -i $(PYPI) -O2 wsgiref; \
+		$(EASY_INSTALL) -i $(PYPI) -O2 wsgiref ; \
 	else \
 		$(EASY_INSTALL) -i $(PYPI) -O2 flake8 ; \
 	fi ; \
@@ -52,7 +52,7 @@ release:
 	tar xzf dist/$$NAME.tar.gz -C dist/ ; \
 	rm dist/$$NAME.tar.gz ; \
 	sed -i '' "s/, 0)/, $$REV)/" dist/$$NAME/src/public/__init__.py ; \
-	tar cf - -C dist/ $$NAME | gzip -9 - > dist/$$NAME.tar.gz; \
+	tar cf - -C dist/ $$NAME | gzip -9 - > dist/$$NAME.tar.gz ; \
 	rm -rf dist/$$NAME
 
 dep:
@@ -127,7 +127,7 @@ gunicorn:
 
 qa:
 	$(ENV)/bin/flake8 --max-complexity 6 src setup.py && \
-	$(ENV)/bin/pep8 src setup.py ; \
+	$(ENV)/bin/pep8 src setup.py
 
 test:
 	echo $(TEMPLATE_ENGINE) ; export TEMPLATE_ENGINE=$(TEMPLATE_ENGINE) ; \
@@ -138,12 +138,11 @@ nose-cover:
 		--with-coverage --cover-package=public --cover-package=membership
 
 test-cover:
-	$(PYTEST) -q -x --cov membership --cov public \
-		--cov-report term-missing \
-		src/
+	$(PYTEST) -q -x --cov-report term-missing \
+		--cov membership --cov public src/
 
 benchmark:
-	echo $(TEMPLATE_ENGINE) ; export TEMPLATE_ENGINE=$(TEMPLATE_ENGINE) ; \
+	/echo $(TEMPLATE_ENGINE) ; export TEMPLATE_ENGINE=$(TEMPLATE_ENGINE) ; \
 	$(NOSE) -qs -m benchmark_views src/
 
 profile:

@@ -27,13 +27,13 @@ env: virtualenv
 	$(EASY_INSTALL) -i $(PYPI) -O2 coverage nose pytest \
 	        pytest-pep8 pytest-cov
 	if [ "$$(echo $(VERSION) | sed 's/\.//')" -eq 24 ]; then \
-		$(EASY_INSTALL) -i $(PYPI) -O2 wsgiref; \
+		$(EASY_INSTALL) -i $(PYPI) -O2 wsgiref ; \
 	else \
 		$(EASY_INSTALL) -i $(PYPI) -O2 flake8 ; \
 	fi ; \
 	if [ `uname` = 'FreeBSD' ]; then \
-	    export LIBMEMCACHED=/usr/local; \
-	fi; \
+	    export LIBMEMCACHED=/usr/local ; \
+	fi ; \
 	$(PYTHON) setup.py develop -O2 -U -i $(PYPI)
 
 clean:
@@ -87,7 +87,7 @@ gunicorn:
 
 qa:
 	$(ENV)/bin/flake8 --max-complexity 6 src setup.py && \
-	$(ENV)/bin/pep8 src setup.py ; \
+	$(ENV)/bin/pep8 src setup.py
 
 test:
 	$(PYTEST) -q -x --pep8 --doctest-modules src/
@@ -97,8 +97,7 @@ nose-cover:
 		--cover-package=public
 
 test-cover:
-	$(PYTEST) -q -x --cov-report term-missing src/ \
-		--cov public
+	$(PYTEST) -q -x --cov-report term-missing src/ --cov public
 
 benchmark:
 	$(NOSE) -qs -m benchmark_views src/
