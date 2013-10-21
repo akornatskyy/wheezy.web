@@ -142,7 +142,7 @@ test-cover:
 		--cov membership --cov public src/
 
 benchmark:
-	/echo $(TEMPLATE_ENGINE) ; export TEMPLATE_ENGINE=$(TEMPLATE_ENGINE) ; \
+	echo $(TEMPLATE_ENGINE) ; export TEMPLATE_ENGINE=$(TEMPLATE_ENGINE) ; \
 	$(NOSE) -qs -m benchmark_views src/
 
 profile:
