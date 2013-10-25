@@ -18,6 +18,9 @@ static_cache_profile = CacheProfile(
 public_cache_profile = CacheProfile(
     'both',
     duration=timedelta(minutes=15),
+    # this cause browser to send request each time
+    # so the server is able to respond with code 304
+    http_max_age=0,
     vary_environ=['HTTP_ACCEPT_ENCODING'],
     vary_cookies=['_a'],
     http_vary=['Cookie'],
