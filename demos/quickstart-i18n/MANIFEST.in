@@ -1,6 +1,8 @@
-include *.ini
 include Makefile
 include README.rst
+include content/maintenance.html
+include etc/config.ini
+include etc/nginx.conf
 include src/*.py
 recursive-include content/static/css *.css
 recursive-include content/static/img *.ico *.jpg *.gif *.png

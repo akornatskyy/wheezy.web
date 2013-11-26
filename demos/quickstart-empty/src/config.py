@@ -2,6 +2,7 @@
 """
 
 import logging
+import os
 import sys
 
 try:  # pragma: nocover
@@ -32,7 +33,7 @@ from tracing import ERROR_REPORT_FORMAT
 from tracing import error_report_extra_provider
 
 
-config.read('development.ini')
+config.read(os.getenv('CONFIG', 'etc/development.ini'))
 
 mode = config.get('runtime', 'mode')
 if mode == 'mock':

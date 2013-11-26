@@ -26,8 +26,8 @@ virtualenv:
 
 env: virtualenv
 	$(EASY_INSTALL) -i $(PYPI) -O2 coverage nose pytest \
-	        pytest-pep8 pytest-cov mock mako tenjin jinja2 \
-			wheezy.template
+	        pytest-pep8 pytest-cov mock lxml \
+			mako tenjin jinja2 wheezy.template
 	if [ "$$(echo $(VERSION) | sed 's/\.//')" -eq 24 ]; then \
 		$(EASY_INSTALL) -i $(PYPI) -O2 wsgiref ; \
 	else \
