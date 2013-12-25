@@ -11,6 +11,12 @@ function JSONForm(data, form) {
     $(form).prev('span.error-message').remove();
     $('span.error', form).remove();
     $('.error', form).removeClass('error');
+    $(':input[name]', form).each(function(i, e) {
+        if (e.name in data.errors) {
+            e.focus();
+            return false;
+        }
+    })
     $.each(data.errors, function(key, value) {
         if (key == '__ERROR__') {
             form.before('<span class="error-message">{0}</span>'.format(
