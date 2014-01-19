@@ -7,6 +7,18 @@ try:
 except:
     from distutils.core import setup  # noqa
 
+extra = {}
+try:
+    from Cython.Build import cythonize
+    path = os.path.join('src', 'wheezy', 'web')
+    extra['ext_modules'] = cythonize(
+        [os.path.join(path, '*.py'),
+         os.path.join(path, 'handlers', '*.py'),
+         os.path.join(path, 'middleware', '*.py')],
+        quiet=True)
+except ImportError:
+    pass
+
 README = open(os.path.join(os.path.dirname(__file__), 'README.rst')).read()
 
 install_requires = [
@@ -98,5 +110,6 @@ setup(
         ]
     },
 
-    platforms='any'
+    platforms='any',
+    **extra
 )
