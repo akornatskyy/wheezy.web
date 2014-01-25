@@ -8,16 +8,18 @@ from wheezy.validation.rules import compare
 from wheezy.validation.rules import email
 from wheezy.validation.rules import length
 from wheezy.validation.rules import one_of
-from wheezy.validation.rules import range
 from wheezy.validation.rules import relative_date
 from wheezy.validation.rules import required
+
+from membership.rules import identity
+from membership.rules import password_rules
 
 
 _ = lambda s: s
 
 credential_validator = Validator({
     'username': [required, length(min=2), length(max=20)],
-    'password': [required, length(min=8, max=12)]
+    'password': password_rules
 })
 
 account_validator = Validator({
@@ -30,7 +32,7 @@ registration_validator = Validator({
     'credential': credential_validator,
     'account': account_validator,
     'answer': [required, length(min=1, max=20)],
-    'questionid': [required, range(min=1, max=3)],
+    'question_id': [required, identity(max=3)],
     'date_of_birth': [
         required,
         relative_date(

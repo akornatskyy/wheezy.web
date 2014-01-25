@@ -29,8 +29,9 @@ class CredentialValidatorTestCase(unittest.TestCase):
 
         e = 'Required field cannot be left blank.'
         assert e == self.c.error(password='')
-        e = 'The length must fall within the range 8 - 12 characters.'
+        e = 'Required to be a minimum of 8 characters in length.'
         assert e == self.c.error(password='x' * 7)
+        e = 'Exceeds maximum length of 12.'
         assert e == self.c.error(password='x' * 13)
 
 
