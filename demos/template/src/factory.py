@@ -9,7 +9,7 @@ from membership.service.bridge import MembershipService
 
 class Factory(object):
 
-    def __init__(self, context, session_name='ro'):
+    def __init__(self, session_name, **context):
         self.context = context
         self.session = sessions[session_name]()
         self.factory = RepositoryFactory(self.session)
