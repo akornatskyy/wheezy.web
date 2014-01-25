@@ -12,7 +12,7 @@ class Factory(object):
     def __init__(self, context, session_name='ro'):
         self.context = context
         self.session = sessions[session_name]()
-        self.repository = RepositoryFactory(self.session)
+        self.factory = RepositoryFactory(self.session)
 
     def __enter__(self):
         self.session.__enter__()
@@ -24,10 +24,9 @@ class Factory(object):
     @attribute
     def membership(self):
         context = self.context
-        return MembershipService(
-            self.repository,
-            context['errors'],
-            context['locale'])
+        return MembershipService(self.factory,
+                                 context['errors'],
+                                 context['locale'])
 
 
 class RepositoryFactory(object):
