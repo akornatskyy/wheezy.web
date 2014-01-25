@@ -126,7 +126,7 @@ gunicorn:
 		$(ENV)/bin/gunicorn -b 0.0.0.0:8080 -w 1 app:main
 
 qa:
-	$(ENV)/bin/flake8 --max-complexity 6 src setup.py && \
+	$(ENV)/bin/flake8 --max-complexity 7 src setup.py && \
 	$(ENV)/bin/pep8 src setup.py
 
 test:
