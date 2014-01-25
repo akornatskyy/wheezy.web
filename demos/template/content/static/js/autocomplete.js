@@ -6,7 +6,7 @@ function signin() {
     .f1("#username[type='text']", "demo")
     .f2("#username[type='text']", "test")
     .f("#password", "P@ssw0rd")
-    .s("input[name='logon']");
+    .s();
 }
 
 function signup() {
@@ -18,7 +18,7 @@ function signup() {
     .f("#password", "P@ssw0rd")
     .f("#confirm-password", "P@ssw0rd")
     .f("#answer", nextInt(1, 9))
-    .s("input[name='register']");
+    .s();
 }
 
 
