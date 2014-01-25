@@ -36,6 +36,14 @@ def update():
 def config():
     with cd('%s/etc/' % CURRENT_PATH):
         run('cp *.conf *.ini %s' % ETC_PATH)
+    # sysctl
+    with cd('%s/etc/' % CURRENT_PATH):
+        run('cp *.conf *.ini %s' % ETC_PATH)
+    with cd('/etc/sysctl.d'):
+        sudo('rm -f boc.conf')
+        sudo('ln -s %s/sysctl.conf boc.conf' % ETC_PATH)
+        sudo('sysctl -f boc.conf')
+    # nginx
     with cd('/etc/nginx/sites-available'):
         sudo('rm -f %s.conf' % NAME)
         sudo('ln -s %s/nginx.conf %s.conf' % (ETC_PATH, NAME))
@@ -44,12 +52,21 @@ def config():
         sudo('ln -s /etc/nginx/sites-available/%s.conf' % NAME)
     sudo('rm -f /etc/nginx/sites-enabled/default')
     sudo('/etc/init.d/nginx restart')
+    # memcached
+    sudo('/etc/init.d/uwsgi stop')
+    sudo('/etc/init.d/memcached stop')
+    with cd('/etc'):
+        sudo('rm -f memcached.conf')
+        sudo('ln -s %s/memcached.conf' % ETC_PATH)
+    sudo('/etc/init.d/memcached start')
+    # uwsgi
     with cd('/etc/uwsgi/apps-available'):
         sudo('rm -f %s.ini' % NAME)
         sudo('ln -s %s/config.ini %s.ini' % (ETC_PATH, NAME))
     with cd('/etc/uwsgi/apps-enabled'):
         sudo('rm -f %s.ini' % NAME)
         sudo('ln -s /etc/uwsgi/apps-available/%s.ini' % NAME)
+    sudo('/etc/init.d/uwsgi start')
 
 
 def install():
@@ -67,25 +84,35 @@ def purge():
     sudo('rm -rf ' + ETC_PATH)
 
 
-def debian():
-	sudo('apt-get update')
-	sudo('apt-get install --no-install-recommends -y build-essential '
-		 'python2.7 python2.7-dev python-setuptools '
-		 'python-virtualenv gettext libgmp3-dev '
-         'nginx-full uwsgi uwsgi-plugin-python')
-	sudo('apt-get clean')
-
-
 def start():
+    sudo('/etc/init.d/memcached start')
     sudo('/etc/init.d/uwsgi start')
 
 
 def stop():
     sudo('/etc/init.d/uwsgi stop')
+    sudo('/etc/init.d/memcached stop')
 
 
 def restart():
-    sudo('/etc/init.d/uwsgi restart')
+    stop()
+    start()
+
+
+def debian():
+	sudo('apt-get -dqq update')
+	sudo('apt-get --no-install-recommends -yq install build-essential '
+		 'python2.7 python2.7-dev python-setuptools '
+		 'python-virtualenv gettext libgmp3-dev '
+         'nginx-full uwsgi uwsgi-plugin-python '
+         'libmemcached-dev memcached mailutils')
+	sudo('apt-get -q clean')
+
+
+def os_upgrade():
+    sudo('apt-get -dqq update')
+    sudo('apt-get -yq upgrade')
+    sudo('apt-get -q clean; apt-get -q autoclean; apt-get -q autoremove')
 
 
 # region: internal details
