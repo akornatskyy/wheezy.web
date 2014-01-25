@@ -6,6 +6,13 @@ from datetime import date
 from wheezy.core.comp import u
 
 
+_ = lambda s: s
+account_types = (
+    ('user', _('User')),
+    ('business', _('Business'))
+)
+
+
 class Credential(object):
     username = u('')
     password = u('')
@@ -18,7 +25,7 @@ class Account(object):
 
 
 class Registration(object):
-    questionid = 0
+    question_id = '0'
     answer = u('')
     date_of_birth = date.min
 
