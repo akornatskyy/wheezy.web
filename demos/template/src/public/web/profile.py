@@ -15,6 +15,7 @@ static_cache_profile = CacheProfile(
     vary_environ=['HTTP_ACCEPT_ENCODING'],
     namespace='static',
     http_vary=['Accept-Encoding'],
+    etag_func=etag_md5crc32,
     enabled=config.getboolean('cache-profile', 'static-enabled'))
 public_cache_profile = CacheProfile(
     'both',
