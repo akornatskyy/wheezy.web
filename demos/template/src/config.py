@@ -80,12 +80,6 @@ options.update({
     'http_errors_extra_provider': error_report_extra_provider
 })
 
-# wheezy.security.crypto.Ticket
-options.update({
-    'CRYPTO_ENCRYPTION_KEY': config.get('crypto', 'encryption-key'),
-    'CRYPTO_VALIDATION_KEY': config.get('crypto', 'validation-key')
-})
-
 template_engine = os.getenv('TEMPLATE_ENGINE', 'wheezy.preprocessor')
 if template_engine == 'mako':
     from wheezy.html.ext.mako import inline_preprocessor
@@ -231,12 +225,15 @@ options.update({
         salt=config.get('crypto', 'ticket-salt'),
         cypher=aes128,
         digestmod=ripemd160 or sha256 or sha1,
-        options=options),
+        options={
+            'CRYPTO_ENCRYPTION_KEY': config.get('crypto', 'encryption-key'),
+            'CRYPTO_VALIDATION_KEY': config.get('crypto', 'validation-key')
+        }),
 
     'AUTH_COOKIE': '_a',
-    'AUTH_COOKIE_DOMAIN': None,
+    'AUTH_COOKIE_DOMAIN': config.get('crypto', 'auth-cookie-domain'),
     'AUTH_COOKIE_PATH': '',
-    'AUTH_COOKIE_SECURE': False,
+    'AUTH_COOKIE_SECURE': config.getboolean('crypto', 'auth-cookie-secure'),
 
     'XSRF_NAME': '_x',
     'RESUBMISSION_NAME': '_c'
