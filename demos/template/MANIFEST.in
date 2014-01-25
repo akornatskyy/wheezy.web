@@ -2,7 +2,9 @@ include Makefile
 include README.rst
 include content/maintenance.html
 include etc/config.ini
+include etc/memcached.conf
 include etc/nginx.conf
+include etc/sysctl.conf
 include src/*.py
 recursive-include content/static/css *.css
 recursive-include content/static/img *.ico *.jpg *.gif *.png
