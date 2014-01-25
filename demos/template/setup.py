@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
 import os
+import sys
 
 try:
     from setuptools import setup
@@ -21,10 +22,12 @@ install_requires = [
 ]
 
 install_optional = [
-    'pylibmc>=1.2.3',
     #'PIL>=1.1.7',
     'pycrypto>=2.6.1'
 ]
+
+if sys.version_info[0] == 2:
+    install_optional.append('pylibmc>=1.2.3')
 
 install_requires += install_optional
 
