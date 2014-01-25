@@ -60,9 +60,9 @@ Sign Up
                 @model.confirm_password.error()
                 </p>
                 <p>
-                @model.questionid.label('Security question:')
-                @model.questionid.dropdown(choices=questions)
-                @model.questionid.error()
+                @model.question_id.label('Security question:')
+                @model.question_id.dropdown(choices=questions)
+                @model.question_id.error()
                 </p>
                 <p>
                 @registration.answer.label('Answer:')
