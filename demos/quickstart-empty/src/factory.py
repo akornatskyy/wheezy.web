@@ -1,13 +1,15 @@
 """
 """
 
+from config import config
+
 
 class Factory(object):
 
-    def __init__(self, context, session_name='ro'):
+    def __init__(self, session_name, **context):
         self.context = context
         self.session = sessions[session_name]()
-        self.repository = RepositoryFactory(self.session)
+        self.factory = RepositoryFactory(self.session)
 
     def __enter__(self):
         self.session.__enter__()
@@ -23,13 +25,17 @@ class RepositoryFactory(object):
         self.session = session
 
 
-# region: configuration details
-
-from config import mode
-
-if mode == 'mock':
+def mock_sessions():
     from wheezy.core.db import NullSession
-    sessions = {'ro': NullSession, 'rw': NullSession}
+    return {
+        'ro': NullSession, 'rw': NullSession
+    }
+
+
+# region: configuration details
+mode = config.get('runtime', 'mode')
+if mode == 'mock':
+    sessions = mock_sessions()
 else:
     raise NotImplementedError(mode)
-del mode
+del mode, config

@@ -94,7 +94,7 @@ test:
 
 nose-cover:
 	$(NOSE) --stop --with-doctest --detailed-errors --with-coverage \
-		--cover-package=public
+		--cover-package=public src/
 
 test-cover:
 	$(PYTEST) -q -x --cov-report term-missing src/ --cov public
