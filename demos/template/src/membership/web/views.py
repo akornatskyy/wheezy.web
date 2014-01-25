@@ -9,8 +9,9 @@ from wheezy.security import Principal
 from wheezy.web import handler_cache
 from wheezy.web.handlers import BaseHandler
 
-from lockout import locker
 from factory import Factory
+from lockout import locker
+from lockout import signin_alert
 from membership.models import Credential
 from membership.models import Registration
 from membership.models import account_types
@@ -33,12 +34,13 @@ class SignInHandler(MembershipBaseHandler):
 
     lockout = locker.define(
         name='signin attempts',
-        by_ip=dict(count=3, duration=60)
+        by_ip=dict(count=3, duration=60, alert=signin_alert)
     )
 
     @attribute
     def model(self):
         return attrdict({
+            'username': u(''),
             'remember_me': False
         })
 
