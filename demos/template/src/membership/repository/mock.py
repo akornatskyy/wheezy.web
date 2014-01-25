@@ -1,10 +1,6 @@
-
 """
 """
 
-
-from wheezy.core.collections import map_values
-from wheezy.core.collections import sorted_items
 from wheezy.core.i18n import ref_gettext
 
 from config import translations
@@ -20,19 +16,9 @@ class MembershipRepository(object):
         # ensure session is entered
         session.cursor()
 
-    def password_questions(self, locale):
-        return map_values(ref_gettext(translations[locale]),
-                          db['password_question'])
-
     def list_password_questions(self, locale):
-        return tuple(sorted_items(self.password_questions(locale)))
-
-    def account_types(self, locale):
-        return dict(self.list_account_types(locale))
-
-    def list_account_types(self, locale):
         gettext = ref_gettext(translations[locale])
-        return tuple((k, gettext(v)) for k, v in db['account_type'])
+        return tuple((k, gettext(v)) for k, v in db['password_question'])
 
     def authenticate(self, credential):
         return credential.password == db['user'].get(

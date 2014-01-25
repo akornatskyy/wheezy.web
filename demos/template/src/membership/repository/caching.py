@@ -1,4 +1,3 @@
-
 """
 """
 
@@ -20,20 +19,8 @@ class MembershipRepository(object):
         self.inner = inner
 
     @cached
-    def password_questions(self, locale):
-        return self.inner.password_questions(locale)
-
-    @cached
     def list_password_questions(self, locale):
         return self.inner.list_password_questions(locale)
-
-    @cached
-    def account_types(self, locale):
-        return self.inner.account_types(locale)
-
-    @cached
-    def list_account_types(self, locale):
-        return self.inner.list_account_types(locale)
 
     def authenticate(self, credential):
         # TODO:
@@ -58,17 +45,3 @@ class MembershipRepository(object):
     def create_account(self, registration):
         cached.delete(keys.has_account(registration.credential.username))
         return self.inner.create_account(registration)
-
-
-# region: internal details
-
-from wheezy.core.introspection import looks
-from membership.repository.contract import IMembershipRepository
-ignore_argspec = [
-    'password_questions', 'list_password_questions',
-    'account_types', 'list_account_types']
-assert looks(MembershipRepository).like(
-    IMembershipRepository, ignore_argspec=ignore_argspec)
-assert looks(IMembershipRepository).like(
-    MembershipRepository, ignore_argspec=ignore_argspec)
-del looks, IMembershipRepository, ignore_argspec
