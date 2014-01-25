@@ -33,12 +33,12 @@ def next_account():
     return a
 
 
-def next_registration():
+def next_registration(question_id='1'):
     r = Registration()
     r.credential = next_credential()
     r.account = next_account()
     r.date_of_birth = next_date()
-    r.questionid = random.randint(1, 3)
+    r.question_id = question_id or str(random.randint(1, 3))
     r.answer = random.choice(('1', '7', '9'))
     return r
 
@@ -52,15 +52,9 @@ db = {
         'demo': ['user'],
         'biz': ['business']
     },
-    # the order is set by key
-    'password_question': {
-        '1': _('Favorite number'),
-        '2': _('City of birth'),
-        '3': _('Favorite color')
-    },
-    # honor custom order
-    'account_type': (
-        ('user', _('User')),
-        ('business', _('Business'))
+    'password_question': (
+        ('1', _('Favorite number')),
+        ('2', _('City of birth')),
+        ('3', _('Favorite color'))
     )
 }
