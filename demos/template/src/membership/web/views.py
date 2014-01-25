@@ -13,6 +13,7 @@ from lockout import locker
 from factory import Factory
 from membership.models import Credential
 from membership.models import Registration
+from membership.models import account_types
 from membership.validation import credential_validator
 from membership.validation import password_match_validator
 from membership.validation import registration_validator
@@ -99,7 +100,7 @@ class SignUpHandler(BaseHandler):
         return attrdict({
             'password': u(''),
             'confirm_password': u(''),
-            'questionid': '1'
+            'question_id': '1'
         })
 
     @attribute
@@ -120,7 +121,6 @@ class SignUpHandler(BaseHandler):
         try:
             f.__enter__()
             questions = f.membership.list_password_questions
-            account_types = f.membership.list_account_types
         finally:
             f.__exit__(None, None, None)
 
@@ -131,7 +131,8 @@ class SignUpHandler(BaseHandler):
             account=registration.account,
             credential=registration.credential,
             questions=questions,
-            account_types=account_types)
+            account_types=tuple((k, self.gettext(v))
+                                for k, v in account_types))
 
     @lockout.forbid_locked
     def post(self):
