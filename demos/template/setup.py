@@ -10,20 +10,20 @@ except:
 README = open(os.path.join(os.path.dirname(__file__), 'README.rst')).read()
 
 install_requires = [
-    'wheezy.core>=0.1.104',
-    'wheezy.caching>=0.1.91',
-    'wheezy.html>=0.1.135',
-    'wheezy.http>=0.1.287',
-    'wheezy.routing>=0.1.145',
-    'wheezy.security>=0.1.46',
-    'wheezy.validation>=0.1.104',
-    'wheezy.web>=0.1.373',
+    'wheezy.core>=0.1.131',
+    'wheezy.caching>=0.1.96',
+    'wheezy.html>=0.1.140',
+    'wheezy.http>=0.1.312',
+    'wheezy.routing>=0.1.153',
+    'wheezy.security>=0.1.61',
+    'wheezy.validation>=0.1.125',
+    'wheezy.web>=0.1.410'
 ]
 
 install_optional = [
-    #'pylibmc>=1.2.3',
+    'pylibmc>=1.2.3',
     #'PIL>=1.1.7',
-    'pycrypto>=2.6',
+    'pycrypto>=2.6'
 ]
 
 install_requires += install_optional
@@ -35,11 +35,9 @@ except ImportError:
 
 dependency_links = [
     # pylibmc
-    #'https://bitbucket.org/akorn/wheezy.caching/downloads',
+    'https://bitbucket.org/akorn/wheezy.caching/downloads',
     # PIL
     #'https://bitbucket.org/akorn/wheezy.captcha/downloads',
-    # lxml
-    'https://bitbucket.org/akorn/wheezy.http/downloads',
     # pycrypto
     'https://bitbucket.org/akorn/wheezy.security/downloads'
 ]
