@@ -17,8 +17,8 @@ translations = translations.domains['membership']
 
 class MembershipService(ErrorsMixin):
 
-    def __init__(self, repository, errors, locale):
-        self.repository = repository
+    def __init__(self, factory, errors, locale):
+        self.factory = factory
         self.errors = errors
         self.locale = locale
 
@@ -32,18 +32,18 @@ class MembershipService(ErrorsMixin):
 
     @attribute
     def list_password_questions(self):
-        return self.repository.membership.list_password_questions(self.locale)
+        return self.factory.membership.list_password_questions(self.locale)
 
     def authenticate(self, credential):
         assert isinstance(credential, Credential)
-        if not self.repository.membership.authenticate(credential):
+        if not self.factory.membership.authenticate(credential):
             self.error(self.gettext(
                 'The username or password provided is incorrect.'))
             return False
         return True
 
     def roles(self, username):
-        return self.repository.membership.user_roles(username)
+        return self.factory.membership.user_roles(username)
 
     def create_account(self, registration):
         assert isinstance(registration, Registration)
@@ -57,7 +57,7 @@ class MembershipService(ErrorsMixin):
                 'Oops, unsuppored password question.'),
                 'question_id')
             return False
-        membership = self.repository.membership
+        membership = self.factory.membership
         if membership.has_account(registration.credential.username):
             self.error(self.gettext(
                 'The user with such username is already registered. '
