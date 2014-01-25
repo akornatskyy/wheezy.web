@@ -27,7 +27,6 @@ class Factory(object):
         return MembershipService(
             self.repository,
             context['errors'],
-            context['translations'],
             context['locale'])
 
 
