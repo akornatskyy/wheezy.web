@@ -286,9 +286,8 @@ class SignUpTestCase(unittest.TestCase, SignInMixin, SignUpMixin,
             password='P@ssw0rd',
             confirm_password='P@ssw0rd',
             answer='7')
-        assert not errors
+        assert ['username'] == errors
         assert AUTH_COOKIE not in self.client.cookies
-        assert 'class="error-message"' in self.client.content
 
     def test_registration_succeed(self):
         """ Ensure if all supplied information is valid than
