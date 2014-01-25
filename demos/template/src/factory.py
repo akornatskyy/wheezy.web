@@ -2,7 +2,9 @@
 """
 
 from wheezy.core.descriptors import attribute
+from wheezy.core.introspection import import_name
 
+from config import config
 from membership.repository.caching import MembershipRepository
 from membership.service.bridge import MembershipService
 
@@ -39,15 +41,21 @@ class RepositoryFactory(object):
         return MembershipRepository(MembershipPersistence(self.session))
 
 
-# region: configuration details
-
-from config import mode
-
-if mode == 'mock':
+def mock_sessions():
     from wheezy.core.db import NullSession
+    return {
+        'ro': NullSession, 'rw': NullSession
+    }
+
+
+# region: configuration details
+mode = config.get('runtime', 'mode')
+MembershipPersistence = import_name('membership.repository.%s.'
+                                    'MembershipRepository' % mode)
+if mode == 'mock':
     from membership.repository.mock import MembershipRepository \
         as MembershipPersistence
-    sessions = {'ro': NullSession, 'rw': NullSession}
+    sessions = mock_sessions()
 else:
     raise NotImplementedError(mode)
-del mode
+del mode, config
