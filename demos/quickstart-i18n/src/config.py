@@ -12,7 +12,6 @@ except ImportError:  # pragma: nocover
     from configparser import ConfigParser
     config = ConfigParser(strict=False)
 
-from wheezy.caching import MemoryCache
 from wheezy.core.collections import defaultdict
 from wheezy.core.i18n import TranslationsManager
 from wheezy.html.ext.template import WhitespaceExtension
@@ -36,9 +35,18 @@ from tracing import error_report_extra_provider
 
 config.read(os.getenv('CONFIG', 'etc/development.ini'))
 
-mode = config.get('runtime', 'mode')
-if mode == 'mock':
+mode = config.get('runtime', 'cache')
+if mode == 'memory':
+    from wheezy.caching import MemoryCache
     cache = MemoryCache()
+elif mode == 'memcached':
+    from wheezy.core.pooling import EagerPool
+    from wheezy.caching.pylibmc import MemcachedClient
+    from wheezy.caching.pylibmc import client_factory
+    pool = EagerPool(
+        lambda: client_factory(config.get('memcached', 'servers').split(';')),
+        size=config.getint('memcached', 'pool-size'))
+    cache = MemcachedClient(pool)
 else:
     raise NotImplementedError(mode)
 
@@ -50,8 +58,16 @@ options.update({
 })
 
 # HTTPErrorMiddleware
-if config.get('runtime', 'unhandled') == 'stderr':
+mode = config.get('runtime', 'unhandled')
+if mode == 'stderr':
     handler = logging.StreamHandler(sys.stderr)
+elif mode == 'mail':
+    from logging.handlers import SMTPHandler
+    handler = SMTPHandler(
+        mailhost=config.get('mail', 'host'),
+        fromaddr=config.get('error_report', 'from-addr'),
+        toaddrs=config.get('error_report', 'to-addrs').split(';'),
+        subject=config.get('error_report', 'subject'))
 else:
     raise NotImplementedError(mode)
 handler.setFormatter(logging.Formatter(ERROR_REPORT_FORMAT))
@@ -115,9 +131,9 @@ options.update({
         }),
 
     'AUTH_COOKIE': '_a',
-    'AUTH_COOKIE_DOMAIN': None,
+    'AUTH_COOKIE_DOMAIN': config.get('crypto', 'auth-cookie-domain'),
     'AUTH_COOKIE_PATH': '',
-    'AUTH_COOKIE_SECURE': False,
+    'AUTH_COOKIE_SECURE': config.getboolean('crypto', 'auth-cookie-secure'),
 
     'XSRF_NAME': '_x',
     'RESUBMISSION_NAME': '_c'

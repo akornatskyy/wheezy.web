@@ -1,0 +1,40 @@
+@require(name, c, remote_addr, expires_at, extra)
+<html>
+<body style="font-family: Menlo, Tahoma, Monospace; font-size: 8pt;">
+    <p>
+        This message indicates that the application has detected
+        a denial-of-service attack for <b>@name</b> lockout counter.
+        The matching condition was <b>@c.count!s</b> errors
+        during <b>@c.period!s</b> seconds. The following
+        host <b>@remote_addr</b> has been blocked with HTTP forbidden
+        response for <b>@c.duration!s</b> seconds
+        until <b>@expires_at</b>.
+    </p>
+    @if extra:
+    <p>
+        Lockout context related information:
+        <ul style="list-style-type: none; padding-left: 15px;">
+        @for k, v in extra:
+            <li>@k: @v</li>
+        @end
+        </ul>
+    </p>
+    @end
+    <p>
+        Please report this detection to network admin for further
+        actions.
+    </p>
+    <p>
+        A denial-of-service attack (DoS attack) is an attempt to
+        make a computer resource unavailable to its intended users.
+        Although the means to carry out, motives for, and targets
+        of a DoS attack may vary, it generally consists of the
+        concerted efforts of a person or people to prevent an site
+        or service from functioning efficiently or at all, temporarily
+        or indefinitely.
+    </p>
+    <p>
+        Please do not reply to this mail.
+    </p>
+</body>
+</html>

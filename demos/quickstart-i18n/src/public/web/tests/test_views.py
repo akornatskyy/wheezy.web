@@ -60,6 +60,39 @@ class PublicTestCase(unittest.TestCase):
         assert 302 == self.client.get('/static/../templates/')
         assert '403' in self.client.headers['Location'][0]
 
+    def xtest_static_file_gzip(self):
+        """ Ensure static files are compressed.
+        """
+        self.client.get('/static/css/site.css', environ={
+            'SERVER_PROTOCOL': 'HTTP/1.1',
+            'HTTP_ACCEPT_ENCODING': 'gzip, deflate'
+        })
+        assert 'gzip' in self.client.headers['Content-Encoding']
+
+    def test_static_file_if_modified_since(self):
+        """ Request static resource with If-Modified-Since header.
+        """
+        assert 200 == self.client.get('/static/css/site.css')
+        last_modified = self.client.headers['Last-Modified'][0]
+        assert 304 == self.client.get('/static/css/site.css', environ={
+            'HTTP_IF_MODIFIED_SINCE': last_modified
+        })
+
+    def test_static_file_if_none_match(self):
+        """ Request static resource with If-None-Match header.
+        """
+        assert 200 == self.client.get('/static/css/site.css')
+        etag = self.client.headers['ETag'][0]
+        assert 304 == self.client.get('/static/css/site.css', environ={
+            'HTTP_IF_NONE_MATCH': etag
+        })
+
+    def test_head_static_file(self):
+        """ Request static resource with HTTP HEAD.
+        """
+        assert 200 == self.client.head('/static/css/site.css')
+        assert 0 == len(self.client.content)
+
 
 class ErrorTestCase(unittest.TestCase):
 
