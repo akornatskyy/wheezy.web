@@ -100,13 +100,14 @@ def restart():
 
 
 def debian():
-	sudo('apt-get -dqq update')
-	sudo('apt-get --no-install-recommends -yq install build-essential '
-		 'python2.7 python2.7-dev python-setuptools '
-		 'python-virtualenv gettext libgmp3-dev '
+    sudo('apt-get -dqq update')
+    sudo('apt-get --no-install-recommends -yq install build-essential '
+         'ntpdate python2.7 python2.7-dev python-setuptools '
+         'python-virtualenv gettext libgmp3-dev '
          'nginx-full uwsgi uwsgi-plugin-python '
          'libmemcached-dev memcached mailutils')
-	sudo('apt-get -q clean')
+    sudo('apt-get -q clean')
+    sudo('ntpdate pool.ntp.org')
 
 
 def os_upgrade():
