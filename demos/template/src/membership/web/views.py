@@ -19,7 +19,17 @@ from membership.validation import password_match_validator
 from membership.validation import registration_validator
 
 
-class SignInHandler(BaseHandler):
+class MembershipBaseHandler(BaseHandler):
+
+    @attribute
+    def translation(self):
+        return self.translations['membership']
+
+    def factory(self, session_name='ro'):
+        return Factory(session_name, **self.context)
+
+
+class SignInHandler(MembershipBaseHandler):
 
     lockout = locker.define(
         name='signin attempts',
@@ -31,14 +41,6 @@ class SignInHandler(BaseHandler):
         return attrdict({
             'remember_me': False
         })
-
-    @attribute
-    def translation(self):
-        return self.translations['membership']
-
-    @attribute
-    def factory(self):
-        return Factory(self.context)
 
     @handler_cache(profile=none_cache_profile)
     def get(self, credential=None):
@@ -63,22 +65,24 @@ class SignInHandler(BaseHandler):
                 return self.json_response({'errors': self.errors})
             credential.password = u('')
             return self.get(credential)
-        self.principal = Principal(
-            id=credential.username,
-            alias=credential.username,
-            roles=tuple(self.factory.membership.roles(
-                credential.username)))
         del self.xsrf_token
         return self.see_other_for('default')
 
     @lockout.guard
     def authenticate(self, credential):
-        #with self.factory as f:
-        f = self.factory.__enter__()
+        #with self.factory('ro') as f:
+        f = self.factory('ro').__enter__()
         try:
-            return f.membership.authenticate(credential)
+            if not f.membership.authenticate(credential):
+                return False
+            roles = f.membership.roles(credential.username)
         finally:
             f.__exit__(None, None, None)
+        self.principal = Principal(
+            id=credential.username,
+            roles=roles,
+            alias=credential.username)
+        return True
 
 
 class SignOutHandler(BaseHandler):
@@ -88,7 +92,7 @@ class SignOutHandler(BaseHandler):
         return self.redirect_for('default')
 
 
-class SignUpHandler(BaseHandler):
+class SignUpHandler(MembershipBaseHandler):
 
     lockout = locker.define(
         name='signup attempts',
@@ -102,13 +106,6 @@ class SignUpHandler(BaseHandler):
             'confirm_password': u(''),
             'question_id': '1'
         })
-
-    @attribute
-    def translation(self):
-        return self.translations['membership']
-
-    def factory(self, session_name):
-        return Factory(self.context, session_name)
 
     @handler_cache(profile=none_cache_profile)
     def get(self, registration=None):
