@@ -13,7 +13,7 @@ install_requires = [
     'wheezy.core>=0.1.131',
     'wheezy.caching>=0.1.96',
     'wheezy.html>=0.1.140',
-    'wheezy.http>=0.1.312',
+    'wheezy.http>=0.1.314',
     'wheezy.routing>=0.1.153',
     'wheezy.security>=0.1.61',
     'wheezy.validation>=0.1.125',
@@ -23,7 +23,7 @@ install_requires = [
 install_optional = [
     'pylibmc>=1.2.3',
     #'PIL>=1.1.7',
-    'pycrypto>=2.6'
+    'pycrypto>=2.6.1'
 ]
 
 install_requires += install_optional
