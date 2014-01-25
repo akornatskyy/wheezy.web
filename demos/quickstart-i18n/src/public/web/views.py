@@ -1,8 +1,6 @@
 """
 """
 
-from datetime import timedelta
-
 from wheezy.core.descriptors import attribute
 from wheezy.http import response_cache
 from wheezy.http.transforms import gzip_transform
@@ -56,4 +54,4 @@ http404 = template_handler('public/http404.html', status_code=404, **extra)
 http500 = template_handler('public/http500.html', status_code=500, **extra)
 
 w = wraps_handler(static_cache_profile)
-static_file = w(file_handler(root='content/static/', age=timedelta(hours=1)))
+static_file = w(file_handler(root='content/static/'))

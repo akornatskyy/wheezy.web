@@ -57,45 +57,11 @@ class FileHandlerTestCase(unittest.TestCase):
     def test_get_file(self):
         """ Requested path is valid.
         """
-        from datetime import datetime
         self.route_args['path'] = 'tests/test_file.py'
         response = self.handler.get()
         assert 200 == response.status_code
         assert 'text/x-python' == response.content_type
         assert None == response.encoding
-        assert 10 == len(response.cache_policy.http_etag)
-        assert datetime.utcnow() > response.cache_policy.modified
-
-    def test_get_if_none_match(self):
-        """ check HTTP If-None-Match header.
-        """
-        self.route_args['path'] = 'tests/test_file.py'
-        response = self.handler.get()
-        etag = response.cache_policy.http_etag
-        self.mock_request.environ['HTTP_IF_NONE_MATCH'] = etag
-        response = self.handler.get()
-        assert 304 == response.status_code
-        assert not response.buffer
-
-    def test_get_if_modified_since(self):
-        """ check HTTP If-Modified-Since header.
-        """
-        self.route_args['path'] = 'tests/test_file.py'
-        response = self.handler.get()
-        last_modified = response.cache_policy.http_last_modified
-        self.mock_request.environ['HTTP_IF_MODIFIED_SINCE'] = last_modified
-        response = self.handler.get()
-        assert 304 == response.status_code
-        assert not response.buffer
-
-    def test_get_age(self):
-        """ FileHandler is configured with age parameter.
-        """
-        from datetime import timedelta
-        self.handler.age = timedelta(minutes=10)
-        self.route_args['path'] = 'tests/test_file.py'
-        response = self.handler.get()
-        assert 600 == response.cache_policy.max_age_delta
 
     def test_head(self):
         """ Requested with HTTP HEAD method.
