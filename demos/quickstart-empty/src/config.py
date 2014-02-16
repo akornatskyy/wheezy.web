@@ -12,6 +12,9 @@ except ImportError:  # pragma: nocover
     from configparser import ConfigParser
     config = ConfigParser(strict=False)
 
+from datetime import timedelta
+
+from wheezy.caching.logging import OnePassHandler
 from wheezy.core.collections import defaultdict
 from wheezy.html.ext.template import WhitespaceExtension
 from wheezy.html.ext.template import WidgetExtension
@@ -69,6 +72,7 @@ elif mode == 'mail':
         subject=config.get('error_report', 'subject'))
 else:
     raise NotImplementedError(mode)
+handler = OnePassHandler(handler, cache, timedelta(hours=12))
 handler.setFormatter(logging.Formatter(ERROR_REPORT_FORMAT))
 handler.setLevel(logging.ERROR)
 unhandled_logger = logging.getLogger('unhandled')
