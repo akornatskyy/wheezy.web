@@ -145,6 +145,12 @@ class SignInTestCase(unittest.TestCase, SignInMixin):
     def test_lockout_guard(self):
         """ Ensure sigin lockout guard is reached.
         """
+        from config import config
+        mode = config.get('runtime', 'lockout')
+        self.client.environ['REMOTE_ADDR'] = '192.168.10.101'
+        if mode == 'ignore':
+            return
+
         self.client.environ['REMOTE_ADDR'] = '192.168.10.101'
         errors = self.signin('test', 'password')
         assert not errors
@@ -310,7 +316,11 @@ class SignUpTestCase(unittest.TestCase, SignInMixin, SignUpMixin,
     def test_lockout_quota(self):
         """ Ensure signup quata is reached.
         """
+        from config import config
+        mode = config.get('runtime', 'lockout')
         self.client.environ['REMOTE_ADDR'] = '192.168.10.101'
+        if mode == 'ignore':
+            return
 
         errors = self.signup(
             username='joe',
