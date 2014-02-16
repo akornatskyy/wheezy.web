@@ -5,7 +5,6 @@ from datetime import datetime
 from datetime import timedelta
 
 from wheezy.caching.lockout import Counter
-from wheezy.caching.lockout import Locker
 from wheezy.http.response import forbidden
 
 from config import cache
@@ -90,6 +89,12 @@ def send_mail(content):
 
 
 # region: config
+
+if mode == 'ignore':
+    from wheezy.caching.lockout import NullLocker
+    Locker = NullLocker
+else:
+    from wheezy.caching.lockout import Locker
 
 locker = Locker(cache, key_prefix='mysite',
                 forbid_action=lambda s: forbidden(),
