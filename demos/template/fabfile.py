@@ -26,11 +26,10 @@ def update():
         run('rm -rf ' + name)
         run('tar xzf ' + filename)
         run('rm ' + filename)
-        run('rm -f current ')
-        run('ln -s %s current' % name)
         with cd('current'):
             run('make install po')
             sudo('cp content/maintenance.html /usr/share/nginx/www')
+        run('rm -f current && ln -s %s current' % name)
 
 
 def config():
@@ -51,9 +50,10 @@ def config():
         sudo('rm -f %s.conf' % NAME)
         sudo('ln -s /etc/nginx/sites-available/%s.conf' % NAME)
     sudo('rm -f /etc/nginx/sites-enabled/default')
-    sudo('/etc/init.d/nginx restart')
-    # memcached
+    sudo('/usr/sbin/nginx -s quit')
     sudo('/etc/init.d/uwsgi stop')
+    sudo('/etc/init.d/nginx start')
+    # memcached
     sudo('/etc/init.d/memcached stop')
     with cd('/etc'):
         sudo('rm -f memcached.conf')
@@ -90,7 +90,9 @@ def start():
 
 
 def stop():
+    sudo('/usr/sbin/nginx -s quit')
     sudo('/etc/init.d/uwsgi stop')
+    sudo('/etc/init.d/nginx start')
     sudo('/etc/init.d/memcached stop')
 
 
