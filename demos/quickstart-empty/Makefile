@@ -79,7 +79,7 @@ run:
 	fi
 
 uwsgi:
-	$(ENV)/bin/uwsgi --ini development.ini
+	$(ENV)/bin/uwsgi --ini etc/development.ini
 
 gunicorn:
 	export PYTHONPATH=$$PYTHONPATH:./src ; \
