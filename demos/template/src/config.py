@@ -64,8 +64,8 @@ elif mode == 'mail':
         subject=config.get('error_report', 'subject'))
 else:
     raise NotImplementedError(mode)
-handler = OnePassHandler(handler, cache, timedelta(hours=12))
 handler.setFormatter(logging.Formatter(ERROR_REPORT_FORMAT))
+handler = OnePassHandler(handler, cache, timedelta(hours=12))
 handler.setLevel(logging.ERROR)
 unhandled_logger = logging.getLogger('unhandled')
 unhandled_logger.setLevel(logging.ERROR)
