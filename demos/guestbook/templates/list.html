@@ -7,7 +7,7 @@
 @for g in greetings:
 <p>
     @g.id!s. On @g.created_on.strftime('%m/%d/%Y %I:%M %p'),
-    <b>@str(g.author or 'anonymous')</b> wrote:
+    <b>@s(g.author or 'anonymous')</b> wrote:
     <blockquote>@g.message.replace('\n', '<br/>')</blockquote>
 </p>
 @end

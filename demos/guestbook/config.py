@@ -38,7 +38,8 @@ engine = Engine(
         WidgetExtension(),
     ])
 engine.global_vars.update({
-    'h': html_escape
+    'h': html_escape,
+    's': lambda s: s
 })
 options.update({
     'render_template': WheezyTemplate(engine)
