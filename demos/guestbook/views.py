@@ -28,7 +28,7 @@ class ListHandler(BaseHandler):
         response = self.render_response('list.html',
                                         greetings=greetings)
         response.cache_dependency = ('d_list',)
-        #response.cache_dependency.append('d_list')
+        # response.cache_dependency.append('d_list')
         return response
 
 
