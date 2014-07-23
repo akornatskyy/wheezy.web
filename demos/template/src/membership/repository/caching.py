@@ -27,13 +27,13 @@ class MembershipRepository(object):
         return self.inner.authenticate(credential)
 
     def has_account(self, username):
-        #key = keys.has_account(username)
-        #result = cache.get(key)
-        #if result is None:
+        # key = keys.has_account(username)
+        # result = cache.get(key)
+        # if result is None:
         #    result = self.inner.has_account(username)
         #    if result is not None:
         #        cache.set(key, result, time=3600, namespace='membership')
-        #return result
+        # return result
         return cached_long.get_or_set(
             keys.has_account(username),
             lambda: self.inner.has_account(username))

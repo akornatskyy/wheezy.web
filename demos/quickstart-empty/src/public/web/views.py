@@ -24,8 +24,8 @@ class WelcomeHandler(BaseHandler):
 wraps_handler = lambda p: lambda h: response_cache(p)(
     response_transforms(gzip_transform(compress_level=9))(h))
 
-#w = wraps_handler(public_cache_profile)
-#home = w(template_handler('public/home.html'))
+# w = wraps_handler(public_cache_profile)
+# home = w(template_handler('public/home.html'))
 
 # cached by nginx
 http400 = template_handler('public/http400.html', status_code=400)

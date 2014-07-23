@@ -72,7 +72,7 @@ class SignInHandler(MembershipBaseHandler):
 
     @lockout.guard
     def authenticate(self, credential):
-        #with self.factory('ro') as f:
+        # with self.factory('ro') as f:
         f = self.factory('ro').__enter__()
         try:
             if not f.membership.authenticate(credential):
@@ -115,7 +115,7 @@ class SignUpHandler(MembershipBaseHandler):
             return self.redirect_for('default')
         registration = registration or Registration()
 
-        #with self.factory('ro') as f:
+        # with self.factory('ro') as f:
         f = self.factory('ro')
         try:
             f.__enter__()
@@ -155,7 +155,7 @@ class SignUpHandler(MembershipBaseHandler):
             self.model.confirm_password = u('')
             return self.get(registration)
 
-        #with self.factory('ro') as f:
+        # with self.factory('ro') as f:
         f = self.factory('ro')
         try:
             f.__enter__()
@@ -172,7 +172,7 @@ class SignUpHandler(MembershipBaseHandler):
 
     @lockout.quota
     def create_account(self, registration):
-        #with self.factory('rw') as f:
+        # with self.factory('rw') as f:
         f = self.factory('rw')
         try:
             f.__enter__()

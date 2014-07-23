@@ -44,8 +44,8 @@ extra = {
     'translation_name': 'public'
 }
 
-#w = wraps_handler(public_cache_profile, **extra)
-#home = w(template_handler('public/home.html'))
+# w = wraps_handler(public_cache_profile, **extra)
+# home = w(template_handler('public/home.html'))
 
 # cached by nginx
 http400 = template_handler('public/http400.html', status_code=400, **extra)
