@@ -1,5 +1,6 @@
 from fabric.api import cd
 from fabric.api import env
+from fabric.api import hide
 from fabric.api import lcd
 from fabric.api import local
 from fabric.api import put
@@ -26,7 +27,7 @@ def update():
         run('rm -rf ' + name)
         run('tar xzf ' + filename)
         run('rm ' + filename)
-        with cd('current'):
+        with cd(name):
             run('make install')
             sudo('cp content/maintenance.html /usr/share/nginx/www')
         run('rm -f current && ln -s %s current' % name)
@@ -50,7 +51,7 @@ def config():
         sudo('rm -f %s.conf' % NAME)
         sudo('ln -s /etc/nginx/sites-available/%s.conf' % NAME)
     sudo('rm -f /etc/nginx/sites-enabled/default')
-    sudo('/usr/sbin/nginx -s quit')
+    sudo('/usr/sbin/nginx -s quit && sleep 5')
     sudo('/etc/init.d/uwsgi stop')
     sudo('/etc/init.d/nginx start')
     # memcached
@@ -84,13 +85,18 @@ def purge():
     sudo('rm -rf ' + ETC_PATH)
 
 
+def reload():
+    sudo('/etc/init.d/uwsgi reload')
+
+
 def start():
     sudo('/etc/init.d/memcached start')
     sudo('/etc/init.d/uwsgi start')
 
 
 def stop():
-    sudo('/usr/sbin/nginx -s quit')
+    sudo('/usr/sbin/nginx -s quit && sleep 5')
+    sudo('/etc/init.d/nginx stop')
     sudo('/etc/init.d/uwsgi stop')
     sudo('/etc/init.d/nginx start')
     sudo('/etc/init.d/memcached stop')
@@ -101,6 +107,17 @@ def restart():
     start()
 
 
+def flush_cache():
+    sudo('echo flush_all | socat unix-connect:/var/tmp/memcached-%s.sock -'
+         % NAME)
+
+def cache_stats():
+    with hide('output'):
+        stats = sudo('echo stats | socat unix-connect:'
+                     '/var/tmp/memcached-%s.sock - | sort' % NAME)
+        print(stats)
+
+
 def debian():
     sudo('apt-get -dqq update')
     sudo('apt-get --no-install-recommends -yq install build-essential '
@@ -108,6 +125,9 @@ def debian():
          'python-virtualenv gettext libgmp3-dev '
          'nginx-full uwsgi uwsgi-plugin-python '
          'libmemcached-dev memcached mailutils')
+    sudo('/etc/init.d/uwsgi start')
+    sudo('/etc/init.d/nginx start')
+    sudo('/etc/init.d/memcached start')
     sudo('apt-get -q clean')
     sudo('ntpdate pool.ntp.org')
 
@@ -125,7 +145,7 @@ def os_upgrade():
 
 def get_name():
     revision = local("hg head --template '{rev}'", capture=True)
-    assert int(revision)
+    assert int(revision) >= 0
     name = local('env/bin/python setup.py --fullname', capture=True)
     return name + '.' + revision
 
