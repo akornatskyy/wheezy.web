@@ -1,6 +1,7 @@
 include Makefile
 include README.rst
 include content/maintenance.html
+include content/static/robots.txt
 include etc/config.ini
 include etc/memcached.conf
 include etc/nginx.conf

@@ -24,5 +24,6 @@ error_urls = [
 
 static_urls = [
     url('static/{path:any}', static_file, name='static'),
-    url('favicon.ico', static_file, {'path': 'img/favicon.ico'})
+    url('favicon.ico', static_file, {'path': 'img/favicon.ico'}),
+    url('robots.txt', static_file, {'path': 'robots.txt'}, name='robots')
 ]
