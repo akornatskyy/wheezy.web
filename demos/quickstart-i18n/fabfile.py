@@ -28,7 +28,7 @@ def update():
         run('tar xzf ' + filename)
         run('rm ' + filename)
         with cd(name):
-            run('make install')
+            run('make install po')
             sudo('cp content/maintenance.html /usr/share/nginx/www')
         run('rm -f current && ln -s %s current' % name)
 
@@ -111,11 +111,19 @@ def flush_cache():
     sudo('echo flush_all | socat unix-connect:/var/tmp/memcached-%s.sock -'
          % NAME)
 
+
 def cache_stats():
-    with hide('output'):
+    with hide('output', 'running'):
         stats = sudo('echo stats | socat unix-connect:'
-                     '/var/tmp/memcached-%s.sock - | sort' % NAME)
-        print(stats)
+                     '/var/tmp/memcached-%s.sock -' % NAME)
+        items = dict((r[1], r[2].strip()) for r in [i.split(' ')
+                     for i in stats.split('\n')[:-1]])
+        c = float(items['cmd_get'])
+        h = c and 100.0 * float(items['get_hits']) / c or 0.0
+        print('Cache: %.2f%% hit rate, %.2fM gets, %.2fG read, %.2f days' %
+              (h, c / 1e6,
+               float(items['bytes_read']) / pow(1024, 3),
+               float(items['uptime']) / 86400.0))
 
 
 def debian():
@@ -124,7 +132,7 @@ def debian():
          'ntpdate python2.7 python2.7-dev python-setuptools '
          'python-virtualenv gettext libgmp3-dev '
          'nginx-full uwsgi uwsgi-plugin-python '
-         'libmemcached-dev memcached mailutils')
+         'libmemcached-dev memcached mailutils socat')
     sudo('/etc/init.d/uwsgi start')
     sudo('/etc/init.d/nginx start')
     sudo('/etc/init.d/memcached start')
