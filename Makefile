@@ -90,6 +90,7 @@ env-demos:
 	make env -sC demos/template PYPI=$(PYPI) VERSION=$(VERSION)
 
 test-demos:
+	$(PYTEST) -q -x --pep8 demos/api ; \
 	$(PYTEST) -q -x --pep8 demos/hello ; \
 	make clean nose-cover -sC demos/quickstart-empty VERSION=$(VERSION) ; \
 	make clean po nose-cover -sC demos/quickstart-i18n VERSION=$(VERSION) ; \
