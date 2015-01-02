@@ -54,4 +54,4 @@ http404 = template_handler('public/http404.html', status_code=404, **extra)
 http500 = template_handler('public/http500.html', status_code=500, **extra)
 
 w = wraps_handler(static_cache_profile)
-static_file = w(file_handler(root='content/static/'))
+static_file = w(file_handler('content/static/'))
