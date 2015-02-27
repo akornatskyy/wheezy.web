@@ -39,7 +39,7 @@ class PathRoutingMiddlewareTestCase(unittest.TestCase):
         mock_path_router = Mock()
         mock_path_router.match.return_value = (None, {})
         middleware = PathRoutingMiddleware(mock_path_router)
-        assert None == middleware(mock_request, None)
+        assert middleware(mock_request, None) is None
         assert 'route_args' in mock_request.environ
 
     def test_match(self):

@@ -41,8 +41,8 @@ class MethodHandlerTestCase(unittest.TestCase):
         from wheezy.web.handlers.method import MethodHandler
         for method in ['GET', 'POST', 'HEAD']:
             patcher = patch(
-                'wheezy.web.handlers.method.MethodHandler.'
-                + method.lower())
+                'wheezy.web.handlers.method.MethodHandler.' +
+                method.lower())
             self.mock_request.method = method
             mock_method = patcher.start()
             mock_method.return_value = 'response'

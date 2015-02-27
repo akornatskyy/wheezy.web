@@ -37,14 +37,18 @@ class WelcomeHandler(PublicHandler):
         return self.render_response('public/home.html')
 
 
-wraps_handler = lambda p: lambda h: response_cache(p)(
-    response_transforms(gzip_transform(compress_level=9))(h))
+def wraps_handler(p):
+    def wrapper(h):
+        return response_cache(p)(
+            response_transforms(gzip_transform(compress_level=9))(h))
+    return wrapper
+
 
 extra = {
     'translation_name': 'public'
 }
 
-# w = wraps_handler(public_cache_profile, **extra)
+# w = wraps_handler(public_cache_profile)
 # home = w(template_handler('public/home.html'))
 
 # cached by nginx

@@ -61,7 +61,7 @@ class FileHandlerTestCase(unittest.TestCase):
         response = self.handler.get()
         assert 200 == response.status_code
         assert 'text/x-python' == response.content_type
-        assert None == response.encoding
+        assert response.encoding is None
 
     def test_head(self):
         """ Requested with HTTP HEAD method.

@@ -207,7 +207,7 @@ class BaseHandlerModelsTestCase(unittest.TestCase):
         model = {
             'name': ''
         }
-        assert True == self.handler.try_update_model(model)
+        assert self.handler.try_update_model(model)
         assert 'test' == model['name']
 
 
@@ -313,7 +313,7 @@ class BaseHandlerAuthenticationTestCase(unittest.TestCase):
     def test_getprincipal_auth_cookie_not_available(self):
         """ auth cookie has not been supplied in request.
         """
-        assert None == self.handler.getprincipal()
+        assert self.handler.getprincipal() is None
 
     def test_getprincipal_auth_cookie_expired(self):
         """ auth cookie has been expired.
@@ -323,7 +323,7 @@ class BaseHandlerAuthenticationTestCase(unittest.TestCase):
         mock_ticket.decode.return_value = (None, None)
         self.options['ticket'] = mock_ticket
 
-        assert None == self.handler.getprincipal()
+        assert self.handler.getprincipal() is None
         assert 1 == len(self.handler.cookies)
         cookie = self.handler.cookies[0]
         assert '_a' == cookie.name
@@ -434,7 +434,7 @@ class BaseHandlerXSRFTestCase(unittest.TestCase):
         assert 1 == len(self.handler.cookies)
         cookie = self.handler.cookies[0]
         assert '_x' == cookie.name
-        assert None == cookie.value
+        assert cookie.value is None
 
     def test_validate_xsrf_token_no_match(self):
         """ form token does not match cookie value.
@@ -518,7 +518,7 @@ class BaseHandlerResibmissionTestCase(unittest.TestCase):
         assert 1 == len(self.handler.cookies)
         cookie = self.handler.cookies[0]
         assert '_r' == cookie.name
-        assert None == cookie.value
+        assert cookie.value is None
 
     def test_validate_resubmission_ajax(self):
         """ validate_resubmission in ajax request.

@@ -42,15 +42,22 @@ else:
 
 # region: lockouts and defaults
 
+def key_func_by_id(h):
+    return 'id:' + h.principal.id
+
+
 def lockout_by_id(count=10,
                   period=timedelta(minutes=15),
                   duration=timedelta(hours=1),
                   reset=False,
                   alert=ignore_alert):
-    key_func = lambda h: 'id:%s' % h.principal.id
-    return Counter(key_func=key_func, count=count,
+    return Counter(key_func=key_func_by_id, count=count,
                    period=period, duration=duration,
                    reset=reset, alert=alert)
+
+
+def key_func_by_ip(h):
+    return 'ip:' + h.request.environ['REMOTE_ADDR']
 
 
 def lockout_by_ip(count=10,
@@ -58,10 +65,13 @@ def lockout_by_ip(count=10,
                   duration=timedelta(hours=2),
                   reset=True,
                   alert=ignore_alert):
-    key_func = lambda h: 'ip:%s' % h.request.environ['REMOTE_ADDR']
-    return Counter(key_func=key_func, count=count,
+    return Counter(key_func=key_func_by_ip, count=count,
                    period=period, duration=duration,
                    reset=reset, alert=alert)
+
+
+def key_func_by_id_ip(h):
+    return 'idip:%s:%s' % (h.principal.id, h.request.environ['REMOTE_ADDR'])
 
 
 def lockout_by_id_ip(count=10,
@@ -69,9 +79,7 @@ def lockout_by_id_ip(count=10,
                      duration=timedelta(hours=1),
                      reset=True,
                      alert=ignore_alert):
-    key_func = lambda h: 'idip:%s:%s' % (
-        h.principal.id, h.request.environ['REMOTE_ADDR'])
-    return Counter(key_func=key_func, count=count,
+    return Counter(key_func=key_func_by_id_ip, count=count,
                    period=period, duration=duration,
                    reset=reset, alert=alert)
 

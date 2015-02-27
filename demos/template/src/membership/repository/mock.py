@@ -2,8 +2,10 @@
 """
 
 from wheezy.core.i18n import ref_gettext
+from wheezy.core.introspection import looks
 
 from config import translations
+from membership.repository.contract import IMembershipRepository
 from membership.repository.samples import db
 
 
@@ -39,9 +41,6 @@ class MembershipRepository(object):
 
 
 # region: internal details
-
-from wheezy.core.introspection import looks
-from membership.repository.contract import IMembershipRepository
 assert looks(MembershipRepository).like(IMembershipRepository)
 assert looks(IMembershipRepository).like(MembershipRepository)
 del looks, IMembershipRepository

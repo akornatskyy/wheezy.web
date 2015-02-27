@@ -12,11 +12,18 @@ from membership.models import Credential
 from membership.models import Registration
 
 
-_ = lambda s: s
-next_name = lambda: random.choice(('arnold', 'ben', 'erika', 'bob'))
-next_date = lambda: date(random.randint(1947, 1984),
-                         random.randint(1, 12),
-                         random.randint(1, 28))
+def _(s):
+    return s
+
+
+def next_name():
+    return random.choice(('arnold', 'ben', 'erika', 'bob'))
+
+
+def next_date():
+    return date(random.randint(1947, 1984),
+                random.randint(1, 12),
+                random.randint(1, 28))
 
 
 def next_credential():

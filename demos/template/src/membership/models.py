@@ -6,7 +6,9 @@ from datetime import date
 from wheezy.core.comp import u
 
 
-_ = lambda s: s
+def _(s):
+    return s
+
 account_types = (
     ('user', _('User')),
     ('business', _('Business'))

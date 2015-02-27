@@ -39,7 +39,7 @@ class BootstrapWebDefaultsTestCase(unittest.TestCase):
         from wheezy.web.middleware.bootstrap import bootstrap_defaults
         options = {}
 
-        assert None == bootstrap_defaults({})(options)
+        assert bootstrap_defaults({})(options) is None
 
         required_options = tuple(sorted(options.keys()))
         assert 12 == len(required_options)
@@ -57,9 +57,9 @@ class BootstrapWebDefaultsTestCase(unittest.TestCase):
             'path_router': mock_path_router
         }
 
-        assert None == bootstrap_defaults({
+        assert bootstrap_defaults({
             'signin': 'signin'
-        })(options)
+        })(options) is None
 
         assert tuple(options.keys())
 
@@ -71,5 +71,5 @@ class BootstrapWebDefaultsTestCase(unittest.TestCase):
             'ticket': None
         }
 
-        assert None == bootstrap_defaults({})(options)
+        assert bootstrap_defaults({})(options) is None
         self.assert_warning('Bootstrap: render_template is not defined')

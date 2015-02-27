@@ -73,8 +73,8 @@ def filter_names(d, ignore):
 
 def modules_info():
     def predicate(m):
-        return (hasattr(m, '__version__')
-                and not (m.__name__.startswith('_') or '._' in m.__name__))
+        return (hasattr(m, '__version__') and
+                not (m.__name__.startswith('_') or '._' in m.__name__))
     return sorted([(m.__name__, m.__version__) for m in sys.modules.values()
                    if predicate(m)])
 

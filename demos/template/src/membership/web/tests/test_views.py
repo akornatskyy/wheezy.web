@@ -194,10 +194,48 @@ class SignInTestCase(unittest.TestCase, SignInMixin):
         SignInPage(client)
 
 
+class SignInAJAX(SignInMixin):
+
+    def test_ajax_validation_errors(self):
+        """ Ensure sigin page displays field validation errors
+            on AJAX call.
+        """
+        assert 200 == self.ajax_signin('', '')
+        errors = self.client.json.errors
+        assert 2 == len(errors)
+        assert AUTH_COOKIE not in self.client.cookies
+
+    def test_ajax_unknown_user(self):
+        """ Ensure sigin page displays general error message
+            on AJAX call.
+        """
+        assert 200 == self.ajax_signin('test', 'password')
+        errors = self.client.json.errors
+        assert '__ERROR__' in errors
+        assert AUTH_COOKIE not in self.client.cookies
+
+    def test_ajax_valid_user(self):
+        """ Ensure sigin is successful.
+        """
+        assert 207 == self.ajax_signin('demo', 'P@ssw0rd')
+        assert 200 == self.client.follow()
+        assert AUTH_COOKIE in self.client.cookies
+        assert XSRF_NAME not in self.client.cookies
+        assert 'Welcome <b>demo' in self.client.content
+
+    def test_ajax_xrsf_token_invalid(self):
+        client = self.client
+        assert 200 == client.get('/en/signin')
+        page = SignInPage(client)
+        client.cookies.clear()
+        assert 207 == page.ajax_submit()
+        assert 200 == client.follow()
+        SignInPage(client)
+
 try:
     json_encode({})
 
-    class SignInAJAXTestCase(unittest.TestCase, SignInMixin):
+    class SignInAJAXTestCase(unittest.TestCase, SignInAJAX):
 
         def setUp(self):
             self.client = WSGIClient(main)
@@ -205,42 +243,6 @@ try:
         def tearDown(self):
             del self.client
             self.client = None
-
-        def test_ajax_validation_errors(self):
-            """ Ensure sigin page displays field validation errors
-                on AJAX call.
-            """
-            assert 200 == self.ajax_signin('', '')
-            errors = self.client.json.errors
-            assert 2 == len(errors)
-            assert AUTH_COOKIE not in self.client.cookies
-
-        def test_ajax_unknown_user(self):
-            """ Ensure sigin page displays general error message
-                on AJAX call.
-            """
-            assert 200 == self.ajax_signin('test', 'password')
-            errors = self.client.json.errors
-            assert '__ERROR__' in errors
-            assert AUTH_COOKIE not in self.client.cookies
-
-        def test_ajax_valid_user(self):
-            """ Ensure sigin is successful.
-            """
-            assert 207 == self.ajax_signin('demo', 'P@ssw0rd')
-            assert 200 == self.client.follow()
-            assert AUTH_COOKIE in self.client.cookies
-            assert XSRF_NAME not in self.client.cookies
-            assert 'Welcome <b>demo' in self.client.content
-
-        def test_ajax_xrsf_token_invalid(self):
-            client = self.client
-            assert 200 == client.get('/en/signin')
-            page = SignInPage(client)
-            client.cookies.clear()
-            assert 207 == page.ajax_submit()
-            assert 200 == client.follow()
-            SignInPage(client)
 
 except NotImplementedError:  # pragma: nocover
     pass

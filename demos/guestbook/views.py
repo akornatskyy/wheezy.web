@@ -44,8 +44,8 @@ class AddHandler(BaseHandler):
 
     def post(self):
         greeting = Greeting()
-        if (not self.try_update_model(greeting)
-                or not self.validate(greeting, greeting_validator)):
+        if (not self.try_update_model(greeting) or
+                not self.validate(greeting, greeting_validator)):
             if self.request.ajax:
                 return self.json_response({'errors': self.errors})
             return self.get(greeting)

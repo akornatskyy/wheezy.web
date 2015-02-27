@@ -22,12 +22,12 @@ install_requires = [
 ]
 
 install_optional = [
-    #'PIL>=1.1.7',
+    # 'PIL>=1.1.7',
     'pycrypto>=2.6.1'
 ]
 
 if sys.version_info[0] == 2:
-    install_optional.append('pylibmc>=1.2.3')
+    install_optional.append('pylibmc<1.3')
 
 install_requires += install_optional
 
@@ -40,7 +40,7 @@ dependency_links = [
     # pylibmc
     'https://bitbucket.org/akorn/wheezy.caching/downloads',
     # PIL
-    #'https://bitbucket.org/akorn/wheezy.captcha/downloads',
+    # 'https://bitbucket.org/akorn/wheezy.captcha/downloads',
     # pycrypto
     'https://bitbucket.org/akorn/wheezy.security/downloads'
 ]

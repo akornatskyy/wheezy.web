@@ -14,14 +14,17 @@ msgid "YYYY/MM/DD"
 msgstr "%Y/%m/%d"
 
 #: src/membership/repository/samples.py:56
+#: src/membership/repository/samples.py:63
 msgid "Favorite number"
 msgstr "Favorite number"
 
 #: src/membership/repository/samples.py:57
+#: src/membership/repository/samples.py:64
 msgid "City of birth"
 msgstr "City of birth"
 
 #: src/membership/repository/samples.py:58
+#: src/membership/repository/samples.py:65
 msgid "Favorite color"
 msgstr "Favorite color"
 

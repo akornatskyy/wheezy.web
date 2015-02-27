@@ -96,11 +96,13 @@ cached = Cached(cache, time=timedelta(hours=4))
 
 # region: models
 
-Task = lambda other={}: attrdict({
-    'task_id': None,
-    'title': u(''),
-    'status': 1
-}, **other)
+def Task(other={}):
+    return attrdict({
+        'task_id': None,
+        'title': u(''),
+        'status': 1
+    }, **other)
+
 Task.keys = frozenset(Task().keys())
 
 
@@ -146,8 +148,8 @@ class TaskListHandler(APIHandler):
     @accept_json(keys=Task.keys)
     def post(self):
         task = Task(self.request.form)
-        if (not self.validate(task, task_validator)
-                or not self.add_task(task)):
+        if (not self.validate(task, task_validator) or
+                not self.add_task(task)):
             return self.error_response()
         response = self.json_response({'task': {'task_id': task.task_id}})
         response.status_code = 201
@@ -185,8 +187,8 @@ class TaskHandler(APIHandler):
         if not task:
             return not_found()
         task.update(self.request.form)
-        if (not self.validate(task, task_validator)
-                or not self.update_task(task)):
+        if (not self.validate(task, task_validator) or
+                not self.update_task(task)):
             return self.error_response()
         return self.status_response()
 

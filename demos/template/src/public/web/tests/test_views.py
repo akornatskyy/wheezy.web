@@ -19,9 +19,12 @@ from config import template_engine
 
 if template_engine.startswith('wheezy'):
     re_ws = re.compile(' \s+', re.MULTILINE)
-    extra_whitespace = lambda s: re_ws.search(s)
+
+    def extra_whitespace(s):
+        return re_ws.search(s)
 else:
-    extra_whitespace = lambda s: False
+    def extra_whitespace(s):
+        return False
 
 
 class PublicTestCase(unittest.TestCase):

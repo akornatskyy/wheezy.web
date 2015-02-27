@@ -59,10 +59,10 @@ class SignInHandler(MembershipBaseHandler):
         if not self.validate_xsrf_token():
             return self.redirect_for(self.route_args.route_name)
         credential = Credential()
-        if (not self.try_update_model(credential)
-                & self.try_update_model(self.model)
-                or not self.validate(credential, credential_validator)
-                or not self.authenticate(credential)):
+        if (not self.try_update_model(credential) &
+                self.try_update_model(self.model) or
+                not self.validate(credential, credential_validator) or
+                not self.authenticate(credential)):
             if self.request.ajax:
                 return self.json_response({'errors': self.errors})
             credential.password = u('')
@@ -142,13 +142,13 @@ class SignUpHandler(MembershipBaseHandler):
                               'try again.'))
             return self.get()
         registration = Registration()
-        if (not self.try_update_model(self.model)
-                & self.try_update_model(registration)
-                & self.try_update_model(registration.account)
-                & self.try_update_model(registration.credential)
-                or not self.validate(self.model, password_match_validator)
-                & self.validate(registration, registration_validator)
-                or not self.create_account(registration)):
+        if (not self.try_update_model(self.model) &
+                self.try_update_model(registration) &
+                self.try_update_model(registration.account) &
+                self.try_update_model(registration.credential) or
+                not self.validate(self.model, password_match_validator) &
+                self.validate(registration, registration_validator) or
+                not self.create_account(registration)):
             if self.request.ajax:
                 return self.json_response({'errors': self.errors})
             registration.credential.password = u('')

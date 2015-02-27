@@ -15,7 +15,8 @@ from membership.rules import identity
 from membership.rules import password_rules
 
 
-_ = lambda s: s
+def _(s):
+    return s
 
 credential_validator = Validator({
     'username': [required, length(min=2), length(max=20)],

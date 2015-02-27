@@ -11,8 +11,12 @@ from public.web.profile import public_cache_profile
 from public.web.profile import static_cache_profile
 
 
-wraps_handler = lambda p: lambda h: response_cache(p)(
-    response_transforms(gzip_transform(compress_level=9))(h))
+def wraps_handler(p):
+    def wrapper(h):
+        return response_cache(p)(
+            response_transforms(gzip_transform(compress_level=9))(h))
+    return wrapper
+
 
 extra = {
     'translation_name': 'public'
