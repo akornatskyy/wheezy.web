@@ -4,6 +4,9 @@
 from wheezy.http import method_not_allowed
 
 
+new = object.__new__
+
+
 class MethodHandler(object):
     """ Represents the most generic handler. It serves dispatcher purpose
         for HTTP request method (GET, POST, etc). Base class for all
@@ -11,7 +14,7 @@ class MethodHandler(object):
     """
 
     def __new__(klass, *args, **kwargs):
-        handler = super(MethodHandler, klass).__new__(klass)
+        handler = new(klass)
         handler.__init__(*args, **kwargs)
         return handler()
 
@@ -52,6 +55,6 @@ class MethodHandler(object):
 
 
 def handler_factory(klass, *args, **kwargs):
-    handler = object.__new__(klass)
+    handler = new(klass)
     handler.__init__(*args, **kwargs)
     return handler
