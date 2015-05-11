@@ -1,6 +1,9 @@
 """
 """
 
+from datetime import datetime
+from time import time
+
 from wheezy.core.collections import attrdict
 from wheezy.core.comp import u
 from wheezy.core.descriptors import attribute
@@ -84,6 +87,13 @@ class SignInHandler(MembershipBaseHandler):
             id=credential.username,
             roles=roles,
             alias=credential.username)
+        if self.model.remember_me:
+            # The above code appends authentication cookie of type session
+            # to the list of self.cookies, we set expries to make
+            # it persistent. Once renewed turns back to session, otherwise
+            # override setprincipal.
+            self.cookies[-1].expires = datetime.utcfromtimestamp(
+                time() + self.ticket.max_age)
         return True
 
 
