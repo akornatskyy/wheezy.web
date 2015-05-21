@@ -10,6 +10,7 @@ from wheezy.core.descriptors import attribute
 from wheezy.http import none_cache_profile
 from wheezy.security import Principal
 from wheezy.web import handler_cache
+from wheezy.web.authorization import authorize
 from wheezy.web.handlers import BaseHandler
 
 from factory import Factory
@@ -21,6 +22,7 @@ from membership.models import account_types
 from membership.validation import credential_validator
 from membership.validation import password_match_validator
 from membership.validation import registration_validator
+from shared.authorization import RedirectQueryStringReturnPathMixin
 
 
 class MembershipBaseHandler(BaseHandler):
@@ -33,7 +35,8 @@ class MembershipBaseHandler(BaseHandler):
         return Factory(session_name, **self.context)
 
 
-class SignInHandler(MembershipBaseHandler):
+class SignInHandler(MembershipBaseHandler,
+                    RedirectQueryStringReturnPathMixin):
 
     lockout = locker.define(
         name='signin attempts',
@@ -71,7 +74,7 @@ class SignInHandler(MembershipBaseHandler):
             credential.password = u('')
             return self.get(credential)
         del self.xsrf_token
-        return self.see_other_for('default')
+        return self.redirect_to_return_path()
 
     @lockout.guard
     def authenticate(self, credential):
@@ -191,3 +194,10 @@ class SignUpHandler(MembershipBaseHandler):
             return succeed
         finally:
             f.__exit__(None, None, None)
+
+
+class ProfileHandler(MembershipBaseHandler):
+
+    @authorize
+    def get(self):
+        return self.see_other_for('default')

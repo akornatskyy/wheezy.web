@@ -23,6 +23,7 @@ from wheezy.security.crypto.comp import ripemd160
 from wheezy.security.crypto.comp import sha1
 from wheezy.security.crypto.comp import sha256
 
+from shared.authorization import setup_authorization_return_path
 from tracing import ERROR_REPORT_FORMAT
 from tracing import error_report_extra_provider
 
@@ -52,6 +53,7 @@ options.update({
 })
 
 # HTTPErrorMiddleware
+setup_authorization_return_path()
 mode = config.get('runtime', 'unhandled')
 if mode == 'stderr':
     handler = logging.StreamHandler(sys.stderr)
