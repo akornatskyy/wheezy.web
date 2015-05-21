@@ -63,9 +63,11 @@ upload:
 	python setup.py upload_docs ; \
 
 qa:
-	env/bin/flake8 --max-complexity 10 demos/hello demos/guestbook \
-			doc src setup.py && \
-	env/bin/pep8 demos/hello demos/guestbook doc src setup.py
+	SRC='demos/api demos/guestbook demos/hello \
+		demos/reusable/hello demos/reusable/world \
+		doc src setup.py' && \
+	env/bin/flake8 --max-complexity 10 $$SRC && \
+	env/bin/pep8 $$SRC
 
 test:
 	$(PYTEST) -q -x --pep8 --doctest-modules src/wheezy/web
