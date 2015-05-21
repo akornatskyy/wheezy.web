@@ -1,0 +1,13 @@
+@require(path_for)
+@require(msg)
+<html>
+<head>
+    <link rel="stylesheet" type="text/css" href="@path_for('static', path='hello/style.css')" />
+    <link rel="stylesheet" type="text/css" href="@path_for('static', path='style.css')" />
+</head>
+<body>
+    <h1>
+        @msg
+    </h1>
+    Say <a href="@path_for('hello:welcome')">again</a>?
+</body>
