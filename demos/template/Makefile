@@ -90,7 +90,8 @@ po:
 		content/templates-wheezy/public/*.html
 	xgettext --join-existing --sort-by-file --omit-header \
 		--language=Python \
-		-o i18n/en/LC_MESSAGES/membership.po src/membership/**/*.py \
+		-o i18n/en/LC_MESSAGES/membership.po src/membership/*.py \
+		src/membership/**/*.py \
 		content/templates-jinja2/membership/*.html \
 		content/templates-mako/membership/*.html \
 		content/templates-tenjin/membership/*.html \
