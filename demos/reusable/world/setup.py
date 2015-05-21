@@ -6,6 +6,7 @@ from setuptools import setup
 README = open(os.path.join(os.path.dirname(__file__), 'README.rst')).read()
 
 install_requires = [
+    'wheezy.template',
     'wheezy.web',
     'hello'
 ]
