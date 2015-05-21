@@ -308,8 +308,8 @@ you do not need to explicitly initialize this argument.
 Widgets
 ^^^^^^^
 
-Widgets are coming from `wheezy.html`_ package. You have to be explicit when
-you need widgets. Here is ``SignUpHandler`` from demo::
+Widgets are coming from `wheezy.html`_ package (see *WidgetExtension* for
+a template engine). Here is ``SignUpHandler`` from demo::
 
     class SignUpHandler(BaseHandler):
 
@@ -317,25 +317,20 @@ you need widgets. Here is ``SignUpHandler`` from demo::
 
         @handler_cache(profile=none_cache_profile)
         def get(self, registration=None):
-            registration = registration or Registration()
-            return self.render_response('membership/signup.html',
-                    self.widgets( # ====== Wrapping widgets ======
-                        registration=registration,
-                        credential=registration.credential,
-                        account=registration.account,
-                        model=self.model),
-                    questions=sorted(
-                        self.factory.membership.password_questions.items(),
-                        key=itemgetter(1)),
-                    account_types=sorted(
-                        self.factory.membership.account_types.items(),
-                        key=itemgetter(1)))
-
-In the example above four models (registration, credential, accout and model)
-are wrapped by ``self.widgets`` and two (questions and account_types) are
-passed as is.
+            # ...
+            return self.render_response(
+                'membership/signup.html',
+                model=self.model,
+                registration=registration,
+                account=registration.account,
+                credential=registration.credential,
+                questions=questions,
+                account_types=tuple((k, self.gettext(v))
+                                    for k, v in account_types))
 
 The benefit of using widgets is a syntax sugar in html template.
+They are processed by template proprocessor and generate template
+engine specific code.
 
 Mako example::
 
@@ -358,10 +353,6 @@ per template engine used. That optimization is provided through use of
 template specific constructs. Preprocessor for Mako / Jinja2 /
 Tenjin / Wheezy.Template templates translates widgets to template engine
 specific operations offering optimal performance.
-
-If you are using template engine with preprocessing you can eliminate need
-to wrap widgets explicitely in your handler (since all calls to widgets
-in template are replaced with appropriate template native constructs).
 
 Read more about available widgets in `wheezy.html`_ package.
 
@@ -396,18 +387,18 @@ dump of ``Principal`` object and it value is protected by
 
 Here are authentication configuration options (see file `config.py`_)::
 
-    # wheezy.security.crypto.Ticket
     options = {}
-    options.update({
-            'CRYPTO_ENCRYPTION_KEY': '4oqiKhW3qzP2EiattMt7',
-            'CRYPTO_VALIDATION_KEY': 'A7GfjxIBCBA3vNqvafWf'
-    })
 
     options.update({
             'ticket': Ticket(
-                max_age=1200,
-                salt='JNbCog95cDTo1NRb7inP',
-                options=options),
+                max_age=config.getint('crypto', 'ticket-max-age'),
+                salt=config.get('crypto', 'ticket-salt'),
+                cypher=aes128,
+                digestmod=ripemd160 or sha256 or sha1,
+                options={
+                    'CRYPTO_ENCRYPTION_KEY': config.get('crypto', 'encryption-key'),
+                    'CRYPTO_VALIDATION_KEY': config.get('crypto', 'validation-key')
+                }),
 
             'AUTH_COOKIE': '_a',
             'AUTH_COOKIE_DOMAIN': None,
@@ -464,10 +455,13 @@ In case there are multiple roles specified in
 grant access. That means user is required to be at least in one role to pass
 this guard.
 
-:py:meth:`~wheezy.web.authorization.authorize` decorator return http status
-code 401 (Unauthorized). It is recommended to use
-:py:class:`~wheezy.web.middleware.errors.HTTPErrorMiddleware` to route 401
-status code to signin page. Read more in :ref:`httperrormiddleware` section.
+:py:meth:`~wheezy.web.authorization.authorize` decorator may return HTTP
+response with status code 401 (Unauthorized) or 403 (Forbidden).
+
+It is recommended to use
+:py:class:`~wheezy.web.middleware.errors.HTTPErrorMiddleware` to route HTTP
+status codes to signin or forbidden handlers. Read more in
+:ref:`httperrormiddleware` section.
 
 @secure
 ~~~~~~~
@@ -514,7 +508,7 @@ You need include XSRF and/or resubmission widget into your form. Each template
 has context functions ``xsrf()`` and ``resubmission()`` for this purpose::
 
     <form method="post">
-        ${xsrf()}
+        @xsrf()
         ...
     </form>
 
@@ -523,7 +517,7 @@ Validation happens in handler, here is how it implemented in
 
     class SignInHandler(BaseHandler):
 
-        def get(self, credential=None):
+        def post(self):
             if not self.validate_xsrf_token():
                 return self.redirect_for(self.route_args.route_name)
             ...
@@ -910,9 +904,9 @@ application (see `config.py`_ for details)::
             loader=FileLoader(searchpath),
             extensions=[
                 CoreExtension(),
-                WhitespaceExtension(),
                 WidgetExtension(),
-    ])
+                WhitespaceExtension()
+            ])
     engine.global_vars.update({
         'format_value': format_value,
         'h': html_escape,
