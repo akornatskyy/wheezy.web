@@ -17,7 +17,7 @@ start_time = time()
 def error_report_extra_provider(request):
     ts = os.times()
     e = request.environ
-    if 'CONTENT_LENGTH' in e and e['CONTENT_LENGTH']:
+    if 'CONTENT_LENGTH' in e and e['CONTENT_LENGTH'] and request.form:
         form = filter_names(request.form, ignore=(
             'password',
             'confirm_password'
