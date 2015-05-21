@@ -71,7 +71,7 @@ class AuthorizeTestCase(unittest.TestCase):
         mock_handler_method = Mock()
         handler = authorize(roles=('admin',))(mock_handler_method)
         response = handler(mock_handler)
-        assert 401 == response.status_code
+        assert 403 == response.status_code
 
     def test_check_authorized(self):
         """ Check if call is authorized.

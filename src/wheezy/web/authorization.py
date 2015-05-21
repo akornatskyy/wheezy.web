@@ -3,6 +3,7 @@
 """
 
 from wheezy.core.url import UrlParts
+from wheezy.http import forbidden
 from wheezy.http import permanent_redirect
 from wheezy.http import unauthorized
 
@@ -37,7 +38,7 @@ def authorize(wrapped=None, roles=None):
                         if role in principal_roles:
                             break
                     else:
-                        return unauthorized()
+                        return forbidden()
                     return func(handler, *args, **kwargs)
                 else:
                     return unauthorized()
