@@ -28,7 +28,7 @@ class SignInPage(PageMixin):
         self.client = client
 
     def form(self):
-        return self.client.form_by(action='/en/signin')
+        return self.client.form
 
 
 class SignUpPage(PageMixin):
