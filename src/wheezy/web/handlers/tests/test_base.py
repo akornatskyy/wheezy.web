@@ -40,8 +40,8 @@ class BaseHandlerTestCase(unittest.TestCase):
         """ context
         """
         context = self.handler.context
-        assert ('errors', 'locale', 'principal', 'translations') \
-            == tuple(sorted(context.keys()))
+        assert ('errors', 'locale', 'principal') == \
+            tuple(sorted(context.keys()))
 
 
 class BaseHandlerRoutingTestCase(unittest.TestCase):

@@ -36,8 +36,7 @@ class BaseHandler(MethodHandler, ValidationMixin):
         return {
             'errors': self.errors,
             'locale': self.locale,
-            'principal': self.principal,
-            'translations': self.translations
+            'principal': self.principal
         }
 
     # region: routing
@@ -52,23 +51,18 @@ class BaseHandler(MethodHandler, ValidationMixin):
 
     def absolute_url_for(self, name, **kwargs):
         parts = self.request.urlparts
-        parts = parts.join(urlparts(
-            path=self.path_for(name, **kwargs)))
+        parts = parts.join(urlparts(path=self.path_for(name, **kwargs)))
         return parts.geturl()
 
     def redirect_for(self, name, **kwargs):
         if self.request.ajax:
-            return ajax_redirect(
-                self.absolute_url_for(name, **kwargs))
-        return redirect(
-            self.absolute_url_for(name, **kwargs))
+            return ajax_redirect(self.absolute_url_for(name, **kwargs))
+        return redirect(self.absolute_url_for(name, **kwargs))
 
     def see_other_for(self, name, **kwargs):
         if self.request.ajax:
-            return ajax_redirect(
-                self.absolute_url_for(name, **kwargs))
-        return see_other(
-            self.absolute_url_for(name, **kwargs))
+            return ajax_redirect(self.absolute_url_for(name, **kwargs))
+        return see_other(self.absolute_url_for(name, **kwargs))
 
     # region: i18n
 
