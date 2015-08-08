@@ -605,8 +605,7 @@ declaration::
 
     all_urls = [
         url('static/{path:any}', file_handler(
-                root='content/static/',
-                age=timedelta(hours=1)), name='static'),
+                root='content/static/'), name='static'),
         ...
     ]
 
@@ -616,7 +615,6 @@ arguments:
 * ``root`` - a root path of directory that holds static files, e.g.
   `.css`, `.js`, `.jpg`, etc. It is recommended that this directory be
   isolated from any other part of the application.
-* ``age`` - controls http browser cache policy period.
 
 Request Headers
 ^^^^^^^^^^^^^^^
