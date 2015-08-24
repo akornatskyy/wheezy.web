@@ -279,7 +279,7 @@ class SignUpTestCase(unittest.TestCase, SignInMixin, SignUpMixin,
         """ Ensure signup page displays field validation errors.
         """
         errors = self.signup()
-        assert 6 == len(errors)
+        assert 7 == len(errors)
         assert AUTH_COOKIE not in self.client.cookies
         assert 'class="error"' in self.client.content
 
@@ -293,6 +293,7 @@ class SignUpTestCase(unittest.TestCase, SignInMixin, SignUpMixin,
             date_of_birth='1984/11/14',
             password='P@ssw0rd',
             confirm_password='P@ssw0rd',
+            question_id='1',
             answer='7')
         assert ['username'] == errors
         assert AUTH_COOKIE not in self.client.cookies
@@ -308,6 +309,7 @@ class SignUpTestCase(unittest.TestCase, SignInMixin, SignUpMixin,
             date_of_birth='1987/2/7',
             password='P@ssw0rd',
             confirm_password='P@ssw0rd',
+            question_id='1',
             answer='7')
         assert not errors
         assert 200 == self.client.follow()
@@ -397,7 +399,7 @@ try:
             """
             assert 200 == self.ajax_signup()
             errors = self.client.json.errors
-            assert 6 == len(errors)
+            assert 7 == len(errors)
             assert AUTH_COOKIE not in self.client.cookies
 
 except NotImplementedError:  # pragma: nocover

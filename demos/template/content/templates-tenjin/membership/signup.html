@@ -52,9 +52,9 @@
                 #{model.confirm_password.error()}
                 </p>
                 <p>
-                #{model.question_id.label('Security question:')}
-                #{model.question_id.dropdown(choices=questions)}
-                #{model.question_id.error()}
+                #{registration.question_id.label('Security question:')}
+                #{registration.question_id.dropdown(choices=questions)}
+                #{registration.question_id.error()}
                 </p>
                 <p>
                 #{registration.answer.label('Answer:')}

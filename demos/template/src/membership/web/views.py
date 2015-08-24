@@ -46,7 +46,6 @@ class SignInHandler(MembershipBaseHandler,
     @attribute
     def model(self):
         return attrdict({
-            'username': u(''),
             'remember_me': False
         })
 
@@ -118,8 +117,7 @@ class SignUpHandler(MembershipBaseHandler):
     def model(self):
         return attrdict({
             'password': u(''),
-            'confirm_password': u(''),
-            'question_id': '1'
+            'confirm_password': u('')
         })
 
     @handler_cache(profile=none_cache_profile)
