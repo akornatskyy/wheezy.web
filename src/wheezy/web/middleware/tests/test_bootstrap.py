@@ -20,7 +20,7 @@ class BootstrapWebDefaultsTestCase(unittest.TestCase):
             from warnings import catch_warnings
             self.ctx = catch_warnings(record=True)
             self.w = self.ctx.__enter__()
-        except ImportError:
+        except ImportError:  # pragma: nocover
             self.ctx = None
 
     def tearDown(self):

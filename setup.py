@@ -2,10 +2,7 @@
 
 import os
 
-try:
-    from setuptools import setup
-except:
-    from distutils.core import setup  # noqa
+from setuptools import setup
 
 extra = {}
 try:
@@ -22,7 +19,7 @@ try:
 except ImportError:
     pass
 
-README = open(os.path.join(os.path.dirname(__file__), 'README.rst')).read()
+README = open(os.path.join(os.path.dirname(__file__), 'README.md')).read()
 
 install_requires = [
     'wheezy.core>=0.1.131',
@@ -45,7 +42,8 @@ setup(
     description='A lightweight, high performance, high concurrency WSGI '
     'web framework with the key features to build modern, efficient web',
     long_description=README,
-    url='https://bitbucket.org/akorn/wheezy.web',
+    long_description_content_type='text/markdown',
+    url='https://github.com/akornatskyy/wheezy.web',
 
     author='Andriy Kornatskyy',
     author_email='andriy.kornatskyy at live.com',
@@ -92,12 +90,10 @@ setup(
     install_requires=install_requires,
     extras_require={
         'dev': [
-            'coverage',
-            'nose',
+            'mock',
             'pytest',
             'pytest-pep8',
-            'pytest-cov',
-            'mock'
+            'pytest-cov'
         ],
         'mako': [
             'mako>=0.7.0'
