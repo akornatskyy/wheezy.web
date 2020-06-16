@@ -1,0 +1,10 @@
+mako
+tenjin
+jinja2
+wheezy.template
+
+mock
+pytest
+pytest-pep8
+pytest-cov
+pip-tools
