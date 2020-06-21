@@ -24,25 +24,25 @@ framework with the key features to *build modern, efficient web*:
   [jinja2](http://jinja.pocoo.org),
   [mako](http://www.makotemplates.org),
   [tenjin](http://www.kuwata-lab.com/tenjin/) and
-  [wheezy.template](https://github.com/akornatskyy/wheezy.template/)) plus
+  [wheezy.template](https://github.com/akornatskyy/wheezy.template)) plus
   [html widgets](https://github.com/akornatskyy/wheezy.html).
 
 It is optimized for performance, well tested and documented.
 
 Resources:
 
-- [source code](https://github.com/akornatskyy/src),
+- [source code](https://github.com/akornatskyy/wheezy.web),
   [examples](https://github.com/akornatskyy/wheezy.web/tree/master/demos)
   ([live](http://wheezy.pythonanywhere.com)) and
   [issues](https://github.com/akornatskyy/wheezy.web/issues)
   tracker are available on
   [github](https://github.com/akornatskyy/wheezy.web)
-- [documentation](http://readthedocs.org/builds/wheezyweb)
+- [documentation](https://wheezyweb.readthedocs.io/en/latest/)
 
 ## Install
 
 [wheezy.web](https://pypi.org/project/wheezy.web/) requires
-[python](http://www.python.org) version 2.4 to 2.7 or 3.2+. It is
+[python](https://www.python.org) version 2.4 to 2.7 or 3.2+. It is
 independent of operating system. You can install it from
 [pypi](https://pypi.org/project/wheezy.web/) site:
 

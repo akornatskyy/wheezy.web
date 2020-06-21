@@ -61,6 +61,12 @@ wheezy.web.middleware
 .. automodule:: wheezy.web.middleware
    :members:
 
+wheezy.web.middleware.bootstrap
+-------------------------------
+
+.. automodule:: wheezy.web.middleware.bootstrap
+   :members:
+
 wheezy.web.middleware.errors
 ----------------------------
 
