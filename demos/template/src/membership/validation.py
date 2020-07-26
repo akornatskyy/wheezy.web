@@ -18,6 +18,7 @@ from membership.rules import password_rules
 def _(s):
     return s
 
+
 credential_validator = Validator({
     'username': [required, length(min=2), length(max=20)],
     'password': password_rules

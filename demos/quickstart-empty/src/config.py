@@ -4,6 +4,7 @@
 import logging
 import os
 import sys
+from datetime import timedelta
 
 try:  # pragma: nocover
     from ConfigParser import ConfigParser
@@ -11,8 +12,6 @@ try:  # pragma: nocover
 except ImportError:  # pragma: nocover
     from configparser import ConfigParser
     config = ConfigParser(strict=False)
-
-from datetime import timedelta
 
 from wheezy.caching.logging import OnePassHandler
 from wheezy.core.collections import defaultdict
@@ -30,7 +29,9 @@ from wheezy.template.ext.core import CoreExtension
 from wheezy.template.loader import FileLoader
 from wheezy.template.loader import PreprocessLoader
 from wheezy.web.templates import WheezyTemplate
+
 from public import __version__
+
 from tracing import ERROR_REPORT_FORMAT
 from tracing import error_report_extra_provider
 

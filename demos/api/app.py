@@ -96,12 +96,13 @@ cached = Cached(cache, time=timedelta(hours=4))
 
 # region: models
 
-def Task(other={}):
+def Task(other={}):  # noqa: N802
     return attrdict({
         'task_id': None,
         'title': u(''),
         'status': 1
     }, **other)
+
 
 Task.keys = frozenset(Task().keys())
 
@@ -121,7 +122,7 @@ task_cache_profile = CacheProfile(
 
 # region: cache dependency keys
 
-class keys(object):
+class keys(object):  # noqa: N801
 
     @staticmethod
     def task_list():

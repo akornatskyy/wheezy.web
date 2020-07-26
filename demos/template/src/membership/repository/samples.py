@@ -3,8 +3,8 @@
 """
 
 import random
-
 from datetime import date
+
 from wheezy.core.comp import u
 
 from membership.models import Account

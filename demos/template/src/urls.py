@@ -4,6 +4,7 @@
 from wheezy.routing import url
 
 from membership.web.urls import membership_urls
+
 from public.web.urls import error_urls
 from public.web.urls import public_urls
 from public.web.urls import static_urls

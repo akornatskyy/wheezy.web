@@ -3,10 +3,7 @@
 import os
 import sys
 
-try:
-    from setuptools import setup
-except:
-    from distutils.core import setup  # noqa
+from setuptools import setup
 
 README = open(os.path.join(os.path.dirname(__file__), 'README.rst')).read()
 
@@ -51,13 +48,10 @@ setup(
     description='MySite Project',
     long_description=README,
     url='https://scm.dev.local/svn/mysite/trunk',
-
     author='MySite Team',
-    author_email='mysite at dev.local',
-
+    author_email='mysite@dev.local',
     license='COMMERCIAL',
     classifiers=[
-        'Development Status :: 4 - Beta',
         'Environment :: Web Environment',
         'Intended Audience :: Developers',
         'Natural Language :: English',
@@ -80,19 +74,10 @@ setup(
         'public.web'
     ],
     package_dir={'': 'src'},
-
     zip_safe=False,
     install_requires=install_requires,
     dependency_links=dependency_links,
     extras_require={
-        'dev': [
-            'coverage',
-            'nose',
-            'pytest',
-            'pytest-pep8',
-            'pytest-cov',
-            'mock'
-        ],
         'mako': [
             'mako>=0.7.0'
         ],
@@ -106,6 +91,5 @@ setup(
             'wheezy.template>=0.1.107'
         ]
     },
-
     platforms='any'
 )

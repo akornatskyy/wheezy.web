@@ -6,6 +6,7 @@ from wheezy.core.i18n import ref_gettext
 from wheezy.validation.mixin import ErrorsMixin
 
 from config import translations
+
 from membership.models import Credential
 from membership.models import Registration
 from membership.models import account_types

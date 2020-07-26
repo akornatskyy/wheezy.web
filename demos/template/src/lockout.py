@@ -22,6 +22,7 @@ mode = config.get('runtime', 'lockout')
 def ignore_alert(s, name, counter, extra=None):
     pass
 
+
 if mode == 'ignore':
     mail_alert = ignore_alert
 elif mode == 'mail':
@@ -52,8 +53,8 @@ def key_func_by_id(h):
 
 
 def lockout_by_id(count=10,
-                  period=timedelta(minutes=15),
-                  duration=timedelta(hours=1),
+                  period=timedelta(minutes=15),  # noqa: B008
+                  duration=timedelta(hours=1),  # noqa: B008
                   reset=False,
                   alert=ignore_alert):
     return Counter(key_func=key_func_by_id, count=count,
@@ -66,8 +67,8 @@ def key_func_by_ip(h):
 
 
 def lockout_by_ip(count=10,
-                  period=timedelta(minutes=10),
-                  duration=timedelta(hours=2),
+                  period=timedelta(minutes=10),  # noqa: B008
+                  duration=timedelta(hours=2),  # noqa: B008
                   reset=True,
                   alert=ignore_alert):
     return Counter(key_func=key_func_by_ip, count=count,
@@ -80,8 +81,8 @@ def key_func_by_id_ip(h):
 
 
 def lockout_by_id_ip(count=10,
-                     period=timedelta(minutes=20),
-                     duration=timedelta(hours=1),
+                     period=timedelta(minutes=20),  # noqa: B008
+                     duration=timedelta(hours=1),  # noqa: B008
                      reset=True,
                      alert=ignore_alert):
     return Counter(key_func=key_func_by_id_ip, count=count,

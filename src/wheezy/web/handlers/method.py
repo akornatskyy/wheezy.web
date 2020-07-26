@@ -13,8 +13,8 @@ class MethodHandler(object):
         handlers.
     """
 
-    def __new__(klass, *args, **kwargs):
-        handler = new(klass)
+    def __new__(cls, *args, **kwargs):
+        handler = new(cls)
         handler.__init__(*args, **kwargs)
         return handler()
 

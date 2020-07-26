@@ -50,7 +50,6 @@ setup(
 
     license='MIT',
     classifiers=[
-        'Development Status :: 4 - Beta',
         'Environment :: Web Environment',
         'Intended Audience :: Developers',
         'License :: OSI Approved :: MIT License',
@@ -89,12 +88,6 @@ setup(
     zip_safe=False,
     install_requires=install_requires,
     extras_require={
-        'dev': [
-            'mock',
-            'pytest',
-            'pytest-pep8',
-            'pytest-cov'
-        ],
         'mako': [
             'mako>=0.7.0'
         ],

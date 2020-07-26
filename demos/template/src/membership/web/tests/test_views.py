@@ -9,6 +9,7 @@ from wheezy.http.functional import PageMixin
 from wheezy.http.functional import WSGIClient
 
 from app import main
+
 from config import options
 
 
@@ -231,6 +232,7 @@ class SignInAJAX(SignInMixin):
         assert 207 == page.ajax_submit()
         assert 200 == client.follow()
         SignInPage(client)
+
 
 try:
     json_encode({})

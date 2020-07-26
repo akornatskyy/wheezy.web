@@ -7,6 +7,7 @@ from wheezy.web.middleware import bootstrap_defaults
 from wheezy.web.middleware import path_routing_middleware_factory
 
 from config import options
+
 from urls import all_urls
 
 

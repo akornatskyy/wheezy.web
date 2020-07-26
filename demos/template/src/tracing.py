@@ -7,7 +7,6 @@ import platform
 import resource
 import socket
 import sys
-
 from datetime import timedelta
 from time import time
 

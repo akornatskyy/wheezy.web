@@ -5,8 +5,7 @@ if PY3:  # pragma: nocover
 else:  # pragma: nocover
     from urllib import quote
 
-
-from wheezy.core.url import urlparts
+from wheezy.core.url import urlparts  # noqa: I202
 from wheezy.http import HTTPCookie
 from wheezy.http import ajax_redirect
 from wheezy.http import redirect

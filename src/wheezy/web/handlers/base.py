@@ -13,8 +13,8 @@ from wheezy.http import HTTPCookie
 from wheezy.http import HTTPResponse
 from wheezy.http import ajax_redirect
 from wheezy.http import json_response
-from wheezy.http import redirect
 from wheezy.http import permanent_redirect
+from wheezy.http import redirect
 from wheezy.http import see_other
 from wheezy.security import Principal
 from wheezy.validation import ValidationMixin

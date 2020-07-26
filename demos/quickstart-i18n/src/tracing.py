@@ -6,7 +6,6 @@ import os
 import platform
 import socket
 import sys
-
 from datetime import timedelta
 from time import time
 

@@ -3,7 +3,6 @@
 """
 
 import sys
-
 from traceback import format_exception_only
 
 from wheezy.core.collections import defaultdict

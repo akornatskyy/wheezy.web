@@ -12,7 +12,7 @@ class BenchmarkTestCase(HelloTestCase):
         ../../env/bin/nosetests-2.7 -qs -m benchmark benchmark_hello.py
     """
 
-    def runTest(self):
+    def runTest(self):  # noqa: N802
         """ Perform bachmark and print results.
         """
         p = Benchmark((

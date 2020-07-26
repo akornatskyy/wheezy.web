@@ -5,6 +5,7 @@ from wheezy.caching.patterns import Cached
 from wheezy.caching.patterns import key_builder
 
 from config import cache
+
 from membership.repository import keys
 
 

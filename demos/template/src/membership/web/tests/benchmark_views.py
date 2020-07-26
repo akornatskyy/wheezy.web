@@ -19,7 +19,7 @@ except NotImplementedError:
 
 class MembershipBenchmarkTestCase(MembershipTestCase, BenchmarkMixin):
 
-    def runTest(self):
+    def runTest(self):  # noqa: N802
         """ Perform benchmark and print results.
         """
         b = self.benchmark((
@@ -36,7 +36,7 @@ class MembershipBenchmarkTestCase(MembershipTestCase, BenchmarkMixin):
 
 class SigninBenchmarkTestCase(SignInTestCase, BenchmarkMixin):
 
-    def runTest(self):
+    def runTest(self):  # noqa: N802
         """ Perform benchmark and print results.
         """
         b = self.benchmark([
@@ -51,7 +51,7 @@ class SigninBenchmarkTestCase(SignInTestCase, BenchmarkMixin):
 
 class SignupBenchmarkTestCase(SignUpTestCase, BenchmarkMixin):
 
-    def runTest(self):
+    def runTest(self):  # noqa: N802
         """ Perform benchmark and print results.
         """
         b = self.benchmark([
@@ -65,13 +65,14 @@ class SignupBenchmarkTestCase(SignUpTestCase, BenchmarkMixin):
             'test_resubmission_token_invalid': 1.05
         })
 
+
 try:
     from membership.web.tests.test_views import SignInAJAXTestCase
     from membership.web.tests.test_views import SignUpAJAXTestCase
 
     class SigninAJAXBenchmarkTestCase(SignInAJAXTestCase, BenchmarkMixin):
 
-        def runTest(self):
+        def runTest(self):  # noqa: N802
             """ Perform benchmark and print results.
             """
             b = self.benchmark([
@@ -85,7 +86,7 @@ try:
 
     class SignupAJAXBenchmarkTestCase(SignUpAJAXTestCase, BenchmarkMixin):
 
-        def runTest(self):
+        def runTest(self):  # noqa: N802
             """ Perform benchmark and print results.
             """
             b = self.benchmark([

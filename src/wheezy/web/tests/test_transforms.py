@@ -38,16 +38,16 @@ class HandlerTransformsTestCase(unittest.TestCase):
         """
         from wheezy.web.transforms import handler_transforms
 
-        def transformA(request, response):
+        def transform_a(request, response):
             assert 'request' == request
             return response + '-A'
 
-        def transformB(request, response):
+        def transform_b(request, response):
             assert 'request' == request
             return response + '-B'
         mock_handler = Mock()
         mock_handler.request = 'request'
         mock_handler_method = Mock(return_value='response')
         handler = handler_transforms(
-            transformA, transformB)(mock_handler_method)
+            transform_a, transform_b)(mock_handler_method)
         assert 'response-A-B' == handler(mock_handler)

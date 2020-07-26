@@ -11,7 +11,7 @@ from public.web.tests.test_views import ErrorTestCase
 class PublicBenchmarkTestCase(PublicTestCase, ErrorTestCase,
                               BenchmarkMixin):
 
-    def runTest(self):
+    def runTest(self):  # noqa: N802
         """ Perform bachmark and print results.
         """
         b = self.benchmark((
@@ -33,7 +33,7 @@ class PublicBenchmarkTestCase(PublicTestCase, ErrorTestCase,
 class StaticFilesBenchmarkTestCase(PublicTestCase, ErrorTestCase,
                                    BenchmarkMixin):
 
-    def runTest(self):
+    def runTest(self):  # noqa: N802
         """ Perform bachmark and print results.
         """
         b = self.benchmark((

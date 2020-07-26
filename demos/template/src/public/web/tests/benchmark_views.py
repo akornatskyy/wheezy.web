@@ -2,16 +2,16 @@
 """ ``benchmark_views`` module.
 """
 
-from wheezy.http.functional import BenchmarkMixin
-
 from public.web.tests.test_views import ErrorTestCase
 from public.web.tests.test_views import PublicTestCase
 from public.web.tests.test_views import StaticFilesTestCase
 
+from wheezy.http.functional import BenchmarkMixin
+
 
 class PublicBenchmarkTestCase(PublicTestCase, ErrorTestCase, BenchmarkMixin):
 
-    def runTest(self):
+    def runTest(self):  # noqa: N802
         """ Perform bachmark and print results.
         """
         b = self.benchmark((
@@ -37,7 +37,7 @@ class PublicBenchmarkTestCase(PublicTestCase, ErrorTestCase, BenchmarkMixin):
 class StaticFilesBenchmarkTestCase(StaticFilesTestCase, ErrorTestCase,
                                    BenchmarkMixin):
 
-    def runTest(self):
+    def runTest(self):  # noqa: N802
         """ Perform bachmark and print results.
         """
         b = self.benchmark((

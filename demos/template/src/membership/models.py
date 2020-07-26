@@ -9,6 +9,7 @@ from wheezy.core.comp import u
 def _(s):
     return s
 
+
 account_types = (
     ('user', _('User')),
     ('business', _('Business'))

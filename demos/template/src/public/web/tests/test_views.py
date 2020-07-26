@@ -10,15 +10,15 @@ try:
 except ImportError:  # pragma: nocover
     json = None  # noqa
 
-
 from wheezy.http.functional import WSGIClient
 
 from app import main
+
 from config import template_engine
 
 
 if template_engine.startswith('wheezy'):
-    re_ws = re.compile(' \s+', re.MULTILINE)
+    re_ws = re.compile(r' \s+', re.MULTILINE)
 
     def extra_whitespace(s):
         return re_ws.search(s)
@@ -58,8 +58,8 @@ class PublicTestCase(unittest.TestCase):
         """ space around newline in markup should not be removed
         """
         self.client.get('/en/home')
-        assert re.search('elit\.\s+Donec', self.client.content)
-        assert re.search('enim,\s+quis', self.client.content)
+        assert re.search(r'elit\.\s+Donec', self.client.content)
+        assert re.search(r'enim,\s+quis', self.client.content)
         assert not re.search('"type', self.client.content)
 
     def test_extra_whitespace(self):
@@ -186,7 +186,7 @@ class ErrorTestCase(unittest.TestCase):
         """ space around newline in markup should not be removed
         """
         self.client.get('/en/error/404')
-        r = re.compile('been\s+removed')
+        r = re.compile(r'been\s+removed')
         assert r.search(self.client.content)
 
     def test_extra_whitespace(self):
