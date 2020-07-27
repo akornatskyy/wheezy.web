@@ -49,7 +49,7 @@ Contents
    modules
 
 .. _`github`: https://github.com/akornatskyy/wheezy.web
-.. _`documentation`: http://packages.python.org/wheezy.web
+.. _`documentation`: https://wheezyweb.readthedocs.io/en/latest/
 .. _`examples`: https://github.com/akornatskyy/wheezy.web/tree/master/demos
 .. _`issues`: https://github.com/akornatskyy/wheezy.web/issues
 .. _`python`: https://www.python.org

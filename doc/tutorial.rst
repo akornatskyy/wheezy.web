@@ -747,24 +747,24 @@ Exercises
 #. Refactor repository by enforcing contract with duck typing asserts. See
    `post <http://mindref.blogspot.com/2012/11/python-duck-typing-assert.html>`_
    and `example
-   <https://bitbucket.org/akorn/wheezy.web/src/tip/demos/template/src/membership/repository/mock.py>`_.
+   <https://github.com/akornatskyy/wheezy.web/blob/master/demos/template/src/membership/repository/mock.py>`_.
 #. Refactor repository by introducing caching repository
    implementation (use factory to provide repository, see
-   `caching.py <https://bitbucket.org/akorn/wheezy.web/src/tip/demos/template/src/membership/repository/caching.py>`_
+   `caching.py <https://github.com/akornatskyy/wheezy.web/blob/master/demos/template/src/membership/repository/caching.py>`_
    and
-   `factory.py <https://bitbucket.org/akorn/wheezy.web/src/tip/demos/template/src/factory.py>`_).
+   `factory.py <https://github.com/akornatskyy/wheezy.web/blob/master/demos/template/src/factory.py>`_).
 #. Enhance content caching for list handler by utilizing HTTP ETag browser caching (see
    membership cache profile in
-   `profile.py <https://bitbucket.org/akorn/wheezy.web/src/tip/demos/template/src/membership/web/profile.py>`_).
+   `profile.py <https://github.com/akornatskyy/wheezy.web/blob/master/demos/template/src/membership/web/profile.py>`_).
 #. Improve templates with preprocessor (see examples for
-   `preprocessor <https://bitbucket.org/akorn/wheezy.web/src/tip/demos/template/content/templates-preprocessor>`_
+   `preprocessor <https://github.com/akornatskyy/wheezy.web/tree/master/demos/template/content/templates-preprocessor>`_
    and
-   `config.py <https://bitbucket.org/akorn/wheezy.web/src/tip/demos/template/src/config.py>`_).
+   `config.py <https://github.com/akornatskyy/wheezy.web/blob/master/demos/template/src/config.py>`_).
 
 
-.. _`wheezy.template`: http://packages.python.org/wheezy.template
-.. _`wheezy.caching`: http://packages.python.org/wheezy.caching
-.. _`wheezy.html`: http://packages.python.org/wheezy.html
-.. _`wheezy.http`: http://packages.python.org/wheezy.http
-.. _`wheezy.validation`: http://packages.python.org/wheezy.validation
+.. _`wheezy.template`: https://github.com/akornatskyy/wheezy.template
+.. _`wheezy.caching`: https://github.com/akornatskyy/wheezy.caching
+.. _`wheezy.html`: https://github.com/akornatskyy/wheezy.html
+.. _`wheezy.http`: https://github.com/akornatskyy/wheezy.http
+.. _`wheezy.validation`: https://github.com/akornatskyy/wheezy.validation
 .. _`jquery`: http://jquery.com/

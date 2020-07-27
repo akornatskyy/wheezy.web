@@ -944,19 +944,19 @@ Content caching plus cache dependency is the most advanced boost of your
 application performance. Regardless of template engine this can give up to
 8-10 times better performance.
 
-.. _`config.py`: https://bitbucket.org/akorn/wheezy.web/src/tip/demos/template/src/config.py
-.. _`core.js`: https://bitbucket.org/akorn/wheezy.web/src/tip/demos/template/content/static/js/core.js
-.. _`i18n`: https://bitbucket.org/akorn/wheezy.web/src/tip/demos/template/i18n
+.. _`config.py`: https://github.com/akornatskyy/wheezy.web/tree/master/demos/template/src/config.py
+.. _`core.js`: https://github.com/akornatskyy/wheezy.web/tree/master/demos/template/content/static/js/core.js
+.. _`i18n`: https://github.com/akornatskyy/wheezy.web/tree/master/demos/template/i18n
 .. _`jinja2`: http://jinja.pocoo.org
 .. _`mako`: http://docs.makotemplates.org
-.. _`membership/web/views.py`: https://bitbucket.org/akorn/wheezy.web/src/tip/demos/template/src/membership/web/views.py
-.. _`template`: https://bitbucket.org/akorn/wheezy.web/src/tip/demos/template
+.. _`membership/web/views.py`: https://github.com/akornatskyy/wheezy.web/tree/master/demos/template/src/membership/web/views.py
+.. _`template`: https://github.com/akornatskyy/wheezy.web/tree/master/demos/template
 .. _`tenjin`: http://www.kuwata-lab.com/tenjin
-.. _`wheezy.core`: http://bitbucket.org/akorn/wheezy.core
-.. _`wheezy.html`: http://packages.python.org/wheezy.html
-.. _`wheezy.http`: http://packages.python.org/wheezy.http
-.. _`wheezy.routing`: http://packages.python.org/wheezy.routing
-.. _`wheezy.security`: http://packages.python.org/wheezy.security
-.. _`wheezy.template`: http://pypi.python.org/pypi/wheezy.template
-.. _`wheezy.validation`: http://packages.python.org/wheezy.validation
+.. _`wheezy.core`: https://github.com/akornatskyy/wheezy.core
+.. _`wheezy.html`: https://github.com/akornatskyy/wheezy.html
+.. _`wheezy.http`: https://github.com/akornatskyy/wheezy.http
+.. _`wheezy.routing`: https://github.com/akornatskyy/wheezy.routing
+.. _`wheezy.security`: https://github.com/akornatskyy/wheezy.security
+.. _`wheezy.template`: https://github.com/akornatskyy/wheezy.template
+.. _`wheezy.validation`: https://github.com/akornatskyy/wheezy.validation
 .. _`WSGI`: http://www.python.org/dev/peps/pep-3333

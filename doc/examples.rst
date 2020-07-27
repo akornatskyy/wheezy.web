@@ -2,18 +2,13 @@
 Examples
 ========
 
-We start with a simple example. Before we proceed
-let setup `virtualenv`_ environment::
-
-    $ virtualenv env
-
 Since :ref:`wheezy.web` is template engine agnostic, you need specify
 extra requirements (per template engine of your choice)::
 
-    $ env/bin/easy_install wheezy.web[jinja2]
-    $ env/bin/easy_install wheezy.web[mako]
-    $ env/bin/easy_install wheezy.web[tenjin]
-    $ env/bin/easy_install wheezy.web[wheezy.template]
+    $ pip install wheezy.web[jinja2]
+    $ pip install wheezy.web[mako]
+    $ pip install wheezy.web[tenjin]
+    $ pip install wheezy.web[wheezy.template]
 
 Templates
 ---------
@@ -109,11 +104,11 @@ Here is output::
 
 
 .. _`virtualenv`: http://pypi.python.org/pypi/virtualenv
-.. _`hello.py`: https://bitbucket.org/akorn/wheezy.web/src/tip/demos/hello/hello.py
-.. _`test_hello.py`: https://bitbucket.org/akorn/wheezy.web/src/tip/demos/hello/test_hello.py
-.. _`benchmark_hello.py`: https://bitbucket.org/akorn/wheezy.web/src/tip/demos/hello/benchmark_hello.py
-.. _`template`: https://bitbucket.org/akorn/wheezy.web/src/tip/demos/template
+.. _`hello.py`: https://github.com/akornatskyy/wheezy.web/blob/master/demos/hello/hello.py
+.. _`test_hello.py`: https://github.com/akornatskyy/wheezy.web/blob/master/demos/hello/test_hello.py
+.. _`benchmark_hello.py`: https://github.com/akornatskyy/wheezy.web/blob/master/demos/hello/benchmark_hello.py
+.. _`template`: https://github.com/akornatskyy/wheezy.web/tree/master/demos/template
 .. _`WSGI`: http://www.python.org/dev/peps/pep-3333
-.. _`wheezy.http`: http://packages.python.org/wheezy.http
-.. _`wheezy.routing`: http://packages.python.org/wheezy.routing
+.. _`wheezy.http`: https://github.com/akornatskyy/wheezy.http
+.. _`wheezy.routing`: https://github.com/akornatskyy/wheezy.routing
 
