@@ -1,7 +1,9 @@
 # wheezy.web
 
 [![Build Status](https://travis-ci.org/akornatskyy/wheezy.web.svg?branch=master)](https://travis-ci.org/akornatskyy/wheezy.web)
+[![Coverage Status](https://coveralls.io/repos/github/akornatskyy/wheezy.web/badge.svg?branch=master)](https://coveralls.io/github/akornatskyy/wheezy.web?branch=master)
 [![Documentation Status](https://readthedocs.org/projects/wheezyweb/badge/?version=latest)](https://wheezyweb.readthedocs.io/en/latest/?badge=latest)
+[![pypi version](https://badge.fury.io/py/wheezy.web.svg)](https://badge.fury.io/py/wheezy.web)
 
 [wheezy.web](https://pypi.org/project/wheezy.web/) is a lightweight,
 [high performance](https://mindref.blogspot.com/2012/09/python-fastest-web-framework.html),
@@ -47,7 +49,7 @@ independent of operating system. You can install it from
 [pypi](https://pypi.org/project/wheezy.web/) site:
 
 ```sh
-pip install wheezy.web
+pip install -U wheezy.web
 ```
 
 If you run into any issue or have comments, go ahead and add on
