@@ -9,4 +9,5 @@ from wheezy.web.authorization import secure
 from wheezy.web.caching import handler_cache
 
 
-__version__ = '0.1'
+__all__ = ("authorize", "secure", "handler_cache")
+__version__ = "0.1"
