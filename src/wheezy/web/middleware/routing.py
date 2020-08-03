@@ -1,4 +1,3 @@
-
 """ ``routing`` module.
 """
 
@@ -8,7 +7,8 @@ from wheezy.core.collections import attrdict
 class PathRoutingMiddleware(object):
     """ path routing middleware
     """
-    __slots__ = ('match')
+
+    __slots__ = "match"
 
     def __init__(self, path_router):
         assert path_router
@@ -16,8 +16,8 @@ class PathRoutingMiddleware(object):
 
     def __call__(self, request, following):
         environ = request.environ
-        handler, route_args = self.match(environ['PATH_INFO'].lstrip('/'))
-        environ['route_args'] = attrdict(route_args)
+        handler, route_args = self.match(environ["PATH_INFO"].lstrip("/"))
+        environ["route_args"] = attrdict(route_args)
         if handler is None:
             if following is not None:
                 return following(request)
@@ -28,4 +28,4 @@ class PathRoutingMiddleware(object):
 def path_routing_middleware_factory(options):
     """ PathRouting middleware factory.
     """
-    return PathRoutingMiddleware(options['path_router'])
+    return PathRoutingMiddleware(options["path_router"])

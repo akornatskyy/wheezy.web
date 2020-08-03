@@ -1,11 +1,8 @@
-
 """
 """
 
 from wheezy.core.url import UrlParts
-from wheezy.http import forbidden
-from wheezy.http import permanent_redirect
-from wheezy.http import unauthorized
+from wheezy.http import forbidden, permanent_redirect, unauthorized
 
 
 def authorize(wrapped=None, roles=None):
@@ -28,8 +25,10 @@ def authorize(wrapped=None, roles=None):
                 def get(self):
                     return response
     """
+
     def decorate(func):
         if roles:
+
             def check_roles(handler, *args, **kwargs):
                 principal = handler.principal
                 if principal:
@@ -42,14 +41,18 @@ def authorize(wrapped=None, roles=None):
                     return func(handler, *args, **kwargs)
                 else:
                     return unauthorized()
+
             return check_roles
         else:
+
             def check_authenticated(handler, *args, **kwargs):
                 if handler.principal:
                     return func(handler, *args, **kwargs)
                 else:
                     return unauthorized()
+
             return check_authenticated
+
     if wrapped is None:
         return decorate
     else:
@@ -78,6 +81,7 @@ def secure(wrapped=None, enabled=True):
                     ...
                     return response
     """
+
     def decorate(method):
         if not enabled:
             return method
@@ -85,15 +89,20 @@ def secure(wrapped=None, enabled=True):
         def check(handler, *args, **kwargs):
             if not handler.request.secure:
                 parts = handler.request.urlparts
-                parts = UrlParts(('https',  # scheme
-                                  parts[1],  # netloc
-                                  parts[2],  # path
-                                  parts[3],  # query
-                                  None,  # fragment
-                                  ))
+                parts = UrlParts(
+                    (
+                        "https",  # scheme
+                        parts[1],  # netloc
+                        parts[2],  # path
+                        parts[3],  # query
+                        None,  # fragment
+                    )
+                )
                 return permanent_redirect(parts.geturl())
             return method(handler, *args, **kwargs)
+
         return check
+
     if wrapped is None:
         return decorate
     else:

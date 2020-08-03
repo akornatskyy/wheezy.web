@@ -2,50 +2,38 @@ import os
 
 from setuptools import setup
 
+README = open(os.path.join(os.path.dirname(__file__), "README.rst")).read()
 
-README = open(os.path.join(os.path.dirname(__file__), 'README.rst')).read()
+install_requires = ["wheezy.template", "wheezy.web", "hello"]
 
-install_requires = [
-    'wheezy.template',
-    'wheezy.web',
-    'hello'
-]
-
-dependency_links = [
-]
+dependency_links = []
 
 setup(
-    name='helloworld',
-    version='0.1',
-    description='Hello World Project',
+    name="helloworld",
+    version="0.1",
+    description="Hello World Project",
     long_description=README,
-    url='https://scm.dev.local/svn/mysite/trunk',
-
-    author='MySite Team',
-    author_email='mysite at dev.local',
-
-    license='COMMERCIAL',
+    url="https://scm.dev.local/svn/mysite/trunk",
+    author="MySite Team",
+    author_email="mysite at dev.local",
+    license="COMMERCIAL",
     classifiers=[
-        'Environment :: Web Environment',
-        'Intended Audience :: Developers',
-        'Natural Language :: English',
-        'Operating System :: OS Independent',
-        'Programming Language :: Python :: 2.7',
-        'Programming Language :: Python :: Implementation :: CPython',
-        'Programming Language :: Python :: Implementation :: PyPy',
-        'Topic :: Internet :: WWW/HTTP',
-        'Topic :: Internet :: WWW/HTTP :: Dynamic Content',
-        'Topic :: Software Development :: Libraries :: Python Modules'
+        "Environment :: Web Environment",
+        "Intended Audience :: Developers",
+        "Natural Language :: English",
+        "Operating System :: OS Independent",
+        "Programming Language :: Python :: 2.7",
+        "Programming Language :: Python :: Implementation :: CPython",
+        "Programming Language :: Python :: Implementation :: PyPy",
+        "Topic :: Internet :: WWW/HTTP",
+        "Topic :: Internet :: WWW/HTTP :: Dynamic Content",
+        "Topic :: Software Development :: Libraries :: Python Modules",
     ],
-    packages=[
-    ],
-    package_dir={'': 'src'},
-
+    packages=[],
+    package_dir={"": "src"},
     zip_safe=False,
     install_requires=install_requires,
     dependency_links=dependency_links,
-    extras_require={
-    },
-
-    platforms='any'
+    extras_require={},
+    platforms="any",
 )

@@ -1,4 +1,3 @@
-
 """ Unit tests for ``wheezy.web.middleware.errors``.
 """
 
@@ -15,14 +14,11 @@ class HTTPErrorMiddlewareTestCase(unittest.TestCase):
         """ The following middleware returns None as response.
         """
         from wheezy.web.middleware.errors import HTTPErrorMiddleware
+
         mock_request = Mock()
-        mock_request.environ = {
-            'route_args': {'route_name': 'http404'}
-        }
+        mock_request.environ = {"route_args": {"route_name": "http404"}}
         mock_following = Mock(return_value=None)
-        middleware = HTTPErrorMiddleware({
-            404: 'http404'
-        }, None)
+        middleware = HTTPErrorMiddleware({404: "http404"}, None)
         response = middleware(mock_request, mock_following)
         assert 404 == response.status_code
 
@@ -31,6 +27,7 @@ class HTTPErrorMiddlewareTestCase(unittest.TestCase):
             with HTTP status code less than 400.
         """
         from wheezy.web.middleware.errors import HTTPErrorMiddleware
+
         mock_request = Mock()
         mock_response = Mock()
         mock_response.status_code = 200
@@ -43,15 +40,12 @@ class HTTPErrorMiddlewareTestCase(unittest.TestCase):
         """ The following middleware raises unhandled error.
         """
         from wheezy.web.middleware.errors import HTTPErrorMiddleware
+
         mock_request = Mock()
-        mock_request.environ = {
-            'route_args': {'route_name': 'http500'}
-        }
+        mock_request.environ = {"route_args": {"route_name": "http500"}}
         mock_logger = Mock()
         mock_following = Mock(side_effect=ValueError)
-        middleware = HTTPErrorMiddleware({
-            500: 'http500'
-        }, mock_logger)
+        middleware = HTTPErrorMiddleware({500: "http500"}, mock_logger)
         response = middleware(mock_request, mock_following)
 
         assert 500 == response.status_code
@@ -61,16 +55,15 @@ class HTTPErrorMiddlewareTestCase(unittest.TestCase):
         """ Ensure extra provider is called.
         """
         from wheezy.web.middleware.errors import HTTPErrorMiddleware
+
         mock_request = Mock()
-        mock_request.environ = {
-            'route_args': {'route_name': 'http500'}
-        }
+        mock_request.environ = {"route_args": {"route_name": "http500"}}
         mock_logger = Mock()
         mock_extra_provider = Mock()
         mock_following = Mock(side_effect=ValueError)
-        middleware = HTTPErrorMiddleware({
-            500: 'http500'
-        }, mock_logger, mock_extra_provider)
+        middleware = HTTPErrorMiddleware(
+            {500: "http500"}, mock_logger, mock_extra_provider
+        )
         response = middleware(mock_request, mock_following)
 
         assert 500 == response.status_code
@@ -82,37 +75,31 @@ class HTTPErrorMiddlewareTestCase(unittest.TestCase):
             through error middleware.
         """
         from wheezy.web.middleware.errors import HTTPErrorMiddleware
+
         mock_request = Mock()
-        mock_request.environ = {
-            'route_args': {'route_name': 'http500'}
-        }
+        mock_request.environ = {"route_args": {"route_name": "http500"}}
         for error in [KeyboardInterrupt, SystemExit, MemoryError]:
             mock_following = Mock(side_effect=error)
             middleware = HTTPErrorMiddleware({}, None)
             self.assertRaises(
-                error,
-                lambda: middleware(mock_request, mock_following))
+                error, lambda: middleware(mock_request, mock_following)
+            )
 
     def test_following_response_needs_redirect(self):
         """ The following middleware returns error status
             that needs redirection to error page.
         """
         from wheezy.web.middleware.errors import HTTPErrorMiddleware
+
         mock_request = Mock()
-        mock_path_for = Mock(return_value='not_found')
-        mock_request.options = {
-            'path_for': mock_path_for
-        }
-        mock_request.root_path = 'my_site/'
-        mock_request.method = 'GET'
+        mock_path_for = Mock(return_value="not_found")
+        mock_request.options = {"path_for": mock_path_for}
+        mock_request.root_path = "my_site/"
+        mock_request.method = "GET"
         mock_request.ajax = False
-        mock_request.environ = {
-            'route_args': {'route_name': 'welcome'}
-        }
+        mock_request.environ = {"route_args": {"route_name": "welcome"}}
         mock_following = Mock(return_value=None)
-        middleware = HTTPErrorMiddleware({
-            404: 'http404'
-        }, None)
+        middleware = HTTPErrorMiddleware({404: "http404"}, None)
         response = middleware(mock_request, mock_following)
         assert 302 == response.status_code
 
@@ -125,6 +112,7 @@ class HTTPErrorMiddlewareFactoryTestCase(unittest.TestCase):
         """ http_errors options is undefined.
         """
         from wheezy.web.middleware.errors import http_error_middleware_factory
+
         middleware = http_error_middleware_factory({})
         assert middleware
 
@@ -133,20 +121,24 @@ class HTTPErrorMiddlewareFactoryTestCase(unittest.TestCase):
         """
         from wheezy.core.collections import defaultdict
         from wheezy.web.middleware.errors import http_error_middleware_factory
+
         mock_path_for = Mock()
-        middleware = http_error_middleware_factory({
-            'path_for': mock_path_for,
-            'http_errors': defaultdict(lambda: 'http500', {
-                404: 'http400'
-            })
-        })
+        middleware = http_error_middleware_factory(
+            {
+                "path_for": mock_path_for,
+                "http_errors": defaultdict(
+                    lambda: "http500", {404: "http400"}
+                ),
+            }
+        )
         assert middleware
 
     def test_logger_defined(self):
         """ logger is available in options.
         """
         from wheezy.web.middleware.errors import http_error_middleware_factory
-        middleware = http_error_middleware_factory({
-            'http_errors_logger': Mock()
-        })
+
+        middleware = http_error_middleware_factory(
+            {"http_errors_logger": Mock()}
+        )
         assert middleware

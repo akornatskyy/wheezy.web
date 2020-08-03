@@ -1,11 +1,9 @@
-
 """ Unit tests for ``wheezy.web.middleware.bootstrap``.
 """
 
 import unittest
 
-from mock import Mock
-from mock import patch
+from mock import Mock, patch
 
 
 class BootstrapWebDefaultsTestCase(unittest.TestCase):
@@ -14,10 +12,12 @@ class BootstrapWebDefaultsTestCase(unittest.TestCase):
 
     def setUp(self):
         from wheezy.web.middleware import bootstrap
-        self.patcher = patch.object(bootstrap, 'bootstrap_http_defaults')
+
+        self.patcher = patch.object(bootstrap, "bootstrap_http_defaults")
         self.patcher.start()
         try:
             from warnings import catch_warnings
+
             self.ctx = catch_warnings(record=True)
             self.w = self.ctx.__enter__()
         except ImportError:  # pragma: nocover
@@ -37,29 +37,37 @@ class BootstrapWebDefaultsTestCase(unittest.TestCase):
         """ Ensure required keys exist.
         """
         from wheezy.web.middleware.bootstrap import bootstrap_defaults
+
         options = {}
 
         assert bootstrap_defaults({})(options) is None
 
         required_options = tuple(sorted(options.keys()))
         assert 12 == len(required_options)
-        assert ('AUTH_COOKIE', 'AUTH_COOKIE_DOMAIN', 'AUTH_COOKIE_PATH',
-                'AUTH_COOKIE_SECURE', 'CONTENT_TYPE', 'ENCODING',
-                'RESUBMISSION_NAME', 'XSRF_NAME', 'path_for', 'path_router',
-                'ticket', 'translations_manager') == required_options
+        assert (
+            "AUTH_COOKIE",
+            "AUTH_COOKIE_DOMAIN",
+            "AUTH_COOKIE_PATH",
+            "AUTH_COOKIE_SECURE",
+            "CONTENT_TYPE",
+            "ENCODING",
+            "RESUBMISSION_NAME",
+            "XSRF_NAME",
+            "path_for",
+            "path_router",
+            "ticket",
+            "translations_manager",
+        ) == required_options
 
     def test_path_router(self):
         """ Ensure required keys exist.
         """
         from wheezy.web.middleware.bootstrap import bootstrap_defaults
-        mock_path_router = Mock()
-        options = {
-            'path_router': mock_path_router
-        }
 
-        assert bootstrap_defaults({
-            'signin': 'signin'
-        })(options) is None
+        mock_path_router = Mock()
+        options = {"path_router": mock_path_router}
+
+        assert bootstrap_defaults({"signin": "signin"})(options) is None
 
         assert tuple(options.keys())
 
@@ -67,9 +75,8 @@ class BootstrapWebDefaultsTestCase(unittest.TestCase):
         """ Ensure warnings are issued.
         """
         from wheezy.web.middleware.bootstrap import bootstrap_defaults
-        options = {
-            'ticket': None
-        }
+
+        options = {"ticket": None}
 
         assert bootstrap_defaults({})(options) is None
-        self.assert_warning('Bootstrap: render_template is not defined')
+        self.assert_warning("Bootstrap: render_template is not defined")

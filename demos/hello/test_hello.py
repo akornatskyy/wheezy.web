@@ -1,16 +1,14 @@
-
 """ ``test_hello`` module.
 """
 
 import unittest
 
-from wheezy.http.functional import WSGIClient
-
 from hello import main
+
+from wheezy.http.functional import WSGIClient
 
 
 class HelloTestCase(unittest.TestCase):
-
     def setUp(self):
         self.client = WSGIClient(main)
 
@@ -21,11 +19,11 @@ class HelloTestCase(unittest.TestCase):
     def test_home(self):
         """ Ensure welcome page is rendered.
         """
-        assert 200 == self.client.get('/')
-        assert 'Hello World!' == self.client.content
+        assert 200 == self.client.get("/")
+        assert "Hello World!" == self.client.content
 
     def test_welcome(self):
         """ Ensure welcome page is rendered.
         """
-        assert 200 == self.client.get('/welcome')
-        assert 'Hello World!' == self.client.content
+        assert 200 == self.client.get("/welcome")
+        assert "Hello World!" == self.client.content

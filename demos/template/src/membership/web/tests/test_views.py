@@ -1,29 +1,25 @@
-
 """ ``test_views`` module.
 """
 
 import unittest
 
-from wheezy.core.json import json_encode
-from wheezy.http.functional import PageMixin
-from wheezy.http.functional import WSGIClient
-
 from app import main
-
 from config import options
 
+from wheezy.core.json import json_encode
+from wheezy.http.functional import PageMixin, WSGIClient
 
-AUTH_COOKIE = options['AUTH_COOKIE']
-XSRF_NAME = options['XSRF_NAME']
-RESUBMISSION_NAME = options['RESUBMISSION_NAME']
+AUTH_COOKIE = options["AUTH_COOKIE"]
+XSRF_NAME = options["XSRF_NAME"]
+RESUBMISSION_NAME = options["RESUBMISSION_NAME"]
 
 
 # region: pages
 
-class SignInPage(PageMixin):
 
+class SignInPage(PageMixin):
     def __init__(self, client):
-        assert '- Sign In</title>' in client.content
+        assert "- Sign In</title>" in client.content
         assert AUTH_COOKIE not in client.cookies
         assert XSRF_NAME in client.cookies
         self.client = client
@@ -33,66 +29,64 @@ class SignInPage(PageMixin):
 
 
 class SignUpPage(PageMixin):
-
     def __init__(self, client):
-        assert '- Sign Up</title>' in client.content
+        assert "- Sign Up</title>" in client.content
         assert AUTH_COOKIE not in client.cookies
         assert RESUBMISSION_NAME in client.cookies
         self.client = client
 
     def form(self):
-        return self.client.form_by(lambda attrs:
-                                   'signup' in attrs.get('action', ''))
+        return self.client.form_by(
+            lambda attrs: "signup" in attrs.get("action", "")
+        )
 
 
 # region: mixins
 
-class SignInMixin(object):
 
+class SignInMixin(object):
     def signin(self, username, password):
         client = self.client
-        assert 200 == client.get('/en/signin')
+        assert 200 == client.get("/en/signin")
         page = SignInPage(client)
         return page.submit(username=username, password=password)
 
     def ajax_signin(self, username, password):
         client = self.client
-        assert 200 == client.get('/en/signin')
+        assert 200 == client.get("/en/signin")
         page = SignInPage(client)
         return page.ajax_submit(username=username, password=password)
 
 
 class SignUpMixin(object):
-
     def signup(self, **kwargs):
         client = self.client
-        assert 200 == client.get('/en/signup')
+        assert 200 == client.get("/en/signup")
         page = SignUpPage(client)
         return page.submit(**kwargs)
 
     def ajax_signup(self, **kwargs):
         client = self.client
-        assert 200 == client.get('/en/signup')
+        assert 200 == client.get("/en/signup")
         page = SignUpPage(client)
         return page.ajax_submit(**kwargs)
 
 
 class SignOutMixin(object):
-
     def signout(self):
         client = self.client
         assert AUTH_COOKIE in self.client.cookies
-        assert 'Sign out</a>' in client.content
-        client.get('/en/signout')
+        assert "Sign out</a>" in client.content
+        client.get("/en/signout")
         assert 200 == client.follow()
         assert AUTH_COOKIE not in self.client.cookies
-        assert 'Sign out</a>' not in client.content
+        assert "Sign out</a>" not in client.content
 
 
 # region: test cases
 
-class MembershipTestCase(unittest.TestCase):
 
+class MembershipTestCase(unittest.TestCase):
     def setUp(self):
         self.client = WSGIClient(main)
 
@@ -103,23 +97,22 @@ class MembershipTestCase(unittest.TestCase):
     def test_signin(self):
         """ Ensure signin page is rendered
         """
-        assert 200 == self.client.go('/en/signin')
-        assert '- Sign In</title>' in self.client.content
+        assert 200 == self.client.go("/en/signin")
+        assert "- Sign In</title>" in self.client.content
 
     def test_signup(self):
         """
         """
-        assert 200 == self.client.go('/en/signup')
-        assert '- Sign Up</title>' in self.client.content
+        assert 200 == self.client.go("/en/signup")
+        assert "- Sign Up</title>" in self.client.content
 
     def test_signout(self):
         """
         """
-        assert 302 == self.client.go('/en/signout')
+        assert 302 == self.client.go("/en/signout")
 
 
 class SignInTestCase(unittest.TestCase, SignInMixin):
-
     def setUp(self):
         self.client = WSGIClient(main)
 
@@ -130,7 +123,7 @@ class SignInTestCase(unittest.TestCase, SignInMixin):
     def test_validation_errors(self):
         """ Ensure sigin page displays field validation errors.
         """
-        errors = self.signin('', '')
+        errors = self.signin("", "")
         assert 2 == len(errors)
         assert AUTH_COOKIE not in self.client.cookies
         assert 'class="error"' in self.client.content
@@ -138,7 +131,7 @@ class SignInTestCase(unittest.TestCase, SignInMixin):
     def test_unknown_user(self):
         """ Ensure sigin page displays general error message.
         """
-        errors = self.signin('test', 'password')
+        errors = self.signin("test", "password")
         assert not errors
         assert AUTH_COOKIE not in self.client.cookies
         assert 'class="error-message"' in self.client.content
@@ -147,47 +140,48 @@ class SignInTestCase(unittest.TestCase, SignInMixin):
         """ Ensure sigin lockout guard is reached.
         """
         from config import config
-        mode = config.get('runtime', 'lockout')
-        self.client.environ['REMOTE_ADDR'] = '192.168.10.101'
-        if mode == 'ignore':
+
+        mode = config.get("runtime", "lockout")
+        self.client.environ["REMOTE_ADDR"] = "192.168.10.101"
+        if mode == "ignore":
             return
 
-        self.client.environ['REMOTE_ADDR'] = '192.168.10.101'
-        errors = self.signin('test', 'password')
+        self.client.environ["REMOTE_ADDR"] = "192.168.10.101"
+        errors = self.signin("test", "password")
         assert not errors
         assert AUTH_COOKIE not in self.client.cookies
         assert 'class="error-message"' in self.client.content
 
-        self.signin('test', 'password')
+        self.signin("test", "password")
 
-        self.signin('test', 'password')
+        self.signin("test", "password")
         assert 'class="error-message"' in self.client.content
 
         # after 3rd attempt the access is forbidden
-        self.signin('test', 'password')
+        self.signin("test", "password")
         assert 403 == self.client.follow()
 
     def test_valid_user(self):
         """ Ensure sigin is successful.
         """
-        self.signin('demo', 'P@ssw0rd')
+        self.signin("demo", "P@ssw0rd")
         assert 200 == self.client.follow()
         assert AUTH_COOKIE in self.client.cookies
         assert XSRF_NAME not in self.client.cookies
-        assert 'Welcome <b>demo' in self.client.content
+        assert "Welcome <b>demo" in self.client.content
 
     def test_if_authenticated_redirect(self):
         """ If user is already authenticated redirect
             to default page.
         """
-        self.signin('demo', 'P@ssw0rd')
+        self.signin("demo", "P@ssw0rd")
         assert 200 == self.client.follow()
-        self.client.get('/en/signin')
+        self.client.get("/en/signin")
         assert 200 == self.client.follow()
 
     def test_xrsf_token_invalid(self):
         client = self.client
-        assert 200 == client.get('/en/signin')
+        assert 200 == client.get("/en/signin")
         page = SignInPage(client)
         client.cookies.clear()
         page.submit()
@@ -196,12 +190,11 @@ class SignInTestCase(unittest.TestCase, SignInMixin):
 
 
 class SignInAJAX(SignInMixin):
-
     def test_ajax_validation_errors(self):
         """ Ensure sigin page displays field validation errors
             on AJAX call.
         """
-        assert 200 == self.ajax_signin('', '')
+        assert 200 == self.ajax_signin("", "")
         errors = self.client.json.errors
         assert 2 == len(errors)
         assert AUTH_COOKIE not in self.client.cookies
@@ -210,23 +203,23 @@ class SignInAJAX(SignInMixin):
         """ Ensure sigin page displays general error message
             on AJAX call.
         """
-        assert 200 == self.ajax_signin('test', 'password')
+        assert 200 == self.ajax_signin("test", "password")
         errors = self.client.json.errors
-        assert '__ERROR__' in errors
+        assert "__ERROR__" in errors
         assert AUTH_COOKIE not in self.client.cookies
 
     def test_ajax_valid_user(self):
         """ Ensure sigin is successful.
         """
-        assert 207 == self.ajax_signin('demo', 'P@ssw0rd')
+        assert 207 == self.ajax_signin("demo", "P@ssw0rd")
         assert 200 == self.client.follow()
         assert AUTH_COOKIE in self.client.cookies
         assert XSRF_NAME not in self.client.cookies
-        assert 'Welcome <b>demo' in self.client.content
+        assert "Welcome <b>demo" in self.client.content
 
     def test_ajax_xrsf_token_invalid(self):
         client = self.client
-        assert 200 == client.get('/en/signin')
+        assert 200 == client.get("/en/signin")
         page = SignInPage(client)
         client.cookies.clear()
         assert 207 == page.ajax_submit()
@@ -238,7 +231,6 @@ try:
     json_encode({})
 
     class SignInAJAXTestCase(unittest.TestCase, SignInAJAX):
-
         def setUp(self):
             self.client = WSGIClient(main)
 
@@ -246,12 +238,12 @@ try:
             del self.client
             self.client = None
 
+
 except NotImplementedError:  # pragma: nocover
     pass
 
 
 class SignOutTestCase(unittest.TestCase, SignInMixin, SignOutMixin):
-
     def setUp(self):
         self.client = WSGIClient(main)
 
@@ -262,14 +254,14 @@ class SignOutTestCase(unittest.TestCase, SignInMixin, SignOutMixin):
     def test_signout_user(self):
         """ Ensure sigout is successful.
         """
-        self.signin('demo', 'P@ssw0rd')
+        self.signin("demo", "P@ssw0rd")
         assert 200 == self.client.follow()
         self.signout()
 
 
-class SignUpTestCase(unittest.TestCase, SignInMixin, SignUpMixin,
-                     SignOutMixin):
-
+class SignUpTestCase(
+    unittest.TestCase, SignInMixin, SignUpMixin, SignOutMixin
+):
     def setUp(self):
         self.client = WSGIClient(main)
 
@@ -289,15 +281,16 @@ class SignUpTestCase(unittest.TestCase, SignInMixin, SignUpMixin,
         """ Ensure signup page displays general error message.
         """
         errors = self.signup(
-            username='demo',
-            display_name='Demo',
-            email='demo@somewhere.com',
-            date_of_birth='1984/11/14',
-            password='P@ssw0rd',
-            confirm_password='P@ssw0rd',
-            question_id='1',
-            answer='7')
-        assert ['username'] == errors
+            username="demo",
+            display_name="Demo",
+            email="demo@somewhere.com",
+            date_of_birth="1984/11/14",
+            password="P@ssw0rd",
+            confirm_password="P@ssw0rd",
+            question_id="1",
+            answer="7",
+        )
+        assert ["username"] == errors
         assert AUTH_COOKIE not in self.client.cookies
 
     def test_registration_succeed(self):
@@ -305,63 +298,68 @@ class SignUpTestCase(unittest.TestCase, SignInMixin, SignUpMixin,
             user is registered and logged in.
         """
         errors = self.signup(
-            username='john',
-            display_name='John Smith',
-            email='john@somewhere.com',
-            date_of_birth='1987/2/7',
-            password='P@ssw0rd',
-            confirm_password='P@ssw0rd',
-            question_id='1',
-            answer='7')
+            username="john",
+            display_name="John Smith",
+            email="john@somewhere.com",
+            date_of_birth="1987/2/7",
+            password="P@ssw0rd",
+            confirm_password="P@ssw0rd",
+            question_id="1",
+            answer="7",
+        )
         assert not errors
         assert 200 == self.client.follow()
         assert AUTH_COOKIE in self.client.cookies
         assert RESUBMISSION_NAME not in self.client.cookies
-        assert 'Welcome <b>John Smith' in self.client.content
+        assert "Welcome <b>John Smith" in self.client.content
 
     def test_lockout_quota(self):
         """ Ensure signup quata is reached.
         """
         from config import config
-        mode = config.get('runtime', 'lockout')
-        self.client.environ['REMOTE_ADDR'] = '192.168.10.101'
-        if mode == 'ignore':
+
+        mode = config.get("runtime", "lockout")
+        self.client.environ["REMOTE_ADDR"] = "192.168.10.101"
+        if mode == "ignore":
             return
 
         errors = self.signup(
-            username='joe',
-            display_name='Joe Smith',
-            email='joe@somewhere.com',
-            date_of_birth='1980/4/5',
-            password='P@ssw0rd',
-            confirm_password='P@ssw0rd',
-            answer='7')
+            username="joe",
+            display_name="Joe Smith",
+            email="joe@somewhere.com",
+            date_of_birth="1980/4/5",
+            password="P@ssw0rd",
+            confirm_password="P@ssw0rd",
+            answer="7",
+        )
         assert not errors
         assert 200 == self.client.follow()
         assert AUTH_COOKIE in self.client.cookies
         self.signout()
 
         errors = self.signup(
-            username='jassy',
-            display_name='Jassy Smith',
-            email='jassy@somewhere.com',
-            date_of_birth='1982/7/17',
-            password='P@ssw0rd',
-            confirm_password='P@ssw0rd',
-            answer='7')
+            username="jassy",
+            display_name="Jassy Smith",
+            email="jassy@somewhere.com",
+            date_of_birth="1982/7/17",
+            password="P@ssw0rd",
+            confirm_password="P@ssw0rd",
+            answer="7",
+        )
         assert not errors
         assert 200 == self.client.follow()
         assert AUTH_COOKIE in self.client.cookies
         self.signout()
 
         self.signup(
-            username='jack',
-            display_name='Jack Smith',
-            email='jack@somewhere.com',
-            date_of_birth='1981/3/18',
-            password='P@ssw0rd',
-            confirm_password='P@ssw0rd',
-            answer='7')
+            username="jack",
+            display_name="Jack Smith",
+            email="jack@somewhere.com",
+            date_of_birth="1981/3/18",
+            password="P@ssw0rd",
+            confirm_password="P@ssw0rd",
+            answer="7",
+        )
         # after 2nd attempt the access is forbidden
         assert 403 == self.client.follow()
 
@@ -369,16 +367,16 @@ class SignUpTestCase(unittest.TestCase, SignInMixin, SignUpMixin,
         """ If user is already authenticated redirect
             to default page.
         """
-        self.signin('demo', 'P@ssw0rd')
+        self.signin("demo", "P@ssw0rd")
         assert 200 == self.client.follow()
-        self.client.get('/en/signup')
+        self.client.get("/en/signup")
         assert 200 == self.client.follow()
 
     def test_resubmission_token_invalid(self):
         client = self.client
-        assert 200 == client.get('/en/signup')
+        assert 200 == client.get("/en/signup")
         page = SignUpPage(client)
-        client.cookies[RESUBMISSION_NAME] = '100'
+        client.cookies[RESUBMISSION_NAME] = "100"
         page.submit()
         SignUpPage(client)
 
@@ -387,7 +385,6 @@ try:
     json_encode({})
 
     class SignUpAJAXTestCase(unittest.TestCase, SignInMixin, SignUpMixin):
-
         def setUp(self):
             self.client = WSGIClient(main)
 
@@ -403,6 +400,7 @@ try:
             errors = self.client.json.errors
             assert 7 == len(errors)
             assert AUTH_COOKIE not in self.client.cookies
+
 
 except NotImplementedError:  # pragma: nocover
     pass

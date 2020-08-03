@@ -3,7 +3,6 @@
 
 from wheezy.http import method_not_allowed
 
-
 new = object.__new__
 
 
@@ -21,16 +20,16 @@ class MethodHandler(object):
     def __init__(self, request):
         self.options = request.options
         self.request = request
-        self.route_args = request.environ['route_args']
+        self.route_args = request.environ["route_args"]
         self.cookies = []
 
     def __call__(self):
         method = self.request.method
-        if method == 'GET':
+        if method == "GET":
             response = self.get()
-        elif method == 'POST':
+        elif method == "POST":
             response = self.post()
-        elif method == 'HEAD':
+        elif method == "HEAD":
             response = self.head()
         else:
             response = method_not_allowed()

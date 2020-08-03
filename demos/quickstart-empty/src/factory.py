@@ -5,7 +5,6 @@ from config import config
 
 
 class Factory(object):
-
     def __init__(self, session_name, **context):
         self.context = context
         self.session = sessions[session_name]()
@@ -20,21 +19,19 @@ class Factory(object):
 
 
 class RepositoryFactory(object):
-
     def __init__(self, session):
         self.session = session
 
 
 def mock_sessions():
     from wheezy.core.db import NullSession
-    return {
-        'ro': NullSession, 'rw': NullSession
-    }
+
+    return {"ro": NullSession, "rw": NullSession}
 
 
 # region: configuration details
-mode = config.get('runtime', 'mode')
-if mode == 'mock':
+mode = config.get("runtime", "mode")
+if mode == "mock":
     sessions = mock_sessions()
 else:
     raise NotImplementedError(mode)

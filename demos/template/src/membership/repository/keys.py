@@ -3,4 +3,4 @@
 
 
 def has_account(username):
-    return 'MHA:' + username
+    return "MHA:" + username

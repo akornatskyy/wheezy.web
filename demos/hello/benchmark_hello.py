@@ -1,10 +1,9 @@
-
 """ ``benchmark_hello`` module.
 """
 
-from wheezy.core.benchmark import Benchmark
-
 from test_hello import HelloTestCase
+
+from wheezy.core.benchmark import Benchmark
 
 
 class BenchmarkTestCase(HelloTestCase):
@@ -15,11 +14,5 @@ class BenchmarkTestCase(HelloTestCase):
     def runTest(self):  # noqa: N802
         """ Perform bachmark and print results.
         """
-        p = Benchmark((
-            self.test_welcome,
-            self.test_home
-        ), 20000)
-        p.report('hello', baselines={
-            'test_welcome': 1.0,
-            'test_home': 0.9
-        })
+        p = Benchmark((self.test_welcome, self.test_home), 20000)
+        p.report("hello", baselines={"test_welcome": 1.0, "test_home": 0.9})

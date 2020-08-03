@@ -5,28 +5,35 @@
 class MakoTemplate(object):
     """ Integration with Mako templates.
     """
-    __slots__ = ('template_lookup')
+
+    __slots__ = "template_lookup"
 
     def __init__(
-            self, directories=None,
-            module_directory='/tmp/mako_modules',
-            cache=None,
-            **kwargs):
+        self,
+        directories=None,
+        module_directory="/tmp/mako_modules",
+        cache=None,
+        **kwargs
+    ):
         from mako.lookup import TemplateLookup
+
         if cache is None:
             self.template_lookup = TemplateLookup(
-                directories=directories or ['content/templates'],
+                directories=directories or ["content/templates"],
                 module_directory=module_directory,
-                **kwargs)
+                **kwargs
+            )
         else:
             from mako.cache import register_plugin
-            register_plugin('wheezy', 'wheezy.web.templates', 'MakoCacheImpl')
+
+            register_plugin("wheezy", "wheezy.web.templates", "MakoCacheImpl")
             self.template_lookup = TemplateLookup(
-                directories=directories or ['content/templates'],
+                directories=directories or ["content/templates"],
                 module_directory=module_directory,
-                cache_impl='wheezy',
-                cache_args={'cache': cache},
-                **kwargs)
+                cache_impl="wheezy",
+                cache_args={"cache": cache},
+                **kwargs
+            )
 
     def __call__(self, template_name, kwargs):
         template = self.template_lookup.get_template(template_name)
@@ -34,21 +41,22 @@ class MakoTemplate(object):
 
 
 class MakoCacheImpl(object):
-    __slots__ = ('cache', 'prefix')
+    __slots__ = ("cache", "prefix")
 
     pass_context = False
 
     def __init__(self, cache):
-        self.cache = cache.template.cache_args['cache']
+        self.cache = cache.template.cache_args["cache"]
         self.prefix = cache.id
 
     def get_or_create(self, key, creation_function, **kwargs):
-        namespace = kwargs.get('namespace', None)
+        namespace = kwargs.get("namespace", None)
         value = self.cache.get(self.prefix + key, namespace)
         if value is None:
             value = creation_function()
-            self.cache.add(self.prefix + key, value,
-                           int(kwargs.get('time', 0)), namespace)
+            self.cache.add(
+                self.prefix + key, value, int(kwargs.get("time", 0)), namespace
+            )
         return value
 
     def set(self, key, value, **kw):
@@ -64,36 +72,48 @@ class MakoCacheImpl(object):
 class TenjinTemplate(object):
     """ Integration with Tenjin templates.
     """
-    __slots__ = ('engine', 'helpers')
+
+    __slots__ = ("engine", "helpers")
 
     def __init__(
-            self, path=None, pp=None, helpers=None,
-            encoding='UTF-8', postfix='.html', cache=None, **kwargs):
+        self,
+        path=None,
+        pp=None,
+        helpers=None,
+        encoding="UTF-8",
+        postfix=".html",
+        cache=None,
+        **kwargs
+    ):
         import tenjin
+
         tenjin.set_template_encoding(encoding)
-        from tenjin.helpers import capture_as, captured_as, cache_as
+        from tenjin.helpers import cache_as, capture_as, captured_as
+
         try:  # pragma: nocover
             from webext import escape_html as escape
         except ImportError:  # pragma: nocover
             from tenjin.helpers import escape  # noqa
 
         from wheezy.core.comp import str_type
+
         self.helpers = {
-            'to_str': str_type,
-            'escape': escape,
-            'capture_as': capture_as,
-            'captured_as': captured_as,
-            'cache_as': cache_as,
-            'tenjin': tenjin
+            "to_str": str_type,
+            "escape": escape,
+            "capture_as": capture_as,
+            "captured_as": captured_as,
+            "cache_as": cache_as,
+            "tenjin": tenjin,
         }
         if helpers:
             self.helpers.update(helpers)
         self.engine = tenjin.Engine(
-            path=path or ['content/templates'],
+            path=path or ["content/templates"],
             postfix=postfix,
             cache=cache or tenjin.MemoryCacheStorage(),
             pp=pp,
-            **kwargs)
+            **kwargs
+        )
 
     def __call__(self, template_name, kwargs):
         return self.engine.render(template_name, kwargs, self.helpers)

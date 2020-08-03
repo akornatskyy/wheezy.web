@@ -1,4 +1,3 @@
-
 """
 """
 
@@ -9,42 +8,40 @@ import sys
 from datetime import timedelta
 from time import time
 
-
 start_time = time()
 
 
 def error_report_extra_provider(request):
     ts = os.times()
     e = request.environ
-    if 'CONTENT_LENGTH' in e and e['CONTENT_LENGTH'] and request.form:
-        form = filter_names(request.form, ignore=(
-            'password',
-            'confirm_password'
-        ))
+    if "CONTENT_LENGTH" in e and e["CONTENT_LENGTH"] and request.form:
+        form = filter_names(
+            request.form, ignore=("password", "confirm_password")
+        )
     else:
         form = {}
     return {
-        'HTTP_ACCEPT_LANGUAGE': e['HTTP_ACCEPT_LANGUAGE'],
-        'HTTP_REFERER': e.get('HTTP_REFERER', '?'),
-        'HTTP_USER_AGENT': e['HTTP_USER_AGENT'],
-        'PATH_INFO': e['PATH_INFO'],
-        'REMOTE_ADDR': e['REMOTE_ADDR'],
-        'REQUEST_METHOD': e['REQUEST_METHOD'],
-        'executable': sys.executable,
-        'hostname': socket.gethostname(),
-        'http_cookies': request.cookies,
-        'http_form': form,
-        'machine': platform.machine(),
-        'modules': modules_info(),
-        'process_uptime': timedelta(seconds=time() - start_time),
-        'python_compiler': platform.python_compiler(),
-        'python_version': platform.python_version(),
-        'release': platform.release(),
-        'route_args': dict(e['route_args']),
-        'stime': timedelta(seconds=ts[1]),
-        'system': platform.system(),
-        'utime': timedelta(seconds=ts[0]),
-        'uwsgi.version': e.get('uwsgi.version', '?'),
+        "HTTP_ACCEPT_LANGUAGE": e["HTTP_ACCEPT_LANGUAGE"],
+        "HTTP_REFERER": e.get("HTTP_REFERER", "?"),
+        "HTTP_USER_AGENT": e["HTTP_USER_AGENT"],
+        "PATH_INFO": e["PATH_INFO"],
+        "REMOTE_ADDR": e["REMOTE_ADDR"],
+        "REQUEST_METHOD": e["REQUEST_METHOD"],
+        "executable": sys.executable,
+        "hostname": socket.gethostname(),
+        "http_cookies": request.cookies,
+        "http_form": form,
+        "machine": platform.machine(),
+        "modules": modules_info(),
+        "process_uptime": timedelta(seconds=time() - start_time),
+        "python_compiler": platform.python_compiler(),
+        "python_version": platform.python_version(),
+        "release": platform.release(),
+        "route_args": dict(e["route_args"]),
+        "stime": timedelta(seconds=ts[1]),
+        "system": platform.system(),
+        "utime": timedelta(seconds=ts[0]),
+        "uwsgi.version": e.get("uwsgi.version", "?"),
     }
 
 
@@ -54,10 +51,17 @@ def filter_names(d, ignore):
 
 def modules_info():
     def predicate(m):
-        return (hasattr(m, '__version__') and
-                not (m.__name__.startswith('_') or '._' in m.__name__))
-    return sorted([(m.__name__, m.__version__) for m in sys.modules.values()
-                   if predicate(m)])
+        return hasattr(m, "__version__") and not (
+            m.__name__.startswith("_") or "._" in m.__name__
+        )
+
+    return sorted(
+        [
+            (m.__name__, m.__version__)
+            for m in sys.modules.values()
+            if predicate(m)
+        ]
+    )
 
 
 ERROR_REPORT_FORMAT = """

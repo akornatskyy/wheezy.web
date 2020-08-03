@@ -1,21 +1,17 @@
 """
 """
 
-from wheezy.caching.patterns import Cached
-from wheezy.caching.patterns import key_builder
-
 from config import cache
-
 from membership.repository import keys
 
+from wheezy.caching.patterns import Cached, key_builder
 
-kb = key_builder(key_prefix='mbr')
-cached = Cached(cache, kb, time=3600 * 24, namespace='membership')
-cached_long = Cached(cache, kb, time=3600, namespace='membership')
+kb = key_builder(key_prefix="mbr")
+cached = Cached(cache, kb, time=3600 * 24, namespace="membership")
+cached_long = Cached(cache, kb, time=3600, namespace="membership")
 
 
 class MembershipRepository(object):
-
     def __init__(self, inner):
         self.inner = inner
 
@@ -37,7 +33,8 @@ class MembershipRepository(object):
         # return result
         return cached_long.get_or_set(
             keys.has_account(username),
-            lambda: self.inner.has_account(username))
+            lambda: self.inner.has_account(username),
+        )
 
     def user_roles(self, username):
         # TODO:

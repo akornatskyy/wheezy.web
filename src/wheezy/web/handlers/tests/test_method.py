@@ -1,11 +1,9 @@
-
 """ Unit tests for ``wheezy.web.handlers.method``.
 """
 
 import unittest
 
-from mock import Mock
-from mock import patch
+from mock import Mock, patch
 
 
 class MethodHandlerTestCase(unittest.TestCase):
@@ -14,14 +12,15 @@ class MethodHandlerTestCase(unittest.TestCase):
 
     def setUp(self):
         self.mock_request = Mock()
-        self.mock_request.environ = {'route_args': {}}
+        self.mock_request.environ = {"route_args": {}}
 
     def test_call_default_response(self):
         """ Ensure HTTP request method is dispatched correctly
             with default HTTP response status code 405.
         """
         from wheezy.web.handlers.method import MethodHandler
-        for method in ['GET', 'POST', 'HEAD']:
+
+        for method in ["GET", "POST", "HEAD"]:
             self.mock_request.method = method
             response = MethodHandler(self.mock_request)
             assert 405 == response.status_code
@@ -31,7 +30,8 @@ class MethodHandlerTestCase(unittest.TestCase):
             in case HTTP request method is not supported.
         """
         from wheezy.web.handlers.method import MethodHandler
-        self.mock_request.method = 'UNKNOWN'
+
+        self.mock_request.method = "UNKNOWN"
         response = MethodHandler(self.mock_request)
         assert 405 == response.status_code
 
@@ -39,24 +39,27 @@ class MethodHandlerTestCase(unittest.TestCase):
         """ Ensure HTTP request method is dispatched correctly.
         """
         from wheezy.web.handlers.method import MethodHandler
-        for method in ['GET', 'POST', 'HEAD']:
+
+        for method in ["GET", "POST", "HEAD"]:
             patcher = patch(
-                'wheezy.web.handlers.method.MethodHandler.' + method.lower())
+                "wheezy.web.handlers.method.MethodHandler." + method.lower()
+            )
             self.mock_request.method = method
             mock_method = patcher.start()
-            mock_method.return_value = 'response'
+            mock_method.return_value = "response"
             response = MethodHandler(self.mock_request)
-            assert 'response' == response
+            assert "response" == response
             patcher.stop()
 
     def test_extend_response_with_cookies(self):
         """ Ensure response cookies are extended with handler cookies.
         """
         from wheezy.web.handlers.method import MethodHandler
-        self.mock_request.method = 'GET'
+
+        self.mock_request.method = "GET"
 
         mock_response = Mock()
-        cookies = ['1', '2']
+        cookies = ["1", "2"]
 
         class MockMethodHandler(MethodHandler):
             def get(self):

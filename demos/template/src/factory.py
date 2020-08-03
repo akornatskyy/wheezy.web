@@ -1,17 +1,15 @@
 """
 """
 
-from wheezy.core.descriptors import attribute
-from wheezy.core.introspection import import_name
-
 from config import config
-
 from membership.repository.caching import MembershipRepository
 from membership.service.bridge import MembershipService
 
+from wheezy.core.descriptors import attribute
+from wheezy.core.introspection import import_name
+
 
 class Factory(object):
-
     def __init__(self, session_name, **context):
         self.context = context
         self.session = sessions[session_name]()
@@ -27,13 +25,12 @@ class Factory(object):
     @attribute
     def membership(self):
         context = self.context
-        return MembershipService(self.factory,
-                                 context['errors'],
-                                 context['locale'])
+        return MembershipService(
+            self.factory, context["errors"], context["locale"]
+        )
 
 
 class RepositoryFactory(object):
-
     def __init__(self, session):
         self.session = session
 
@@ -44,18 +41,20 @@ class RepositoryFactory(object):
 
 def mock_sessions():
     from wheezy.core.db import NullSession
-    return {
-        'ro': NullSession, 'rw': NullSession
-    }
+
+    return {"ro": NullSession, "rw": NullSession}
 
 
 # region: configuration details
-mode = config.get('runtime', 'mode')
-MembershipPersistence = import_name('membership.repository.%s.'
-                                    'MembershipRepository' % mode)
-if mode == 'mock':
-    from membership.repository.mock import MembershipRepository \
-        as MembershipPersistence
+mode = config.get("runtime", "mode")
+MembershipPersistence = import_name(
+    "membership.repository.%s." "MembershipRepository" % mode
+)
+if mode == "mock":
+    from membership.repository.mock import (
+        MembershipRepository as MembershipPersistence,
+    )
+
     sessions = mock_sessions()
 else:
     raise NotImplementedError(mode)

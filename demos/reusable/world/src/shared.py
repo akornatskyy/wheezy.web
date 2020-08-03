@@ -4,10 +4,10 @@ from wheezy.web.handlers.file import FileHandler
 
 
 def import_urls(name):
-    return __import__(name + '.web.urls', fromlist='all_urls').all_urls
+    return __import__(name + ".web.urls", fromlist="all_urls").all_urls
 
 
-def resolve_searchpath(name, scope='templates'):
+def resolve_searchpath(name, scope="templates"):
     return os.path.join(__import__(name).__path__[0], scope)
 
 
@@ -26,4 +26,5 @@ def file_handler(directories):
             if r.status_code != 404:
                 break
         return r
+
     return wraps

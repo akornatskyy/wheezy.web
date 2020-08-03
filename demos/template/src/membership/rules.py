@@ -1,10 +1,7 @@
 """
 """
 
-from wheezy.validation.rules import int_adapter
-from wheezy.validation.rules import length
-from wheezy.validation.rules import range
-from wheezy.validation.rules import required
+from wheezy.validation.rules import int_adapter, length, range, required
 
 
 def identity(min=1, max=None):

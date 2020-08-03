@@ -1,10 +1,8 @@
-
 """
 """
 
 
 class IMembershipRepository(object):  # pragma: nocover
-
     def list_password_questions(self, locale):
         return sorted([])
 

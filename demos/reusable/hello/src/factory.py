@@ -1,10 +1,9 @@
-from wheezy.core.db import NullSession
-
 from hello.factory import HelloFactoryMixin
+
+from wheezy.core.db import NullSession
 
 
 class Factory(HelloFactoryMixin):
-
     def __init__(self, session_name, **context):
         self.context = context
         self.session = sessions[session_name]()
@@ -18,6 +17,4 @@ class Factory(HelloFactoryMixin):
         self.session.__exit__(exc_value, exc_value, traceback)
 
 
-sessions = {
-    'ro': NullSession, 'rw': NullSession
-}
+sessions = {"ro": NullSession, "rw": NullSession}
