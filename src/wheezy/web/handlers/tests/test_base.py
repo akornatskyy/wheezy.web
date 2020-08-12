@@ -20,6 +20,7 @@ class BaseHandlerTestCase(unittest.TestCase):
             "AUTH_COOKIE_PATH": "members",
             "AUTH_COOKIE_DOMAIN": "python.org",
             "AUTH_COOKIE_SECURE": True,
+            "HTTP_COOKIE_SAMESITE": None,
             "HTTP_COOKIE_SECURE": False,
             "HTTP_COOKIE_HTTPONLY": False,
             "translations_manager": {"en": "translations"},
@@ -304,6 +305,7 @@ class BaseHandlerAuthenticationTestCase(unittest.TestCase):
             "AUTH_COOKIE_PATH": "members",
             "AUTH_COOKIE_DOMAIN": "python.org",
             "AUTH_COOKIE_SECURE": True,
+            "HTTP_COOKIE_SAMESITE": None,
             "HTTP_COOKIE_SECURE": False,
             "HTTP_COOKIE_HTTPONLY": False,
         }
@@ -392,7 +394,11 @@ class BaseHandlerXSRFTestCase(unittest.TestCase):
         from wheezy.web.handlers import base
 
         self.options.update(
-            {"HTTP_COOKIE_DOMAIN": None, "HTTP_COOKIE_SECURE": True}
+            {
+                "HTTP_COOKIE_DOMAIN": None,
+                "HTTP_COOKIE_SAMESITE": None,
+                "HTTP_COOKIE_SECURE": True,
+            }
         )
         patcher = patch.object(base, "shrink_uuid")
         mock_shrink_uuid = patcher.start()
@@ -417,6 +423,7 @@ class BaseHandlerXSRFTestCase(unittest.TestCase):
         self.options.update(
             {
                 "HTTP_COOKIE_DOMAIN": None,
+                "HTTP_COOKIE_SAMESITE": None,
                 "HTTP_COOKIE_SECURE": True,
                 "HTTP_COOKIE_HTTPONLY": True,
             }
@@ -433,6 +440,7 @@ class BaseHandlerXSRFTestCase(unittest.TestCase):
         self.options.update(
             {
                 "HTTP_COOKIE_DOMAIN": None,
+                "HTTP_COOKIE_SAMESITE": None,
                 "HTTP_COOKIE_SECURE": True,
                 "HTTP_COOKIE_HTTPONLY": True,
             }
@@ -497,6 +505,7 @@ class BaseHandlerResibmissionTestCase(unittest.TestCase):
         self.options.update(
             {
                 "HTTP_COOKIE_DOMAIN": None,
+                "HTTP_COOKIE_SAMESITE": None,
                 "HTTP_COOKIE_SECURE": True,
                 "HTTP_COOKIE_HTTPONLY": True,
             }
@@ -520,6 +529,7 @@ class BaseHandlerResibmissionTestCase(unittest.TestCase):
         self.options.update(
             {
                 "HTTP_COOKIE_DOMAIN": None,
+                "HTTP_COOKIE_SAMESITE": None,
                 "HTTP_COOKIE_SECURE": True,
                 "HTTP_COOKIE_HTTPONLY": True,
             }
@@ -560,6 +570,7 @@ class BaseHandlerResibmissionTestCase(unittest.TestCase):
         self.options.update(
             {
                 "HTTP_COOKIE_DOMAIN": None,
+                "HTTP_COOKIE_SAMESITE": None,
                 "HTTP_COOKIE_SECURE": True,
                 "HTTP_COOKIE_HTTPONLY": True,
             }
@@ -579,6 +590,7 @@ class BaseHandlerResibmissionTestCase(unittest.TestCase):
         self.options.update(
             {
                 "HTTP_COOKIE_DOMAIN": None,
+                "HTTP_COOKIE_SAMESITE": None,
                 "HTTP_COOKIE_SECURE": True,
                 "HTTP_COOKIE_HTTPONLY": True,
             }
