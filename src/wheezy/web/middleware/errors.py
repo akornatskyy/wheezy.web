@@ -10,8 +10,7 @@ from wheezy.web.handlers.base import RedirectRouteHandler
 
 
 class HTTPErrorMiddleware(object):
-    """ http error middleware
-    """
+    """http error middleware"""
 
     def __init__(self, error_mapping, logger, extra_provider=None):
         assert error_mapping is not None
@@ -46,8 +45,7 @@ class HTTPErrorMiddleware(object):
 
 
 def http_error_middleware_factory(options):
-    """ HTTP error middleware factory.
-    """
+    """HTTP error middleware factory."""
     import logging
 
     if "http_errors" in options:
@@ -67,5 +65,7 @@ def http_error_middleware_factory(options):
             logger.setLevel(logging.ERROR)
             logger.addHandler(logging.StreamHandler(sys.stderr))
     return HTTPErrorMiddleware(
-        error_mapping, logger, options.get("http_errors_extra_provider", None),
+        error_mapping,
+        logger,
+        options.get("http_errors_extra_provider", None),
     )

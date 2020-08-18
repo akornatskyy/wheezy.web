@@ -21,12 +21,12 @@ from wheezy.web.handlers.method import MethodHandler
 
 
 class BaseHandler(MethodHandler, ValidationMixin):
-    """ Provides methods that integrate such features like: routing,
-        i18n, model binding, template rendering, authentication,
-        xsrf/resubmission protection.
+    """Provides methods that integrate such features like: routing,
+    i18n, model binding, template rendering, authentication,
+    xsrf/resubmission protection.
 
-        You need inherit this class and define get() and/or post() to
-        be able respond to HTTP requests.
+    You need inherit this class and define get() and/or post() to
+    be able respond to HTTP requests.
     """
 
     @attribute
@@ -321,16 +321,14 @@ class BaseHandler(MethodHandler, ValidationMixin):
 
 
 def redirect_handler(route_name, **route_args):
-    """ Redirects to given route name (HTTP status code 302).
-    """
+    """Redirects to given route name (HTTP status code 302)."""
     return lambda request: RedirectRouteHandler(
         request, route_name, **route_args
     )
 
 
 class RedirectRouteHandler(BaseHandler):
-    """ Redirects to given route name (HTTP status code 302).
-    """
+    """Redirects to given route name (HTTP status code 302)."""
 
     def __init__(self, request, route_name, **route_args):
         self.route_name = route_name
@@ -345,8 +343,8 @@ class RedirectRouteHandler(BaseHandler):
 
 
 def permanent_redirect_handler(route_name, **route_args):
-    """ Performs permanent redirect (HTTP status code 301) to given route
-        name.
+    """Performs permanent redirect (HTTP status code 301) to given route
+    name.
     """
     return lambda request: PermanentRedirectRouteHandler(
         request, route_name, **route_args
@@ -354,8 +352,8 @@ def permanent_redirect_handler(route_name, **route_args):
 
 
 class PermanentRedirectRouteHandler(BaseHandler):
-    """ Performs permanent redirect (HTTP status code 301) to given route
-        name.
+    """Performs permanent redirect (HTTP status code 301) to given route
+    name.
     """
 
     def __init__(self, request, route_name, **route_args):

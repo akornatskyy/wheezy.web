@@ -99,7 +99,11 @@ engine = Engine(
 engine.global_vars.update({"__version__": __version__})
 engine = Engine(
     loader=PreprocessLoader(engine),
-    extensions=[CoreExtension(), WidgetExtension(), WhitespaceExtension(),],
+    extensions=[
+        CoreExtension(),
+        WidgetExtension(),
+        WhitespaceExtension(),
+    ],
 )
 engine.global_vars.update({"format_value": format_value, "h": html_escape})
 options.update({"render_template": WheezyTemplate(engine)})

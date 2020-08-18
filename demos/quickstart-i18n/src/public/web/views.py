@@ -11,8 +11,7 @@ from wheezy.web.transforms import handler_transforms
 
 
 class PublicHandler(BaseHandler):
-    """ Anything common for public area handlers goes here.
-    """
+    """Anything common for public area handlers goes here."""
 
     @attribute
     def translation(self):

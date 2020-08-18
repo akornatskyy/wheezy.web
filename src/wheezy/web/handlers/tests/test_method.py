@@ -7,16 +7,15 @@ from mock import Mock, patch
 
 
 class MethodHandlerTestCase(unittest.TestCase):
-    """ Test the ``MethodHandler``.
-    """
+    """Test the ``MethodHandler``."""
 
     def setUp(self):
         self.mock_request = Mock()
         self.mock_request.environ = {"route_args": {}}
 
     def test_call_default_response(self):
-        """ Ensure HTTP request method is dispatched correctly
-            with default HTTP response status code 405.
+        """Ensure HTTP request method is dispatched correctly
+        with default HTTP response status code 405.
         """
         from wheezy.web.handlers.method import MethodHandler
 
@@ -26,8 +25,8 @@ class MethodHandlerTestCase(unittest.TestCase):
             assert 405 == response.status_code
 
     def test_call_unknown_http_method(self):
-        """ Ensure HTTP request method is dispatched correctly
-            in case HTTP request method is not supported.
+        """Ensure HTTP request method is dispatched correctly
+        in case HTTP request method is not supported.
         """
         from wheezy.web.handlers.method import MethodHandler
 
@@ -36,8 +35,7 @@ class MethodHandlerTestCase(unittest.TestCase):
         assert 405 == response.status_code
 
     def test_call(self):
-        """ Ensure HTTP request method is dispatched correctly.
-        """
+        """Ensure HTTP request method is dispatched correctly."""
         from wheezy.web.handlers.method import MethodHandler
 
         for method in ["GET", "POST", "HEAD"]:
@@ -52,8 +50,7 @@ class MethodHandlerTestCase(unittest.TestCase):
             patcher.stop()
 
     def test_extend_response_with_cookies(self):
-        """ Ensure response cookies are extended with handler cookies.
-        """
+        """Ensure response cookies are extended with handler cookies."""
         from wheezy.web.handlers.method import MethodHandler
 
         self.mock_request.method = "GET"

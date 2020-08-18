@@ -8,8 +8,7 @@ from wheezy.http.functional import BenchmarkMixin
 
 class PublicBenchmarkTestCase(PublicTestCase, ErrorTestCase, BenchmarkMixin):
     def runTest(self):  # noqa: N802
-        """ Perform bachmark and print results.
-        """
+        """Perform bachmark and print results."""
         b = self.benchmark(
             (
                 self.test_root,
@@ -36,8 +35,7 @@ class StaticFilesBenchmarkTestCase(
     PublicTestCase, ErrorTestCase, BenchmarkMixin
 ):
     def runTest(self):  # noqa: N802
-        """ Perform bachmark and print results.
-        """
+        """Perform bachmark and print results."""
         b = self.benchmark(
             (
                 self.test_static_files,

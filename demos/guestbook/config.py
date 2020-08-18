@@ -32,7 +32,10 @@ options.update({"http_cache": cache})
 searchpath = ["templates"]
 engine = Engine(
     loader=FileLoader(searchpath),
-    extensions=[CoreExtension(), WidgetExtension(),],
+    extensions=[
+        CoreExtension(),
+        WidgetExtension(),
+    ],
 )
 engine.global_vars.update({"h": html_escape, "s": lambda s: s})
 options.update({"render_template": WheezyTemplate(engine)})

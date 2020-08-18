@@ -10,8 +10,7 @@ rootdir = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 
 
 class FileHandlerTestCase(unittest.TestCase):
-    """ Test the ``FileHandler``.
-    """
+    """Test the ``FileHandler``."""
 
     def setUp(self):
         from wheezy.web.handlers.file import FileHandler
@@ -28,30 +27,27 @@ class FileHandlerTestCase(unittest.TestCase):
         )
 
     def test_get_out_of_root_path(self):
-        """ if requested file is not within root directory
-            respond with HTTP forbidden.
+        """if requested file is not within root directory
+        respond with HTTP forbidden.
         """
         self.route_args["path"] = "../forbidden.txt"
         response = self.handler.get()
         assert 403 == response.status_code
 
     def test_get_not_found(self):
-        """ Requested file not found, respond with HTTP not found.
-        """
+        """Requested file not found, respond with HTTP not found."""
         self.route_args["path"] = "not_found.txt"
         response = self.handler.get()
         assert 404 == response.status_code
 
     def test_get_not_a_file(self):
-        """ Requested path is valid but it is not a file.
-        """
+        """Requested path is valid but it is not a file."""
         self.route_args["path"] = "tests"
         response = self.handler.get()
         assert 403 == response.status_code
 
     def test_get_file(self):
-        """ Requested path is valid.
-        """
+        """Requested path is valid."""
         self.route_args["path"] = "tests/test_file.py"
         response = self.handler.get()
         assert 200 == response.status_code
@@ -59,8 +55,7 @@ class FileHandlerTestCase(unittest.TestCase):
         assert response.encoding is None
 
     def test_head(self):
-        """ Requested with HTTP HEAD method.
-        """
+        """Requested with HTTP HEAD method."""
         self.route_args["path"] = "tests/test_file.py"
         response = self.handler.head()
         assert 200 == response.status_code
@@ -68,8 +63,7 @@ class FileHandlerTestCase(unittest.TestCase):
 
 
 class FileHandlerFactoryTestCase(unittest.TestCase):
-    """ Test the ``file_handler``.
-    """
+    """Test the ``file_handler``."""
 
     def setUp(self):
         self.options = {}
@@ -81,8 +75,7 @@ class FileHandlerFactoryTestCase(unittest.TestCase):
         self.mock_request.root_path = "my_site/"
 
     def test_get(self):
-        """ get.
-        """
+        """get."""
         from wheezy.web.handlers.file import file_handler
 
         self.route_args["path"] = "tests/test_file.py"

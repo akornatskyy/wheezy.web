@@ -5,8 +5,7 @@ from wheezy.core.collections import attrdict
 
 
 class PathRoutingMiddleware(object):
-    """ path routing middleware
-    """
+    """path routing middleware"""
 
     __slots__ = "match"
 
@@ -26,6 +25,5 @@ class PathRoutingMiddleware(object):
 
 
 def path_routing_middleware_factory(options):
-    """ PathRouting middleware factory.
-    """
+    """PathRouting middleware factory."""
     return PathRoutingMiddleware(options["path_router"])

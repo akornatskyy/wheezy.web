@@ -3,8 +3,7 @@
 
 
 class MakoTemplate(object):
-    """ Integration with Mako templates.
-    """
+    """Integration with Mako templates."""
 
     __slots__ = "template_lookup"
 
@@ -70,8 +69,7 @@ class MakoCacheImpl(object):
 
 
 class TenjinTemplate(object):
-    """ Integration with Tenjin templates.
-    """
+    """Integration with Tenjin templates."""
 
     __slots__ = ("engine", "helpers")
 
@@ -120,8 +118,7 @@ class TenjinTemplate(object):
 
 
 class Jinja2Template(object):
-    """ Integration with Jinja2 templates.
-    """
+    """Integration with Jinja2 templates."""
 
     def __init__(self, env):
         assert env
@@ -132,8 +129,7 @@ class Jinja2Template(object):
 
 
 class WheezyTemplate(object):
-    """ Integration with wheezy.template.
-    """
+    """Integration with wheezy.template."""
 
     def __init__(self, engine):
         assert engine

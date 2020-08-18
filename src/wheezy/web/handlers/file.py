@@ -11,8 +11,7 @@ HTTP_HEADER_ACCEPT_RANGE_NONE = ("Accept-Ranges", "none")
 
 
 def file_handler(root):
-    """ Serves static files out of some directory.
-    """
+    """Serves static files out of some directory."""
     abspath = os.path.abspath(root)
     assert os.path.exists(abspath)
     assert os.path.isdir(abspath)
@@ -20,8 +19,7 @@ def file_handler(root):
 
 
 class FileHandler(MethodHandler):
-    """ Serves static files out of some directory.
-    """
+    """Serves static files out of some directory."""
 
     def __init__(self, request, root):
         self.root = root

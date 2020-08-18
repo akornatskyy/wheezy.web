@@ -7,15 +7,14 @@ from mock import Mock
 
 
 class HandlerTransformsTestCase(unittest.TestCase):
-    """ Test the ``handler_transforms``.
-    """
+    """Test the ``handler_transforms``."""
 
     def test_single_strategy(self):
-        """ A single transform supplied.
+        """A single transform supplied.
 
-            @transforms(gzip)
-            get(self):
-                ...
+        @transforms(gzip)
+        get(self):
+            ...
         """
         from wheezy.web.transforms import handler_transforms
 
@@ -30,11 +29,11 @@ class HandlerTransformsTestCase(unittest.TestCase):
         assert "response-transformed" == handler(mock_handler)
 
     def test_multiple_strategy(self):
-        """ A multiple transforms supplied.
+        """A multiple transforms supplied.
 
-            @transforms(minimize, gzip)
-            get(self):
-                ...
+        @transforms(minimize, gzip)
+        get(self):
+            ...
         """
         from wheezy.web.transforms import handler_transforms
 

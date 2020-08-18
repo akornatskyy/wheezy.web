@@ -7,8 +7,7 @@ from mock import Mock, patch
 
 
 class BaseHandlerTestCase(unittest.TestCase):
-    """ Test the ``BaseHandler``.
-    """
+    """Test the ``BaseHandler``."""
 
     def setUp(self):
         from wheezy.core.url import urlparts
@@ -38,8 +37,7 @@ class BaseHandlerTestCase(unittest.TestCase):
         assert isinstance(self.handler, BaseHandler)
 
     def test_context(self):
-        """ context
-        """
+        """context"""
         context = self.handler.context
         assert ("errors", "locale", "principal") == tuple(
             sorted(context.keys())
@@ -47,8 +45,7 @@ class BaseHandlerTestCase(unittest.TestCase):
 
 
 class BaseHandlerRoutingTestCase(unittest.TestCase):
-    """ Test the ``BaseHandler`` routing.
-    """
+    """Test the ``BaseHandler`` routing."""
 
     def setUp(self):
         from wheezy.core.url import urlparts
@@ -68,8 +65,7 @@ class BaseHandlerRoutingTestCase(unittest.TestCase):
         assert isinstance(self.handler, BaseHandler)
 
     def test_path_for(self):
-        """ path_for.
-        """
+        """path_for."""
         mock_path_for = Mock(return_value="welcome")
         self.options["path_for"] = mock_path_for
 
@@ -77,8 +73,7 @@ class BaseHandlerRoutingTestCase(unittest.TestCase):
         mock_path_for.assert_called_once_with("default")
 
     def test_absolute_url_for(self):
-        """ absolute_url_for.
-        """
+        """absolute_url_for."""
         mock_path_for = Mock(return_value="welcome")
         self.options["path_for"] = mock_path_for
 
@@ -87,8 +82,7 @@ class BaseHandlerRoutingTestCase(unittest.TestCase):
         mock_path_for.assert_called_once_with("default")
 
     def test_redirect_and_see_other(self):
-        """ redirect_for and see_other: non-ajax request.
-        """
+        """redirect_for and see_other: non-ajax request."""
         mock_path_for = Mock(return_value="welcome")
         self.options["path_for"] = mock_path_for
         self.mock_request.ajax = False
@@ -104,8 +98,7 @@ class BaseHandlerRoutingTestCase(unittest.TestCase):
         assert "https://python.org/my_site/welcome" == url
 
     def test_ajax_redirect_see_other(self):
-        """ redirect_for and see_other_fori: ajax request.
-        """
+        """redirect_for and see_other_fori: ajax request."""
         mock_path_for = Mock(return_value="welcome")
         self.options["path_for"] = mock_path_for
         self.mock_request.ajax = True
@@ -122,8 +115,7 @@ class BaseHandlerRoutingTestCase(unittest.TestCase):
 
 
 class BaseHandlerI18NTestCase(unittest.TestCase):
-    """ Test the ``BaseHandler`` i18n.
-    """
+    """Test the ``BaseHandler`` i18n."""
 
     def setUp(self):
         from wheezy.web.handlers.base import BaseHandler
@@ -137,46 +129,40 @@ class BaseHandlerI18NTestCase(unittest.TestCase):
         assert isinstance(self.handler, BaseHandler)
 
     def test_locale(self):
-        """ Ensure default implemenation takes locale from route_args.
-        """
+        """Ensure default implemenation takes locale from route_args."""
         self.handler.route_args["locale"] = "en"
         assert "en" == self.handler.locale
 
     def test_no_locale(self):
-        """ Ensure default implemenation takes locale from route_args.
-        """
+        """Ensure default implemenation takes locale from route_args."""
         assert "" == self.handler.locale
 
     def test_translations(self):
-        """ Translations returned per current locale.
-        """
+        """Translations returned per current locale."""
         translations_manager = {"en": "en-trans", "uk": "uk-trans"}
         self.handler.route_args["locale"] = "uk"
         self.options["translations_manager"] = translations_manager
         assert "uk-trans" == self.handler.translations
 
     def test_translation(self):
-        """ By default null_translation returned. Classes drived
-            from BaseHandler must override this property.
+        """By default null_translation returned. Classes drived
+        from BaseHandler must override this property.
         """
         from wheezy.core.i18n import null_translations
 
         assert null_translations == self.handler.translation
 
     def test_gettext(self):
-        """ gettext.
-        """
+        """gettext."""
         assert "x" == self.handler.gettext("x")
 
     def test_gettext2(self):
-        """ _.
-        """
+        """_."""
         assert "x" == self.handler._("x")
 
 
 class BaseHandlerModelsTestCase(unittest.TestCase):
-    """ Test the ``BaseHandler`` models.
-    """
+    """Test the ``BaseHandler`` models."""
 
     def setUp(self):
         from wheezy.web.handlers.base import BaseHandler
@@ -190,13 +176,11 @@ class BaseHandlerModelsTestCase(unittest.TestCase):
         assert isinstance(self.handler, BaseHandler)
 
     def test_errors(self):
-        """ errors is an empty dict.
-        """
+        """errors is an empty dict."""
         assert {} == self.handler.errors
 
     def test_try_update_model(self):
-        """ try_update_model
-        """
+        """try_update_model"""
         from wheezy.core.i18n import null_translations
 
         translations_manager = {"en": {"validation": null_translations}}
@@ -209,8 +193,7 @@ class BaseHandlerModelsTestCase(unittest.TestCase):
 
 
 class BaseHandlerTemplatesTestCase(unittest.TestCase):
-    """ Test the ``BaseHandler`` templates.
-    """
+    """Test the ``BaseHandler`` templates."""
 
     def setUp(self):
         from wheezy.web.handlers.base import BaseHandler
@@ -226,8 +209,7 @@ class BaseHandlerTemplatesTestCase(unittest.TestCase):
         assert isinstance(self.handler, BaseHandler)
 
     def test_helpers(self):
-        """ template helpers.
-        """
+        """template helpers."""
         assert (
             "_",
             "absolute_url_for",
@@ -241,16 +223,14 @@ class BaseHandlerTemplatesTestCase(unittest.TestCase):
         ) == tuple(sorted(self.handler.helpers.keys()))
 
     def test_render_template(self):
-        """ render_template.
-        """
+        """render_template."""
         mock_render_template = Mock(return_value="html")
         self.options["render_template"] = mock_render_template
         assert "html" == self.handler.render_template("signin.html")
         assert mock_render_template.called
 
     def test_render_template_with_kwargs(self):
-        """ render_template with optional data arguments.
-        """
+        """render_template with optional data arguments."""
 
         def render_template(template_name, data):
             assert "signin.html" == template_name
@@ -261,8 +241,7 @@ class BaseHandlerTemplatesTestCase(unittest.TestCase):
         assert "html" == self.handler.render_template("signin.html", test=10)
 
     def test_render_response(self):
-        """ render_response.
-        """
+        """render_response."""
         mock_render_template = Mock(return_value="html")
         self.options.update(
             {
@@ -277,8 +256,7 @@ class BaseHandlerTemplatesTestCase(unittest.TestCase):
         assert "text/plain" == response.content_type
 
     def test_json_response(self):
-        """ json_response.
-        """
+        """json_response."""
         from wheezy.web.handlers import base
 
         self.options.update({"ENCODING": "UTF-8"})
@@ -293,8 +271,7 @@ class BaseHandlerTemplatesTestCase(unittest.TestCase):
 
 
 class BaseHandlerAuthenticationTestCase(unittest.TestCase):
-    """ Test the ``BaseHandler`` authentication.
-    """
+    """Test the ``BaseHandler`` authentication."""
 
     def setUp(self):
         from wheezy.web.handlers.base import BaseHandler
@@ -318,13 +295,11 @@ class BaseHandlerAuthenticationTestCase(unittest.TestCase):
         assert isinstance(self.handler, BaseHandler)
 
     def test_getprincipal_auth_cookie_not_available(self):
-        """ auth cookie has not been supplied in request.
-        """
+        """auth cookie has not been supplied in request."""
         assert self.handler.getprincipal() is None
 
     def test_getprincipal_auth_cookie_expired(self):
-        """ auth cookie has been expired.
-        """
+        """auth cookie has been expired."""
         self.mock_request.cookies["_a"] = "x"
         mock_ticket = Mock()
         mock_ticket.decode.return_value = (None, None)
@@ -338,8 +313,7 @@ class BaseHandlerAuthenticationTestCase(unittest.TestCase):
         assert "python.org" == cookie.domain
 
     def test_getprincipal_renew_ticket(self):
-        """ ticket decoded but needs renewal.
-        """
+        """ticket decoded but needs renewal."""
         self.mock_request.cookies["_a"] = "x"
         mock_ticket = Mock()
         mock_ticket.max_age = 100
@@ -357,8 +331,7 @@ class BaseHandlerAuthenticationTestCase(unittest.TestCase):
         assert "python.org" == cookie.domain
 
     def test_getprincipal_valid_ticket(self):
-        """ ticket decoded.
-        """
+        """ticket decoded."""
         self.mock_request.cookies["_a"] = "x"
         mock_ticket = Mock()
         mock_ticket.max_age = 100
@@ -372,8 +345,7 @@ class BaseHandlerAuthenticationTestCase(unittest.TestCase):
 
 
 class BaseHandlerXSRFTestCase(unittest.TestCase):
-    """ Test the ``BaseHandler`` XSRF.
-    """
+    """Test the ``BaseHandler`` XSRF."""
 
     def setUp(self):
         from wheezy.web.handlers.base import BaseHandler
@@ -389,8 +361,7 @@ class BaseHandlerXSRFTestCase(unittest.TestCase):
         assert isinstance(self.handler, BaseHandler)
 
     def test_getxsrf_cookie_not_available(self):
-        """ XSRF cookie was not supplied with request.
-        """
+        """XSRF cookie was not supplied with request."""
         from wheezy.web.handlers import base
 
         self.options.update(
@@ -411,15 +382,13 @@ class BaseHandlerXSRFTestCase(unittest.TestCase):
         assert "xsrf" == cookie.value
 
     def test_getxsrf_cookie(self):
-        """ XSRF cookie was not supplied with request.
-        """
+        """XSRF cookie was not supplied with request."""
         self.mock_request.cookies["_x"] = "xsrf"
         assert "xsrf" == self.handler.getxsrf_token()
         assert "xsrf" == self.handler.xsrf_token
 
     def test_del_xsrf_cookie(self):
-        """ delxsrf_token.
-        """
+        """delxsrf_token."""
         self.options.update(
             {
                 "HTTP_COOKIE_DOMAIN": None,
@@ -434,8 +403,8 @@ class BaseHandlerXSRFTestCase(unittest.TestCase):
         assert "_x" == cookie.name
 
     def test_validate_xsrf_token_not_in_form(self):
-        """ validate_xsrf_token but it is missing in form
-            submitted.
+        """validate_xsrf_token but it is missing in form
+        submitted.
         """
         self.options.update(
             {
@@ -453,38 +422,34 @@ class BaseHandlerXSRFTestCase(unittest.TestCase):
         assert cookie.value is None
 
     def test_validate_xsrf_token_no_match(self):
-        """ form token does not match cookie value.
-        """
+        """form token does not match cookie value."""
         self.mock_request.cookies["_x"] = "pK8vVOmIT1y_1jUceSmbdA"
         self.mock_request.form = {"_x": ["x"]}
         assert not self.handler.validate_xsrf_token()
 
     def test_validate_xsrf_token_invalid_uuid(self):
-        """ validate_xsrf_token there is match but it is not valid
-            uuid value.
+        """validate_xsrf_token there is match but it is not valid
+        uuid value.
         """
         self.mock_request.cookies["_x"] = "x"
         self.mock_request.form = {"_x": ["x"]}
         assert not self.handler.validate_xsrf_token()
 
     def test_validate_xsrf_token(self):
-        """ validate_xsrf_token.
-        """
+        """validate_xsrf_token."""
         self.mock_request.cookies["_x"] = "pK8vVOmIT1y_1jUceSmbdA"
         self.mock_request.form = {"_x": ["pK8vVOmIT1y_1jUceSmbdA"]}
         assert self.handler.validate_xsrf_token()
 
     def test_xsrf_widget(self):
-        """ xsrf_widget.
-        """
+        """xsrf_widget."""
         self.mock_request.cookies["_x"] = "xsrf"
         widget = self.handler.xsrf_widget()
         assert '<input type="hidden" name="_x" value="xsrf" />' == widget
 
 
 class BaseHandlerResibmissionTestCase(unittest.TestCase):
-    """ Test the ``BaseHandler`` resubmission.
-    """
+    """Test the ``BaseHandler`` resubmission."""
 
     def setUp(self):
         from wheezy.web.handlers.base import BaseHandler
@@ -500,8 +465,7 @@ class BaseHandlerResibmissionTestCase(unittest.TestCase):
         assert isinstance(self.handler, BaseHandler)
 
     def test_getresubmission_not_supplied(self):
-        """ XSRF cookie was not supplied with request.
-        """
+        """XSRF cookie was not supplied with request."""
         self.options.update(
             {
                 "HTTP_COOKIE_DOMAIN": None,
@@ -517,15 +481,13 @@ class BaseHandlerResibmissionTestCase(unittest.TestCase):
         assert "0" == cookie.value
 
     def test_getresubmission(self):
-        """ XSRF cookie supplied with request.
-        """
+        """XSRF cookie supplied with request."""
         self.mock_request.cookies["_r"] = "100"
         assert "100" == self.handler.getresubmission()
         assert "100" == self.handler.resubmission
 
     def test_delresubmission(self):
-        """ delete resubmission cookie.
-        """
+        """delete resubmission cookie."""
         self.options.update(
             {
                 "HTTP_COOKIE_DOMAIN": None,
@@ -542,31 +504,27 @@ class BaseHandlerResibmissionTestCase(unittest.TestCase):
         assert cookie.value is None
 
     def test_validate_resubmission_ajax(self):
-        """ validate_resubmission in ajax request.
-        """
+        """validate_resubmission in ajax request."""
         self.mock_request.ajax = True
         self.mock_request.cookies["_r"] = "123"
         self.mock_request.form = {"_r": ["123"]}
         assert self.handler.validate_resubmission()
 
     def test_validate_resubmission_form_value_missing(self):
-        """ form value is missing.
-        """
+        """form value is missing."""
         self.mock_request.ajax = False
         self.mock_request.form = {}
         assert not self.handler.validate_resubmission()
 
     def test_validate_resubmission_no_match(self):
-        """ form value does not match one in cookie.
-        """
+        """form value does not match one in cookie."""
         self.mock_request.ajax = False
         self.mock_request.cookies["_r"] = "2"
         self.mock_request.form = {"_r": ["1"]}
         assert not self.handler.validate_resubmission()
 
     def test_validate_resubmission_counter_not_int(self):
-        """ counter is not valid integer value.
-        """
+        """counter is not valid integer value."""
         self.options.update(
             {
                 "HTTP_COOKIE_DOMAIN": None,
@@ -585,8 +543,7 @@ class BaseHandlerResibmissionTestCase(unittest.TestCase):
         assert "0" == cookie.value
 
     def test_validate_resubmission(self):
-        """ validate_resubmission.
-        """
+        """validate_resubmission."""
         self.options.update(
             {
                 "HTTP_COOKIE_DOMAIN": None,
@@ -605,16 +562,14 @@ class BaseHandlerResibmissionTestCase(unittest.TestCase):
         assert "248" == cookie.value
 
     def test_resubmission_widget(self):
-        """ resubmission_widget.
-        """
+        """resubmission_widget."""
         self.mock_request.ajax = False
         self.mock_request.cookies["_r"] = "123"
         widget = self.handler.resubmission_widget()
         assert '<input type="hidden" name="_r" value="123" />' == widget
 
     def test_resubmission_ajax(self):
-        """ resubmission_widget in ajax request.
-        """
+        """resubmission_widget in ajax request."""
         self.mock_request.ajax = True
         self.mock_request.cookies["_r"] = "123"
         widget = self.handler.resubmission_widget()
@@ -622,8 +577,7 @@ class BaseHandlerResibmissionTestCase(unittest.TestCase):
 
 
 class RedirectRouteHandlerTestCase(unittest.TestCase):
-    """ Test the ``RedirectRouteHandler``.
-    """
+    """Test the ``RedirectRouteHandler``."""
 
     def setUp(self):
         from wheezy.core.url import urlparts
@@ -646,32 +600,28 @@ class RedirectRouteHandlerTestCase(unittest.TestCase):
         assert isinstance(self.handler, RedirectRouteHandler)
 
     def test_redirect_http_get(self):
-        """ get.
-        """
+        """get."""
         self.mock_request.ajax = False
         response = self.handler.get()
         assert 302 == response.status_code
         assert "https://python.org/my_site/welcome" == response.headers[-1][1]
 
     def test_redirect_http_get_ajax(self):
-        """ get in ajax request.
-        """
+        """get in ajax request."""
         self.mock_request.ajax = True
         response = self.handler.get()
         assert 207 == response.status_code
         assert "https://python.org/my_site/welcome" == response.headers[-1][1]
 
     def test_redirect_http_post(self):
-        """ post.
-        """
+        """post."""
         self.mock_request.ajax = False
         response = self.handler.post()
         assert 302 == response.status_code
         assert "https://python.org/my_site/welcome" == response.headers[-1][1]
 
     def test_redirect_http_post_ajax(self):
-        """ post in ajax request.
-        """
+        """post in ajax request."""
         self.mock_request.ajax = True
         response = self.handler.post()
         assert 207 == response.status_code
@@ -679,8 +629,7 @@ class RedirectRouteHandlerTestCase(unittest.TestCase):
 
 
 class RedirectHandlerTestCase(unittest.TestCase):
-    """ Test the ``redirect_handler``.
-    """
+    """Test the ``redirect_handler``."""
 
     def setUp(self):
         from wheezy.core.url import urlparts
@@ -697,8 +646,7 @@ class RedirectHandlerTestCase(unittest.TestCase):
         )
 
     def test_redirect_http_get(self):
-        """ get.
-        """
+        """get."""
         from wheezy.web.handlers.base import redirect_handler
 
         self.mock_request.method = "GET"
@@ -707,8 +655,7 @@ class RedirectHandlerTestCase(unittest.TestCase):
         assert "https://python.org/my_site/welcome" == response.headers[-1][1]
 
     def test_redirect_http_post(self):
-        """ post.
-        """
+        """post."""
         from wheezy.web.handlers.base import redirect_handler
 
         self.mock_request.method = "POST"
@@ -718,8 +665,7 @@ class RedirectHandlerTestCase(unittest.TestCase):
 
 
 class PermanentRedirectHandlerTestCase(unittest.TestCase):
-    """ Test the ``permanent_redirect_handler``.
-    """
+    """Test the ``permanent_redirect_handler``."""
 
     def setUp(self):
         from wheezy.core.url import urlparts
@@ -736,8 +682,7 @@ class PermanentRedirectHandlerTestCase(unittest.TestCase):
         )
 
     def test_redirect_http_get(self):
-        """ get.
-        """
+        """get."""
         from wheezy.web.handlers.base import permanent_redirect_handler
 
         self.mock_request.method = "GET"
@@ -746,8 +691,7 @@ class PermanentRedirectHandlerTestCase(unittest.TestCase):
         assert "https://python.org/my_site/welcome" == response.headers[-1][1]
 
     def test_redirect_http_post(self):
-        """ post.
-        """
+        """post."""
         from wheezy.web.handlers.base import permanent_redirect_handler
 
         self.mock_request.method = "POST"

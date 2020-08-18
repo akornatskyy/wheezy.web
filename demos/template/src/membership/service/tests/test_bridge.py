@@ -19,8 +19,7 @@ class MembershipServiceTestCase(unittest.TestCase):
 
 class CreateAccountTestCase(MembershipServiceTestCase):
     def test_username_is_taken(self):
-        """ If username is taken return an error.
-        """
+        """If username is taken return an error."""
         r = next_registration(question_id="1")
         f = self.mock_factory
         f.membership.list_password_questions.return_value = (("1", ""),)
@@ -33,8 +32,8 @@ class CreateAccountTestCase(MembershipServiceTestCase):
         f.membership.has_account.assert_called_once_with(r.credential.username)
 
     def test_create_account_failed(self):
-        """ If repository failed to create an account show a friendly
-            message.
+        """If repository failed to create an account show a friendly
+        message.
         """
         r = next_registration(question_id="1")
         f = self.mock_factory
@@ -49,8 +48,7 @@ class CreateAccountTestCase(MembershipServiceTestCase):
         f.membership.has_account.assert_called_once_with(r.credential.username)
 
     def test_succeed(self):
-        """ The account has been created successfully.
-        """
+        """The account has been created successfully."""
         r = next_registration(question_id="1")
         f = self.mock_factory
         f.membership.list_password_questions.return_value = (("1", ""),)

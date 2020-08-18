@@ -225,7 +225,10 @@ elif template_engine == "wheezy.preprocessor":
             ],
         )
         engine.global_vars.update(
-            {"format_value": format_value, "h": html_escape,}
+            {
+                "format_value": format_value,
+                "h": html_escape,
+            }
         )
         return engine
 

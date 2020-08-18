@@ -95,20 +95,17 @@ class MembershipTestCase(unittest.TestCase):
         self.client = None
 
     def test_signin(self):
-        """ Ensure signin page is rendered
-        """
+        """Ensure signin page is rendered"""
         assert 200 == self.client.go("/en/signin")
         assert "- Sign In</title>" in self.client.content
 
     def test_signup(self):
-        """
-        """
+        """"""
         assert 200 == self.client.go("/en/signup")
         assert "- Sign Up</title>" in self.client.content
 
     def test_signout(self):
-        """
-        """
+        """"""
         assert 302 == self.client.go("/en/signout")
 
 
@@ -121,24 +118,21 @@ class SignInTestCase(unittest.TestCase, SignInMixin):
         self.client = None
 
     def test_validation_errors(self):
-        """ Ensure sigin page displays field validation errors.
-        """
+        """Ensure sigin page displays field validation errors."""
         errors = self.signin("", "")
         assert 2 == len(errors)
         assert AUTH_COOKIE not in self.client.cookies
         assert 'class="error"' in self.client.content
 
     def test_unknown_user(self):
-        """ Ensure sigin page displays general error message.
-        """
+        """Ensure sigin page displays general error message."""
         errors = self.signin("test", "password")
         assert not errors
         assert AUTH_COOKIE not in self.client.cookies
         assert 'class="error-message"' in self.client.content
 
     def test_lockout_guard(self):
-        """ Ensure sigin lockout guard is reached.
-        """
+        """Ensure sigin lockout guard is reached."""
         from config import config
 
         mode = config.get("runtime", "lockout")
@@ -162,8 +156,7 @@ class SignInTestCase(unittest.TestCase, SignInMixin):
         assert 403 == self.client.follow()
 
     def test_valid_user(self):
-        """ Ensure sigin is successful.
-        """
+        """Ensure sigin is successful."""
         self.signin("demo", "P@ssw0rd")
         assert 200 == self.client.follow()
         assert AUTH_COOKIE in self.client.cookies
@@ -171,8 +164,8 @@ class SignInTestCase(unittest.TestCase, SignInMixin):
         assert "Welcome <b>demo" in self.client.content
 
     def test_if_authenticated_redirect(self):
-        """ If user is already authenticated redirect
-            to default page.
+        """If user is already authenticated redirect
+        to default page.
         """
         self.signin("demo", "P@ssw0rd")
         assert 200 == self.client.follow()
@@ -191,8 +184,8 @@ class SignInTestCase(unittest.TestCase, SignInMixin):
 
 class SignInAJAX(SignInMixin):
     def test_ajax_validation_errors(self):
-        """ Ensure sigin page displays field validation errors
-            on AJAX call.
+        """Ensure sigin page displays field validation errors
+        on AJAX call.
         """
         assert 200 == self.ajax_signin("", "")
         errors = self.client.json.errors
@@ -200,8 +193,8 @@ class SignInAJAX(SignInMixin):
         assert AUTH_COOKIE not in self.client.cookies
 
     def test_ajax_unknown_user(self):
-        """ Ensure sigin page displays general error message
-            on AJAX call.
+        """Ensure sigin page displays general error message
+        on AJAX call.
         """
         assert 200 == self.ajax_signin("test", "password")
         errors = self.client.json.errors
@@ -209,8 +202,7 @@ class SignInAJAX(SignInMixin):
         assert AUTH_COOKIE not in self.client.cookies
 
     def test_ajax_valid_user(self):
-        """ Ensure sigin is successful.
-        """
+        """Ensure sigin is successful."""
         assert 207 == self.ajax_signin("demo", "P@ssw0rd")
         assert 200 == self.client.follow()
         assert AUTH_COOKIE in self.client.cookies
@@ -252,8 +244,7 @@ class SignOutTestCase(unittest.TestCase, SignInMixin, SignOutMixin):
         self.client = None
 
     def test_signout_user(self):
-        """ Ensure sigout is successful.
-        """
+        """Ensure sigout is successful."""
         self.signin("demo", "P@ssw0rd")
         assert 200 == self.client.follow()
         self.signout()
@@ -270,16 +261,14 @@ class SignUpTestCase(
         self.client = None
 
     def test_validation_errors(self):
-        """ Ensure signup page displays field validation errors.
-        """
+        """Ensure signup page displays field validation errors."""
         errors = self.signup()
         assert 7 == len(errors)
         assert AUTH_COOKIE not in self.client.cookies
         assert 'class="error"' in self.client.content
 
     def test_already_registered(self):
-        """ Ensure signup page displays general error message.
-        """
+        """Ensure signup page displays general error message."""
         errors = self.signup(
             username="demo",
             display_name="Demo",
@@ -294,8 +283,8 @@ class SignUpTestCase(
         assert AUTH_COOKIE not in self.client.cookies
 
     def test_registration_succeed(self):
-        """ Ensure if all supplied information is valid than
-            user is registered and logged in.
+        """Ensure if all supplied information is valid than
+        user is registered and logged in.
         """
         errors = self.signup(
             username="john",
@@ -314,8 +303,7 @@ class SignUpTestCase(
         assert "Welcome <b>John Smith" in self.client.content
 
     def test_lockout_quota(self):
-        """ Ensure signup quata is reached.
-        """
+        """Ensure signup quata is reached."""
         from config import config
 
         mode = config.get("runtime", "lockout")
@@ -364,8 +352,8 @@ class SignUpTestCase(
         assert 403 == self.client.follow()
 
     def test_if_authenticated_redirect(self):
-        """ If user is already authenticated redirect
-            to default page.
+        """If user is already authenticated redirect
+        to default page.
         """
         self.signin("demo", "P@ssw0rd")
         assert 200 == self.client.follow()
@@ -393,8 +381,8 @@ try:
             self.client = None
 
         def test_ajax_validation_errors(self):
-            """ Ensure signup page displays field validation errors
-                on AJAX call.
+            """Ensure signup page displays field validation errors
+            on AJAX call.
             """
             assert 200 == self.ajax_signup()
             errors = self.client.json.errors

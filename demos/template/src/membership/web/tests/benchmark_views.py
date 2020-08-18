@@ -19,10 +19,14 @@ except NotImplementedError:
 
 class MembershipBenchmarkTestCase(MembershipTestCase, BenchmarkMixin):
     def runTest(self):  # noqa: N802
-        """ Perform benchmark and print results.
-        """
+        """Perform benchmark and print results."""
         b = self.benchmark(
-            (self.test_signin, self.test_signup, self.test_signout,), 1000
+            (
+                self.test_signin,
+                self.test_signup,
+                self.test_signout,
+            ),
+            1000,
         )
         b.report(
             "membership",
@@ -36,8 +40,7 @@ class MembershipBenchmarkTestCase(MembershipTestCase, BenchmarkMixin):
 
 class SigninBenchmarkTestCase(SignInTestCase, BenchmarkMixin):
     def runTest(self):  # noqa: N802
-        """ Perform benchmark and print results.
-        """
+        """Perform benchmark and print results."""
         b = self.benchmark(
             [self.test_validation_errors, self.test_xrsf_token_invalid], 200
         )
@@ -52,8 +55,7 @@ class SigninBenchmarkTestCase(SignInTestCase, BenchmarkMixin):
 
 class SignupBenchmarkTestCase(SignUpTestCase, BenchmarkMixin):
     def runTest(self):  # noqa: N802
-        """ Perform benchmark and print results.
-        """
+        """Perform benchmark and print results."""
         b = self.benchmark(
             [
                 self.test_validation_errors,
@@ -80,8 +82,7 @@ try:
 
     class SigninAJAXBenchmarkTestCase(SignInAJAXTestCase, BenchmarkMixin):
         def runTest(self):  # noqa: N802
-            """ Perform benchmark and print results.
-            """
+            """Perform benchmark and print results."""
             b = self.benchmark(
                 [
                     self.test_ajax_validation_errors,
@@ -99,8 +100,7 @@ try:
 
     class SignupAJAXBenchmarkTestCase(SignUpAJAXTestCase, BenchmarkMixin):
         def runTest(self):  # noqa: N802
-            """ Perform benchmark and print results.
-            """
+            """Perform benchmark and print results."""
             b = self.benchmark([self.test_ajax_validation_errors], 100)
             b.report(
                 "ajax-signup", baselines={"test_ajax_validation_error": 1.0}

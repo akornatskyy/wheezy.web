@@ -7,9 +7,9 @@ new = object.__new__
 
 
 class MethodHandler(object):
-    """ Represents the most generic handler. It serves dispatcher purpose
-        for HTTP request method (GET, POST, etc). Base class for all
-        handlers.
+    """Represents the most generic handler. It serves dispatcher purpose
+    for HTTP request method (GET, POST, etc). Base class for all
+    handlers.
     """
 
     def __new__(cls, *args, **kwargs):
@@ -38,18 +38,15 @@ class MethodHandler(object):
         return response
 
     def head(self):
-        """ Responds to HTTP HEAD requests.
-        """
+        """Responds to HTTP HEAD requests."""
         return method_not_allowed()
 
     def get(self):
-        """ Responds to HTTP GET requests.
-        """
+        """Responds to HTTP GET requests."""
         return method_not_allowed()
 
     def post(self):
-        """ Responds to HTTP POST requests.
-        """
+        """Responds to HTTP POST requests."""
         return method_not_allowed()
 
 

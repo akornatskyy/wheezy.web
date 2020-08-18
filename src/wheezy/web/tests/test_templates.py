@@ -7,8 +7,7 @@ from mock import Mock, patch
 
 
 class MakoTemplateTestCase(unittest.TestCase):
-    """ Test the ``MakoTemplate``.
-    """
+    """Test the ``MakoTemplate``."""
 
     def setUp(self):
         from mako import cache, lookup
@@ -23,8 +22,7 @@ class MakoTemplateTestCase(unittest.TestCase):
         self.patcher_cache.stop()
 
     def test_init_with_defaults(self):
-        """ Check __init__ with all default values.
-        """
+        """Check __init__ with all default values."""
         from wheezy.web.templates import MakoTemplate
 
         assert MakoTemplate()
@@ -35,8 +33,7 @@ class MakoTemplateTestCase(unittest.TestCase):
         )
 
     def test_init_with_cache(self):
-        """ Check __init__ with specified cache
-        """
+        """Check __init__ with specified cache"""
         from wheezy.web.templates import MakoTemplate
 
         assert MakoTemplate(cache="mock_cache")
@@ -51,8 +48,7 @@ class MakoTemplateTestCase(unittest.TestCase):
         )
 
     def test_render(self):
-        """ __call__.
-        """
+        """__call__."""
         from wheezy.web.templates import MakoTemplate
 
         gt = self.mock_template_lookup_class.return_value.get_template
@@ -65,8 +61,7 @@ class MakoTemplateTestCase(unittest.TestCase):
 
 
 class MakoCacheImplTestCase(unittest.TestCase):
-    """ Test the ``MakoCacheImpl``.
-    """
+    """Test the ``MakoCacheImpl``."""
 
     def setUp(self):
         from wheezy.web.templates import MakoCacheImpl
@@ -78,14 +73,12 @@ class MakoCacheImplTestCase(unittest.TestCase):
         self.cache = MakoCacheImpl(mock_mako_cache)
 
     def test_init(self):
-        """ __init__.
-        """
+        """__init__."""
         assert "prefix-" == self.cache.prefix
         assert self.mock_cache == self.cache.cache
 
     def test_not_implemented(self):
-        """ set, get and invalidate raise error.
-        """
+        """set, get and invalidate raise error."""
         self.assertRaises(
             NotImplementedError, lambda: self.cache.set("key", 1)
         )
@@ -95,8 +88,7 @@ class MakoCacheImplTestCase(unittest.TestCase):
         )
 
     def test_get_or_create_missing_in_cache(self):
-        """ Requested item is missing in cache.
-        """
+        """Requested item is missing in cache."""
         self.mock_cache.get.return_value = None
         mock_creation_function = Mock(return_value="html")
         assert "html" == self.cache.get_or_create(
@@ -108,8 +100,7 @@ class MakoCacheImplTestCase(unittest.TestCase):
         )
 
     def test_get_or_create_found_in_cache(self):
-        """ Requested item found in cache.
-        """
+        """Requested item found in cache."""
         self.mock_cache.get.return_value = "html"
         mock_creation_function = Mock()
         assert "html" == self.cache.get_or_create(
@@ -120,8 +111,7 @@ class MakoCacheImplTestCase(unittest.TestCase):
 
 
 class TenjinTemplateTestCase(unittest.TestCase):
-    """ Test the ``TenjinTemplate``.
-    """
+    """Test the ``TenjinTemplate``."""
 
     def setUp(self):
         import tenjin
@@ -139,8 +129,7 @@ class TenjinTemplateTestCase(unittest.TestCase):
         self.patcher_encoding.stop()
 
     def test_init_with_defaults(self):
-        """ Check __init__ with all default values.
-        """
+        """Check __init__ with all default values."""
         from wheezy.web.templates import TenjinTemplate
 
         template = TenjinTemplate()
@@ -163,8 +152,7 @@ class TenjinTemplateTestCase(unittest.TestCase):
         )
 
     def test_init_with_helpers(self):
-        """ Check __init__ with helpers values.
-        """
+        """Check __init__ with helpers values."""
         from wheezy.web.templates import TenjinTemplate
 
         helpers = {
@@ -179,8 +167,7 @@ class TenjinTemplateTestCase(unittest.TestCase):
         assert helpers == template.helpers
 
     def test_render(self):
-        """ __call__.
-        """
+        """__call__."""
         from wheezy.web.templates import TenjinTemplate
 
         mock_render = self.mock_engine.return_value.render
@@ -193,19 +180,16 @@ class TenjinTemplateTestCase(unittest.TestCase):
 
 
 class Jinja2TemplateTestCase(unittest.TestCase):
-    """ Test the ``Jinja2Template``.
-    """
+    """Test the ``Jinja2Template``."""
 
     def test_init(self):
-        """ Assert environment is not None
-        """
+        """Assert environment is not None"""
         from wheezy.web.templates import Jinja2Template
 
         self.assertRaises(AssertionError, lambda: Jinja2Template(None))
 
     def test_render(self):
-        """ __call__.
-        """
+        """__call__."""
         from wheezy.web.templates import Jinja2Template
 
         mock_env = Mock()
@@ -218,19 +202,16 @@ class Jinja2TemplateTestCase(unittest.TestCase):
 
 
 class WheezyTemplateTestCase(unittest.TestCase):
-    """ Test the ``WheezyTemplate``.
-    """
+    """Test the ``WheezyTemplate``."""
 
     def test_init(self):
-        """ Assert environment is not None
-        """
+        """Assert environment is not None"""
         from wheezy.web.templates import WheezyTemplate
 
         self.assertRaises(AssertionError, lambda: WheezyTemplate(None))
 
     def test_render(self):
-        """ __call__.
-        """
+        """__call__."""
         from wheezy.web.templates import WheezyTemplate
 
         mock_engine = Mock()

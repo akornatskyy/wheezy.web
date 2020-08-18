@@ -7,8 +7,7 @@ from wheezy.http import bootstrap_http_defaults
 
 
 def bootstrap_defaults(url_mapping=None):
-    """ Defaults bootstrap.
-    """
+    """Defaults bootstrap."""
 
     def load(options):
         bootstrap_http_defaults(options)

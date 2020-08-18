@@ -7,12 +7,10 @@ from mock import Mock
 
 
 class HTTPErrorMiddlewareTestCase(unittest.TestCase):
-    """ Test the ``HTTPErrorMiddleware``.
-    """
+    """Test the ``HTTPErrorMiddleware``."""
 
     def test_following_response_is_none(self):
-        """ The following middleware returns None as response.
-        """
+        """The following middleware returns None as response."""
         from wheezy.web.middleware.errors import HTTPErrorMiddleware
 
         mock_request = Mock()
@@ -23,8 +21,8 @@ class HTTPErrorMiddlewareTestCase(unittest.TestCase):
         assert 404 == response.status_code
 
     def test_response_status_code_is_below_400(self):
-        """ The following middleware returns response
-            with HTTP status code less than 400.
+        """The following middleware returns response
+        with HTTP status code less than 400.
         """
         from wheezy.web.middleware.errors import HTTPErrorMiddleware
 
@@ -37,8 +35,7 @@ class HTTPErrorMiddlewareTestCase(unittest.TestCase):
         assert 200 == response.status_code
 
     def test_following_raises_error(self):
-        """ The following middleware raises unhandled error.
-        """
+        """The following middleware raises unhandled error."""
         from wheezy.web.middleware.errors import HTTPErrorMiddleware
 
         mock_request = Mock()
@@ -52,8 +49,7 @@ class HTTPErrorMiddlewareTestCase(unittest.TestCase):
         assert mock_logger.error.called
 
     def test_following_raises_error_extra_info(self):
-        """ Ensure extra provider is called.
-        """
+        """Ensure extra provider is called."""
         from wheezy.web.middleware.errors import HTTPErrorMiddleware
 
         mock_request = Mock()
@@ -71,8 +67,8 @@ class HTTPErrorMiddlewareTestCase(unittest.TestCase):
         assert mock_logger.error.called
 
     def test_following_error_pass_through(self):
-        """ The following middleware raises error that pass
-            through error middleware.
+        """The following middleware raises error that pass
+        through error middleware.
         """
         from wheezy.web.middleware.errors import HTTPErrorMiddleware
 
@@ -86,8 +82,8 @@ class HTTPErrorMiddlewareTestCase(unittest.TestCase):
             )
 
     def test_following_response_needs_redirect(self):
-        """ The following middleware returns error status
-            that needs redirection to error page.
+        """The following middleware returns error status
+        that needs redirection to error page.
         """
         from wheezy.web.middleware.errors import HTTPErrorMiddleware
 
@@ -105,20 +101,17 @@ class HTTPErrorMiddlewareTestCase(unittest.TestCase):
 
 
 class HTTPErrorMiddlewareFactoryTestCase(unittest.TestCase):
-    """ Test the ``http_error_middleware_factory``.
-    """
+    """Test the ``http_error_middleware_factory``."""
 
     def test_http_errors_undefined(self):
-        """ http_errors options is undefined.
-        """
+        """http_errors options is undefined."""
         from wheezy.web.middleware.errors import http_error_middleware_factory
 
         middleware = http_error_middleware_factory({})
         assert middleware
 
     def test_http_errors(self):
-        """ http_errors.
-        """
+        """http_errors."""
         from wheezy.core.collections import defaultdict
         from wheezy.web.middleware.errors import http_error_middleware_factory
 
@@ -134,8 +127,7 @@ class HTTPErrorMiddlewareFactoryTestCase(unittest.TestCase):
         assert middleware
 
     def test_logger_defined(self):
-        """ logger is available in options.
-        """
+        """logger is available in options."""
         from wheezy.web.middleware.errors import http_error_middleware_factory
 
         middleware = http_error_middleware_factory(

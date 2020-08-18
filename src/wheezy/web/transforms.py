@@ -3,8 +3,8 @@
 
 
 def handler_transforms(*transforms):
-    """ Transforms is a way to manipulate handler response
-        accordingly to some algorithm.
+    """Transforms is a way to manipulate handler response
+    accordingly to some algorithm.
     """
 
     def decorate(factory):

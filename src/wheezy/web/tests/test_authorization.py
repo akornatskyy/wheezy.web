@@ -7,15 +7,14 @@ from mock import Mock
 
 
 class AuthorizeTestCase(unittest.TestCase):
-    """ Test the ``authorize``.
-    """
+    """Test the ``authorize``."""
 
     def test_check_not_authenticated(self):
-        """ Check if call is not authenticated.
+        """Check if call is not authenticated.
 
-            @authorize
-            def get(self):
-                ...
+        @authorize
+        def get(self):
+            ...
         """
         from wheezy.web.authorization import authorize
 
@@ -27,11 +26,11 @@ class AuthorizeTestCase(unittest.TestCase):
         assert 401 == response.status_code
 
     def test_check_authenticated(self):
-        """ Check if call is authenticated.
+        """Check if call is authenticated.
 
-            @authorize
-            def get(self):
-                ...
+        @authorize
+        def get(self):
+            ...
         """
         from wheezy.web.authorization import authorize
 
@@ -43,11 +42,11 @@ class AuthorizeTestCase(unittest.TestCase):
         mock_handler_method.assert_called_once_with(mock_handler)
 
     def test_check_authorized_but_not_authenticated(self):
-        """ Check if call is authenticated
+        """Check if call is authenticated
 
-            @authorize(roles=('admin',))
-            def get(self):
-                ...
+        @authorize(roles=('admin',))
+        def get(self):
+            ...
         """
         from wheezy.web.authorization import authorize
 
@@ -59,11 +58,11 @@ class AuthorizeTestCase(unittest.TestCase):
         assert 401 == response.status_code
 
     def test_check_not_authorized(self):
-        """ Check if call is not authorized.
+        """Check if call is not authorized.
 
-            @authorize(roles=('admin',))
-            def get(self):
-                ...
+        @authorize(roles=('admin',))
+        def get(self):
+            ...
         """
         from wheezy.web.authorization import authorize
 
@@ -77,11 +76,11 @@ class AuthorizeTestCase(unittest.TestCase):
         assert 403 == response.status_code
 
     def test_check_authorized(self):
-        """ Check if call is authorized.
+        """Check if call is authorized.
 
-            @authorize(roles=('admin',))
-            def get(self):
-                ...
+        @authorize(roles=('admin',))
+        def get(self):
+            ...
         """
         from wheezy.web.authorization import authorize
 
@@ -94,8 +93,7 @@ class AuthorizeTestCase(unittest.TestCase):
         assert "response" == handler(mock_handler)
 
     def test_wrapped(self):
-        """ Check decorators
-        """
+        """Check decorators"""
         from wheezy.web.authorization import authorize
 
         mock_handler = Mock()
@@ -109,15 +107,14 @@ class AuthorizeTestCase(unittest.TestCase):
 
 
 class SecureTestCase(unittest.TestCase):
-    """ Test the ``secure``.
-    """
+    """Test the ``secure``."""
 
     def test_check_not_secure(self):
-        """ Check if request is not secure.
+        """Check if request is not secure.
 
-            @secure
-            def get(self):
-                ...
+        @secure
+        def get(self):
+            ...
         """
         from wheezy.web.authorization import secure
 
@@ -138,8 +135,7 @@ class SecureTestCase(unittest.TestCase):
         assert "https://localhost:8080/en/signin" == location
 
     def test_check_secure(self):
-        """ Check if request is secure.
-        """
+        """Check if request is secure."""
         from wheezy.web.authorization import secure
 
         mock_handler = Mock()
@@ -149,8 +145,7 @@ class SecureTestCase(unittest.TestCase):
         assert "response" == handler(mock_handler)
 
     def test_check_not_enabled(self):
-        """ Check if request is secure.
-        """
+        """Check if request is secure."""
         from wheezy.web.authorization import secure
 
         mock_handler = Mock()
@@ -159,8 +154,7 @@ class SecureTestCase(unittest.TestCase):
         assert "response" == handler(mock_handler)
 
     def test_wrapped(self):
-        """ Check decorators
-        """
+        """Check decorators"""
         from wheezy.web.authorization import secure
 
         mock_handler = Mock()

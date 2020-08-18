@@ -6,24 +6,24 @@ from wheezy.http import forbidden, permanent_redirect, unauthorized
 
 
 def authorize(wrapped=None, roles=None):
-    """ Checks if user is accessing protected resource is
-        authenticated and optionally in one of allowed ``roles``.
+    """Checks if user is accessing protected resource is
+    authenticated and optionally in one of allowed ``roles``.
 
-        ``roles`` - a list of authorized roles.
+    ``roles`` - a list of authorized roles.
 
-        Check if call is authenticated::
+    Check if call is authenticated::
 
-            class MyHandler(BaseHandler):
-                @authorize
-                def get(self):
-                    return response
+        class MyHandler(BaseHandler):
+            @authorize
+            def get(self):
+                return response
 
-        Check if principal in role::
+    Check if principal in role::
 
-            class MyHandler(BaseHandler):
-                @authorize(roles=('operator', 'manager'))
-                def get(self):
-                    return response
+        class MyHandler(BaseHandler):
+            @authorize(roles=('operator', 'manager'))
+            def get(self):
+                return response
     """
 
     def decorate(func):
@@ -60,26 +60,26 @@ def authorize(wrapped=None, roles=None):
 
 
 def secure(wrapped=None, enabled=True):
-    """ Checks if user is accessing protected resource via SSL and if
-        not, issue permanent redirect to HTTPS location.
+    """Checks if user is accessing protected resource via SSL and if
+    not, issue permanent redirect to HTTPS location.
 
-        ``enabled`` - whenever to do any checks (defaults to ``True``).
+    ``enabled`` - whenever to do any checks (defaults to ``True``).
 
-        Example::
+    Example::
 
-            class MyHandler(BaseHandler):
-                @secure
-                def get(self):
-                    ...
-                    return response
+        class MyHandler(BaseHandler):
+            @secure
+            def get(self):
+                ...
+                return response
 
-        Using ``enabled``::
+    Using ``enabled``::
 
-            class MyHandler(BaseHandler):
-                @secure(enabled=False)
-                def get(self):
-                    ...
-                    return response
+        class MyHandler(BaseHandler):
+            @secure(enabled=False)
+            def get(self):
+                ...
+                return response
     """
 
     def decorate(method):

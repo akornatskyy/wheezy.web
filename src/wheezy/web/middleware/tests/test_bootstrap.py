@@ -7,8 +7,7 @@ from mock import Mock, patch
 
 
 class BootstrapWebDefaultsTestCase(unittest.TestCase):
-    """ Test the ``bootstrap_defaults``.
-    """
+    """Test the ``bootstrap_defaults``."""
 
     def setUp(self):
         from wheezy.web.middleware import bootstrap
@@ -34,8 +33,7 @@ class BootstrapWebDefaultsTestCase(unittest.TestCase):
             self.assertEquals(msg, str(self.w[-1].message))
 
     def test_default_options(self):
-        """ Ensure required keys exist.
-        """
+        """Ensure required keys exist."""
         from wheezy.web.middleware.bootstrap import bootstrap_defaults
 
         options = {}
@@ -60,8 +58,7 @@ class BootstrapWebDefaultsTestCase(unittest.TestCase):
         ) == required_options
 
     def test_path_router(self):
-        """ Ensure required keys exist.
-        """
+        """Ensure required keys exist."""
         from wheezy.web.middleware.bootstrap import bootstrap_defaults
 
         mock_path_router = Mock()
@@ -72,8 +69,7 @@ class BootstrapWebDefaultsTestCase(unittest.TestCase):
         assert tuple(options.keys())
 
     def test_warnings(self):
-        """ Ensure warnings are issued.
-        """
+        """Ensure warnings are issued."""
         from wheezy.web.middleware.bootstrap import bootstrap_defaults
 
         options = {"ticket": None}

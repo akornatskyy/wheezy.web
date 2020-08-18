@@ -7,8 +7,7 @@ from mock import Mock
 
 
 class TemplateHandlerFactoryTestCase(unittest.TestCase):
-    """ Test the ``template_handler``.
-    """
+    """Test the ``template_handler``."""
 
     def setUp(self):
         from wheezy.core.i18n import null_translations
@@ -28,8 +27,7 @@ class TemplateHandlerFactoryTestCase(unittest.TestCase):
         self.mock_request.cookies = {}
 
     def test_get(self):
-        """ get.
-        """
+        """get."""
         from wheezy.web.handlers.template import template_handler
 
         mock_render_template = Mock()

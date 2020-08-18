@@ -7,12 +7,10 @@ from mock import Mock
 
 
 class PathRoutingMiddlewareTestCase(unittest.TestCase):
-    """ Test the ``PathRoutingMiddleware``.
-    """
+    """Test the ``PathRoutingMiddleware``."""
 
     def test_handler_is_none(self):
-        """ There is no matching handler for incoming request.
-        """
+        """There is no matching handler for incoming request."""
         from wheezy.web.middleware.routing import PathRoutingMiddleware
 
         mock_request = Mock()
@@ -26,8 +24,8 @@ class PathRoutingMiddlewareTestCase(unittest.TestCase):
         mock_path_router.match.assert_called_once_with("en/signin")
 
     def test_following_is_none(self):
-        """ There is no matching handler for incoming request
-            and following middleware is None.
+        """There is no matching handler for incoming request
+        and following middleware is None.
         """
         from wheezy.web.middleware.routing import PathRoutingMiddleware
 
@@ -40,8 +38,7 @@ class PathRoutingMiddlewareTestCase(unittest.TestCase):
         assert "route_args" in mock_request.environ
 
     def test_match(self):
-        """ There is matching handler for incoming request.
-        """
+        """There is matching handler for incoming request."""
         from wheezy.web.middleware.routing import PathRoutingMiddleware
 
         mock_request = Mock()
@@ -57,12 +54,10 @@ class PathRoutingMiddlewareTestCase(unittest.TestCase):
 
 
 class PathRoutingMiddlewareFactoryTestCase(unittest.TestCase):
-    """ Test the ``path_routing_middleware_factory``.
-    """
+    """Test the ``path_routing_middleware_factory``."""
 
     def test_call(self):
-        """ Returns an instance of PathRoutingMiddleware.
-        """
+        """Returns an instance of PathRoutingMiddleware."""
         from wheezy.web.middleware.routing import (
             path_routing_middleware_factory,
         )

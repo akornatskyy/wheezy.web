@@ -6,8 +6,7 @@ from wheezy.web.handlers.base import BaseHandler
 
 
 def template_handler(template_name, status_code=200, translation_name=None):
-    """ Serves templates that does not require up front data processing.
-    """
+    """Serves templates that does not require up front data processing."""
 
     def handle_request(request):
         h = object.__new__(TemplateHandler)
@@ -29,8 +28,7 @@ def template_handler(template_name, status_code=200, translation_name=None):
 
 
 class TemplateHandler(BaseHandler):
-    """ Serves templates that does not require up front data processing.
-    """
+    """Serves templates that does not require up front data processing."""
 
     def get(self):
         response = self.render_response(self.template_name)
