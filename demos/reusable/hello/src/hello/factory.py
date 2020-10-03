@@ -1,5 +1,4 @@
 from hello.service.bridge import HelloService
-
 from wheezy.core.descriptors import attribute
 
 

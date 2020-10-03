@@ -4,7 +4,6 @@
 import unittest
 
 from app import main
-
 from wheezy.core.comp import json_dumps
 from wheezy.http.functional import WSGIClient
 

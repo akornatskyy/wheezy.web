@@ -11,6 +11,7 @@ class BaseHandlerTestCase(unittest.TestCase):
 
     def setUp(self):
         from wheezy.core.url import urlparts
+
         from wheezy.web.handlers.base import BaseHandler
         from wheezy.web.handlers.method import handler_factory
 
@@ -49,6 +50,7 @@ class BaseHandlerRoutingTestCase(unittest.TestCase):
 
     def setUp(self):
         from wheezy.core.url import urlparts
+
         from wheezy.web.handlers.base import BaseHandler
         from wheezy.web.handlers.method import handler_factory
 
@@ -581,6 +583,7 @@ class RedirectRouteHandlerTestCase(unittest.TestCase):
 
     def setUp(self):
         from wheezy.core.url import urlparts
+
         from wheezy.web.handlers.base import RedirectRouteHandler
         from wheezy.web.handlers.method import handler_factory
 

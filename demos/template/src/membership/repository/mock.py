@@ -4,7 +4,6 @@
 from config import translations
 from membership.repository.contract import IMembershipRepository
 from membership.repository.samples import db
-
 from wheezy.core.i18n import ref_gettext
 from wheezy.core.introspection import looks
 

@@ -4,7 +4,6 @@
 from membership.web.urls import membership_urls
 from public.web.urls import error_urls, public_urls, static_urls
 from public.web.views import home
-
 from wheezy.routing import url
 
 locale_pattern = "{locale:(en|ru)}/"

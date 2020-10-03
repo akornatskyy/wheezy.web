@@ -10,6 +10,7 @@ from wheezy.html.utils import html_escape
 from wheezy.template.engine import Engine
 from wheezy.template.ext.core import CoreExtension
 from wheezy.template.loader import FileLoader
+
 from wheezy.web.templates import WheezyTemplate
 
 cache = MemoryCache()

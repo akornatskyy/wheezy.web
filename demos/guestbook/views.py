@@ -7,9 +7,9 @@ from config import cached, session
 from models import Greeting
 from repository import Repository
 from validation import greeting_validator
-
 from wheezy.http import CacheProfile
 from wheezy.http.transforms import gzip_transform
+
 from wheezy.web import handler_cache
 from wheezy.web.handlers import BaseHandler
 from wheezy.web.transforms import handler_transforms

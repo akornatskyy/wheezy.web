@@ -4,7 +4,6 @@
 from datetime import timedelta
 
 from membership.rules import identity, password_rules
-
 from wheezy.validation import Validator
 from wheezy.validation.rules import (
     compare,

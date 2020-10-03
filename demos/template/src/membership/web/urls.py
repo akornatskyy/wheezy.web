@@ -7,7 +7,6 @@ from membership.web.views import (
     SignOutHandler,
     SignUpHandler,
 )
-
 from wheezy.routing import url
 
 membership_urls = [

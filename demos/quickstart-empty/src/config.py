@@ -17,7 +17,6 @@ except ImportError:  # pragma: nocover
 
 from public import __version__
 from tracing import ERROR_REPORT_FORMAT, error_report_extra_provider
-
 from wheezy.caching.logging import OnePassHandler
 from wheezy.core.collections import defaultdict
 from wheezy.html.ext.template import WhitespaceExtension, WidgetExtension
@@ -27,6 +26,7 @@ from wheezy.security.crypto.comp import aes128, ripemd160, sha1, sha256
 from wheezy.template.engine import Engine
 from wheezy.template.ext.core import CoreExtension
 from wheezy.template.loader import FileLoader, PreprocessLoader
+
 from wheezy.web.templates import WheezyTemplate
 
 config.read(os.getenv("CONFIG", "etc/development.ini"))

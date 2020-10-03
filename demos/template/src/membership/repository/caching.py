@@ -3,7 +3,6 @@
 
 from config import cache
 from membership.repository import keys
-
 from wheezy.caching.patterns import Cached, key_builder
 
 kb = key_builder(key_prefix="mbr")

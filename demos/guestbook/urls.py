@@ -2,8 +2,8 @@
 """
 
 from views import AddHandler, ListHandler
-
 from wheezy.routing import url
+
 from wheezy.web.handlers import file_handler
 
 all_urls = [

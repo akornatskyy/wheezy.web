@@ -11,7 +11,6 @@ except ImportError:  # pragma: nocover
 
 from app import main
 from config import template_engine
-
 from wheezy.http.functional import WSGIClient
 
 if template_engine.startswith("wheezy"):

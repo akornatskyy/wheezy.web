@@ -6,7 +6,6 @@ from public.web.tests.test_views import (
     PublicTestCase,
     StaticFilesTestCase,
 )
-
 from wheezy.http.functional import BenchmarkMixin
 
 

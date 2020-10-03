@@ -5,7 +5,6 @@ import unittest
 
 from app import main
 from config import options
-
 from wheezy.core.json import json_encode
 from wheezy.http.functional import PageMixin, WSGIClient
 

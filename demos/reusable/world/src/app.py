@@ -2,8 +2,8 @@ import warnings
 
 from config import options
 from urls import all_urls
-
 from wheezy.http import WSGIApplication
+
 from wheezy.web.middleware import (
     bootstrap_defaults,
     path_routing_middleware_factory,

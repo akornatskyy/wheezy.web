@@ -5,7 +5,6 @@ import random
 from datetime import date
 
 from membership.models import Account, Credential, Registration
-
 from wheezy.core.comp import u
 
 

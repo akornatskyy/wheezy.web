@@ -1,5 +1,4 @@
 from hello.factory import HelloFactoryMixin
-
 from wheezy.core.db import NullSession
 
 

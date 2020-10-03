@@ -2,9 +2,9 @@
 """
 
 from public.web.profile import public_cache_profile, static_cache_profile
-
 from wheezy.http import response_cache
 from wheezy.http.transforms import gzip_transform, response_transforms
+
 from wheezy.web.handlers import BaseHandler, file_handler, template_handler
 from wheezy.web.transforms import handler_transforms
 

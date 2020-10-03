@@ -4,7 +4,6 @@
 from datetime import timedelta
 
 from config import config
-
 from wheezy.http import CacheProfile
 from wheezy.http.cache import etag_md5crc32
 

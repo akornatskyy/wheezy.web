@@ -17,7 +17,6 @@ except ImportError:  # pragma: nocover
 
 from shared.authorization import setup_authorization_return_path
 from tracing import ERROR_REPORT_FORMAT, error_report_extra_provider
-
 from wheezy.caching.logging import OnePassHandler
 from wheezy.core.collections import defaultdict
 from wheezy.core.i18n import TranslationsManager
@@ -96,6 +95,7 @@ if template_engine == "mako":
         whitespace_preprocessor,
         widget_preprocessor,
     )
+
     from wheezy.web.templates import MakoTemplate
 
     directories = ["content/templates-mako"]
@@ -120,6 +120,7 @@ elif template_engine == "tenjin":
         widget_preprocessor,
     )
     from wheezy.html.utils import format_value
+
     from wheezy.web.templates import TenjinTemplate
 
     path = ["content/templates-tenjin"]
@@ -138,13 +139,13 @@ elif template_engine == "tenjin":
 elif template_engine == "jinja2":
     from jinja2 import Environment, FileSystemLoader
     from public import __version__
-
     from wheezy.html.ext.jinja2 import (
         InlineExtension,
         WhitespaceExtension,
         WidgetExtension,
     )
     from wheezy.html.utils import format_value
+
     from wheezy.web.templates import Jinja2Template
 
     searchpath = ["content/templates-jinja2"]
@@ -166,7 +167,6 @@ elif template_engine == "jinja2":
     render_template = Jinja2Template(env)
 elif template_engine == "wheezy.template":
     from public import __version__
-
     from wheezy.html.ext.template import (
         InlineExtension,
         WhitespaceExtension,
@@ -176,6 +176,7 @@ elif template_engine == "wheezy.template":
     from wheezy.template.engine import Engine
     from wheezy.template.ext.core import CoreExtension
     from wheezy.template.loader import FileLoader, autoreload
+
     from wheezy.web.templates import WheezyTemplate
 
     searchpath = ["content/templates-wheezy"]
@@ -206,13 +207,13 @@ elif template_engine == "wheezy.template":
     render_template = WheezyTemplate(engine)
 elif template_engine == "wheezy.preprocessor":
     from public import __version__
-
     from wheezy.html.ext.template import WhitespaceExtension, WidgetExtension
     from wheezy.html.utils import format_value, html_escape
     from wheezy.template.engine import Engine
     from wheezy.template.ext.core import CoreExtension
     from wheezy.template.loader import FileLoader, autoreload
     from wheezy.template.preprocessor import Preprocessor
+
     from wheezy.web.templates import WheezyTemplate
 
     def runtime_engine_factory(loader):

@@ -4,7 +4,6 @@
 import unittest
 
 from hello import main
-
 from wheezy.http.functional import WSGIClient
 
 

@@ -6,7 +6,6 @@ from membership.web.tests.test_views import (
     SignInTestCase,
     SignUpTestCase,
 )
-
 from wheezy.core.json import json_encode
 from wheezy.http.functional import BenchmarkMixin
 

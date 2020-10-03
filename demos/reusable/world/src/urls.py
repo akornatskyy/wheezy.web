@@ -1,6 +1,6 @@
 from shared import file_handler, import_urls, resolve_searchpath
-
 from wheezy.routing import url
+
 from wheezy.web.handlers.base import redirect_handler
 
 search_path = ("content/static", resolve_searchpath("hello", "static"))

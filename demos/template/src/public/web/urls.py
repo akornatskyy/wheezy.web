@@ -10,7 +10,6 @@ from public.web.views import (
     http500,
     static_file,
 )
-
 from wheezy.routing import url
 
 public_urls = [

@@ -10,7 +10,6 @@ except ImportError:  # pragma: nocover
 
 
 from app import main
-
 from wheezy.http.functional import WSGIClient
 
 

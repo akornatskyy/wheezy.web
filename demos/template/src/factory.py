@@ -4,7 +4,6 @@
 from config import config
 from membership.repository.caching import MembershipRepository
 from membership.service.bridge import MembershipService
-
 from wheezy.core.descriptors import attribute
 from wheezy.core.introspection import import_name
 

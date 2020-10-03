@@ -7,6 +7,7 @@ else:  # pragma: nocover
 
 from wheezy.core.url import urlparts  # noqa: I202
 from wheezy.http import HTTPCookie, ajax_redirect, redirect
+
 from wheezy.web.handlers.base import BaseHandler
 
 

@@ -113,6 +113,7 @@ class HTTPErrorMiddlewareFactoryTestCase(unittest.TestCase):
     def test_http_errors(self):
         """http_errors."""
         from wheezy.core.collections import defaultdict
+
         from wheezy.web.middleware.errors import http_error_middleware_factory
 
         mock_path_for = Mock()

@@ -2,6 +2,7 @@
 """
 
 from wheezy.core.i18n import ref_gettext
+
 from wheezy.web.handlers.base import BaseHandler
 
 

@@ -3,7 +3,6 @@
 
 from config import translations
 from membership.models import Credential, Registration, account_types
-
 from wheezy.core.descriptors import attribute
 from wheezy.core.i18n import ref_gettext
 from wheezy.validation.mixin import ErrorsMixin

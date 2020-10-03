@@ -2,7 +2,6 @@
 """
 
 from test_hello import HelloTestCase
-
 from wheezy.core.benchmark import Benchmark
 
 

@@ -1,7 +1,6 @@
 import unittest
 
 from app import main
-
 from wheezy.http.functional import WSGIClient
 
 path_for = main.options["path_for"]

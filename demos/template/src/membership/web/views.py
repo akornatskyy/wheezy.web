@@ -13,12 +13,12 @@ from membership.validation import (
     registration_validator,
 )
 from shared.authorization import RedirectQueryStringReturnPathMixin
-
 from wheezy.core.collections import attrdict
 from wheezy.core.comp import u
 from wheezy.core.descriptors import attribute
 from wheezy.http import none_cache_profile
 from wheezy.security import Principal
+
 from wheezy.web import handler_cache
 from wheezy.web.authorization import authorize
 from wheezy.web.handlers import BaseHandler
