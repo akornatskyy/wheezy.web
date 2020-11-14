@@ -29,7 +29,13 @@ from wheezy.template.loader import FileLoader, PreprocessLoader
 
 from wheezy.web.templates import WheezyTemplate
 
-config.read(os.getenv("CONFIG", "etc/development.ini"))
+root_dir = os.path.join(os.path.dirname(__file__), "..")
+config.read(
+    os.getenv(
+        "CONFIG",
+        os.path.join(root_dir, "etc/development.ini"),
+    )
+)
 
 mode = config.get("runtime", "cache")
 if mode == "memory":
@@ -92,7 +98,7 @@ options.update(
 )
 
 # Template Engine
-searchpath = ["content/templates"]
+searchpath = [os.path.join(root_dir, "content/templates")]
 engine = Engine(
     loader=FileLoader(searchpath), extensions=[CoreExtension(token_start="#")]
 )

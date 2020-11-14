@@ -1,13 +1,15 @@
-"""
-"""
-
 import os
 import platform
-import resource
 import socket
 import sys
 from datetime import timedelta
 from time import time
+
+try:
+    import resource
+except ImportError:
+    # resource module is not available on Windows
+    pass
 
 start_time = time()
 

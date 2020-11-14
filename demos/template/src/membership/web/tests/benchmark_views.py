@@ -17,7 +17,7 @@ except NotImplementedError:
 
 
 class MembershipBenchmarkTestCase(MembershipTestCase, BenchmarkMixin):
-    def runTest(self):  # noqa: N802
+    def test_benchmark(self):
         """Perform benchmark and print results."""
         b = self.benchmark(
             (
@@ -38,7 +38,7 @@ class MembershipBenchmarkTestCase(MembershipTestCase, BenchmarkMixin):
 
 
 class SigninBenchmarkTestCase(SignInTestCase, BenchmarkMixin):
-    def runTest(self):  # noqa: N802
+    def test_benchmark(self):
         """Perform benchmark and print results."""
         b = self.benchmark(
             [self.test_validation_errors, self.test_xrsf_token_invalid], 200
@@ -53,7 +53,7 @@ class SigninBenchmarkTestCase(SignInTestCase, BenchmarkMixin):
 
 
 class SignupBenchmarkTestCase(SignUpTestCase, BenchmarkMixin):
-    def runTest(self):  # noqa: N802
+    def test_benchmark(self):
         """Perform benchmark and print results."""
         b = self.benchmark(
             [
@@ -80,7 +80,7 @@ try:
     )
 
     class SigninAJAXBenchmarkTestCase(SignInAJAXTestCase, BenchmarkMixin):
-        def runTest(self):  # noqa: N802
+        def test_benchmark(self):
             """Perform benchmark and print results."""
             b = self.benchmark(
                 [
@@ -98,7 +98,7 @@ try:
             )
 
     class SignupAJAXBenchmarkTestCase(SignUpAJAXTestCase, BenchmarkMixin):
-        def runTest(self):  # noqa: N802
+        def test_benchmark(self):
             """Perform benchmark and print results."""
             b = self.benchmark([self.test_ajax_validation_errors], 100)
             b.report(

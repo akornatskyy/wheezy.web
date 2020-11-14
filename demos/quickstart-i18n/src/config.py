@@ -31,7 +31,13 @@ from wheezy.template.preprocessor import Preprocessor
 
 from wheezy.web.templates import WheezyTemplate
 
-config.read(os.getenv("CONFIG", "etc/development.ini"))
+root_dir = os.path.join(os.path.dirname(__file__), "..")
+config.read(
+    os.getenv(
+        "CONFIG",
+        os.path.join(root_dir, "etc/development.ini"),
+    )
+)
 
 mode = config.get("runtime", "cache")
 if mode == "memory":
@@ -113,7 +119,7 @@ def runtime_engine_factory(loader):
     return engine
 
 
-searchpath = ["content/templates"]
+searchpath = [os.path.join(root_dir, "content/templates")]
 engine = Engine(
     loader=FileLoader(searchpath),
     extensions=[CoreExtension(token_start="#", line_join=None)],
@@ -152,5 +158,7 @@ options.update(
     }
 )
 
-translations = TranslationsManager(directories=["i18n"], default_lang="en")
+translations = TranslationsManager(
+    directories=[os.path.join(root_dir, "i18n")], default_lang="en"
+)
 options.update({"translations_manager": translations})

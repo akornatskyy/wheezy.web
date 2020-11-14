@@ -23,7 +23,13 @@ from wheezy.core.i18n import TranslationsManager
 from wheezy.security.crypto import Ticket
 from wheezy.security.crypto.comp import aes128, ripemd160, sha1, sha256
 
-config.read(os.getenv("CONFIG", "etc/development.ini"))
+root_dir = os.path.join(os.path.dirname(__file__), "..")
+config.read(
+    os.getenv(
+        "CONFIG",
+        os.path.join(root_dir, "etc/development.ini"),
+    )
+)
 
 mode = config.get("runtime", "cache")
 if mode == "memory":
@@ -179,7 +185,7 @@ elif template_engine == "wheezy.template":
 
     from wheezy.web.templates import WheezyTemplate
 
-    searchpath = ["content/templates-wheezy"]
+    searchpath = [os.path.join(root_dir, "content/templates-wheezy")]
     engine = autoreload(
         Engine(
             loader=FileLoader(searchpath),
@@ -233,7 +239,7 @@ elif template_engine == "wheezy.preprocessor":
         )
         return engine
 
-    searchpath = ["content/templates-preprocessor"]
+    searchpath = [os.path.join(root_dir, "content/templates-preprocessor")]
     engine = Engine(
         loader=FileLoader(searchpath),
         extensions=[CoreExtension("#", line_join=None)],
@@ -248,7 +254,9 @@ elif template_engine == "wheezy.preprocessor":
     render_template = WheezyTemplate(engine)
 
 # BaseHandler
-translations = TranslationsManager(directories=["i18n"], default_lang="en")
+translations = TranslationsManager(
+    directories=[os.path.join(root_dir, "i18n")], default_lang="en"
+)
 options.update(
     {
         "translations_manager": translations,

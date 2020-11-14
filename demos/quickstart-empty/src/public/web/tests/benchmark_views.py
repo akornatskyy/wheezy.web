@@ -6,7 +6,7 @@ from wheezy.http.functional import BenchmarkMixin
 
 
 class PublicBenchmarkTestCase(PublicTestCase, ErrorTestCase, BenchmarkMixin):
-    def runTest(self):  # noqa: N802
+    def test_benchmark(self):  # noqa: N802
         """Perform bachmark and print results."""
         b = self.benchmark(
             (
@@ -30,10 +30,8 @@ class PublicBenchmarkTestCase(PublicTestCase, ErrorTestCase, BenchmarkMixin):
         )
 
 
-class StaticFilesBenchmarkTestCase(
-    PublicTestCase, ErrorTestCase, BenchmarkMixin
-):
-    def runTest(self):  # noqa: N802
+class StaticFilesBenchmarkTestCase(PublicTestCase, BenchmarkMixin):
+    def test_benchmark(self):  # noqa: N802
         """Perform bachmark and print results."""
         b = self.benchmark(
             (

@@ -1,6 +1,9 @@
 """
 """
 
+import os.path
+
+from config import root_dir
 from public.web.profile import public_cache_profile, static_cache_profile
 from wheezy.http import response_cache
 from wheezy.http.transforms import gzip_transform, response_transforms
@@ -35,4 +38,4 @@ http404 = template_handler("public/http404.html", status_code=404)
 http500 = template_handler("public/http500.html", status_code=500)
 
 w = wraps_handler(static_cache_profile)
-static_file = w(file_handler("content/static/"))
+static_file = w(file_handler(os.path.join(root_dir, "content/static/")))
