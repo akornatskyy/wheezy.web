@@ -5,10 +5,10 @@
 #    pip-compile --output-file=requirements/dev-py2.txt requirements/dev.in
 #
 atomicwrites==1.4.0       # via pytest
-attrs==20.2.0             # via pytest
+attrs==20.3.0             # via pytest
 backports.functools-lru-cache==1.6.1  # via wcwidth
 click==7.1.2              # via pip-tools
-colorama==0.4.3           # via pytest
+colorama==0.4.4           # via pytest
 configparser==4.0.2       # via importlib-metadata
 contextlib2==0.6.0.post1  # via importlib-metadata
 coverage==5.3             # via pytest-cov
@@ -24,6 +24,7 @@ pathlib2==2.3.5           # via importlib-metadata, pytest
 pip-tools==5.3.1          # via -r requirements/dev.in
 pluggy==0.13.1            # via pytest
 py==1.9.0                 # via pytest
+pycryptodome==3.9.9; platform_system != 'Windows' or implementation_name != 'pypy'        # via -r requirements/dev.in
 pyparsing==2.4.7          # via packaging
 pytest-cov==2.10.1        # via -r requirements/dev.in
 pytest==4.6.11            # via -r requirements/dev.in, pytest-cov
@@ -31,7 +32,7 @@ scandir==1.10.0           # via pathlib2
 six==1.15.0               # via mock, more-itertools, packaging, pathlib2, pip-tools, pytest
 tenjin==1.1.1             # via -r requirements/dev.in
 wcwidth==0.2.5            # via pytest
-wheezy.template==0.1.195  # via -r requirements/dev.in
+wheezy.template==2.0.0    # via -r requirements/dev.in
 zipp==1.2.0               # via importlib-metadata
 
 # The following packages are considered to be unsafe in a requirements file:
