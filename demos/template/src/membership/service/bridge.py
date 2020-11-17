@@ -4,7 +4,6 @@
 from config import translations
 from membership.models import Credential, Registration, account_types
 from wheezy.core.descriptors import attribute
-from wheezy.core.i18n import ref_gettext
 from wheezy.validation.mixin import ErrorsMixin
 
 account_types = tuple(dict(account_types).keys())
@@ -19,7 +18,7 @@ class MembershipService(ErrorsMixin):
 
     @attribute
     def gettext(self):
-        return ref_gettext(translations[self.locale])
+        return translations[self.locale].gettext
 
     @attribute
     def password_questions(self):

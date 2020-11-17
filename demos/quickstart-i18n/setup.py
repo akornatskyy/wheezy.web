@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 
 import os
-import sys
 
 from setuptools import setup
 
@@ -19,33 +18,12 @@ install_requires = [
     "wheezy.web>=0.1.450",
 ]
 
-install_optional = [
-    # 'PIL>=1.1.7',
-    "pycrypto>=2.6.1"
-]
-
-if sys.version_info[0] == 2:
-    install_optional.append("pylibmc<1.3")
-
-install_requires += install_optional
-
-try:
-    import uuid  # noqa
-except ImportError:
-    install_requires.append("uuid")
-
-dependency_links = [
-    # pylibmc
-    "https://bitbucket.org/akorn/wheezy.caching/downloads",
-    # PIL
-    # 'https://bitbucket.org/akorn/wheezy.captcha/downloads',
-    # pycrypto
-    "https://bitbucket.org/akorn/wheezy.security/downloads",
-]
+dependency_links = []
 
 setup(
     name="mysite",
     version="0.1",
+    python_requires=">=3.6",
     description="MySite Project",
     long_description=README,
     url="https://scm.dev.local/svn/mysite/trunk",
@@ -53,12 +31,14 @@ setup(
     author_email="mysite at dev.local",
     license="COMMERCIAL",
     classifiers=[
-        "Development Status :: 4 - Beta",
         "Environment :: Web Environment",
         "Intended Audience :: Developers",
         "Natural Language :: English",
         "Operating System :: OS Independent",
-        "Programming Language :: Python :: 2.7",
+        "Programming Language :: Python :: 3.6",
+        "Programming Language :: Python :: 3.7",
+        "Programming Language :: Python :: 3.8",
+        "Programming Language :: Python :: 3.9",
         "Programming Language :: Python :: Implementation :: CPython",
         "Programming Language :: Python :: Implementation :: PyPy",
         "Topic :: Internet :: WWW/HTTP",

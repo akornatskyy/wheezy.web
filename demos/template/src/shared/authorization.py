@@ -1,9 +1,4 @@
-from wheezy.core.comp import PY3
-
-if PY3:  # pragma: nocover
-    from urllib.parse import quote
-else:  # pragma: nocover
-    from urllib import quote
+from urllib.parse import quote
 
 from wheezy.core.url import urlparts  # noqa: I202
 from wheezy.http import HTTPCookie, ajax_redirect, redirect

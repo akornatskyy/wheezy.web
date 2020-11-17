@@ -3,13 +3,9 @@
 
 from datetime import datetime
 
-from wheezy.core.comp import u
-
 
 class Greeting(object):
-    def __init__(
-        self, id=0, created_on=None, author=u(""), message=u("")  # noqa: B008
-    ):
+    def __init__(self, id=0, created_on=None, author="", message=""):
         self.id = id
         self.created_on = created_on or datetime.now()
         self.author = author

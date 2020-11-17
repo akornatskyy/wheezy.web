@@ -1,8 +1,6 @@
 """
 """
 
-from wheezy.core.i18n import ref_gettext
-
 from wheezy.web.handlers.base import BaseHandler
 
 
@@ -15,9 +13,9 @@ def template_handler(template_name, status_code=200, translation_name=None):
         h.template_name = template_name
         h.status_code = status_code
         h.helpers = {
-            "_": ref_gettext(
-                h.options["translations_manager"][h.locale][translation_name]
-            ),
+            "_": h.options["translations_manager"][h.locale][
+                translation_name
+            ].gettext,
             "locale": h.locale,
             "path_for": h.path_for,
             "principal": h.principal,

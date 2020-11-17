@@ -56,20 +56,15 @@ when it was added (current time), an author and a message.
 Let's model what we figured so far (file ``models.py``)::
 
     from datetime import datetime
-    from wheezy.core.comp import u
 
     class Greeting(object):
 
-        def __init__(self, id=0, created_on=None, author=u(''), message=u('')):
+        def __init__(self, id=0, created_on=None, author='', message=''):
             self.id = id
             self.created_on = created_on or datetime.now()
             self.author = author
             self.message = message
 
-The function ``u()`` is a compatibility function that always returns the unicode
-version of a string regardless of python version. If you are using python 3
-you can eliminate it completely since any string is natively unicode in
-python 3 (vs byte string in python 2).
 
 Validation Rules
 ----------------

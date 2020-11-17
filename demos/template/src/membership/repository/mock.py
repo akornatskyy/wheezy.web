@@ -4,7 +4,6 @@
 from config import translations
 from membership.repository.contract import IMembershipRepository
 from membership.repository.samples import db
-from wheezy.core.i18n import ref_gettext
 from wheezy.core.introspection import looks
 
 translations = translations.domains["membership"]
@@ -16,7 +15,7 @@ class MembershipRepository(object):
         session.cursor()
 
     def list_password_questions(self, locale):
-        gettext = ref_gettext(translations[locale])
+        gettext = translations[locale].gettext
         return tuple((k, gettext(v)) for k, v in db["password_question"])
 
     def authenticate(self, credential):

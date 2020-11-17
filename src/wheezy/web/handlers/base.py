@@ -3,7 +3,7 @@
 from uuid import uuid4
 
 from wheezy.core.descriptors import attribute
-from wheezy.core.i18n import null_translations, ref_gettext
+from wheezy.core.i18n import null_translations
 from wheezy.core.url import urlparts
 from wheezy.core.uuid import UUID_EMPTY, parse_uuid, shrink_uuid
 from wheezy.http import (
@@ -81,11 +81,11 @@ class BaseHandler(MethodHandler, ValidationMixin):
 
     @attribute
     def gettext(self):
-        return ref_gettext(self.translation)
+        return self.translation.gettext
 
     @attribute
     def _(self):
-        return ref_gettext(self.translation)
+        return self.translation.gettext
 
     # region: model
 

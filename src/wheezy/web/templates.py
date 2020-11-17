@@ -93,10 +93,8 @@ class TenjinTemplate(object):
         except ImportError:  # pragma: nocover
             from tenjin.helpers import escape  # noqa
 
-        from wheezy.core.comp import str_type
-
         self.helpers = {
-            "to_str": str_type,
+            "to_str": str,
             "escape": escape,
             "capture_as": capture_as,
             "captured_as": captured_as,
