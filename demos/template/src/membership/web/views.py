@@ -14,7 +14,6 @@ from membership.validation import (
 )
 from shared.authorization import RedirectQueryStringReturnPathMixin
 from wheezy.core.collections import attrdict
-from wheezy.core.comp import u
 from wheezy.core.descriptors import attribute
 from wheezy.http import none_cache_profile
 from wheezy.security import Principal
@@ -66,7 +65,7 @@ class SignInHandler(MembershipBaseHandler, RedirectQueryStringReturnPathMixin):
         ):
             if self.request.ajax:
                 return self.json_response({"errors": self.errors})
-            credential.password = u("")
+            credential.password = ""
             return self.get(credential)
         del self.xsrf_token
         return self.redirect_to_return_path()
@@ -109,7 +108,7 @@ class SignUpHandler(MembershipBaseHandler):
 
     @attribute
     def model(self):
-        return attrdict({"password": u(""), "confirm_password": u("")})
+        return attrdict({"password": "", "confirm_password": ""})
 
     @handler_cache(profile=none_cache_profile)
     def get(self, registration=None):
@@ -161,8 +160,8 @@ class SignUpHandler(MembershipBaseHandler):
         ):
             if self.request.ajax:
                 return self.json_response({"errors": self.errors})
-            registration.credential.password = u("")
-            self.model.confirm_password = u("")
+            registration.credential.password = ""
+            self.model.confirm_password = ""
             return self.get(registration)
 
         # with self.factory('ro') as f:

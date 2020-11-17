@@ -10,7 +10,7 @@
 high concurrency [WSGI](http://www.python.org/dev/peps/pep-3333) web
 framework with the key features to *build modern, efficient web*:
 
-- Requires Python 2.4-2.7 or 3.2+.
+- Requires Python 3.6+.
 - MVC architectural pattern
   ([push](http://en.wikipedia.org/wiki/Web_application_framework#Push-based_vs._pull-based)-based).
 - Functionality includes
@@ -44,9 +44,9 @@ Resources:
 ## Install
 
 [wheezy.web](https://pypi.org/project/wheezy.web/) requires
-[python](https://www.python.org) version 2.4 to 2.7 or 3.2+. It is
-independent of operating system. You can install it from
-[pypi](https://pypi.org/project/wheezy.web/) site:
+[python](https://www.python.org) version 3.6+. It is independent of operating
+system. You can install it from [pypi](https://pypi.org/project/wheezy.web/)
+site:
 
 ```sh
 pip install -U wheezy.web

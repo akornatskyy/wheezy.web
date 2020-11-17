@@ -6,7 +6,6 @@ from datetime import timedelta
 from wheezy.caching import MemoryCache
 from wheezy.caching.patterns import Cached
 from wheezy.core.collections import attrdict
-from wheezy.core.comp import ntob, u
 from wheezy.core.db import NullSession
 from wheezy.core.descriptors import attribute
 from wheezy.http import CacheProfile, WSGIApplication, response_cache
@@ -66,7 +65,7 @@ class APIHandler(BaseHandler):
     def status_response(self):
         assert not self.errors
         response = HTTPResponse("application/json; charset=UTF-8", "UTF-8")
-        response.write_bytes(ntob('{"status":"OK"}', "UTF-8"))
+        response.write_bytes(b'{"status":"OK"}')
         return response
 
     def error_response(self, status_code=200):
@@ -104,7 +103,7 @@ cached = Cached(cache, time=timedelta(hours=4))
 
 
 def Task(other={}):  # noqa: N802
-    return attrdict({"task_id": None, "title": u(""), "status": 1}, **other)
+    return attrdict({"task_id": None, "title": "", "status": 1}, **other)
 
 
 Task.keys = frozenset(Task().keys())

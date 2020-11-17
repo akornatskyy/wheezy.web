@@ -2,9 +2,9 @@
 """
 
 import unittest
+from json import dumps as json_dumps
 
 from app import main
-from wheezy.core.comp import json_dumps
 from wheezy.http.functional import WSGIClient
 
 # region: foundation

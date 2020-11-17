@@ -5,7 +5,6 @@ import random
 from datetime import date
 
 from membership.models import Account, Credential, Registration
-from wheezy.core.comp import u
 
 
 def _(s):
@@ -49,7 +48,7 @@ def next_registration(question_id="1"):
 
 
 db = {
-    "user": {"demo": u("P@ssw0rd"), "biz": u("P@ssw0rd")},
+    "user": {"demo": "P@ssw0rd", "biz": "P@ssw0rd"},
     "user_role": {"demo": ["user"], "biz": ["business"]},
     "password_question": (
         ("1", _("Favorite number")),
