@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 
+import multiprocessing
 import os
 import re
 
@@ -21,7 +22,8 @@ try:
             os.path.join(p, "handlers", "__init__.py"),
             os.path.join(p, "middleware", "__init__.py"),
         ],
-        nthreads=2,
+        # https://github.com/cython/cython/issues/3262
+        nthreads=0 if multiprocessing.get_start_method() == "spawn" else 2,
         compiler_directives={"language_level": 3},
         quiet=True,
     )
