@@ -2,16 +2,16 @@
 """
 
 import unittest
+from unittest.mock import Mock, patch
 
-from mock import Mock, patch
+from wheezy.web.middleware import bootstrap
+from wheezy.web.middleware.bootstrap import bootstrap_defaults
 
 
 class BootstrapWebDefaultsTestCase(unittest.TestCase):
     """Test the ``bootstrap_defaults``."""
 
     def setUp(self):
-        from wheezy.web.middleware import bootstrap
-
         self.patcher = patch.object(bootstrap, "bootstrap_http_defaults")
         self.patcher.start()
         try:
@@ -34,8 +34,6 @@ class BootstrapWebDefaultsTestCase(unittest.TestCase):
 
     def test_default_options(self):
         """Ensure required keys exist."""
-        from wheezy.web.middleware.bootstrap import bootstrap_defaults
-
         options = {}
 
         assert bootstrap_defaults({})(options) is None
@@ -59,8 +57,6 @@ class BootstrapWebDefaultsTestCase(unittest.TestCase):
 
     def test_path_router(self):
         """Ensure required keys exist."""
-        from wheezy.web.middleware.bootstrap import bootstrap_defaults
-
         mock_path_router = Mock()
         options = {"path_router": mock_path_router}
 
@@ -70,8 +66,6 @@ class BootstrapWebDefaultsTestCase(unittest.TestCase):
 
     def test_warnings(self):
         """Ensure warnings are issued."""
-        from wheezy.web.middleware.bootstrap import bootstrap_defaults
-
         options = {"ticket": None}
 
         assert bootstrap_defaults({})(options) is None

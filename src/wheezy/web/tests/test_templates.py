@@ -2,16 +2,24 @@
 """
 
 import unittest
+from unittest.mock import Mock, patch
 
-from mock import Mock, patch
+import tenjin
+from mako import cache, lookup  # noqa: I100
+
+from wheezy.web.templates import (
+    Jinja2Template,
+    MakoCacheImpl,
+    MakoTemplate,
+    TenjinTemplate,
+    WheezyTemplate,
+)
 
 
 class MakoTemplateTestCase(unittest.TestCase):
     """Test the ``MakoTemplate``."""
 
     def setUp(self):
-        from mako import cache, lookup
-
         self.patcher_cache = patch.object(cache, "register_plugin")
         self.mock_register_plugin = self.patcher_cache.start()
         self.patcher_lookup = patch.object(lookup, "TemplateLookup")
@@ -23,8 +31,6 @@ class MakoTemplateTestCase(unittest.TestCase):
 
     def test_init_with_defaults(self):
         """Check __init__ with all default values."""
-        from wheezy.web.templates import MakoTemplate
-
         assert MakoTemplate()
         assert not self.mock_register_plugin.called
         self.mock_template_lookup_class.assert_called_once_with(
@@ -34,8 +40,6 @@ class MakoTemplateTestCase(unittest.TestCase):
 
     def test_init_with_cache(self):
         """Check __init__ with specified cache"""
-        from wheezy.web.templates import MakoTemplate
-
         assert MakoTemplate(cache="mock_cache")
         self.mock_template_lookup_class.assert_called_once_with(
             directories=["content/templates"],
@@ -49,8 +53,6 @@ class MakoTemplateTestCase(unittest.TestCase):
 
     def test_render(self):
         """__call__."""
-        from wheezy.web.templates import MakoTemplate
-
         gt = self.mock_template_lookup_class.return_value.get_template
         gt.return_value.render.return_value = "html"
         template = MakoTemplate()
@@ -64,8 +66,6 @@ class MakoCacheImplTestCase(unittest.TestCase):
     """Test the ``MakoCacheImpl``."""
 
     def setUp(self):
-        from wheezy.web.templates import MakoCacheImpl
-
         self.mock_cache = Mock()
         mock_mako_cache = Mock()
         mock_mako_cache.template.cache_args = {"cache": self.mock_cache}
@@ -114,8 +114,6 @@ class TenjinTemplateTestCase(unittest.TestCase):
     """Test the ``TenjinTemplate``."""
 
     def setUp(self):
-        import tenjin
-
         self.patcher_encoding = patch.object(tenjin, "set_template_encoding")
         self.mock_encoding = self.patcher_encoding.start()
         self.patcher_cache = patch.object(tenjin, "MemoryCacheStorage")
@@ -130,8 +128,6 @@ class TenjinTemplateTestCase(unittest.TestCase):
 
     def test_init_with_defaults(self):
         """Check __init__ with all default values."""
-        from wheezy.web.templates import TenjinTemplate
-
         template = TenjinTemplate()
         keys = sorted(template.helpers.keys())
         assert [
@@ -153,8 +149,6 @@ class TenjinTemplateTestCase(unittest.TestCase):
 
     def test_init_with_helpers(self):
         """Check __init__ with helpers values."""
-        from wheezy.web.templates import TenjinTemplate
-
         helpers = {
             "to_str": "to_str",
             "escape": "escape",
@@ -168,8 +162,6 @@ class TenjinTemplateTestCase(unittest.TestCase):
 
     def test_render(self):
         """__call__."""
-        from wheezy.web.templates import TenjinTemplate
-
         mock_render = self.mock_engine.return_value.render
         mock_render.return_value = "html"
         template = TenjinTemplate()
@@ -184,14 +176,10 @@ class Jinja2TemplateTestCase(unittest.TestCase):
 
     def test_init(self):
         """Assert environment is not None"""
-        from wheezy.web.templates import Jinja2Template
-
         self.assertRaises(AssertionError, lambda: Jinja2Template(None))
 
     def test_render(self):
         """__call__."""
-        from wheezy.web.templates import Jinja2Template
-
         mock_env = Mock()
         mock_render = mock_env.get_template.return_value.render
         mock_render.return_value = "html"
@@ -206,14 +194,10 @@ class WheezyTemplateTestCase(unittest.TestCase):
 
     def test_init(self):
         """Assert environment is not None"""
-        from wheezy.web.templates import WheezyTemplate
-
         self.assertRaises(AssertionError, lambda: WheezyTemplate(None))
 
     def test_render(self):
         """__call__."""
-        from wheezy.web.templates import WheezyTemplate
-
         mock_engine = Mock()
         mock_render = mock_engine.render
         mock_render.return_value = "html"

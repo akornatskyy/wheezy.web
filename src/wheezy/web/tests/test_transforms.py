@@ -2,8 +2,9 @@
 """
 
 import unittest
+from unittest.mock import Mock
 
-from mock import Mock
+from wheezy.web.transforms import handler_transforms
 
 
 class HandlerTransformsTestCase(unittest.TestCase):
@@ -16,7 +17,6 @@ class HandlerTransformsTestCase(unittest.TestCase):
         get(self):
             ...
         """
-        from wheezy.web.transforms import handler_transforms
 
         def transform(request, response):
             assert "request" == request
@@ -35,7 +35,6 @@ class HandlerTransformsTestCase(unittest.TestCase):
         get(self):
             ...
         """
-        from wheezy.web.transforms import handler_transforms
 
         def transform_a(request, response):
             assert "request" == request

@@ -2,8 +2,9 @@
 """
 
 import unittest
+from unittest.mock import Mock, patch
 
-from mock import Mock, patch
+from wheezy.web.handlers.method import MethodHandler
 
 
 class MethodHandlerTestCase(unittest.TestCase):
@@ -17,8 +18,6 @@ class MethodHandlerTestCase(unittest.TestCase):
         """Ensure HTTP request method is dispatched correctly
         with default HTTP response status code 405.
         """
-        from wheezy.web.handlers.method import MethodHandler
-
         for method in ["GET", "POST", "HEAD"]:
             self.mock_request.method = method
             response = MethodHandler(self.mock_request)
@@ -28,16 +27,12 @@ class MethodHandlerTestCase(unittest.TestCase):
         """Ensure HTTP request method is dispatched correctly
         in case HTTP request method is not supported.
         """
-        from wheezy.web.handlers.method import MethodHandler
-
         self.mock_request.method = "UNKNOWN"
         response = MethodHandler(self.mock_request)
         assert 405 == response.status_code
 
     def test_call(self):
         """Ensure HTTP request method is dispatched correctly."""
-        from wheezy.web.handlers.method import MethodHandler
-
         for method in ["GET", "POST", "HEAD"]:
             patcher = patch(
                 "wheezy.web.handlers.method.MethodHandler." + method.lower()
@@ -51,8 +46,6 @@ class MethodHandlerTestCase(unittest.TestCase):
 
     def test_extend_response_with_cookies(self):
         """Ensure response cookies are extended with handler cookies."""
-        from wheezy.web.handlers.method import MethodHandler
-
         self.mock_request.method = "GET"
 
         mock_response = Mock()

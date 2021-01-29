@@ -2,19 +2,25 @@
 """
 
 import unittest
+from unittest.mock import Mock, patch
 
-from mock import Mock, patch
+from wheezy.core.i18n import null_translations
+from wheezy.core.url import urlparts
+
+from wheezy.web.handlers import base
+from wheezy.web.handlers.base import (
+    BaseHandler,
+    RedirectRouteHandler,
+    permanent_redirect_handler,
+    redirect_handler,
+)
+from wheezy.web.handlers.method import handler_factory
 
 
 class BaseHandlerTestCase(unittest.TestCase):
     """Test the ``BaseHandler``."""
 
     def setUp(self):
-        from wheezy.core.url import urlparts
-
-        from wheezy.web.handlers.base import BaseHandler
-        from wheezy.web.handlers.method import handler_factory
-
         self.options = {
             "AUTH_COOKIE": "_a",
             "AUTH_COOKIE_PATH": "members",
@@ -49,11 +55,6 @@ class BaseHandlerRoutingTestCase(unittest.TestCase):
     """Test the ``BaseHandler`` routing."""
 
     def setUp(self):
-        from wheezy.core.url import urlparts
-
-        from wheezy.web.handlers.base import BaseHandler
-        from wheezy.web.handlers.method import handler_factory
-
         self.options = {}
         self.mock_request = Mock()
         self.mock_request.options = self.options
@@ -120,9 +121,6 @@ class BaseHandlerI18NTestCase(unittest.TestCase):
     """Test the ``BaseHandler`` i18n."""
 
     def setUp(self):
-        from wheezy.web.handlers.base import BaseHandler
-        from wheezy.web.handlers.method import handler_factory
-
         self.options = {}
         mock_request = Mock()
         mock_request.options = self.options
@@ -150,8 +148,6 @@ class BaseHandlerI18NTestCase(unittest.TestCase):
         """By default null_translation returned. Classes drived
         from BaseHandler must override this property.
         """
-        from wheezy.core.i18n import null_translations
-
         assert null_translations == self.handler.translation
 
     def test_gettext(self):
@@ -167,9 +163,6 @@ class BaseHandlerModelsTestCase(unittest.TestCase):
     """Test the ``BaseHandler`` models."""
 
     def setUp(self):
-        from wheezy.web.handlers.base import BaseHandler
-        from wheezy.web.handlers.method import handler_factory
-
         self.options = {}
         self.mock_request = Mock()
         self.mock_request.options = self.options
@@ -183,8 +176,6 @@ class BaseHandlerModelsTestCase(unittest.TestCase):
 
     def test_try_update_model(self):
         """try_update_model"""
-        from wheezy.core.i18n import null_translations
-
         translations_manager = {"en": {"validation": null_translations}}
         self.handler.route_args["locale"] = "en"
         self.options["translations_manager"] = translations_manager
@@ -198,9 +189,6 @@ class BaseHandlerTemplatesTestCase(unittest.TestCase):
     """Test the ``BaseHandler`` templates."""
 
     def setUp(self):
-        from wheezy.web.handlers.base import BaseHandler
-        from wheezy.web.handlers.method import handler_factory
-
         self.options = {"AUTH_COOKIE": "_a"}
         self.mock_request = Mock()
         self.mock_request.options = self.options
@@ -259,8 +247,6 @@ class BaseHandlerTemplatesTestCase(unittest.TestCase):
 
     def test_json_response(self):
         """json_response."""
-        from wheezy.web.handlers import base
-
         self.options.update({"ENCODING": "UTF-8"})
         patcher = patch.object(base, "json_response")
         mock_json_response = patcher.start()
@@ -276,9 +262,6 @@ class BaseHandlerAuthenticationTestCase(unittest.TestCase):
     """Test the ``BaseHandler`` authentication."""
 
     def setUp(self):
-        from wheezy.web.handlers.base import BaseHandler
-        from wheezy.web.handlers.method import handler_factory
-
         self.options = {
             "AUTH_COOKIE": "_a",
             "AUTH_COOKIE_PATH": "members",
@@ -350,9 +333,6 @@ class BaseHandlerXSRFTestCase(unittest.TestCase):
     """Test the ``BaseHandler`` XSRF."""
 
     def setUp(self):
-        from wheezy.web.handlers.base import BaseHandler
-        from wheezy.web.handlers.method import handler_factory
-
         self.options = {"XSRF_NAME": "_x"}
         self.mock_request = Mock()
         self.mock_request.options = self.options
@@ -364,8 +344,6 @@ class BaseHandlerXSRFTestCase(unittest.TestCase):
 
     def test_getxsrf_cookie_not_available(self):
         """XSRF cookie was not supplied with request."""
-        from wheezy.web.handlers import base
-
         self.options.update(
             {
                 "HTTP_COOKIE_DOMAIN": None,
@@ -454,9 +432,6 @@ class BaseHandlerResibmissionTestCase(unittest.TestCase):
     """Test the ``BaseHandler`` resubmission."""
 
     def setUp(self):
-        from wheezy.web.handlers.base import BaseHandler
-        from wheezy.web.handlers.method import handler_factory
-
         self.options = {"RESUBMISSION_NAME": "_r"}
         self.mock_request = Mock()
         self.mock_request.options = self.options
@@ -582,11 +557,6 @@ class RedirectRouteHandlerTestCase(unittest.TestCase):
     """Test the ``RedirectRouteHandler``."""
 
     def setUp(self):
-        from wheezy.core.url import urlparts
-
-        from wheezy.web.handlers.base import RedirectRouteHandler
-        from wheezy.web.handlers.method import handler_factory
-
         mock_path_for = Mock(return_value="welcome")
         self.options = {"path_for": mock_path_for}
         self.mock_request = Mock()
@@ -635,8 +605,6 @@ class RedirectHandlerTestCase(unittest.TestCase):
     """Test the ``redirect_handler``."""
 
     def setUp(self):
-        from wheezy.core.url import urlparts
-
         mock_path_for = Mock(return_value="welcome")
         self.options = {"path_for": mock_path_for}
         self.mock_request = Mock()
@@ -650,8 +618,6 @@ class RedirectHandlerTestCase(unittest.TestCase):
 
     def test_redirect_http_get(self):
         """get."""
-        from wheezy.web.handlers.base import redirect_handler
-
         self.mock_request.method = "GET"
         response = redirect_handler("welcome")(self.mock_request)
         assert 302 == response.status_code
@@ -659,8 +625,6 @@ class RedirectHandlerTestCase(unittest.TestCase):
 
     def test_redirect_http_post(self):
         """post."""
-        from wheezy.web.handlers.base import redirect_handler
-
         self.mock_request.method = "POST"
         response = redirect_handler("welcome")(self.mock_request)
         assert 302 == response.status_code
@@ -671,8 +635,6 @@ class PermanentRedirectHandlerTestCase(unittest.TestCase):
     """Test the ``permanent_redirect_handler``."""
 
     def setUp(self):
-        from wheezy.core.url import urlparts
-
         mock_path_for = Mock(return_value="welcome")
         self.options = {"path_for": mock_path_for}
         self.mock_request = Mock()
@@ -686,8 +648,6 @@ class PermanentRedirectHandlerTestCase(unittest.TestCase):
 
     def test_redirect_http_get(self):
         """get."""
-        from wheezy.web.handlers.base import permanent_redirect_handler
-
         self.mock_request.method = "GET"
         response = permanent_redirect_handler("welcome")(self.mock_request)
         assert 301 == response.status_code
@@ -695,8 +655,6 @@ class PermanentRedirectHandlerTestCase(unittest.TestCase):
 
     def test_redirect_http_post(self):
         """post."""
-        from wheezy.web.handlers.base import permanent_redirect_handler
-
         self.mock_request.method = "POST"
         response = permanent_redirect_handler("welcome")(self.mock_request)
         assert 301 == response.status_code

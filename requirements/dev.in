@@ -4,7 +4,6 @@ pycryptodome
 tenjin
 wheezy.template
 
-mock
 pytest
 pytest-cov
 pip-tools

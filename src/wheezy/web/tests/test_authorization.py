@@ -2,8 +2,9 @@
 """
 
 import unittest
+from unittest.mock import Mock
 
-from mock import Mock
+from wheezy.web.authorization import authorize, secure
 
 
 class AuthorizeTestCase(unittest.TestCase):
@@ -16,8 +17,6 @@ class AuthorizeTestCase(unittest.TestCase):
         def get(self):
             ...
         """
-        from wheezy.web.authorization import authorize
-
         mock_handler = Mock()
         mock_handler.principal = None
         mock_handler_method = Mock()
@@ -32,8 +31,6 @@ class AuthorizeTestCase(unittest.TestCase):
         def get(self):
             ...
         """
-        from wheezy.web.authorization import authorize
-
         mock_handler = Mock()
         mock_handler.principal = "UserA"
         mock_handler_method = Mock(return_value="response")
@@ -48,8 +45,6 @@ class AuthorizeTestCase(unittest.TestCase):
         def get(self):
             ...
         """
-        from wheezy.web.authorization import authorize
-
         mock_handler = Mock()
         mock_handler.principal = None
         mock_handler_method = Mock()
@@ -64,8 +59,6 @@ class AuthorizeTestCase(unittest.TestCase):
         def get(self):
             ...
         """
-        from wheezy.web.authorization import authorize
-
         mock_principal = Mock()
         mock_principal.roles = ["user"]
         mock_handler = Mock()
@@ -82,8 +75,6 @@ class AuthorizeTestCase(unittest.TestCase):
         def get(self):
             ...
         """
-        from wheezy.web.authorization import authorize
-
         mock_principal = Mock()
         mock_principal.roles = ["user", "admin"]
         mock_handler = Mock()
@@ -94,8 +85,6 @@ class AuthorizeTestCase(unittest.TestCase):
 
     def test_wrapped(self):
         """Check decorators"""
-        from wheezy.web.authorization import authorize
-
         mock_handler = Mock()
         mock_handler.principal = "UserA"
 
@@ -116,8 +105,6 @@ class SecureTestCase(unittest.TestCase):
         def get(self):
             ...
         """
-        from wheezy.web.authorization import secure
-
         mock_handler = Mock()
         mock_handler.request.secure = False
         mock_handler.request.urlparts = (
@@ -136,8 +123,6 @@ class SecureTestCase(unittest.TestCase):
 
     def test_check_secure(self):
         """Check if request is secure."""
-        from wheezy.web.authorization import secure
-
         mock_handler = Mock()
         mock_handler.request.secure = True
         mock_handler_method = Mock(return_value="response")
@@ -146,8 +131,6 @@ class SecureTestCase(unittest.TestCase):
 
     def test_check_not_enabled(self):
         """Check if request is secure."""
-        from wheezy.web.authorization import secure
-
         mock_handler = Mock()
         mock_handler_method = Mock(return_value="response")
         handler = secure(enabled=False)(mock_handler_method)
@@ -155,8 +138,6 @@ class SecureTestCase(unittest.TestCase):
 
     def test_wrapped(self):
         """Check decorators"""
-        from wheezy.web.authorization import secure
-
         mock_handler = Mock()
         mock_handler.request.secure = True
 

@@ -2,9 +2,9 @@
 """
 
 import unittest
+from unittest.mock import Mock
 
 from membership.repository.samples import next_registration
-from mock import Mock
 
 
 class MembershipServiceTestCase(unittest.TestCase):

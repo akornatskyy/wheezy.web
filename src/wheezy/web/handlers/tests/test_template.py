@@ -2,16 +2,17 @@
 """
 
 import unittest
+from unittest.mock import Mock
 
-from mock import Mock
+from wheezy.core.i18n import null_translations
+
+from wheezy.web.handlers.template import template_handler
 
 
 class TemplateHandlerFactoryTestCase(unittest.TestCase):
     """Test the ``template_handler``."""
 
     def setUp(self):
-        from wheezy.core.i18n import null_translations
-
         self.options = {
             "CONTENT_TYPE": "text/plain",
             "ENCODING": "UTF-8",
@@ -28,8 +29,6 @@ class TemplateHandlerFactoryTestCase(unittest.TestCase):
 
     def test_get(self):
         """get."""
-        from wheezy.web.handlers.template import template_handler
-
         mock_render_template = Mock()
         self.options["render_template"] = mock_render_template
         handler = template_handler("test.html", status_code=404)

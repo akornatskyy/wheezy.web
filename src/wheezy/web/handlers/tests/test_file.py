@@ -3,8 +3,10 @@
 
 import os.path
 import unittest
+from unittest.mock import Mock
 
-from mock import Mock
+from wheezy.web.handlers.file import FileHandler, file_handler
+from wheezy.web.handlers.method import handler_factory
 
 rootdir = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 
@@ -13,9 +15,6 @@ class FileHandlerTestCase(unittest.TestCase):
     """Test the ``FileHandler``."""
 
     def setUp(self):
-        from wheezy.web.handlers.file import FileHandler
-        from wheezy.web.handlers.method import handler_factory
-
         self.options = {}
         self.mock_request = Mock()
         self.mock_request.options = self.options
@@ -76,8 +75,6 @@ class FileHandlerFactoryTestCase(unittest.TestCase):
 
     def test_get(self):
         """get."""
-        from wheezy.web.handlers.file import file_handler
-
         self.route_args["path"] = "tests/test_file.py"
         response = file_handler(rootdir)(self.mock_request)
         assert 200 == response.status_code
