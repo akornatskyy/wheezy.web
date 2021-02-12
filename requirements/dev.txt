@@ -32,7 +32,7 @@ pluggy==0.13.1
     # via pytest
 py==1.10.0
     # via pytest
-pycryptodome==3.9.9
+pycryptodome==3.10.1
     # via -r requirements/dev.in
 pyparsing==2.4.7
     # via packaging
