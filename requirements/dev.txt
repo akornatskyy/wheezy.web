@@ -6,21 +6,23 @@
 #
 atomicwrites==1.4.0
     # via pytest
-attrs==20.3.0
+attrs==21.2.0
     # via pytest
-click==7.1.2
+click==8.0.0
     # via pip-tools
 colorama==0.4.4
-    # via pytest
-coverage==5.5
+    # via
+    #   click
+    #   pytest
+coverage[toml]==5.5
     # via pytest-cov
 iniconfig==1.1.1
     # via pytest
-jinja2==2.11.3
+jinja2==3.0.0
     # via -r requirements/dev.in
 mako==1.1.4
     # via -r requirements/dev.in
-markupsafe==1.1.1
+markupsafe==2.0.0
     # via
     #   jinja2
     #   mako
@@ -28,7 +30,7 @@ packaging==20.9
     # via pytest
 pep517==0.10.0
     # via pip-tools
-pip-tools==6.0.1
+pip-tools==6.1.0
     # via -r requirements/dev.in
 pluggy==0.13.1
     # via pytest
@@ -38,9 +40,9 @@ pycryptodome==3.10.1
     # via -r requirements/dev.in
 pyparsing==2.4.7
     # via packaging
-pytest-cov==2.11.1
+pytest-cov==2.12.0
     # via -r requirements/dev.in
-pytest==6.2.2
+pytest==6.2.4
     # via
     #   -r requirements/dev.in
     #   pytest-cov
@@ -48,9 +50,10 @@ tenjin==1.1.1
     # via -r requirements/dev.in
 toml==0.10.2
     # via
+    #   coverage
     #   pep517
     #   pytest
-wheezy.template==3.0.3
+wheezy.template==3.1.0
     # via -r requirements/dev.in
 
 # The following packages are considered to be unsafe in a requirements file:
