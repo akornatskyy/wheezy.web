@@ -8,17 +8,17 @@ atomicwrites==1.4.0
     # via pytest
 attrs==21.2.0
     # via pytest
-click==8.0.1
+click==8.0.2
     # via pip-tools
 colorama==0.4.4
     # via
     #   click
     #   pytest
-coverage==5.5
+coverage[toml]==6.0.1
     # via pytest-cov
 iniconfig==1.1.1
     # via pytest
-jinja2==3.0.1
+jinja2==3.0.2
     # via -r requirements/dev.in
 mako==1.1.5
     # via -r requirements/dev.in
@@ -30,13 +30,13 @@ packaging==21.0
     # via pytest
 pep517==0.11.0
     # via pip-tools
-pip-tools==6.2.0
+pip-tools==6.3.1
     # via -r requirements/dev.in
 pluggy==1.0.0
     # via pytest
 py==1.10.0
     # via pytest
-pycryptodome==3.10.1
+pycryptodome==3.11.0
     # via -r requirements/dev.in
 pyparsing==2.4.7
     # via packaging
@@ -44,16 +44,16 @@ pytest==6.2.5
     # via
     #   -r requirements/dev.in
     #   pytest-cov
-pytest-cov==2.12.1
+pytest-cov==3.0.0
     # via -r requirements/dev.in
 tenjin==1.1.1
     # via -r requirements/dev.in
 toml==0.10.2
-    # via
-    #   pytest
-    #   pytest-cov
+    # via pytest
 tomli==1.2.1
-    # via pep517
+    # via
+    #   coverage
+    #   pep517
 wheel==0.37.0
     # via pip-tools
 wheezy.template==3.1.0
