@@ -2,6 +2,7 @@
 """
 
 import unittest
+from functools import partial
 from unittest.mock import Mock
 
 from wheezy.core.collections import defaultdict
@@ -74,7 +75,14 @@ class HTTPErrorMiddlewareTestCase(unittest.TestCase):
             mock_following = Mock(side_effect=error)
             middleware = HTTPErrorMiddleware({}, None)
             self.assertRaises(
-                error, lambda: middleware(mock_request, mock_following)
+                error,
+                partial(
+                    lambda middleware, mock_following: middleware(
+                        mock_request, mock_following
+                    ),
+                    middleware,
+                    mock_following,
+                ),
             )
 
     def test_following_response_needs_redirect(self):
