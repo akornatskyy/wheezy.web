@@ -33,7 +33,6 @@ class MembershipBaseHandler(BaseHandler):
 
 
 class SignInHandler(MembershipBaseHandler, RedirectQueryStringReturnPathMixin):
-
     lockout = locker.define(
         name="signin attempts",
         by_ip=dict(count=3, duration=60, alert=signin_alert),
@@ -101,7 +100,6 @@ class SignOutHandler(BaseHandler):
 
 
 class SignUpHandler(MembershipBaseHandler):
-
     lockout = locker.define(
         name="signup attempts", by_ip=dict(count=2, duration=60)
     )

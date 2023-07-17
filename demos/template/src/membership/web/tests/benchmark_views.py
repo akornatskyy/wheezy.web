@@ -105,6 +105,5 @@ try:
                 "ajax-signup", baselines={"test_ajax_validation_error": 1.0}
             )
 
-
 except ImportError:
     pass

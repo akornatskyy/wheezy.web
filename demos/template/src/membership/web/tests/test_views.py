@@ -229,7 +229,6 @@ try:
             del self.client
             self.client = None
 
-
 except NotImplementedError:  # pragma: nocover
     pass
 
@@ -387,7 +386,6 @@ try:
             errors = self.client.json.errors
             assert 7 == len(errors)
             assert AUTH_COOKIE not in self.client.cookies
-
 
 except NotImplementedError:  # pragma: nocover
     pass

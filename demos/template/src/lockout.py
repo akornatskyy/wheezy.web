@@ -36,7 +36,6 @@ elif mode == "mail":
             )
         )
 
-
 else:
     raise NotImplementedError(mode)
 

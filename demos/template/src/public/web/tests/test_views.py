@@ -19,7 +19,6 @@ if template_engine.startswith("wheezy"):
     def extra_whitespace(s):
         return re_ws.search(s)
 
-
 else:
 
     def extra_whitespace(s):
