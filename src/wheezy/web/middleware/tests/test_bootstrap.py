@@ -30,7 +30,7 @@ class BootstrapWebDefaultsTestCase(unittest.TestCase):
     def assert_warning(self, msg):
         if self.ctx:
             assert len(self.w) == 1
-            self.assertEquals(msg, str(self.w[-1].message))
+            self.assertEqual(msg, str(self.w[-1].message))
 
     def test_default_options(self):
         """Ensure required keys exist."""
