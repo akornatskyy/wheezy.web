@@ -1,5 +1,6 @@
 """
 """
+
 from uuid import uuid4
 
 from wheezy.core.descriptors import attribute
