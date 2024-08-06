@@ -23,7 +23,7 @@ from wheezy.core.i18n import TranslationsManager
 from wheezy.html.ext.template import WhitespaceExtension, WidgetExtension
 from wheezy.html.utils import format_value, html_escape
 from wheezy.security.crypto import Ticket
-from wheezy.security.crypto.comp import aes128, ripemd160, sha1, sha256
+from wheezy.security.crypto.comp import aes128, sha1, sha256, sha512
 from wheezy.template.engine import Engine
 from wheezy.template.ext.core import CoreExtension
 from wheezy.template.loader import FileLoader
@@ -137,7 +137,7 @@ options.update(
             max_age=config.getint("crypto", "ticket-max-age"),
             salt=config.get("crypto", "ticket-salt"),
             cypher=aes128,
-            digestmod=ripemd160 or sha256 or sha1,
+            digestmod=sha512 or sha256 or sha1,
             options={
                 "CRYPTO_ENCRYPTION_KEY": config.get(
                     "crypto", "encryption-key"

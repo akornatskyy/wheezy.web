@@ -394,7 +394,7 @@ Here are authentication configuration options (see file `config.py`_)::
                 max_age=config.getint('crypto', 'ticket-max-age'),
                 salt=config.get('crypto', 'ticket-salt'),
                 cypher=aes128,
-                digestmod=ripemd160 or sha256 or sha1,
+                digestmod=sha512 or sha256 or sha1,
                 options={
                     'CRYPTO_ENCRYPTION_KEY': config.get('crypto', 'encryption-key'),
                     'CRYPTO_VALIDATION_KEY': config.get('crypto', 'validation-key')
