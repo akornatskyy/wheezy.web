@@ -1,6 +1,6 @@
 # wheezy.web
 
-[![Build Status](https://travis-ci.org/akornatskyy/wheezy.web.svg?branch=master)](https://travis-ci.org/akornatskyy/wheezy.web)
+[![tests](https://github.com/akornatskyy/wheezy.web/actions/workflows/tests.yml/badge.svg)](https://github.com/akornatskyy/wheezy.web/actions/workflows/tests.yml)
 [![Coverage Status](https://coveralls.io/repos/github/akornatskyy/wheezy.web/badge.svg?branch=master)](https://coveralls.io/github/akornatskyy/wheezy.web?branch=master)
 [![Documentation Status](https://readthedocs.org/projects/wheezyweb/badge/?version=latest)](https://wheezyweb.readthedocs.io/en/latest/?badge=latest)
 [![pypi version](https://badge.fury.io/py/wheezy.web.svg)](https://badge.fury.io/py/wheezy.web)
@@ -10,7 +10,7 @@
 high concurrency [WSGI](http://www.python.org/dev/peps/pep-3333) web
 framework with the key features to *build modern, efficient web*:
 
-- Requires Python 3.6+.
+- Requires Python 3.8+.
 - MVC architectural pattern
   ([push](http://en.wikipedia.org/wiki/Web_application_framework#Push-based_vs._pull-based)-based).
 - Functionality includes
