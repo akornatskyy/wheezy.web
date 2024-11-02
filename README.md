@@ -44,7 +44,7 @@ Resources:
 ## Install
 
 [wheezy.web](https://pypi.org/project/wheezy.web/) requires
-[python](https://www.python.org) version 3.8+. It is independent of operating
+[python](https://www.python.org) version 3.9+. It is independent of operating
 system. You can install it from [pypi](https://pypi.org/project/wheezy.web/)
 site:
 
