@@ -10,7 +10,6 @@
 high concurrency [WSGI](http://www.python.org/dev/peps/pep-3333) web
 framework with the key features to *build modern, efficient web*:
 
-- Requires Python 3.8+.
 - MVC architectural pattern
   ([push](http://en.wikipedia.org/wiki/Web_application_framework#Push-based_vs._pull-based)-based).
 - Functionality includes
