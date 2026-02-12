@@ -1,112 +1,61 @@
 #!/usr/bin/env python
 
-import multiprocessing
 import os
-import re
+from glob import glob
 
-from setuptools import setup
+from setuptools import Extension, setup  # type: ignore[import]
 
-extra = {}
-try:
-    from Cython.Build import cythonize
 
-    p = os.path.join("src", "wheezy", "web")
-    extra["ext_modules"] = cythonize(
-        [
-            os.path.join(p, "*.py"),
-            os.path.join(p, "handlers", "*.py"),
-            os.path.join(p, "middleware", "*.py"),
-        ],
-        exclude=[
-            os.path.join(p, "__init__.py"),
-            os.path.join(p, "handlers", "__init__.py"),
-            os.path.join(p, "middleware", "__init__.py"),
-        ],
-        # https://github.com/cython/cython/issues/3262
-        nthreads=0 if multiprocessing.get_start_method() == "spawn" else 2,
+def module_name_from_src_path(path: str) -> str:
+    """Derive a fully-qualified module name from a file path under ./src.
+
+    Cython's default path-to-module logic relies on finding __init__.py files.
+    For PEP 420 namespace packages (e.g. "wheezy"), that inference stops too
+    early, which can produce incorrect module names (e.g. "web.*").
+    """
+
+    rel = os.path.relpath(path, "src")
+    rel_no_ext = os.path.splitext(rel)[0]
+    return rel_no_ext.replace(os.sep, ".")
+
+
+def optional_cython_extensions() -> object:
+    try:
+        from Cython.Build import cythonize  # type: ignore[import]
+    except ImportError:
+        return None
+
+    package_root = os.path.join("src", "wheezy", "web")
+
+    sources: list[str] = []
+    sources.extend(glob(os.path.join(package_root, "*.py")))
+    sources.extend(glob(os.path.join(package_root, "handlers", "*.py")))
+    sources.extend(glob(os.path.join(package_root, "middleware", "*.py")))
+
+    extensions: list[Extension] = []
+    for src_path in sources:
+        if os.path.basename(src_path) == "__init__.py":
+            continue
+        extensions.append(
+            Extension(module_name_from_src_path(src_path), [src_path])
+        )
+
+    return cythonize(
+        extensions,
+        nthreads=2,
         compiler_directives={"language_level": 3},
         quiet=True,
     )
-except ImportError:
-    pass
 
-README = open(os.path.join(os.path.dirname(__file__), "README.md")).read()
-VERSION = (
-    re.search(
-        r'__version__ = "(.+)"',
-        open("src/wheezy/web/__init__.py").read(),
-    )
-    .group(1)
-    .strip()
-)
 
-install_requires = [
-    "wheezy.core>=0.1.131",
-    "wheezy.caching>=0.1.96",
-    "wheezy.html>=0.1.140",
-    "wheezy.http>=0.1.314",
-    "wheezy.routing>=0.1.153",
-    "wheezy.security>=0.1.61",
-    "wheezy.validation>=0.1.125",
-]
+def main() -> None:
+    extra = {}
+    ext_modules = optional_cython_extensions()
+    if ext_modules is not None:
+        extra["ext_modules"] = ext_modules
 
-try:
-    import uuid  # noqa
-except ImportError:
-    install_requires.append("uuid")
+    setup(**extra)
 
-setup(
-    name="wheezy.web",
-    version=VERSION,
-    python_requires=">=3.10",
-    description="A lightweight, high performance, high concurrency WSGI "
-    "web framework with the key features to build modern, efficient web",
-    long_description=README,
-    long_description_content_type="text/markdown",
-    url="https://github.com/akornatskyy/wheezy.web",
-    author="Andriy Kornatskyy",
-    author_email="andriy.kornatskyy@live.com",
-    license="MIT",
-    classifiers=[
-        "Environment :: Web Environment",
-        "Intended Audience :: Developers",
-        "License :: OSI Approved :: MIT License",
-        "Natural Language :: English",
-        "Operating System :: OS Independent",
-        "Programming Language :: Python",
-        "Programming Language :: Python :: 3.10",
-        "Programming Language :: Python :: 3.11",
-        "Programming Language :: Python :: 3.12",
-        "Programming Language :: Python :: 3.13",
-        "Programming Language :: Python :: 3.14",
-        "Programming Language :: Python :: Implementation :: CPython",
-        "Programming Language :: Python :: Implementation :: PyPy",
-        "Topic :: Internet :: WWW/HTTP",
-        "Topic :: Internet :: WWW/HTTP :: Dynamic Content",
-        "Topic :: Internet :: WWW/HTTP :: WSGI",
-        "Topic :: Internet :: WWW/HTTP :: WSGI :: Application",
-        "Topic :: Internet :: WWW/HTTP :: WSGI :: Middleware",
-        "Topic :: Software Development :: Libraries :: Application Frameworks",
-        "Topic :: Software Development :: Libraries :: Python Modules",
-    ],
-    keywords="wsgi web handler static template mako tenjin jinja2 "
-    "routing middleware caching transforms",
-    packages=[
-        "wheezy",
-        "wheezy.web",
-        "wheezy.web.handlers",
-        "wheezy.web.middleware",
-    ],
-    package_dir={"": "src"},
-    namespace_packages=["wheezy"],
-    zip_safe=False,
-    install_requires=install_requires,
-    extras_require={
-        "mako": ["mako>=0.7.0"],
-        "tenjin": ["tenjin>=1.1.0"],
-        "jinja2": ["jinja2>=2.6"],
-        "wheezy.template": ["wheezy.template>=0.1.107"],
-    },
-    platforms="any",
-    **extra
-)
+
+if __name__ == "__main__":
+    main()

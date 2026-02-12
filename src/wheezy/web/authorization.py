@@ -1,6 +1,3 @@
-"""
-"""
-
 from wheezy.core.url import UrlParts
 from wheezy.http import forbidden, permanent_redirect, unauthorized
 

@@ -1,6 +1,3 @@
-"""
-"""
-
 from wheezy.validation.rules import int_adapter, length, range, required
 
 

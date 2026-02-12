@@ -1,6 +1,3 @@
-""" ``bootstrap`` module.
-"""
-
 from warnings import warn
 
 from wheezy.http import bootstrap_http_defaults

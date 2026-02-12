@@ -1,6 +1,3 @@
-""" Unit tests for ``wheezy.web.middleware.bootstrap``.
-"""
-
 import unittest
 from unittest.mock import Mock, patch
 

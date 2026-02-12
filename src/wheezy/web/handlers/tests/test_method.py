@@ -1,6 +1,3 @@
-""" Unit tests for ``wheezy.web.handlers.method``.
-"""
-
 import unittest
 from unittest.mock import Mock, patch
 

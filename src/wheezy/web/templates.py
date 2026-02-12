@@ -1,7 +1,3 @@
-"""
-"""
-
-
 class MakoTemplate(object):
     """Integration with Mako templates."""
 
@@ -12,7 +8,7 @@ class MakoTemplate(object):
         directories=None,
         module_directory="/tmp/mako_modules",
         cache=None,
-        **kwargs
+        **kwargs,
     ):
         from mako.lookup import TemplateLookup
 
@@ -20,7 +16,7 @@ class MakoTemplate(object):
             self.template_lookup = TemplateLookup(
                 directories=directories or ["content/templates"],
                 module_directory=module_directory,
-                **kwargs
+                **kwargs,
             )
         else:
             from mako.cache import register_plugin
@@ -31,7 +27,7 @@ class MakoTemplate(object):
                 module_directory=module_directory,
                 cache_impl="wheezy",
                 cache_args={"cache": cache},
-                **kwargs
+                **kwargs,
             )
 
     def __call__(self, template_name, kwargs):
@@ -81,7 +77,7 @@ class TenjinTemplate(object):
         encoding="UTF-8",
         postfix=".html",
         cache=None,
-        **kwargs
+        **kwargs,
     ):
         import tenjin
 
@@ -108,7 +104,7 @@ class TenjinTemplate(object):
             postfix=postfix,
             cache=cache or tenjin.MemoryCacheStorage(),
             pp=pp,
-            **kwargs
+            **kwargs,
         )
 
     def __call__(self, template_name, kwargs):

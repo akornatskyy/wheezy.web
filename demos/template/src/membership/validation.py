@@ -1,6 +1,3 @@
-"""
-"""
-
 from datetime import timedelta
 
 from membership.rules import identity, password_rules

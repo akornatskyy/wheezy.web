@@ -1,6 +1,3 @@
-""" Minimal helloworld application.
-"""
-
 from wheezy.http import HTTPResponse, WSGIApplication
 from wheezy.routing import url
 

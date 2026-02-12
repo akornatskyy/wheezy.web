@@ -1,6 +1,3 @@
-""" Unit tests for ``wheezy.web.middleware.routing``.
-"""
-
 import unittest
 from unittest.mock import Mock
 

@@ -1,5 +1,5 @@
 include Makefile
-include README.rst
+include README.md
 include content/maintenance.html
 include content/static/robots.txt
 include etc/config.ini

@@ -1,6 +1,3 @@
-""" Unit tests for ``wheezy.web.middleware.errors``.
-"""
-
 import unittest
 from functools import partial
 from unittest.mock import Mock

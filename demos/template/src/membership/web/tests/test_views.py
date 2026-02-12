@@ -1,6 +1,3 @@
-""" ``test_views`` module.
-"""
-
 import unittest
 
 from app import main
@@ -11,7 +8,6 @@ from wheezy.http.functional import PageMixin, WSGIClient
 AUTH_COOKIE = options["AUTH_COOKIE"]
 XSRF_NAME = options["XSRF_NAME"]
 RESUBMISSION_NAME = options["RESUBMISSION_NAME"]
-
 
 # region: pages
 

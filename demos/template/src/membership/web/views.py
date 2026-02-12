@@ -1,7 +1,4 @@
-"""
-"""
-
-from datetime import datetime
+from datetime import datetime, timezone
 from time import time
 
 from factory import Factory
@@ -21,6 +18,8 @@ from wheezy.security import Principal
 from wheezy.web import handler_cache
 from wheezy.web.authorization import authorize
 from wheezy.web.handlers import BaseHandler
+
+UTC = timezone.utc
 
 
 class MembershipBaseHandler(BaseHandler):
@@ -87,8 +86,8 @@ class SignInHandler(MembershipBaseHandler, RedirectQueryStringReturnPathMixin):
             # to the list of self.cookies, we set expries to make
             # it persistent. Once renewed turns back to session, otherwise
             # override setprincipal.
-            self.cookies[-1].expires = datetime.utcfromtimestamp(
-                time() + self.ticket.max_age
+            self.cookies[-1].expires = datetime.fromtimestamp(
+                time() + self.ticket.max_age, UTC
             )
         return True
 

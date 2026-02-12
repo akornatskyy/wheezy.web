@@ -1,6 +1,3 @@
-""" ``test_bridge`` module.
-"""
-
 import unittest
 from unittest.mock import Mock
 

@@ -1,6 +1,3 @@
-""" ``benchmark_views`` module.
-"""
-
 from membership.web.tests.test_views import (
     MembershipTestCase,
     SignInTestCase,

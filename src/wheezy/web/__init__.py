@@ -1,8 +1,3 @@
-"""
-"""
-
-# flake8: noqa
-
 from wheezy.web.authorization import authorize, secure
 from wheezy.web.caching import handler_cache
 

@@ -1,6 +1,3 @@
-""" ``config`` module.
-"""
-
 import sqlite3
 
 from wheezy.caching.memory import MemoryCache
@@ -27,7 +24,6 @@ options = {}
 
 # HTTPCacheMiddleware
 options.update({"http_cache": cache})
-
 
 # Template Engine
 searchpath = ["templates"]

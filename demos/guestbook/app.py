@@ -1,6 +1,3 @@
-""" ``app`` module.
-"""
-
 from config import options
 from urls import all_urls
 from wheezy.http import WSGIApplication
@@ -19,7 +16,6 @@ main = WSGIApplication(
     ],
     options,
 )
-
 
 if __name__ == "__main__":
     from wsgiref.handlers import BaseHandler

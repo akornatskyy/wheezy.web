@@ -1,6 +1,3 @@
-"""
-"""
-
 from config import config
 
 

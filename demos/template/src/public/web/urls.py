@@ -1,6 +1,3 @@
-"""
-"""
-
 from public.web.views import (
     about,
     home,

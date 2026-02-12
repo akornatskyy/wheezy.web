@@ -1,13 +1,9 @@
-""" ``test_views`` module.
-"""
-
 import unittest
 
 try:
     import json
 except ImportError:  # pragma: nocover
     json = None  # noqa
-
 
 from app import main
 from wheezy.http.functional import WSGIClient

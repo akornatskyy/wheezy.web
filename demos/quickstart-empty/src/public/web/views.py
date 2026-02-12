@@ -1,6 +1,3 @@
-"""
-"""
-
 import os.path
 
 from config import root_dir

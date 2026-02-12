@@ -1,6 +1,3 @@
-""" Unit tests for ``wheezy.web.authorization``.
-"""
-
 import unittest
 from unittest.mock import Mock
 

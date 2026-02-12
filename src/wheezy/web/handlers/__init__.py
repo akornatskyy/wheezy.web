@@ -1,8 +1,3 @@
-""" ``handlers`` package.
-"""
-
-# flake8: noqa
-
 from wheezy.web.handlers.base import (
     BaseHandler,
     RedirectRouteHandler,

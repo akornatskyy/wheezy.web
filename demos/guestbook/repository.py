@@ -1,6 +1,3 @@
-""" ``repository`` module.
-"""
-
 from models import Greeting
 
 
@@ -9,14 +6,12 @@ class Repository(object):
         self.db = db
 
     def list_greetings(self):
-        cursor = self.db.execute(
-            """
+        cursor = self.db.execute("""
                 SELECT id, created_on, author, message
                 FROM greeting
                 ORDER BY id DESC
                 LIMIT 10
-        """
-        )
+        """)
         return [
             Greeting(
                 id=row[0], created_on=row[1], author=row[2], message=row[3]

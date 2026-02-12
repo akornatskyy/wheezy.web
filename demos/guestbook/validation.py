@@ -1,6 +1,3 @@
-""" ``validation`` module.
-"""
-
 from wheezy.validation import Validator
 from wheezy.validation.rules import length, required
 

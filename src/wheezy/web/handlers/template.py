@@ -1,6 +1,3 @@
-"""
-"""
-
 from wheezy.web.handlers.base import BaseHandler
 
 

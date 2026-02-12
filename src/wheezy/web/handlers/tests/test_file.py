@@ -1,6 +1,3 @@
-""" Unit tests for ``wheezy.web.handlers.base``.
-"""
-
 import os.path
 import unittest
 from unittest.mock import Mock

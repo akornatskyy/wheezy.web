@@ -1,6 +1,3 @@
-"""
-"""
-
 from datetime import datetime, timedelta
 
 from config import cache, config

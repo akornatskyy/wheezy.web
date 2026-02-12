@@ -1,6 +1,3 @@
-""" ``test_validation`` module.
-"""
-
 import unittest
 
 from wheezy.validation.checker import Checker

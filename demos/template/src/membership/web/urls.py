@@ -1,6 +1,3 @@
-"""
-"""
-
 from membership.web.views import (
     ProfileHandler,
     SignInHandler,

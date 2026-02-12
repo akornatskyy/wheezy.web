@@ -1,6 +1,3 @@
-"""
-"""
-
 from config import translations
 from membership.repository.contract import IMembershipRepository
 from membership.repository.samples import db

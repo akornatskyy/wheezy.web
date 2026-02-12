@@ -1,6 +1,3 @@
-"""
-"""
-
 from config import options
 from urls import all_urls
 from wheezy.http import WSGIApplication

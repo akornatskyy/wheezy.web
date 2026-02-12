@@ -1,6 +1,3 @@
-""" ``urls`` module.
-"""
-
 from views import AddHandler, ListHandler
 from wheezy.routing import url
 

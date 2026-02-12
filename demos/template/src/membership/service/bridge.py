@@ -1,6 +1,3 @@
-"""
-"""
-
 from config import translations
 from membership.models import Credential, Registration, account_types
 from wheezy.core.descriptors import attribute

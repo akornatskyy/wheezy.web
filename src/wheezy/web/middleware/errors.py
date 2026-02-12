@@ -1,6 +1,3 @@
-""" ``errors`` module.
-"""
-
 import sys
 from traceback import format_exception_only
 

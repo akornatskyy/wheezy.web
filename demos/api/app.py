@@ -1,6 +1,3 @@
-"""
-"""
-
 from datetime import timedelta
 
 from wheezy.caching import MemoryCache

@@ -1,6 +1,3 @@
-""" ``models`` module.
-"""
-
 from datetime import datetime
 
 

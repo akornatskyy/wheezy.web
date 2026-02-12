@@ -1,6 +1,3 @@
-"""
-"""
-
 from wheezy.http import method_not_allowed
 
 new = object.__new__

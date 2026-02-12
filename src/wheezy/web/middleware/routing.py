@@ -1,6 +1,3 @@
-""" ``routing`` module.
-"""
-
 from wheezy.core.collections import attrdict
 
 

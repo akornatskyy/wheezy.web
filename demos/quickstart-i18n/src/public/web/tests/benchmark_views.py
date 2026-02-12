@@ -1,6 +1,3 @@
-""" ``benchmark_views`` module.
-"""
-
 from public.web.tests.test_views import ErrorTestCase, PublicTestCase
 from wheezy.http.functional import BenchmarkMixin
 

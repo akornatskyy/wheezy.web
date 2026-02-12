@@ -1,6 +1,3 @@
-"""
-"""
-
 import mimetypes
 import os.path
 

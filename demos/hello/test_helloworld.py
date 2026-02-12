@@ -1,6 +1,3 @@
-""" ``test_helloworld`` module.
-"""
-
 import unittest
 
 from helloworld import main

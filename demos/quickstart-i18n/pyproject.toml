@@ -1,0 +1,50 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "mysite"
+version = "0.1"
+description = "MySite Project"
+readme = { file = "README.md", content-type = "text/markdown" }
+requires-python = ">=3.10"
+license = "COMMERCIAL"
+authors = [{ name = "MySite Team", email = "mysite@dev.local" }]
+classifiers = [
+  "Environment :: Web Environment",
+  "Intended Audience :: Developers",
+  "Natural Language :: English",
+  "Operating System :: OS Independent",
+  "Programming Language :: Python",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
+  "Programming Language :: Python :: 3.14",
+  "Programming Language :: Python :: Implementation :: CPython",
+  "Programming Language :: Python :: Implementation :: PyPy",
+  "Topic :: Internet :: WWW/HTTP",
+  "Topic :: Internet :: WWW/HTTP :: Dynamic Content",
+  "Topic :: Internet :: WWW/HTTP :: WSGI",
+  "Topic :: Internet :: WWW/HTTP :: WSGI :: Application",
+  "Topic :: Software Development :: Libraries :: Python Modules",
+]
+dependencies = [
+  "wheezy.core>=3.2.3",
+  "wheezy.caching>=3.2.1",
+  "wheezy.html>=3.2.1",
+  "wheezy.http>=3.2.3",
+  "wheezy.routing>=3.2.1",
+  "wheezy.security>=3.2.2",
+  "wheezy.template>=3.2.5",
+  "wheezy.validation>=3.2.1",
+  "wheezy.web>=3.2.0",
+]
+
+[project.urls]
+Homepage = "https://scm.dev.local/svn/mysite/trunk"
+
+[tool.setuptools]
+packages = ["public", "public.web"]
+package-dir = { "" = "src" }
+zip-safe = false

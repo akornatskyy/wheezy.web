@@ -1,6 +1,3 @@
-""" ``views`` module.
-"""
-
 from datetime import timedelta
 
 from config import cached, session

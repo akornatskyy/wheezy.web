@@ -1,6 +1,3 @@
-""" ``test_views`` module.
-"""
-
 import re
 import unittest
 
