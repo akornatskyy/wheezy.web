@@ -8,7 +8,7 @@ version = "0.1"
 description = "MySite Project"
 readme = { file = "README.md", content-type = "text/markdown" }
 requires-python = ">=3.10"
-license = "COMMERCIAL"
+license = "MIT"
 authors = [{ name = "MySite Team", email = "mysite@dev.local" }]
 classifiers = [
   "Environment :: Web Environment",
@@ -30,15 +30,9 @@ classifiers = [
   "Topic :: Software Development :: Libraries :: Python Modules",
 ]
 dependencies = [
-  "wheezy.core>=3.2.3",
-  "wheezy.caching>=3.2.1",
-  "wheezy.html>=3.2.1",
-  "wheezy.http>=3.2.3",
-  "wheezy.routing>=3.2.1",
-  "wheezy.security>=3.2.2",
+  "cryptography>=46.0.5",
   "wheezy.template>=3.2.5",
-  "wheezy.validation>=3.2.1",
-  "wheezy.web>=3.2.0",
+  "wheezy.web>=3.2.1",
 ]
 
 [project.urls]

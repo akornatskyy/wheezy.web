@@ -27,7 +27,11 @@ classifiers = [
   "Topic :: Internet :: WWW/HTTP",
   "Topic :: Internet :: WWW/HTTP :: Dynamic Content",
 ]
-dependencies = ["wheezy.template>=3.2.5", "wheezy.web>=3.2.0"]
+dependencies = [
+  "cryptography>=46.0.5",
+  "wheezy.template>=3.2.5",
+  "wheezy.web>=3.2.1",
+]
 
 [project.urls]
 Homepage = "https://scm.dev.local/svn/mysite/trunk"
