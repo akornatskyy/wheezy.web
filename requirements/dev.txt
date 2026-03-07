@@ -4,7 +4,7 @@
 #
 #    pip-compile --output-file=requirements/dev.txt --strip-extras requirements/dev.in
 #
-build==1.4.0
+build==1.4.2
     # via pip-tools
 click==8.3.1
     # via pip-tools
@@ -13,7 +13,7 @@ colorama==0.4.6
     #   build
     #   click
     #   pytest
-coverage==7.13.4
+coverage==7.13.5
     # via pytest-cov
 iniconfig==2.3.0
     # via pytest
@@ -38,7 +38,7 @@ pluggy==1.6.0
     #   pytest-cov
 pycryptodome==3.23.0
     # via -r requirements/dev.in
-pygments==2.19.2
+pygments==2.20.0
     # via pytest
 pyproject-hooks==1.2.0
     # via
@@ -48,7 +48,7 @@ pytest==9.0.2
     # via
     #   -r requirements/dev.in
     #   pytest-cov
-pytest-cov==7.0.0
+pytest-cov==7.1.0
     # via -r requirements/dev.in
 tenjin==1.1.1
     # via -r requirements/dev.in
