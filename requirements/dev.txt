@@ -4,9 +4,9 @@
 #
 #    pip-compile --output-file=requirements/dev.txt --strip-extras requirements/dev.in
 #
-build==1.4.2
+build==1.4.4
     # via pip-tools
-click==8.3.1
+click==8.3.3
     # via pip-tools
 colorama==0.4.6
     # via
@@ -19,13 +19,13 @@ iniconfig==2.3.0
     # via pytest
 jinja2==3.1.6
     # via -r requirements/dev.in
-mako==1.3.10
+mako==1.3.11
     # via -r requirements/dev.in
 markupsafe==3.0.3
     # via
     #   jinja2
     #   mako
-packaging==26.0
+packaging==26.2
     # via
     #   build
     #   pytest
@@ -44,7 +44,7 @@ pyproject-hooks==1.2.0
     # via
     #   build
     #   pip-tools
-pytest==9.0.2
+pytest==9.0.3
     # via
     #   -r requirements/dev.in
     #   pytest-cov
@@ -52,7 +52,7 @@ pytest-cov==7.1.0
     # via -r requirements/dev.in
 tenjin==1.1.1
     # via -r requirements/dev.in
-wheel==0.46.3
+wheel==0.47.0
     # via pip-tools
 wheezy.template==3.2.5
     # via -r requirements/dev.in
