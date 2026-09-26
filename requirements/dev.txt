@@ -12,15 +12,15 @@ colorama==0.4.6
     # via
     #   build
     #   pytest
-coverage==7.16.1
+coverage==7.16.2
     # via pytest-cov
 iniconfig==2.3.0
     # via pytest
 jinja2==3.1.6
     # via -r requirements/dev.in
-mako==1.4.1
+mako==1.4.3
     # via -r requirements/dev.in
-markupsafe==3.0.3
+markupsafe==3.0.4
     # via
     #   jinja2
     #   mako
