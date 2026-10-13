@@ -43,7 +43,7 @@ Resources:
 ## Install
 
 [wheezy.web](https://pypi.org/project/wheezy.web/) requires
-[python](https://www.python.org) version 3.10+. It is independent of operating
+[python](https://www.python.org) version 3.11+. It is independent of operating
 system. You can install it from [pypi](https://pypi.org/project/wheezy.web/)
 site:
 
